@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌟 ComputerVerse Kids | কম্পিউটার জগৎ</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#0ea5e9;--sunny:#f59e0b;--grass:#22c55e;--rose:#f43f5e;--purple:#a855f7;--orange:#f97316;--pink:#ec4899;--navy:#1e1b4b;--bn:cubic-bezier(.34,1.56,.64,1);--nh:58px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:var(--nh)}
+body{font-family:'Nunito','Hind Siliguri',sans-serif;background:#f0f9ff;overflow-x:hidden}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#dbeafe}::-webkit-scrollbar-thumb{background:linear-gradient(var(--sky),var(--purple));border-radius:8px}
+/* NAV */
+#nav{position:sticky;top:0;z-index:900;height:var(--nh);background:linear-gradient(135deg,#5b21b6,#7c3aed);display:flex;align-items:center;padding:0 14px;gap:8px;box-shadow:0 4px 20px rgba(91,33,182,.45)}
+.brand{font-family:'Fredoka One',cursive;font-size:19px;color:#fff;white-space:nowrap;text-shadow:2px 2px 0 rgba(0,0,0,.2);flex-shrink:0}
+#navlinks{display:flex;align-items:center;gap:1px;overflow-x:auto;flex:1;scrollbar-width:none}
+#navlinks::-webkit-scrollbar{display:none}
+.na{display:flex;align-items:center;gap:4px;padding:6px 10px;color:rgba(255,255,255,.85);text-decoration:none;font-size:12.5px;font-weight:800;white-space:nowrap;border-radius:10px;transition:.2s;font-family:'Nunito','Hind Siliguri',sans-serif}
+.na:hover{background:rgba(255,255,255,.2);color:#fff;transform:translateY(-2px)}
+.nr{display:flex;align-items:center;gap:7px;flex-shrink:0;margin-left:auto}
+/* LANG PILL */
+#lpill{display:flex;background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.28);border-radius:50px;overflow:hidden}
+.lb{padding:5px 11px;border:none;background:transparent;color:rgba(255,255,255,.7);font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:.22s;white-space:nowrap}
+.lb.on{background:rgba(255,255,255,.9);color:#5b21b6;border-radius:50px}
+.lb:not(.on):hover{color:#fff;background:rgba(255,255,255,.15)}
+/* HAMBURGER */
+#hbg{display:none;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:36px;height:36px;background:rgba(255,255,255,.13);border:none;border-radius:9px;cursor:pointer;flex-shrink:0}
+#hbg span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;transition:.28s}
+#hbg.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+#hbg.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+#hbg.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+/* DRAWER */
+#drawer{position:fixed;top:var(--nh);right:-260px;width:248px;height:calc(100vh - var(--nh));background:linear-gradient(160deg,#4c1d95,#7c3aed);z-index:800;overflow-y:auto;padding:12px;transition:right .3s ease;box-shadow:-4px 0 26px rgba(0,0,0,.28)}
+#drawer.open{right:0}
+#drawer .na{padding:11px 13px;border-radius:13px;margin-bottom:3px;font-size:14px;color:rgba(255,255,255,.92);display:flex}
+#ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:700}
+#ov.on{display:block}
+/* BG */
+#bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.dot{position:absolute;border-radius:50%;opacity:.07;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(100vh) rotate(0)}100%{transform:translateY(-200px) rotate(720deg)}}
+/* SECTIONS */
+.sec{position:relative;z-index:1;padding:56px 20px;opacity:0;transform:translateY(32px);transition:opacity .6s,transform .6s}
+.sec.vis{opacity:1;transform:none}
+.sh{text-align:center;margin-bottom:38px}
+.ctag{display:inline-block;padding:5px 17px;border-radius:50px;font-size:13px;font-weight:800;margin-bottom:9px;font-family:'Nunito','Hind Siliguri',sans-serif}
+.sh h2{font-family:'Fredoka One',cursive;font-size:clamp(24px,5vw,46px);line-height:1.1;margin-bottom:9px}
+.sh p{font-size:15px;max-width:640px;margin:0 auto;line-height:1.7;font-weight:700}
+/* HERO */
+#hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px 40px;background:linear-gradient(155deg,#667eea 0%,#764ba2 30%,#f093fb 60%,#f5576c 80%,#fda085 100%);overflow:hidden;position:relative;z-index:1}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,255,255,.07),transparent 60%)}
+.mascot{font-size:86px;animation:mb 2s ease-in-out infinite alternate;margin-bottom:14px;position:relative;z-index:2;filter:drop-shadow(0 10px 20px rgba(0,0,0,.22))}
+@keyframes mb{0%{transform:translateY(0) rotate(-5deg)}100%{transform:translateY(-15px) rotate(5deg)}}
+.htitle{font-family:'Fredoka One',cursive;font-size:clamp(36px,8vw,84px);color:#fff;line-height:1;text-shadow:4px 4px 0 rgba(0,0,0,.17);position:relative;z-index:2;margin-bottom:9px;animation:pop .65s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.hsub{font-size:clamp(14px,3vw,21px);color:rgba(255,255,255,.96);font-weight:800;margin-bottom:9px;position:relative;z-index:2;font-family:'Nunito','Hind Siliguri',sans-serif}
+.hdesc{font-size:clamp(12px,2vw,16px);color:rgba(255,255,255,.88);font-weight:700;max-width:540px;line-height:1.65;margin-bottom:26px;position:relative;z-index:2;font-family:'Nunito','Hind Siliguri',sans-serif}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2;margin-bottom:28px}
+.badge{background:rgba(255,255,255,.21);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.4);padding:7px 15px;border-radius:50px;color:#fff;font-size:12.5px;font-weight:800;font-family:'Nunito','Hind Siliguri',sans-serif}
+.scr{color:rgba(255,255,255,.73);font-size:13.5px;font-weight:700;position:relative;z-index:2;animation:sh 1.5s ease infinite;font-family:'Nunito','Hind Siliguri',sans-serif}
+@keyframes sh{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.cloud{position:absolute;font-size:30px;opacity:.6;animation:cf linear infinite}
+@keyframes cf{0%{transform:translateX(-100px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateX(calc(100vw + 100px));opacity:0}}
+/* CARDS */
+.grid{display:grid;gap:15px;max-width:1060px;margin:0 auto}
+.g2{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(245px,1fr))}
+.card{background:#fff;border-radius:20px;padding:22px 16px;box-shadow:0 7px 28px rgba(0,0,0,.11);border:3px solid transparent;transition:transform .32s cubic-bezier(.34,1.56,.64,1),box-shadow .32s,border-color .32s;cursor:pointer;text-align:center}
+.card:hover{transform:translateY(-9px);box-shadow:0 16px 52px rgba(0,0,0,.14)}
+.ci{font-size:50px;display:block;margin-bottom:10px;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.card:hover .ci{transform:scale(1.26) rotate(7deg)}
+.ct{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:6px}
+.cd{font-size:12.5px;color:#64748b;line-height:1.65;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+.tag{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:800;color:#fff;opacity:.82;font-family:'Nunito',sans-serif}
+.card[data-c=sky]{color:var(--sky)}.card[data-c=sky]:hover{border-color:var(--sky)}
+.card[data-c=rose]{color:var(--rose)}.card[data-c=rose]:hover{border-color:var(--rose)}
+.card[data-c=grass]{color:var(--grass)}.card[data-c=grass]:hover{border-color:var(--grass)}
+.card[data-c=purple]{color:var(--purple)}.card[data-c=purple]:hover{border-color:var(--purple)}
+.card[data-c=orange]{color:var(--orange)}.card[data-c=orange]:hover{border-color:var(--orange)}
+.card[data-c=mint]{color:#10b981}.card[data-c=mint]:hover{border-color:#10b981}
+.card[data-c=pink]{color:var(--pink)}.card[data-c=pink]:hover{border-color:var(--pink)}
+.card[data-c=sunny]{color:var(--sunny)}.card[data-c=sunny]:hover{border-color:var(--sunny)}
+.card[data-c=indigo]{color:#6366f1}.card[data-c=indigo]:hover{border-color:#6366f1}
+/* FUNFACT */
+.ff{border-radius:20px;padding:19px 24px;display:flex;align-items:flex-start;gap:12px;max-width:780px;margin:18px auto;box-shadow:0 5px 20px rgba(0,0,0,.08);border:3px solid rgba(255,255,255,.55);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.ff:hover{transform:scale(1.02) rotate(.3deg)}
+.ffi{font-size:42px;flex-shrink:0;animation:wig 2s ease infinite}
+@keyframes wig{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.fft{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:4px}
+.ffb{font-size:13px;line-height:1.65;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+/* IPO */
+#intro{background:linear-gradient(135deg,#e0f2fe,#f0fdf4)}
+.ipo{display:flex;justify-content:center;align-items:center;gap:11px;flex-wrap:wrap;margin:28px 0}
+.ibox{background:#fff;border-radius:20px;padding:20px 14px;text-align:center;max-width:148px;box-shadow:0 7px 28px rgba(0,0,0,.11);border:3px solid transparent;transition:transform .32s cubic-bezier(.34,1.56,.64,1);cursor:pointer;position:relative;overflow:hidden}
+.ibox::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:17px}
+.ibox:hover{transform:translateY(-10px) rotate(2deg)}.ibox:hover::after{opacity:1}
+.ibox:nth-child(1){border-color:var(--sky)}.ibox:nth-child(1)::after{background:linear-gradient(135deg,#e0f2fe,#bae6fd)}
+.ibox:nth-child(3){border-color:var(--grass)}.ibox:nth-child(3)::after{background:linear-gradient(135deg,#dcfce7,#bbf7d0)}
+.ibox:nth-child(5){border-color:var(--orange)}.ibox:nth-child(5)::after{background:linear-gradient(135deg,#fff7ed,#fed7aa)}
+.ibox:nth-child(7){border-color:var(--purple)}.ibox:nth-child(7)::after{background:linear-gradient(135deg,#faf5ff,#e9d5ff)}
+.iico{font-size:44px;display:block;position:relative;z-index:1;margin-bottom:6px}
+.ilbl{font-family:'Fredoka One',cursive;font-size:14px;position:relative;z-index:1;margin-bottom:3px}
+.idsc{font-size:11px;color:#64748b;line-height:1.5;position:relative;z-index:1;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+.arr{font-size:32px;color:var(--sunny);animation:ap 1.4s ease infinite}
+@keyframes ap{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+/* HISTORY */
+#history{background:linear-gradient(135deg,#1e1b4b,#312e81,#4c1d95);color:#fff}
+.tl{max-width:840px;margin:0 auto;position:relative}
+.tl::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#ffd700,#ff6b6b,#4ecdc4,#45b7d1);transform:translateX(-50%);border-radius:4px}
+.tlr{display:flex;align-items:center;margin-bottom:28px;position:relative}
+.tlr:nth-child(odd){flex-direction:row}.tlr:nth-child(even){flex-direction:row-reverse}
+.tlc{width:calc(50% - 34px);background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.17);border-radius:20px;padding:15px 18px;transition:background .3s,transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s}
+.tlc:hover{background:rgba(255,255,255,.18);transform:scale(1.04);border-color:var(--sunny)}
+.tly{font-family:'Fredoka One',cursive;font-size:22px;color:var(--sunny)}
+.tlt{font-family:'Fredoka One',cursive;font-size:14.5px;color:#fff;margin:2px 0 4px}
+.tld{font-size:12px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+.tldot{width:46px;height:46px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;margin:0 8px;z-index:2;border:3px solid rgba(255,255,255,.3);animation:glow 2s ease infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 7px rgba(255,215,0,.5)}50%{box-shadow:0 0 24px rgba(255,215,0,.9)}}
+/* GENERATIONS */
+#generations{background:linear-gradient(135deg,#fff7ed,#fef3c7)}
+.genrow{display:flex;gap:13px;overflow-x:auto;padding:12px 6px 22px;scrollbar-width:thin;scrollbar-color:var(--orange) #fed7aa}
+.gc{flex-shrink:0;width:196px;border-radius:22px;padding:22px 15px;text-align:center;box-shadow:0 7px 28px rgba(0,0,0,.11);transition:transform .38s cubic-bezier(.34,1.56,.64,1);cursor:pointer;position:relative;overflow:hidden}
+.gc::after{content:'';position:absolute;bottom:-20px;right:-20px;width:75px;height:75px;border-radius:50%;background:rgba(255,255,255,.1)}
+.gc:hover{transform:translateY(-12px) rotate(-2deg) scale(1.05)}
+.gc:nth-child(1){background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff}
+.gc:nth-child(2){background:linear-gradient(135deg,#ffd32a,#f79f1f);color:#1a1a1a}
+.gc:nth-child(3){background:linear-gradient(135deg,#0be881,#05c46b);color:#fff}
+.gc:nth-child(4){background:linear-gradient(135deg,#0fbcf9,#0652dd);color:#fff}
+.gc:nth-child(5){background:linear-gradient(135deg,#f53b57,#833471,#9980fa);color:#fff}
+.ge{font-size:42px;display:block;margin-bottom:6px}
+.gn{font-family:'Fredoka One',cursive;font-size:42px;line-height:1;opacity:.22}
+.gtit{font-family:'Fredoka One',cursive;font-size:16px;margin:2px 0}
+.gyr{font-size:11px;font-weight:800;opacity:.8;font-family:'Nunito',sans-serif;margin-bottom:6px}
+.gdsc{font-size:11.5px;line-height:1.55;opacity:.9;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+/* SOFTWARE TABS */
+#software{background:linear-gradient(135deg,#f3e8ff,#fce7f3)}
+.tbar{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.tbtn{padding:10px 19px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;transition:all .28s cubic-bezier(.34,1.56,.64,1);background:#fff;color:#64748b;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.tbtn.on{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;transform:scale(1.08);box-shadow:0 7px 20px rgba(168,85,247,.36)}
+.tbtn:not(.on):hover{transform:translateY(-3px)}
+.panel{display:none;background:#fff;border-radius:20px;padding:26px;box-shadow:0 7px 36px rgba(0,0,0,.09);animation:psl .36s cubic-bezier(.34,1.56,.64,1)}
+.panel.on{display:block}
+@keyframes psl{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.panel h3{font-family:'Fredoka One',cursive;font-size:21px;color:var(--navy);margin-bottom:9px}
+.panel p{font-size:14px;color:#374151;line-height:1.8;font-weight:700;margin-bottom:11px;font-family:'Nunito','Hind Siliguri',sans-serif}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:5px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:11px;padding:6px 12px;font-size:12.5px;font-weight:800;color:#475569;transition:.18s;font-family:'Nunito','Hind Siliguri',sans-serif}
+.chip:hover{border-color:var(--purple);color:var(--purple);transform:scale(1.05)}
+/* OS */
+#os{background:linear-gradient(135deg,#fdf2f8,#fce7f3,#ede9fe)}
+.osring{display:flex;flex-wrap:wrap;justify-content:center;gap:17px;max-width:840px;margin:0 auto}
+.osc{width:140px;height:140px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 34px rgba(0,0,0,.12);transition:transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;cursor:pointer;text-align:center;padding:15px}
+.osc:hover{transform:scale(1.22) rotate(5deg);box-shadow:0 16px 50px rgba(0,0,0,.2)}
+.osc:nth-child(1){background:linear-gradient(135deg,#0078d4,#005fa3);color:#fff}
+.osc:nth-child(2){background:linear-gradient(135deg,#555,#333);color:#fff}
+.osc:nth-child(3){background:linear-gradient(135deg,#f4811f,#f5a623);color:#fff}
+.osc:nth-child(4){background:linear-gradient(135deg,#3ddc84,#0d6e3c);color:#fff}
+.osc:nth-child(5){background:linear-gradient(135deg,#007aff,#0052aa);color:#fff}
+.osc:nth-child(6){background:linear-gradient(135deg,#4285f4,#34a853);color:#fff}
+.osi{font-size:34px;margin-bottom:4px}
+.osn{font-family:'Fredoka One',cursive;font-size:13px}
+/* HOW IT WORKS */
+#howworks{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff}
+.bindemo{max-width:720px;margin:0 auto 36px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;text-align:center}
+.bindemo h3{font-family:'Fredoka One',cursive;font-size:21px;color:#4ade80;margin-bottom:9px}
+.bindisp{font-family:'Courier New',monospace;font-size:clamp(15px,4vw,30px);color:#4ade80;letter-spacing:5px;margin:15px 0;animation:bg 2s ease infinite;word-break:break-all}
+@keyframes bg{0%,100%{text-shadow:0 0 8px #4ade80}50%{text-shadow:0 0 24px #4ade80,0 0 48px #4ade80}}
+.binin{padding:10px 15px;border:3px solid #4ade80;border-radius:13px;font-size:16px;font-family:'Fredoka One',cursive;background:rgba(255,255,255,.07);color:#fff;text-align:center;width:100%;max-width:260px;display:block;margin:7px auto;outline:none}
+.binin::placeholder{color:rgba(255,255,255,.32)}
+.gobtn{margin-top:8px;padding:10px 28px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#fff;cursor:pointer;transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;box-shadow:0 5px 16px rgba(74,222,128,.36)}
+.gobtn:hover{transform:scale(1.12);box-shadow:0 8px 26px rgba(74,222,128,.55)}
+.binres{margin-top:10px;font-size:15px;color:#fbbf24;font-weight:800;min-height:22px;font-family:'Nunito','Hind Siliguri',sans-serif}
+.dcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:12px;max-width:860px;margin:0 auto}
+.dcard{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.11);border-radius:16px;padding:18px 13px;text-align:center;transition:background .28s,transform .28s cubic-bezier(.34,1.56,.64,1)}
+.dcard:hover{background:rgba(255,255,255,.12);transform:translateY(-6px)}
+.dci{font-size:42px;display:block;margin-bottom:8px;animation:ff 3s ease infinite}
+@keyframes ff{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.dcard:nth-child(2) .dci{animation-delay:.5s}.dcard:nth-child(3) .dci{animation-delay:1s}.dcard:nth-child(4) .dci{animation-delay:1.5s}.dcard:nth-child(5) .dci{animation-delay:2s}.dcard:nth-child(6) .dci{animation-delay:2.5s}
+.dct{font-family:'Fredoka One',cursive;font-size:14px;color:#fbbf24;margin-bottom:4px}
+.dcd{font-size:12px;color:rgba(255,255,255,.74);line-height:1.55;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+/* NETWORKING */
+#networking{background:linear-gradient(135deg,#ecfdf5,#d1fae5)}
+.netgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:15px;max-width:840px;margin:0 auto}
+.nc{border-radius:20px;padding:22px 15px;text-align:center;box-shadow:0 7px 28px rgba(0,0,0,.11);transition:transform .38s cubic-bezier(.34,1.56,.64,1);cursor:pointer}
+.nc:hover{transform:translateY(-10px) scale(1.04)}
+.nc:nth-child(1){background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.nc:nth-child(2){background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff}
+.nc:nth-child(3){background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff}
+.nc:nth-child(4){background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1a4a1a}
+.nci{font-size:46px;display:block;margin-bottom:9px}
+.nab{font-family:'Fredoka One',cursive;font-size:22px;opacity:.3}
+.nnm{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:5px}
+.nds{font-size:12px;line-height:1.6;opacity:.92;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+/* INTERNET */
+#internet{background:linear-gradient(135deg,#fff1f2,#ffe4e6)}
+.steps{max-width:740px;margin:0 auto}
+.step{display:flex;gap:15px;align-items:flex-start;margin-bottom:18px;background:#fff;border-radius:20px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.07);transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s}
+.step:hover{transform:translateX(8px);box-shadow:0 9px 32px rgba(0,0,0,.12)}
+.snum{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:18px;flex-shrink:0;color:#fff}
+.step:nth-child(1) .snum{background:linear-gradient(135deg,#f43f5e,#e11d48)}
+.step:nth-child(2) .snum{background:linear-gradient(135deg,#f97316,#ea580c)}
+.step:nth-child(3) .snum{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.step:nth-child(4) .snum{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.step:nth-child(5) .snum{background:linear-gradient(135deg,#a855f7,#9333ea)}
+.sbody h4{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:4px}
+.sbody p{font-size:12.5px;color:#64748b;line-height:1.7;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+/* QUIZ */
+#quiz{background:linear-gradient(135deg,#fef9c3,#fde68a)}
+.qwrap{max-width:640px;margin:0 auto}
+.qscore{text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:11px}
+.qpbg{background:#e2e8f0;height:10px;border-radius:10px;overflow:hidden;margin-bottom:20px;border:2px solid #fff}
+.qp{height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444,#a855f7);border-radius:10px;transition:width .46s ease}
+.qcard{background:#fff;border-radius:22px;padding:26px;box-shadow:0 9px 44px rgba(0,0,0,.1);border:4px solid var(--sunny)}
+.qnum{font-family:'Fredoka One',cursive;font-size:12px;color:var(--orange);margin-bottom:8px}
+.qemoji{font-size:42px;display:block;text-align:center;margin-bottom:11px}
+.qtext{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);line-height:1.35}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+@media(max-width:460px){.qopts{grid-template-columns:1fr}}
+.qopt{padding:11px 8px;border:3px solid #e2e8f0;border-radius:13px;background:#f8fafc;font-family:'Nunito','Hind Siliguri',sans-serif;font-size:13px;font-weight:800;color:var(--navy);cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);text-align:center}
+.qopt:hover:not(:disabled){border-color:var(--sunny);background:#fef9c3;transform:scale(1.04)}
+.qopt.ok{border-color:var(--grass);background:#dcfce7;color:#15803d}
+.qopt.no{border-color:var(--rose);background:#fff1f2;color:#be123c}
+.qfb{margin-top:11px;padding:11px 15px;border-radius:12px;font-family:'Nunito','Hind Siliguri',sans-serif;font-size:13.5px;font-weight:800;display:none;line-height:1.55}
+.qfb.ok{background:#dcfce7;color:#15803d;border:2px solid #86efac;display:block}
+.qfb.no{background:#fff1f2;color:#be123c;border:2px solid #fda4af;display:block}
+.qnxt{display:block;margin:14px auto 0;padding:10px 32px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(168,85,247,.36);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.qnxt:hover{transform:scale(1.1)}
+.qres{text-align:center;display:none}
+.qres.on{display:block}
+.remi{font-size:78px;display:block;margin-bottom:11px;animation:rp .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes rp{from{transform:scale(0)}to{transform:scale(1)}}
+.rtit{font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:6px}
+.rmsg{font-size:14px;color:#64748b;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+.rtry{margin-top:18px;padding:11px 32px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;background:linear-gradient(135deg,var(--sky),var(--purple));color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(14,165,233,.36);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.rtry:hover{transform:scale(1.1)}
+/* CAREERS */
+#careers{background:linear-gradient(135deg,#f8faff,#eff6ff)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:16px;max-width:1020px;margin:0 auto}
+.cc{border-radius:22px;padding:26px 18px;text-align:center;box-shadow:0 6px 36px rgba(0,0,0,.09);transition:transform .38s cubic-bezier(.34,1.56,.64,1);cursor:pointer;position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 60%);opacity:0;transition:opacity .28s}
+.cc:hover{transform:translateY(-12px) scale(1.04)}.cc:hover::before{opacity:1}
+.cc:nth-child(1){background:linear-gradient(135deg,#4776e6,#8e54e9);color:#fff}
+.cc:nth-child(2){background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff}
+.cc:nth-child(3){background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a1a}
+.cc:nth-child(4){background:linear-gradient(135deg,#ee0979,#ff6a00);color:#fff}
+.cc:nth-child(5){background:linear-gradient(135deg,#2980b9,#6dd5fa);color:#1a3a5c}
+.cc:nth-child(6){background:linear-gradient(135deg,#7f00ff,#e100ff);color:#fff}
+.cc:nth-child(7){background:linear-gradient(135deg,#1d976c,#93f9b9);color:#1a3a1a}
+.cc:nth-child(8){background:linear-gradient(135deg,#fc466b,#3f5efb);color:#fff}
+.cce{font-size:54px;display:block;margin-bottom:9px}
+.cct{font-family:'Fredoka One',cursive;font-size:18px;margin-bottom:7px}
+.ccs{display:inline-block;background:rgba(255,255,255,.2);padding:3px 11px;border-radius:50px;font-size:11px;font-weight:800;margin-bottom:8px;font-family:'Nunito',sans-serif}
+.ccd{font-size:12px;line-height:1.65;opacity:.93;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+/* TASKS */
+#tasks{background:linear-gradient(135deg,#f0fdf4,#dcfce7)}
+.tc{background:#fff;border-radius:20px;padding:22px;box-shadow:0 4px 24px rgba(0,0,0,.07);border:3px solid transparent;transition:all .28s}
+.tc:hover{border-color:var(--grass);transform:translateY(-5px)}
+.tnum{font-family:'Fredoka One',cursive;font-size:38px;color:var(--grass);opacity:.3;line-height:1;margin-bottom:5px}
+.ttit{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:6px}
+.tdsc{font-size:12.5px;color:#475569;line-height:1.7;font-weight:700;margin-bottom:12px;font-family:'Nunito','Hind Siliguri',sans-serif}
+.tbtnx{padding:7px 16px;border:3px solid var(--grass);border-radius:50px;background:transparent;color:var(--grass);font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;transition:all .28s cubic-bezier(.34,1.56,.64,1)}
+.tbtnx:hover,.tbtnx.done{background:var(--grass);color:#fff;transform:scale(1.08)}
+.tbtnx.done::before{content:'✓ '}
+/* FUTURE */
+#future{background:linear-gradient(135deg,#0c0a1e,#1a0533,#0e1a3d);color:#fff}
+/* FOOTER */
+footer{background:linear-gradient(135deg,#1e1b4b,#4c1d95);color:#fff;text-align:center;padding:50px 20px}
+.fspin{font-size:68px;display:block;margin-bottom:11px;animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ftit{font-family:'Fredoka One',cursive;font-size:30px;color:#fbbf24;margin-bottom:8px}
+.ftxt{font-size:14px;color:rgba(255,255,255,.82);max-width:440px;margin:0 auto 18px;font-weight:700;line-height:1.7;font-family:'Nunito','Hind Siliguri',sans-serif}
+.fstars{font-size:23px;letter-spacing:6px;margin-bottom:15px}
+.btop{display:inline-block;padding:11px 26px;border:3px solid rgba(255,255,255,.36);border-radius:50px;color:#fff;text-decoration:none;font-family:'Fredoka One',cursive;font-size:15px;transition:all .28s cubic-bezier(.34,1.56,.64,1)}
+.btop:hover{background:rgba(255,255,255,.12);transform:translateY(-3px)}
+/* MODAL */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:2000;align-items:center;justify-content:center;padding:20px}
+#modal.on{display:flex}
+.mbox{background:#fff;border-radius:22px;padding:28px;max-width:450px;width:100%;text-align:center;box-shadow:0 26px 80px rgba(0,0,0,.36);animation:mp .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mp{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
+.mico{font-size:52px;margin-bottom:11px;display:block}
+.mhd{font-family:'Fredoka One',cursive;font-size:19px;color:var(--navy);margin-bottom:8px}
+.mbd{font-size:14px;color:#374151;line-height:1.7;font-weight:700;font-family:'Nunito','Hind Siliguri',sans-serif}
+.mcls{margin-top:15px;padding:9px 26px;border:none;border-radius:50px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.mcls:hover{transform:scale(1.08)}
+/* CONFETTI/STAR */
+.cpiece{position:fixed;width:10px;height:10px;top:-13px;pointer-events:none;z-index:9999;border-radius:2px;animation:cf linear forwards}
+@keyframes cf{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.star{position:fixed;pointer-events:none;font-size:19px;z-index:9999;animation:sb .6s ease forwards}
+@keyframes sb{0%{transform:scale(0);opacity:1}100%{transform:scale(2.2);opacity:0}}
+/* RESPONSIVE */
+@media(max-width:820px){
+  #navlinks{display:none}#hbg{display:flex}
+  .tl::before{left:15px}
+  .tlr{flex-direction:column!important;padding-left:40px;position:relative}
+  .tlc{width:100%}
+  .tldot{position:absolute;left:-4px;top:0;margin:0;width:32px;height:32px;font-size:14px}
+}
+@media(max-width:540px){.ipo{flex-direction:column;align-items:center}.arr{transform:rotate(90deg)}}
+</style>
+</head>
+<body id="top">
+<div id="bg"></div>
+<!-- NAV -->
+<nav id="nav">
+  <span class="brand">🌟 ComputerVerse</span>
+  <div id="navlinks">
+    <a class="na" href="#intro">💻 <span data-t="nav.intro"></span></a>
+    <a class="na" href="#history">📜 <span data-t="nav.history"></span></a>
+    <a class="na" href="#generations">⚡ <span data-t="nav.gen"></span></a>
+    <a class="na" href="#hardware">🔧 <span data-t="nav.hw"></span></a>
+    <a class="na" href="#software">💾 <span data-t="nav.sw"></span></a>
+    <a class="na" href="#os">🖥️ OS</a>
+    <a class="na" href="#howworks">⚙️ <span data-t="nav.how"></span></a>
+    <a class="na" href="#networking">🌐 <span data-t="nav.net"></span></a>
+    <a class="na" href="#internet">📡 <span data-t="nav.internet"></span></a>
+    <a class="na" href="#quiz">🧪 <span data-t="nav.quiz"></span></a>
+    <a class="na" href="#careers">🗺️ <span data-t="nav.careers"></span></a>
+    <a class="na" href="#future">🚀 <span data-t="nav.future"></span></a>
+  </div>
+  <div class="nr">
+    <div id="lpill">
+      <button class="lb on" id="lEn" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lb" id="lBn" onclick="setLang('bn')">🇧🇩 বাংলা</button>
+    </div>
+    <button id="hbg" onclick="toggleD()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<!-- DRAWER -->
+<div id="ov" onclick="closeD()"></div>
+<nav id="drawer">
+  <a class="na" href="#intro"       onclick="closeD()">💻 <span data-t="nav.intro"></span></a>
+  <a class="na" href="#history"     onclick="closeD()">📜 <span data-t="nav.history"></span></a>
+  <a class="na" href="#generations" onclick="closeD()">⚡ <span data-t="nav.gen"></span></a>
+  <a class="na" href="#hardware"    onclick="closeD()">🔧 <span data-t="nav.hw"></span></a>
+  <a class="na" href="#software"    onclick="closeD()">💾 <span data-t="nav.sw"></span></a>
+  <a class="na" href="#os"          onclick="closeD()">🖥️ OS</a>
+  <a class="na" href="#howworks"    onclick="closeD()">⚙️ <span data-t="nav.how"></span></a>
+  <a class="na" href="#networking"  onclick="closeD()">🌐 <span data-t="nav.net"></span></a>
+  <a class="na" href="#internet"    onclick="closeD()">📡 <span data-t="nav.internet"></span></a>
+  <a class="na" href="#quiz"        onclick="closeD()">🧪 <span data-t="nav.quiz"></span></a>
+  <a class="na" href="#careers"     onclick="closeD()">🗺️ <span data-t="nav.careers"></span></a>
+  <a class="na" href="#future"      onclick="closeD()">🚀 <span data-t="nav.future"></span></a>
+</nav>
+<!-- HERO -->
+<section id="hero">
+  <div class="cloud" style="top:12%;animation-duration:18s">☁️</div>
+  <div class="cloud" style="top:55%;animation-duration:22s;animation-delay:6s">⭐</div>
+  <div class="cloud" style="top:28%;animation-duration:16s;animation-delay:11s">🌈</div>
+  <div class="cloud" style="top:72%;animation-duration:20s;animation-delay:3s">✨</div>
+  <div class="mascot">🤖</div>
+  <h1 class="htitle" data-t="hero.title"></h1>
+  <p class="hsub" data-t="hero.sub"></p>
+  <p class="hdesc" data-t="hero.desc"></p>
+  <div class="badges">
+    <div class="badge" data-t="hero.b1"></div>
+    <div class="badge" data-t="hero.b2"></div>
+    <div class="badge" data-t="hero.b3"></div>
+    <div class="badge" data-t="hero.b4"></div>
+  </div>
+  <p class="scr" data-t="hero.scroll"></p>
+</section>
+<!-- S1 -->
+<section class="sec" id="intro">
+  <div class="sh"><div class="ctag" style="background:#dbeafe;color:#1d4ed8" data-t="s1.tag"></div><h2 style="color:#1e40af" data-t="s1.title"></h2><p style="color:#3b82f6" data-t="s1.desc"></p></div>
+  <div class="ipo">
+    <div class="ibox" onclick="popup('⌨️','s1.f1h','s1.f1b')"><span class="iico">⌨️</span><div class="ilbl" style="color:#0369a1" data-t="s1.ipo1l"></div><div class="idsc" data-t="s1.ipo1d"></div></div>
+    <div class="arr">➡️</div>
+    <div class="ibox" onclick="popup('🧠','s1.f2h','s1.f2b')"><span class="iico">🧠</span><div class="ilbl" style="color:#15803d" data-t="s1.ipo2l"></div><div class="idsc" data-t="s1.ipo2d"></div></div>
+    <div class="arr">➡️</div>
+    <div class="ibox" onclick="popup('🖥️','s1.f3h','s1.f3b')"><span class="iico">🖥️</span><div class="ilbl" style="color:#c2410c" data-t="s1.ipo3l"></div><div class="idsc" data-t="s1.ipo3d"></div></div>
+    <div class="arr">↩️</div>
+    <div class="ibox" onclick="popup('💾','s1.f4h','s1.f4b')"><span class="iico">💾</span><div class="ilbl" style="color:#7e22ce" data-t="s1.ipo4l"></div><div class="idsc" data-t="s1.ipo4d"></div></div>
+  </div>
+  <div class="ff" style="background:linear-gradient(135deg,#ffd6e0,#ffecb3)"><div class="ffi">🤯</div><div><div class="fft" style="color:var(--rose)" data-t="s1.ff1h"></div><div class="ffb" style="color:#5a4130" data-t="s1.ff1b"></div></div></div>
+  <div class="ff" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0)"><div class="ffi">🎯</div><div><div class="fft" style="color:#065f46" data-t="s1.ff2h"></div><div class="ffb" style="color:#064e3b" data-t="s1.ff2b"></div></div></div>
+</section>
+<!-- S2 HISTORY -->
+<section class="sec" id="history">
+  <div class="sh"><div class="ctag" style="background:rgba(255,255,255,.15);color:#fbbf24" data-t="s2.tag"></div><h2 style="color:#fbbf24" data-t="s2.title"></h2><p style="color:rgba(255,255,255,.85)" data-t="s2.desc"></p></div>
+  <div class="tl">
+    <div class="tlr"><div class="tlc"><div class="tly">1822</div><div class="tlt" data-t="h1.t"></div><div class="tld" data-t="h1.d"></div></div><div class="tldot" style="background:linear-gradient(135deg,#ffd700,#ff8c00)">🔧</div><div style="flex:1"></div></div>
+    <div class="tlr"><div style="flex:1"></div><div class="tldot" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24)">👩</div><div class="tlc"><div class="tly">1843</div><div class="tlt" data-t="h2.t"></div><div class="tld" data-t="h2.d"></div></div></div>
+    <div class="tlr"><div class="tlc"><div class="tly">1946</div><div class="tlt" data-t="h3.t"></div><div class="tld" data-t="h3.d"></div></div><div class="tldot" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🏢</div><div style="flex:1"></div></div>
+    <div class="tlr"><div style="flex:1"></div><div class="tldot" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">💡</div><div class="tlc"><div class="tly">1971</div><div class="tlt" data-t="h4.t"></div><div class="tld" data-t="h4.d"></div></div></div>
+    <div class="tlr"><div class="tlc"><div class="tly">1981</div><div class="tlt" data-t="h5.t"></div><div class="tld" data-t="h5.d"></div></div><div class="tldot" style="background:linear-gradient(135deg,#f5576c,#f093fb)">🖥️</div><div style="flex:1"></div></div>
+    <div class="tlr"><div style="flex:1"></div><div class="tldot" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">🌐</div><div class="tlc"><div class="tly">1991</div><div class="tlt" data-t="h6.t"></div><div class="tld" data-t="h6.d"></div></div></div>
+    <div class="tlr"><div class="tlc"><div class="tly">2007</div><div class="tlt" data-t="h7.t"></div><div class="tld" data-t="h7.d"></div></div><div class="tldot" style="background:linear-gradient(135deg,#ffd700,#ff8c00)">📱</div><div style="flex:1"></div></div>
+    <div class="tlr"><div style="flex:1"></div><div class="tldot" style="background:linear-gradient(135deg,#667eea,#764ba2)">🤖</div><div class="tlc"><div class="tly">2020s</div><div class="tlt" data-t="h8.t"></div><div class="tld" data-t="h8.d"></div></div></div>
+  </div>
+</section>
+<!-- S3 GENERATIONS -->
+<section class="sec" id="generations">
+  <div class="sh"><div class="ctag" style="background:#fef3c7;color:#d97706" data-t="s3.tag"></div><h2 style="color:#d97706" data-t="s3.title"></h2><p style="color:#92400e" data-t="s3.desc"></p></div>
+  <div class="genrow">
+    <div class="gc" onclick="popup('💡','g1.t','g1.d')"><span class="ge">💡</span><div class="gn">1</div><div class="gtit" data-t="g1.t"></div><div class="gyr">1940–1956</div><div class="gdsc" data-t="g1.d"></div></div>
+    <div class="gc" onclick="popup('🔲','g2.t','g2.d')"><span class="ge">🔲</span><div class="gn">2</div><div class="gtit" data-t="g2.t"></div><div class="gyr">1956–1963</div><div class="gdsc" data-t="g2.d"></div></div>
+    <div class="gc" onclick="popup('🔬','g3.t','g3.d')"><span class="ge">🔬</span><div class="gn">3</div><div class="gtit" data-t="g3.t"></div><div class="gyr">1964–1971</div><div class="gdsc" data-t="g3.d"></div></div>
+    <div class="gc" onclick="popup('💻','g4.t','g4.d')"><span class="ge">💻</span><div class="gn">4</div><div class="gtit" data-t="g4.t"></div><div class="gyr">1971–2010</div><div class="gdsc" data-t="g4.d"></div></div>
+    <div class="gc" onclick="popup('🤖','g5.t','g5.d')"><span class="ge">🤖</span><div class="gn">5</div><div class="gtit" data-t="g5.t"></div><div class="gyr">2010–Now</div><div class="gdsc" data-t="g5.d"></div></div>
+  </div>
+</section>
+<!-- S4 HARDWARE -->
+<section class="sec" id="hardware">
+  <div class="sh"><div class="ctag" style="background:#dcfce7;color:#15803d" data-t="s4.tag"></div><h2 style="color:#15803d" data-t="s4.title"></h2><p style="color:#166534" data-t="s4.desc"></p></div>
+  <div class="grid g2">
+    <div class="card" data-c="sky"    onclick="popup('🧠','hw1.t','hw1.d')"><span class="ci">🧠</span><div class="ct" data-t="hw1.t"></div><div class="cd" data-t="hw1.d"></div><span class="tag" style="background:var(--sky)">Brain 🧠</span></div>
+    <div class="card" data-c="rose"   onclick="popup('🎮','hw2.t','hw2.d')"><span class="ci">🎮</span><div class="ct" data-t="hw2.t"></div><div class="cd" data-t="hw2.d"></div><span class="tag" style="background:var(--rose)">Graphics 🎨</span></div>
+    <div class="card" data-c="grass"  onclick="popup('💾','hw3.t','hw3.d')"><span class="ci">💾</span><div class="ct">RAM</div><div class="cd" data-t="hw3.d"></div><span class="tag" style="background:var(--grass)">Memory 🧩</span></div>
+    <div class="card" data-c="purple" onclick="popup('💿','hw4.t','hw4.d')"><span class="ci">💿</span><div class="ct">SSD / HDD</div><div class="cd" data-t="hw4.d"></div><span class="tag" style="background:var(--purple)">Storage 📦</span></div>
+    <div class="card" data-c="orange" onclick="popup('⌨️','hw5.t','hw5.d')"><span class="ci">⌨️</span><div class="ct" data-t="hw5.t"></div><div class="cd" data-t="hw5.d"></div><span class="tag" style="background:var(--orange)">Input ⌨️</span></div>
+    <div class="card" data-c="mint"   onclick="popup('🖱️','hw6.t','hw6.d')"><span class="ci">🖱️</span><div class="ct" data-t="hw6.t"></div><div class="cd" data-t="hw6.d"></div><span class="tag" style="background:#10b981">Input 🖱️</span></div>
+    <div class="card" data-c="pink"   onclick="popup('🖥️','hw7.t','hw7.d')"><span class="ci">🖥️</span><div class="ct" data-t="hw7.t"></div><div class="cd" data-t="hw7.d"></div><span class="tag" style="background:var(--pink)">Output 🖥️</span></div>
+    <div class="card" data-c="sunny"  onclick="popup('🖨️','hw8.t','hw8.d')"><span class="ci">🖨️</span><div class="ct" data-t="hw8.t"></div><div class="cd" data-t="hw8.d"></div><span class="tag" style="background:var(--sunny)">Output 🖨️</span></div>
+    <div class="card" data-c="indigo" onclick="popup('🔌','hw9.t','hw9.d')"><span class="ci">🔌</span><div class="ct" data-t="hw9.t"></div><div class="cd" data-t="hw9.d"></div><span class="tag" style="background:#6366f1">Power ⚡</span></div>
+  </div>
+</section>
+<!-- S5 SOFTWARE -->
+<section class="sec" id="software">
+  <div class="sh"><div class="ctag" style="background:#f3e8ff;color:#7e22ce" data-t="s5.tag"></div><h2 style="color:#7e22ce" data-t="s5.title"></h2><p style="color:#6b21a8" data-t="s5.desc"></p></div>
+  <div style="max-width:860px;margin:0 auto">
+    <div class="tbar">
+      <button class="tbtn on" onclick="showTab('sys',this)">🏗️ <span data-t="sw.sys"></span></button>
+      <button class="tbtn"    onclick="showTab('app',this)">📱 <span data-t="sw.app"></span></button>
+      <button class="tbtn"    onclick="showTab('prog',this)">👨‍💻 <span data-t="sw.prog"></span></button>
+      <button class="tbtn"    onclick="showTab('util',this)">🔧 <span data-t="sw.util"></span></button>
+    </div>
+    <div class="panel on" id="tab-sys"><h3 data-t="sw.sys.h"></h3><p data-t="sw.sys.p"></p><div class="chips"><div class="chip">🪟 Windows</div><div class="chip">🍎 macOS</div><div class="chip">🐧 Linux</div><div class="chip">📱 Android</div><div class="chip">📱 iOS</div><div class="chip" data-t="sw.sys.c1"></div><div class="chip" data-t="sw.sys.c2"></div></div></div>
+    <div class="panel"    id="tab-app"><h3 data-t="sw.app.h"></h3><p data-t="sw.app.p"></p><div class="chips"><div class="chip">📺 YouTube</div><div class="chip">💬 WhatsApp</div><div class="chip">📝 MS Word</div><div class="chip">🎮 <span data-t="sw.app.c1"></span></div><div class="chip">🎵 Spotify</div><div class="chip">📷 Photoshop</div><div class="chip">🔍 Chrome</div><div class="chip">🗺️ Maps</div></div></div>
+    <div class="panel"    id="tab-prog"><h3 data-t="sw.prog.h"></h3><p data-t="sw.prog.p"></p><div class="chips"><div class="chip">💻 VS Code</div><div class="chip">🐍 Python</div><div class="chip">☕ Java</div><div class="chip" data-t="sw.prog.c1"></div><div class="chip" data-t="sw.prog.c2"></div><div class="chip">🌿 GitHub</div></div></div>
+    <div class="panel"    id="tab-util"><h3 data-t="sw.util.h"></h3><p data-t="sw.util.p"></p><div class="chips"><div class="chip">🛡️ Antivirus</div><div class="chip">🗜️ WinRAR</div><div class="chip" data-t="sw.util.c1"></div><div class="chip" data-t="sw.util.c2"></div><div class="chip">🔐 VPN</div><div class="chip" data-t="sw.util.c3"></div></div></div>
+  </div>
+</section>
+<!-- OS -->
+<section class="sec" id="os">
+  <div class="sh"><div class="ctag" style="background:#fce7f3;color:#be185d" data-t="os.tag"></div><h2 style="color:#9d174d" data-t="os.title"></h2><p style="color:#831843" data-t="os.desc"></p></div>
+  <div class="osring">
+    <div class="osc" onclick="popup('🪟','os1.t','os1.d')"><div class="osi">🪟</div><div class="osn">Windows</div></div>
+    <div class="osc" onclick="popup('🍎','os2.t','os2.d')"><div class="osi">🍎</div><div class="osn">macOS</div></div>
+    <div class="osc" onclick="popup('🐧','os3.t','os3.d')"><div class="osi">🐧</div><div class="osn">Linux</div></div>
+    <div class="osc" onclick="popup('🤖','os4.t','os4.d')"><div class="osi">🤖</div><div class="osn">Android</div></div>
+    <div class="osc" onclick="popup('📱','os5.t','os5.d')"><div class="osi">📱</div><div class="osn">iOS</div></div>
+    <div class="osc" onclick="popup('☁️','os6.t','os6.d')"><div class="osi">☁️</div><div class="osn">Chrome OS</div></div>
+  </div>
+  <div class="ff" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);margin-top:32px;max-width:860px"><div class="ffi">👑</div><div><div class="fft" style="color:#5b21b6" data-t="os.ffh"></div><div class="ffb" style="color:#3730a3" data-t="os.ffb"></div></div></div>
+</section>
+<!-- HOW IT WORKS -->
+<section class="sec" id="howworks">
+  <div class="sh"><div class="ctag" style="background:rgba(74,222,128,.14);color:#4ade80" data-t="hw.tag"></div><h2 style="color:#4ade80" data-t="hw.title"></h2><p style="color:rgba(255,255,255,.8)" data-t="hw.desc"></p></div>
+  <div class="bindemo">
+    <h3 data-t="bin.h"></h3>
+    <div class="bindisp" id="bdisp">01001000 01100101 01101100 01101100 01101111</div>
+    <p style="color:rgba(255,255,255,.5);font-size:12.5px;margin-bottom:12px;font-family:'Nunito',sans-serif;font-weight:700" data-t="bin.hint"></p>
+    <input type="number" class="binin" id="binIn" min="0" max="255" data-pht="bin.ph">
+    <button class="gobtn" onclick="doBin()" data-t="bin.btn"></button>
+    <div class="binres" id="binRes"></div>
+  </div>
+  <div class="dcards">
+    <div class="dcard"><span class="dci">⚡</span><div class="dct">Bit</div><div class="dcd" data-t="d1.d"></div></div>
+    <div class="dcard"><span class="dci">🔤</span><div class="dct">1 Byte = 8 Bits</div><div class="dcd" data-t="d2.d"></div></div>
+    <div class="dcard"><span class="dci">📄</span><div class="dct">1 Kilobyte (KB)</div><div class="dcd" data-t="d3.d"></div></div>
+    <div class="dcard"><span class="dci">🎵</span><div class="dct">1 Megabyte (MB)</div><div class="dcd" data-t="d4.d"></div></div>
+    <div class="dcard"><span class="dci">🎬</span><div class="dct">1 Gigabyte (GB)</div><div class="dcd" data-t="d5.d"></div></div>
+    <div class="dcard"><span class="dci">🖥️</span><div class="dct">1 Terabyte (TB)</div><div class="dcd" data-t="d6.d"></div></div>
+  </div>
+</section>
+<!-- NETWORKING -->
+<section class="sec" id="networking">
+  <div class="sh"><div class="ctag" style="background:#d1fae5;color:#065f46" data-t="s7.tag"></div><h2 style="color:#065f46" data-t="s7.title"></h2><p style="color:#047857" data-t="s7.desc"></p></div>
+  <div class="netgrid">
+    <div class="nc" onclick="popup('📱','n1.t','n1.d')"><span class="nci">📱</span><div class="nab">PAN</div><div class="nnm" data-t="n1.t"></div><div class="nds" data-t="n1.d"></div></div>
+    <div class="nc" onclick="popup('🏠','n2.t','n2.d')"><span class="nci">🏠</span><div class="nab">LAN</div><div class="nnm" data-t="n2.t"></div><div class="nds" data-t="n2.d"></div></div>
+    <div class="nc" onclick="popup('🌆','n3.t','n3.d')"><span class="nci">🌆</span><div class="nab">MAN</div><div class="nnm" data-t="n3.t"></div><div class="nds" data-t="n3.d"></div></div>
+    <div class="nc" onclick="popup('🌍','n4.t','n4.d')"><span class="nci">🌍</span><div class="nab">WAN</div><div class="nnm" data-t="n4.t"></div><div class="nds" data-t="n4.d"></div></div>
+  </div>
+  <div class="ff" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);max-width:800px;margin-top:32px"><div class="ffi">🌊</div><div><div class="fft" style="color:#065f46" data-t="n.ffh"></div><div class="ffb" style="color:#064e3b" data-t="n.ffb"></div></div></div>
+</section>
+<!-- INTERNET -->
+<section class="sec" id="internet">
+  <div class="sh"><div class="ctag" style="background:#ffe4e6;color:#be123c" data-t="s8.tag"></div><h2 style="color:#9f1239" data-t="s8.title"></h2><p style="color:#881337" data-t="s8.desc"></p></div>
+  <div class="steps">
+    <div class="step"><div class="snum">1</div><div class="sbody"><h4 data-t="st1.t"></h4><p data-t="st1.d"></p></div></div>
+    <div class="step"><div class="snum">2</div><div class="sbody"><h4 data-t="st2.t"></h4><p data-t="st2.d"></p></div></div>
+    <div class="step"><div class="snum">3</div><div class="sbody"><h4 data-t="st3.t"></h4><p data-t="st3.d"></p></div></div>
+    <div class="step"><div class="snum">4</div><div class="sbody"><h4 data-t="st4.t"></h4><p data-t="st4.d"></p></div></div>
+    <div class="step"><div class="snum">5</div><div class="sbody"><h4 data-t="st5.t"></h4><p data-t="st5.d"></p></div></div>
+  </div>
+</section>
+<!-- QUIZ -->
+<section class="sec" id="quiz">
+  <div class="sh"><div class="ctag" style="background:#fef3c7;color:#b45309" data-t="qz.tag"></div><h2 style="color:#92400e" data-t="qz.title"></h2><p style="color:#78350f" data-t="qz.desc"></p></div>
+  <div class="qwrap">
+    <div class="qscore" id="qScore"></div>
+    <div class="qpbg"><div class="qp" id="qP" style="width:0%"></div></div>
+    <div id="qActive">
+      <div class="qcard">
+        <div class="qnum" id="qNum"></div>
+        <span class="qemoji" id="qEmo"></span>
+        <div class="qtext" id="qTxt"></div>
+        <div class="qopts" id="qOpts"></div>
+        <div class="qfb" id="qFb"></div>
+        <button class="qnxt" id="qNxt" onclick="nextQ()" style="display:none" data-t="qz.next"></button>
+      </div>
+    </div>
+    <div class="qres" id="qRes"><span class="remi" id="rEmo"></span><div class="rtit" id="rTit"></div><div class="rmsg" id="rMsg"></div><button class="rtry" onclick="restartQ()" data-t="qz.retry"></button></div>
+  </div>
+</section>
+<!-- CAREERS -->
+<section class="sec" id="careers">
+  <div class="sh"><div class="ctag" style="background:#dbeafe;color:#1d4ed8" data-t="cr.tag"></div><h2 style="color:#1e3a8a" data-t="cr.title"></h2><p style="color:#1e40af" data-t="cr.desc"></p></div>
+  <div class="cgrid">
+    <div class="cc" onclick="popup('👨‍💻','cr1.t','cr1.d')"><span class="cce">👨‍💻</span><div class="cct" data-t="cr1.t"></div><div class="ccs" data-t="cr1.s"></div><div class="ccd" data-t="cr1.d"></div></div>
+    <div class="cc" onclick="popup('📊','cr2.t','cr2.d')"><span class="cce">📊</span><div class="cct" data-t="cr2.t"></div><div class="ccs" data-t="cr2.s"></div><div class="ccd" data-t="cr2.d"></div></div>
+    <div class="cc" onclick="popup('🎨','cr3.t','cr3.d')"><span class="cce">🎨</span><div class="cct" data-t="cr3.t"></div><div class="ccs" data-t="cr3.s"></div><div class="ccd" data-t="cr3.d"></div></div>
+    <div class="cc" onclick="popup('🔐','cr4.t','cr4.d')"><span class="cce">🔐</span><div class="cct" data-t="cr4.t"></div><div class="ccs" data-t="cr4.s"></div><div class="ccd" data-t="cr4.d"></div></div>
+    <div class="cc" onclick="popup('☁️','cr5.t','cr5.d')"><span class="cce">☁️</span><div class="cct" data-t="cr5.t"></div><div class="ccs" data-t="cr5.s"></div><div class="ccd" data-t="cr5.d"></div></div>
+    <div class="cc" onclick="popup('🤖','cr6.t','cr6.d')"><span class="cce">🤖</span><div class="cct" data-t="cr6.t"></div><div class="ccs" data-t="cr6.s"></div><div class="ccd" data-t="cr6.d"></div></div>
+    <div class="cc" onclick="popup('👩‍🏫','cr7.t','cr7.d')"><span class="cce">👩‍🏫</span><div class="cct" data-t="cr7.t"></div><div class="ccs" data-t="cr7.s"></div><div class="ccd" data-t="cr7.d"></div></div>
+    <div class="cc" onclick="popup('💼','cr8.t','cr8.d')"><span class="cce">💼</span><div class="cct" data-t="cr8.t"></div><div class="ccs" data-t="cr8.s"></div><div class="ccd" data-t="cr8.d"></div></div>
+  </div>
+</section>
+<!-- TASKS -->
+<section class="sec" id="tasks">
+  <div class="sh"><div class="ctag" style="background:#dcfce7;color:#15803d" data-t="tk.tag"></div><h2 style="color:#14532d" data-t="tk.title"></h2><p style="color:#166534" data-t="tk.desc"></p></div>
+  <div class="grid g3">
+    <div class="tc"><div class="tnum">01</div><div class="ttit" data-t="tk1.t"></div><div class="tdsc" data-t="tk1.d"></div><button class="tbtnx" onclick="doneTask(this)" data-t="tk.btn"></button></div>
+    <div class="tc"><div class="tnum">02</div><div class="ttit" data-t="tk2.t"></div><div class="tdsc" data-t="tk2.d"></div><button class="tbtnx" onclick="doneTask(this)" data-t="tk.btn"></button></div>
+    <div class="tc"><div class="tnum">03</div><div class="ttit" data-t="tk3.t"></div><div class="tdsc" data-t="tk3.d"></div><button class="tbtnx" onclick="doneTask(this)" data-t="tk.btn"></button></div>
+    <div class="tc"><div class="tnum">04</div><div class="ttit" data-t="tk4.t"></div><div class="tdsc" data-t="tk4.d"></div><button class="tbtnx" onclick="doneTask(this)" data-t="tk.btn"></button></div>
+    <div class="tc"><div class="tnum">05</div><div class="ttit" data-t="tk5.t"></div><div class="tdsc" data-t="tk5.d"></div><button class="tbtnx" onclick="doneTask(this)" data-t="tk.btn"></button></div>
+    <div class="tc"><div class="tnum">06</div><div class="ttit" data-t="tk6.t"></div><div class="tdsc" data-t="tk6.d"></div><button class="tbtnx" onclick="doneTask(this)" data-t="tk.btn"></button></div>
+  </div>
+</section>
+<!-- FUTURE -->
+<section class="sec" id="future">
+  <div class="sh"><div class="ctag" style="background:rgba(251,191,36,.14);color:#fbbf24" data-t="fut.tag"></div><h2 style="color:#fbbf24" data-t="fut.title"></h2><p style="color:rgba(255,255,255,.8)" data-t="fut.desc"></p></div>
+  <div class="dcards" style="max-width:980px;margin:0 auto">
+    <div class="dcard"><span class="dci">⚛️</span><div class="dct" data-t="f1.t"></div><div class="dcd" data-t="f1.d"></div></div>
+    <div class="dcard"><span class="dci">🥽</span><div class="dct" data-t="f2.t"></div><div class="dcd" data-t="f2.d"></div></div>
+    <div class="dcard"><span class="dci">🧠</span><div class="dct" data-t="f3.t"></div><div class="dcd" data-t="f3.d"></div></div>
+    <div class="dcard"><span class="dci">🤖</span><div class="dct" data-t="f4.t"></div><div class="dcd" data-t="f4.d"></div></div>
+    <div class="dcard"><span class="dci">🌱</span><div class="dct" data-t="f5.t"></div><div class="dcd" data-t="f5.d"></div></div>
+    <div class="dcard"><span class="dci">🤝</span><div class="dct" data-t="f6.t"></div><div class="dcd" data-t="f6.d"></div></div>
+  </div>
+  <div class="ff" style="background:rgba(255,255,255,.07);border:2px solid rgba(251,191,36,.28);max-width:640px;margin:38px auto 0"><div class="ffi">🌟</div><div><div class="fft" style="color:#fbbf24" data-t="fut.ffh"></div><div class="ffb" style="color:rgba(255,255,255,.85)" data-t="fut.ffb"></div></div></div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <span class="fspin">🌟</span>
+  <div class="ftit" data-t="ft.title"></div>
+  <div class="fstars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+  <p class="ftxt" data-t="ft.desc"></p>
+  <a href="#top" class="btop" data-t="ft.top"></a>
+</footer>
+<!-- MODAL -->
+<div id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="mbox"><span class="mico" id="mIco"></span><div class="mhd" id="mHd"></div><div class="mbd" id="mBd"></div><button class="mcls" onclick="closeModal()" data-t="modal.close"></button></div>
+</div>
+<script>
+const T={
+en:{
+"nav.intro":"Computer","nav.history":"History","nav.gen":"Generations","nav.hw":"Hardware","nav.sw":"Software","nav.how":"How it Works","nav.net":"Networking","nav.internet":"Internet","nav.quiz":"Quiz","nav.careers":"Careers","nav.future":"Future",
+"hero.title":"ComputerVerse!","hero.sub":"🚀 Your Amazing Computer Adventure Starts Here!","hero.desc":"From tiny kids to super experts — learn everything about computers in the most fun way! Games, quizzes, cool facts & career maps! 🎉","hero.b1":"🎯 Beginner Friendly","hero.b2":"🎮 Interactive","hero.b3":"🌏 English + বাংলা","hero.b4":"🏆 Fun Quizzes","hero.scroll":"👇 Scroll down to explore! 👇",
+"s1.tag":"📖 Chapter 1","s1.title":"💻 What is a Computer?","s1.desc":"A computer is like a SUPER SMART robot brain! You give it information, it thinks really fast, and gives you answers! 🧠⚡",
+"s1.ipo1l":"INPUT","s1.ipo1d":"Keyboard, mouse, microphone...","s1.ipo2l":"PROCESS","s1.ipo2d":"CPU thinks super fast!","s1.ipo3l":"OUTPUT","s1.ipo3d":"Screen, printer, speaker...","s1.ipo4l":"STORAGE","s1.ipo4d":"HDD, SSD, cloud...","s1.f1h":"INPUT Devices","s1.f1b":"Keyboard, mouse, microphone, camera & touchscreen are all INPUT devices — they send data INTO the computer!","s1.f2h":"PROCESS (CPU)","s1.f2b":"The CPU does billions of calculations per second. It is the fastest thing humans have ever built!","s1.f3h":"OUTPUT Devices","s1.f3b":"Monitors, speakers, printers send results OUT to you. Without output you would never see what the computer is doing!","s1.f4h":"STORAGE","s1.f4b":"HDD/SSD store files permanently. RAM stores things temporarily while working. Both are memory — but very different!",
+"s1.ff1h":"🌟 WOW FACT!","s1.ff1b":"Your smartphone is MORE POWERFUL than all of NASA computers combined when they sent astronauts to the Moon in 1969! Your phone fits in your pocket, but those computers filled entire buildings! 🌙",
+"s1.ff2h":"💡 Why Do We Use Computers?","s1.ff2b":"⚡ Super Fast • 🎯 Never Makes Mistakes • 📦 Stores Millions of Files • 🌍 Connects the Whole World • 🎨 Creates Amazing Things • 🤖 Does Boring Work For You!",
+"s2.tag":"📜 Chapter 2 — History","s2.title":"🚀 Computer's Amazing Journey!","s2.desc":"From a room-sized machine to AI in your pocket — what a ride! 🎢",
+"h1.t":"🔧 First Computer Machine","h1.d":"Charles Babbage designed a giant mechanical calculator. All gears & wheels — no electricity!",
+"h2.t":"👩 World's First Programmer!","h2.d":"Ada Lovelace wrote the first algorithm in 1843 — a genius 180 years ahead of her time!",
+"h3.t":"🏢 ENIAC — First Electronic Computer","h3.d":"Weighed 30 TONS! Filled an entire room! 18,000 vacuum tubes! Your phone is a million times more powerful!",
+"h4.t":"💡 Intel 4004 — First Microprocessor","h4.d":"Entire CPU on ONE tiny chip! Computers could now fit on a desk!",
+"h5.t":"🖥️ IBM PC — Computer for Everyone","h5.d":"IBM launched the first Personal Computer. Microsoft Windows was born!",
+"h6.t":"🌐 World Wide Web","h6.d":"Tim Berners-Lee created the web! YouTube, Google, Facebook were born from this!",
+"h7.t":"📱 iPhone — Computer in Your Pocket","h7.d":"Steve Jobs launched iPhone — Touch screen + internet + phone all in one!",
+"h8.t":"🤖 AI Revolution","h8.d":"ChatGPT, AI art, self-driving cars! Computers now understand language! We live in the future!",
+"s3.tag":"⚡ Chapter 3 — Generations","s3.title":"5 Super Generations of Computers!","s3.desc":"👉 Swipe / scroll sideways to see all 5 generations!",
+"g1.t":"Vacuum Tubes","g1.d":"🏢 Building-sized! 🔥 Super hot! 💰 Cost millions!",
+"g2.t":"Transistors","g2.d":"📦 Smaller! Less heat! Faster! Big companies started using them!",
+"g3.t":"Integrated Circuits","g3.d":"💎 Many transistors on one chip! Programming languages born!",
+"g4.t":"Microprocessors","g4.d":"🏠 Personal computers! Windows! Internet! Billions got computers!",
+"g5.t":"AI & Smart Computers","g5.d":"🧠 AI, Machine Learning, Voice Assistants! WE ARE HERE!",
+"s4.tag":"🔧 Chapter 4 — Hardware","s4.title":"🔩 Computer Body Parts!","s4.desc":"Hardware = things you can TOUCH! Click each card for a fun fact! 👆",
+"hw1.t":"CPU","hw1.d":"The BRAIN! Does all thinking & calculations. Intel & AMD are top makers!",
+"hw2.t":"GPU","hw2.d":"Makes beautiful pictures & runs games! Also powers AI! NVIDIA & AMD make these!",
+"hw3.t":"RAM","hw3.d":"Short-term memory! Holds open apps. More RAM = run more apps at once!",
+"hw4.t":"SSD / HDD","hw4.d":"Long-term storage! Keeps files even when powered off. SSD (fast) vs HDD (big).",
+"hw5.t":"Keyboard","hw5.d":"Main input device! QWERTY layout used worldwide. Mechanical, membrane, wireless types!",
+"hw6.t":"Mouse","hw6.d":"Point & click on screen! Optical laser detects movement. Gaming mice are super precise!",
+"hw7.t":"Monitor","hw7.d":"Shows everything visually! HD, 4K, OLED screens. Refresh rate affects smoothness!",
+"hw8.t":"Printer","hw8.d":"Makes digital → physical! Inkjet for photos, Laser for docs, 3D Printer for objects!",
+"hw9.t":"PSU","hw9.d":"Power Supply Unit — converts wall electricity to computer power. Rated in Watts!",
+"s5.tag":"💾 Chapter 5 — Software","s5.title":"🎭 The Invisible Magic!","s5.desc":"Software is what you CANNOT touch but makes everything work! Like music — you can not hold it but you hear it! 🎵",
+"sw.sys":"System","sw.app":"Apps","sw.prog":"Programming","sw.util":"Utility",
+"sw.sys.h":"🏗️ System Software","sw.sys.p":"System software is the FOUNDATION — without it nothing works! It manages all hardware and lets other software run. The most important is the Operating System (OS)!","sw.sys.c1":"💿 Device Drivers","sw.sys.c2":"⚙️ BIOS/UEFI",
+"sw.app.h":"📱 Application Software","sw.app.p":"Apps are programs YOU use every day! From games to study, music to video calls — all are applications! Your phone has hundreds of them!","sw.app.c1":"Games",
+"sw.prog.h":"👨‍💻 Programming Tools","sw.prog.p":"Magical tools programmers use to BUILD other software! Without these, no apps or websites could exist!","sw.prog.c1":"🔨 Compilers","sw.prog.c2":"🐛 Debuggers",
+"sw.util.h":"🔧 Utility Software","sw.util.p":"Utility software takes care of your computer! It cleans, fixes, protects, and makes it faster!","sw.util.c1":"💾 Backup Tools","sw.util.c2":"🧹 Disk Cleaner","sw.util.c3":"📊 Task Manager",
+"os.tag":"🖥️ Chapter 6 — OS","os.title":"🎪 The Boss of All Software!","os.desc":"The OS is like the KING of the computer! It controls everything. Click each bubble to discover facts!",
+"os1.t":"Windows","os1.d":"Windows has 75% of the desktop market. Over 1 BILLION people use it every day!",
+"os2.t":"macOS","os2.d":"macOS only runs on Apple computers. Designers LOVE it for its clean interface!",
+"os3.t":"Linux","os3.d":"Linux is FREE and powers 96% of the world's top 500 supercomputers! Developers love it!",
+"os4.t":"Android","os4.d":"Android runs on 72% of all smartphones! Over 3 BILLION Android phones worldwide!",
+"os5.t":"iOS","os5.d":"iOS is so secure that the FBI paid $1 million to hack into a locked iPhone!",
+"os6.t":"Chrome OS","os6.d":"Chrome OS stores almost everything in the cloud! Perfect for school Chromebooks!",
+"os.ffh":"What does the OS actually do?","os.ffb":"✅ Manages CPU time between programs • ✅ Allocates RAM to apps • ✅ Controls files on disk • ✅ Handles keyboard/mouse/screen • ✅ Keeps your account secure • ✅ Connects to internet",
+"hw.tag":"⚙️ Chapter 7 — How Computers Work","hw.title":"🔢 Secret Language: 0s and 1s!","hw.desc":"Computers only understand: electricity ON (1) or OFF (0)! Everything — photos, games, music — is billions of 1s and 0s! Try the converter below! 👇",
+"bin.h":"🔢 Binary Converter!","bin.hint":"☝️ That says Hello in binary! Type a number (0–255) and see it in binary!","bin.ph":"Type a number (0–255)","bin.btn":"✨ Convert to Binary!",
+"d1.d":"Smallest unit. Just 0 or 1. ON or OFF.","d2.d":"8 bits = 1 byte = 1 character like A","d3.d":"1,024 bytes. A short text message.","d4.d":"1,024 KB. One MP3 song (~4MB).","d5.d":"1,024 MB. One HD movie or 250 songs!","d6.d":"1,024 GB. A modern hard drive!",
+"s7.tag":"🌐 Chapter 8 — Networking","s7.title":"🕸️ Computers Talking to Each Other!","s7.desc":"A network is when computers share stuff! Like friends sharing toys — but computers sharing data! 📡",
+"n1.t":"Personal (PAN)","n1.d":"🦷 Bluetooth range! Your earbuds to phone. Very tiny! About 10 meters.",
+"n2.t":"Local (LAN)","n2.d":"🏠 Your home WiFi! School computer lab! All devices in one building connected!",
+"n3.t":"City-Wide (MAN)","n3.d":"🌆 Covers a whole city! Cable TV networks, city-wide WiFi zones.",
+"n4.t":"World-Wide (WAN)","n4.d":"🌍 The INTERNET! Underwater cables carry your YouTube videos!",
+"n.ffh":"🤯 Mind-Blowing Internet Fact!","n.ffb":"95% of all international internet traffic travels through UNDERWATER cables! There are 1.3 million KM of them — enough to wrap around Earth 32 times! 🌊",
+"s8.tag":"📡 Chapter 9 — Internet","s8.title":"🌏 The World in Your Hands!","s8.desc":"The Internet connects BILLIONS of people! Follow a YouTube video on its journey! 🎬",
+"st1.t":"🖱️ You Click Play on YouTube","st1.d":"Your request goes from your device to your home WiFi router — the gateway to the internet!",
+"st2.t":"🏢 Request Reaches Your ISP","st2.d":"Your Internet Service Provider receives your request and sends it onto the internet superhighway!",
+"st3.t":"🌊 Travels Through Undersea Cables","st3.d":"Your request travels at the speed of LIGHT through fiber optic cables across entire oceans in milliseconds!",
+"st4.t":"☁️ Arrives at Google Data Center","st4.d":"Google has HUGE buildings with millions of servers. Your request finds the right server with that video!",
+"st5.t":"📺 Video Streams Back to You!","st5.d":"The video breaks into tiny packets and returns — all in under 1 second! Pure MAGIC! ✨",
+"qz.tag":"🧪 Chapter 10 — Quiz","qz.title":"🏆 Are You a Computer Hero?","qz.desc":"Test what you have learned! 10 questions await! Score 8+ = 🌟 Computer Genius!",
+"qz.next":"Next Question →","qz.retry":"🔄 Try Again!",
+"qz.score":"Score: $$S / 10","qz.qnum":"Question $$N of 10",
+"qz.r.great.t":"COMPUTER GENIUS! 🎉","qz.r.great.m":"You scored $$S / 10! You are a real computer star! 🌟",
+"qz.r.good.t":"Great Job! 🌟","qz.r.good.m":"You scored $$S / 10! Keep learning and you will reach genius level!",
+"qz.r.ok.t":"Good Try! 😊","qz.r.ok.m":"You scored $$S / 10! Review the sections above and try again!",
+"qz.r.try.t":"Keep Going! 💪","qz.r.try.m":"You scored $$S / 10! Read the lessons again — you have got this!",
+"cr.tag":"🗺️ Chapter 11 — Careers","cr.title":"🚀 What Will YOU Be?","cr.desc":"Computers open HUNDREDS of amazing career doors! Click each card for the learning path! 💪",
+"cr1.t":"Software Developer","cr1.s":"💰 Very High Salary","cr1.d":"Builds apps, websites & systems. Learn: Python → JavaScript → React!",
+"cr2.t":"Data Analyst","cr2.s":"💰 High Salary","cr2.d":"Finds hidden insights in data. Learn: Excel → SQL → Python → Charts!",
+"cr3.t":"UI/UX Designer","cr3.s":"💰 Good Salary","cr3.d":"Makes apps beautiful & easy! Learn: Figma → Color Theory → User Research",
+"cr4.t":"Cybersecurity Expert","cr4.s":"💰 Very High Salary","cr4.d":"Protects systems from hackers! Learn: Linux → Networking → Ethical Hacking",
+"cr5.t":"Cloud Engineer","cr5.s":"💰 Very High Salary","cr5.d":"Manages internet servers! Learn: AWS/Azure → Linux → Docker → Kubernetes",
+"cr6.t":"AI / ML Engineer","cr6.s":"💰 Highest Salary!","cr6.d":"Builds thinking machines! Learn: Python → Math → TensorFlow → Data Science",
+"cr7.t":"CS Teacher","cr7.s":"💰 Stable Income","cr7.d":"Teaches next generation! Learn: Core CS → B.Ed → Communication Skills",
+"cr8.t":"Digital Accountant","cr8.s":"💰 Good Salary","cr8.d":"Finance meets technology! Learn: Excel → Tally → SQL → SAP",
+"tk.tag":"🎯 Fun Challenges!","tk.title":"🌱 Start Your Journey!","tk.desc":"Complete these beginner missions! Click when done! 🏅","tk.btn":"Mark Complete!",
+"tk1.t":"🖥️ Find Your Computer Parts","tk1.d":"Look at your computer or phone. Find: screen (output), keyboard/touch (input), and speaker. Name them all!",
+"tk2.t":"🔢 Learn Binary!","tk2.d":"Use the Binary Converter above! Convert: 5, 10, 15, 42. Write them on paper. See the pattern?",
+"tk3.t":"🎮 Quiz Challenge: Score 7+!","tk3.d":"Go to the Quiz section and score 7 or more out of 10! Read explanations for wrong answers!",
+"tk4.t":"🌐 Explore the Internet Safely","tk4.d":"Ask a parent/teacher and visit Khan Academy (khanacademy.org) — start 1 free computer lesson!",
+"tk5.t":"🎯 Pick Your Dream Career!","tk5.d":"Look at the Career section. Pick ONE career you like! Write WHY and what skills you will need!",
+"tk6.t":"🐍 Write Your First Code!","tk6.d":"Go to trinket.io (free!). Select Python and type: print('Hello World!') then press RUN!",
+"fut.tag":"🚀 Chapter 12 — The Future","fut.title":"🔮 What is Coming Next?","fut.desc":"YOU will live in this amazing future! Technology built TODAY will shape TOMORROW! 🌟",
+"f1.t":"Quantum Computers","f1.d":"Solve in seconds what would take today's computers millions of years!",
+"f2.t":"AR / VR Worlds","f2.d":"Study inside virtual classrooms! Touch digital objects! Play ultra-real games!",
+"f3.t":"Brain-Computer Interface","f3.d":"Control computers with your THOUGHTS! Neuralink is already testing this!",
+"f4.t":"AGI — Human-Level AI","f4.d":"AI that thinks, learns & solves ANY problem like a human! Could happen in your lifetime!",
+"f5.t":"Green Computing","f5.d":"Future computers run on 100% renewable energy! Computing without harming Earth!",
+"f6.t":"AI Assistants Everywhere","f6.d":"Personalized AI tutor for every student! AI doctors! Your own AI best friend!",
+"fut.ffh":"YOU are the Future!","fut.ffb":"The apps, AI, and computers of tomorrow will be built by kids learning today — by YOU! Start coding, keep learning, and you could invent the next big thing! 🚀",
+"ft.title":"You are Amazing! Keep Learning!","ft.desc":"Every expert was once a beginner. Every big company started with one curious person — just like you right now!","ft.top":"⬆️ Back to Top",
+"modal.close":"Cool! Got it! 👍"
+},
+bn:{
+"nav.intro":"কম্পিউটার","nav.history":"ইতিহাস","nav.gen":"প্রজন্ম","nav.hw":"হার্ডওয়্যার","nav.sw":"সফটওয়্যার","nav.how":"কীভাবে কাজ করে","nav.net":"নেটওয়ার্কিং","nav.internet":"ইন্টারনেট","nav.quiz":"কুইজ","nav.careers":"ক্যারিয়ার","nav.future":"ভবিষ্যৎ",
+"hero.title":"কম্পিউটার জগৎ!","hero.sub":"🚀 তোমার কম্পিউটার অ্যাডভেঞ্চার এখানেই শুরু!","hero.desc":"ছোট বাচ্চা থেকে বড় বিশেষজ্ঞ — সবচেয়ে মজার উপায়ে কম্পিউটার শিখুন! গেম, কুইজ, মজার তথ্য ও ক্যারিয়ার গাইড! 🎉","hero.b1":"🎯 শুরুর জন্য সহজ","hero.b2":"🎮 ইন্টারেক্টিভ","hero.b3":"🌏 English + বাংলা","hero.b4":"🏆 মজার কুইজ","hero.scroll":"👇 নিচে স্ক্রল করো! 👇",
+"s1.tag":"📖 অধ্যায় ১","s1.title":"💻 কম্পিউটার কী?","s1.desc":"কম্পিউটার হলো সুপার স্মার্ট রোবট মস্তিষ্কের মতো! তুমি তাকে তথ্য দাও, সে খুব দ্রুত ভাবে এবং উত্তর দেয়! 🧠⚡",
+"s1.ipo1l":"ইনপুট","s1.ipo1d":"কীবোর্ড, মাউস, মাইক...","s1.ipo2l":"প্রক্রিয়া","s1.ipo2d":"CPU অতি দ্রুত ভাবে!","s1.ipo3l":"আউটপুট","s1.ipo3d":"স্ক্রিন, প্রিন্টার, স্পিকার...","s1.ipo4l":"স্টোরেজ","s1.ipo4d":"HDD, SSD, ক্লাউড...","s1.f1h":"ইনপুট ডিভাইস","s1.f1b":"কীবোর্ড, মাউস, মাইক্রোফোন, ক্যামেরা ও টাচস্ক্রিন সবই ইনপুট ডিভাইস — এগুলো কম্পিউটারে তথ্য পাঠায়!","s1.f2h":"প্রক্রিয়া (CPU)","s1.f2b":"CPU প্রতি সেকেন্ডে বিলিয়ন হিসাব করে। এটি মানুষের তৈরি সবচেয়ে দ্রুত জিনিস!","s1.f3h":"আউটপুট ডিভাইস","s1.f3b":"মনিটর, স্পিকার, প্রিন্টার ফলাফল তোমার কাছে পাঠায়। আউটপুট ছাড়া কম্পিউটার কী করছে দেখতেই পেতে না!","s1.f4h":"স্টোরেজ","s1.f4b":"HDD/SSD স্থায়ীভাবে ফাইল রাখে। RAM কাজের সময় সাময়িকভাবে রাখে। দুটোই মেমরি কিন্তু একদম আলাদা!",
+"s1.ff1h":"🌟 আশ্চর্য তথ্য!","s1.ff1b":"তোমার স্মার্টফোন ১৯৬৯ সালে NASA-র চাঁদে পাঠানো সব কম্পিউটারের চেয়ে বেশি শক্তিশালী! তোমার ফোন পকেটে, কিন্তু সেই কম্পিউটারগুলো পুরো বিল্ডিং ভরে থাকত! 🌙",
+"s1.ff2h":"💡 কেন কম্পিউটার ব্যবহার করি?","s1.ff2b":"⚡ অতি দ্রুত • 🎯 কখনো ভুল করে না • 📦 লক্ষ লক্ষ ফাইল রাখে • 🌍 পুরো দুনিয়া সংযুক্ত করে • 🎨 দারুণ কিছু তৈরি করতে সাহায্য করে • 🤖 একঘেয়ে কাজ নিজেই করে!",
+"s2.tag":"📜 অধ্যায় ২ — ইতিহাস","s2.title":"🚀 কম্পিউটারের অবিশ্বাস্য যাত্রা!","s2.desc":"ঘর ভরা মেশিন থেকে পকেটের AI পর্যন্ত — কী দারুণ যাত্রা! 🎢",
+"h1.t":"🔧 প্রথম কম্পিউটার মেশিন","h1.d":"চার্লস ব্যাবেজ একটি বিশাল যান্ত্রিক ক্যালকুলেটর ডিজাইন করেন। গিয়ার ও চাকার তৈরি — বিদ্যুৎ ছিল না!",
+"h2.t":"👩 বিশ্বের প্রথম প্রোগ্রামার!","h2.d":"অ্যাডা লাভলেস ১৮৪৩ সালে প্রথম অ্যালগরিদম লিখেছিলেন — তাঁর সময়ের ১৮০ বছর আগের প্রতিভা!",
+"h3.t":"🏢 ENIAC — প্রথম ইলেকট্রনিক কম্পিউটার","h3.d":"ওজন ৩০ টন! পুরো একটি ঘর ভরে থাকত! ১৮,০০০ ভ্যাকুয়াম টিউব! তোমার ফোন দশ লক্ষ গুণ শক্তিশালী!",
+"h4.t":"💡 Intel 4004 — প্রথম মাইক্রোপ্রসেসর","h4.d":"পুরো CPU একটি ছোট চিপে! কম্পিউটার এখন একটি ডেস্কে ফিট করতে পারে!",
+"h5.t":"🖥️ IBM PC — সবার জন্য কম্পিউটার","h5.d":"IBM প্রথম পার্সোনাল কম্পিউটার লঞ্চ করল। Microsoft Windows জন্ম নিল!",
+"h6.t":"🌐 ওয়ার্ল্ড ওয়াইড ওয়েব","h6.d":"টিম বার্নার্স-লি ওয়েব তৈরি করলেন! YouTube, Google, Facebook এ থেকেই জন্ম নিল!",
+"h7.t":"📱 iPhone — পকেটে কম্পিউটার","h7.d":"স্টিভ জবস iPhone লঞ্চ করলেন — টাচ স্ক্রিন + ইন্টারনেট + ফোন একসাথে!",
+"h8.t":"🤖 AI বিপ্লব","h8.d":"ChatGPT, AI আর্ট, সেলফ-ড্রাইভিং গাড়ি! কম্পিউটার এখন ভাষা বোঝে! আমরা ভবিষ্যতে বাস করছি!",
+"s3.tag":"⚡ অধ্যায় ৩ — প্রজন্ম","s3.title":"কম্পিউটারের ৫টি দারুণ প্রজন্ম!","s3.desc":"👉 পাশে স্ক্রল করো সব ৫টি প্রজন্ম দেখতে!",
+"g1.t":"ভ্যাকুয়াম টিউব","g1.d":"🏢 বিল্ডিং আকৃতির! 🔥 অত্যন্ত গরম! 💰 কোটি কোটি দাম!",
+"g2.t":"ট্রানজিস্টর","g2.d":"📦 আগের চেয়ে ছোট! কম তাপ! দ্রুত! বড় কোম্পানি ব্যবহার শুরু করল!",
+"g3.t":"ইন্টিগ্রেটেড সার্কিট","g3.d":"💎 একটি চিপে অনেক ট্রানজিস্টর! প্রোগ্রামিং ভাষা জন্ম নিল!",
+"g4.t":"মাইক্রোপ্রসেসর","g4.d":"🏠 পার্সোনাল কম্পিউটার! Windows! ইন্টারনেট! কোটি মানুষ কম্পিউটার পেল!",
+"g5.t":"AI ও স্মার্ট কম্পিউটার","g5.d":"🧠 AI, মেশিন লার্নিং, ভয়েস অ্যাসিস্ট্যান্ট! আমরা এখানেই আছি!",
+"s4.tag":"🔧 অধ্যায় ৪ — হার্ডওয়্যার","s4.title":"🔩 কম্পিউটারের শরীরের অংশগুলো!","s4.desc":"হার্ডওয়্যার = যা তুমি ছুঁতে পারো! প্রতিটি কার্ডে ক্লিক করো মজার তথ্যের জন্য! 👆",
+"hw1.t":"CPU (সিপিইউ)","hw1.d":"মস্তিষ্ক! সব চিন্তা ও হিসাব করে। Intel ও AMD সেরা নির্মাতা!",
+"hw2.t":"GPU (জিপিইউ)","hw2.d":"সুন্দর ছবি তৈরি করে ও গেম চালায়! AI-ও চালায়! NVIDIA ও AMD বানায়!",
+"hw3.t":"RAM","hw3.d":"স্বল্পমেয়াদী স্মৃতি! খোলা অ্যাপ ধরে রাখে। বেশি RAM = একসাথে বেশি অ্যাপ!",
+"hw4.t":"SSD / HDD","hw4.d":"দীর্ঘমেয়াদী স্টোরেজ! বিদ্যুৎ ছাড়াও ফাইল রাখে। SSD (দ্রুত) বনাম HDD (বড়)।",
+"hw5.t":"কীবোর্ড","hw5.d":"টাইপিংয়ের প্রধান ইনপুট ডিভাইস! QWERTY লেআউট বিশ্বজুড়ে। মেকানিক্যাল, ওয়্যারলেস!",
+"hw6.t":"মাউস","hw6.d":"স্ক্রিনে পয়েন্ট ও ক্লিক করো! অপটিক্যাল লেজার নড়াচড়া ধরে। গেমিং মাউস অতি নির্ভুল!",
+"hw7.t":"মনিটর","hw7.d":"সব কিছু দৃশ্যমান করে! HD, 4K, OLED স্ক্রিন। রিফ্রেশ রেট মসৃণতা নির্ধারণ করে!",
+"hw8.t":"প্রিন্টার","hw8.d":"ডিজিটাল → ফিজিক্যাল! ইঙ্কজেট ফটোর জন্য, লেজার ডকুমেন্টের জন্য, 3D বস্তুর জন্য!",
+"hw9.t":"PSU","hw9.d":"পাওয়ার সাপ্লাই ইউনিট — দেওয়ালের বিদ্যুৎ কম্পিউটার পাওয়ারে রূপান্তর করে!",
+"s5.tag":"💾 অধ্যায় ৫ — সফটওয়্যার","s5.title":"🎭 অদৃশ্য যাদু!","s5.desc":"সফটওয়্যার হলো যা তুমি ছুঁতে পারো না কিন্তু সব কিছু কাজ করায়! সঙ্গীতের মতো — ধরতে পারো না, কিন্তু শুনতে পাও! 🎵",
+"sw.sys":"সিস্টেম","sw.app":"অ্যাপস","sw.prog":"প্রোগ্রামিং","sw.util":"ইউটিলিটি",
+"sw.sys.h":"🏗️ সিস্টেম সফটওয়্যার","sw.sys.p":"সিস্টেম সফটওয়্যার একটি বিল্ডিংয়ের ভিত্তির মতো — এটি ছাড়া কিছুই কাজ করে না! সমস্ত হার্ডওয়্যার পরিচালনা করে। সবচেয়ে গুরুত্বপূর্ণ হলো অপারেটিং সিস্টেম (OS)!","sw.sys.c1":"💿 ডিভাইস ড্রাইভার","sw.sys.c2":"⚙️ BIOS/UEFI",
+"sw.app.h":"📱 অ্যাপ্লিকেশন সফটওয়্যার","sw.app.p":"অ্যাপ হলো প্রোগ্রাম যা তুমি প্রতিদিন ব্যবহার করো! গেম থেকে পড়াশোনা, সঙ্গীত থেকে ভিডিও কল — সব অ্যাপ্লিকেশন!","sw.app.c1":"গেমস",
+"sw.prog.h":"👨‍💻 প্রোগ্রামিং টুলস","sw.prog.p":"যাদুকরী টুল যা প্রোগ্রামাররা অন্য সফটওয়্যার তৈরি করতে ব্যবহার করেন!","sw.prog.c1":"🔨 কম্পাইলার","sw.prog.c2":"🐛 ডিবাগার",
+"sw.util.h":"🔧 ইউটিলিটি সফটওয়্যার","sw.util.p":"ইউটিলিটি সফটওয়্যার তোমার কম্পিউটারের যত্ন নেয় — পরিষ্কার করে, ঠিক করে, রক্ষা করে!","sw.util.c1":"💾 ব্যাকআপ টুলস","sw.util.c2":"🧹 ডিস্ক ক্লিনার","sw.util.c3":"📊 টাস্ক ম্যানেজার",
+"os.tag":"🖥️ অধ্যায় ৬ — OS","os.title":"🎪 সব সফটওয়্যারের বস!","os.desc":"OS হলো কম্পিউটারের রাজা! সব কিছু নিয়ন্ত্রণ করে। প্রতিটি বৃত্তে ক্লিক করো মজার তথ্যের জন্য!",
+"os1.t":"Windows","os1.d":"Windows ডেস্কটপ বাজারের ৭৫% দখল করে। ১ বিলিয়নেরও বেশি মানুষ প্রতিদিন ব্যবহার করে!",
+"os2.t":"macOS","os2.d":"macOS শুধু Apple কম্পিউটারে চলে। ডিজাইনাররা এর পরিষ্কার ইন্টারফেস পছন্দ করেন!",
+"os3.t":"Linux","os3.d":"Linux বিনামূল্যে এবং বিশ্বের শীর্ষ ৫০০ সুপারকম্পিউটারের ৯৬% চালায়!",
+"os4.t":"Android","os4.d":"Android সব স্মার্টফোনের ৭২%-এ চলে! বিশ্বে ৩ বিলিয়নেরও বেশি Android ফোন আছে!",
+"os5.t":"iOS","os5.d":"iOS এত নিরাপদ যে FBI একটি লক করা iPhone হ্যাক করতে ১ মিলিয়ন ডলার দিতে হয়েছিল!",
+"os6.t":"Chrome OS","os6.d":"Chrome OS প্রায় সব কিছু ক্লাউডে রাখে! স্কুলের Chromebook-এর জন্য নিখুঁত!",
+"os.ffh":"OS আসলে কী করে?","os.ffb":"✅ প্রোগ্রামের মধ্যে CPU সময় ভাগ করে • ✅ প্রতিটি অ্যাপে RAM বরাদ্দ করে • ✅ ডিস্কের ফাইল নিয়ন্ত্রণ করে • ✅ কীবোর্ড/মাউস/স্ক্রিন পরিচালনা করে • ✅ তোমার অ্যাকাউন্ট নিরাপদ রাখে",
+"hw.tag":"⚙️ অধ্যায় ৭ — কম্পিউটার কীভাবে কাজ করে","hw.title":"🔢 গোপন ভাষা: ০ আর ১!","hw.desc":"কম্পিউটার শুধু বোঝে: বিদ্যুৎ চালু (১) বা বন্ধ (০)! তোমার ছবি, গেম, সঙ্গীত সব — বিলিয়ন ১ আর ০! নিচে চেষ্টা করো! 👇",
+"bin.h":"🔢 বাইনারি কনভার্টার!","bin.hint":"☝️ সেটি বাইনারিতে Hello বলে! নিচে একটি সংখ্যা লিখো (০–২৫৫)!","bin.ph":"একটি সংখ্যা লিখো (০–২৫৫)","bin.btn":"✨ বাইনারিতে রূপান্তর!",
+"d1.d":"সবচেয়ে ছোট একক। শুধু ০ বা ১।","d2.d":"৮ বিট = ১ বাইট = ১টি অক্ষর যেমন A","d3.d":"১,০২৪ বাইট। একটি ছোট টেক্সট মেসেজ।","d4.d":"১,০২৪ KB। একটি MP3 গান (~৪MB)।","d5.d":"১,০২৪ MB। একটি HD সিনেমা বা ২৫০ গান!","d6.d":"১,০২৪ GB। একটি আধুনিক হার্ড ড্রাইভ!",
+"s7.tag":"🌐 অধ্যায় ৮ — নেটওয়ার্কিং","s7.title":"🕸️ কম্পিউটার পরস্পর কথা বলছে!","s7.desc":"নেটওয়ার্ক হলো যখন কম্পিউটার সংযুক্ত থেকে জিনিস শেয়ার করে! বন্ধুদের খেলনা শেয়ারের মতো! 📡",
+"n1.t":"পার্সোনাল (PAN)","n1.d":"🦷 ব্লুটুথ রেঞ্জ! ইয়ারবাড থেকে ফোন। প্রায় ১০ মিটার।",
+"n2.t":"লোকাল (LAN)","n2.d":"🏠 তোমার বাড়ির WiFi! স্কুলের কম্পিউটার ল্যাব! এক ভবনের সব ডিভাইস সংযুক্ত!",
+"n3.t":"শহরব্যাপী (MAN)","n3.d":"🌆 পুরো শহর কভার করে! কেবল টিভি নেটওয়ার্ক, শহরের WiFi।",
+"n4.t":"বিশ্বব্যাপী (WAN)","n4.d":"🌍 ইন্টারনেট! সমুদ্রের নিচে কেবল তোমার YouTube ভিডিও বহন করে!",
+"n.ffh":"🤯 অবাক করা ইন্টারনেট তথ্য!","n.ffb":"আন্তর্জাতিক ইন্টারনেট ট্রাফিকের ৯৫% সমুদ্রের তলদেশের কেবলের মাধ্যমে যায়! এই কেবলগুলো ১.৩ মিলিয়ন কিমি — পৃথিবীকে ৩২ বার মোড়ানোর মতো! 🌊",
+"s8.tag":"📡 অধ্যায় ৯ — ইন্টারনেট","s8.title":"🌏 হাতের মুঠোয় দুনিয়া!","s8.desc":"ইন্টারনেট কোটি কোটি মানুষকে সংযুক্ত করে! একটি YouTube ভিডিওর যাত্রা অনুসরণ করি! 🎬",
+"st1.t":"🖱️ তুমি YouTube-এ Play ক্লিক করো","st1.d":"তোমার অনুরোধ তোমার ডিভাইস থেকে বাড়ির WiFi রাউটারে যায় — ইন্টারনেটের গেটওয়ে!",
+"st2.t":"🏢 অনুরোধ ISP-তে পৌঁছায়","st2.d":"তোমার ইন্টারনেট সার্ভিস প্রোভাইডার অনুরোধ পায় এবং বড় ইন্টারনেট মহাসড়কে পাঠায়!",
+"st3.t":"🌊 সমুদ্রের তলার কেবলে ভ্রমণ","st3.d":"তোমার অনুরোধ আলোর গতিতে ফাইবার অপটিক কেবলের মাধ্যমে মিলিসেকেন্ডে পুরো সমুদ্র পার করে!",
+"st4.t":"☁️ Google-এর ডেটা সেন্টারে পৌঁছায়","st4.d":"Google-এর বিশাল ভবনে লক্ষ লক্ষ সার্ভার আছে। তোমার অনুরোধ সেই ভিডিও রাখা সার্ভার খুঁজে পায়!",
+"st5.t":"📺 ভিডিও তোমার কাছে ফিরে আসে!","st5.d":"ভিডিওটি হাজার হাজার ছোট প্যাকেটে ভাগ হয়ে ফিরে আসে — ১ সেকেন্দের কম সময়ে! যাদু! ✨",
+"qz.tag":"🧪 অধ্যায় ১০ — কুইজ","qz.title":"🏆 তুমি কি কম্পিউটার হিরো?","qz.desc":"তুমি যা শিখেছো পরীক্ষা করো! ১০টি প্রশ্ন অপেক্ষা করছে! ৮+ পয়েন্ট = 🌟 কম্পিউটার প্রতিভা!",
+"qz.next":"পরের প্রশ্ন →","qz.retry":"🔄 আবার চেষ্টা করো!",
+"qz.score":"স্কোর: $$S / ১০","qz.qnum":"প্রশ্ন $$N এর মধ্যে ১০",
+"qz.r.great.t":"কম্পিউটার প্রতিভা! 🎉","qz.r.great.m":"তুমি $$S / ১০ পেয়েছো! তুমি একজন কম্পিউটার তারকা! 🌟",
+"qz.r.good.t":"দারুণ! 🌟","qz.r.good.m":"তুমি $$S / ১০ পেয়েছো! শিখতে থাকো, প্রতিভাবান হবে!",
+"qz.r.ok.t":"ভালো চেষ্টা! 😊","qz.r.ok.m":"তুমি $$S / ১০ পেয়েছো! উপরের বিভাগগুলো আবার পড়ো!",
+"qz.r.try.t":"চেষ্টা চালিয়ে যাও! 💪","qz.r.try.m":"তুমি $$S / ১০ পেয়েছো! পাঠগুলো আবার পড়ো — তুমি পারবে!",
+"cr.tag":"🗺️ অধ্যায় ১১ — ক্যারিয়ার","cr.title":"🚀 তুমি কী হবে?","cr.desc":"কম্পিউটার শত শত দারুণ ক্যারিয়ারের দরজা খুলে দেয়! প্রতিটি কার্ডে ক্লিক করো শেখার পথ জানতে! 💪",
+"cr1.t":"সফটওয়্যার ডেভেলপার","cr1.s":"💰 অনেক বেশি বেতন","cr1.d":"অ্যাপ, ওয়েবসাইট ও সিস্টেম তৈরি করে। শেখো: Python → JavaScript → React!",
+"cr2.t":"ডেটা অ্যানালিস্ট","cr2.s":"💰 উচ্চ বেতন","cr2.d":"ডেটায় লুকানো তথ্য খোঁজে। শেখো: Excel → SQL → Python!",
+"cr3.t":"UI/UX ডিজাইনার","cr3.s":"💰 ভালো বেতন","cr3.d":"অ্যাপ সুন্দর ও সহজ করে! শেখো: Figma → রঙ তত্ত্ব → ব্যবহারকারী গবেষণা",
+"cr4.t":"সাইবার নিরাপত্তা বিশেষজ্ঞ","cr4.s":"💰 অনেক বেশি বেতন","cr4.d":"সিস্টেমকে হ্যাকারদের থেকে রক্ষা করে! শেখো: Linux → নেটওয়ার্কিং → এথিক্যাল হ্যাকিং",
+"cr5.t":"ক্লাউড ইঞ্জিনিয়ার","cr5.s":"💰 অনেক বেশি বেতন","cr5.d":"ইন্টারনেট সার্ভার পরিচালনা! শেখো: AWS/Azure → Linux → Docker",
+"cr6.t":"AI / ML ইঞ্জিনিয়ার","cr6.s":"💰 সর্বোচ্চ বেতন!","cr6.d":"চিন্তাশীল মেশিন তৈরি করে! শেখো: Python → গণিত → TensorFlow",
+"cr7.t":"CS শিক্ষক","cr7.s":"💰 স্থিতিশীল আয়","cr7.d":"পরবর্তী প্রজন্মকে শেখায়! শেখো: মূল CS → B.Ed → যোগাযোগ দক্ষতা",
+"cr8.t":"ডিজিটাল অ্যাকাউন্ট্যান্ট","cr8.s":"💰 ভালো বেতন","cr8.d":"অর্থ ও প্রযুক্তির মিলন! শেখো: Excel → Tally → SQL → SAP",
+"tk.tag":"🎯 মজার চ্যালেঞ্জ!","tk.title":"🌱 তোমার যাত্রা শুরু করো!","tk.desc":"এই শুরুর মিশনগুলো শেষ করো! সম্পন্ন হলে বোতামে ক্লিক করো! 🏅","tk.btn":"সম্পন্ন করেছি!",
+"tk1.t":"🖥️ তোমার কম্পিউটার পার্ট খোঁজো","tk1.d":"তোমার কাছে থাকা কম্পিউটার বা ফোন দেখো। খুঁজে পাও: স্ক্রিন, কীবোর্ড/টাচস্ক্রিন, এবং স্পিকার। সব নাম বলো!",
+"tk2.t":"🔢 বাইনারিতে গণনা শেখো!","tk2.d":"উপরে Binary Converter ব্যবহার করো! রূপান্তর করো: ৫, ১০, ১৫, ৪২। কাগজে লিখে রাখো। প্যাটার্ন দেখছো?",
+"tk3.t":"🎮 কুইজ চ্যালেঞ্জ: ৭+ স্কোর করো!","tk3.d":"কুইজ বিভাগে যাও এবং ১০ এর মধ্যে ৭ বা তার বেশি স্কোর করার চেষ্টা করো!",
+"tk4.t":"🌐 নিরাপদে ইন্টারনেট এক্সপ্লোর করো","tk4.d":"মা-বাবা/শিক্ষকের অনুমতি নিয়ে Khan Academy (khanacademy.org) ভিজিট করো!",
+"tk5.t":"🎯 তোমার স্বপ্নের ক্যারিয়ার বেছে নাও!","tk5.d":"ক্যারিয়ার বিভাগ দেখো। একটি ক্যারিয়ার বেছে নাও! কেন পছন্দ করলে লিখে রাখো।",
+"tk6.t":"🐍 তোমার প্রথম কোড লেখো!","tk6.d":"trinket.io তে যাও (বিনামূল্যে!)। Python নির্বাচন করো এবং লিখো: print('হ্যালো বিশ্ব!') তারপর RUN চাপো!",
+"fut.tag":"🚀 অধ্যায় ১২ — ভবিষ্যৎ","fut.title":"🔮 এরপর কী আসছে?","fut.desc":"তুমি এই আশ্চর্য ভবিষ্যতে বাস করবে! আজকে তৈরি প্রযুক্তি আগামীকাল গড়বে! 🌟",
+"f1.t":"কোয়ান্টাম কম্পিউটার","f1.d":"সমস্যা সমাধান করবে সেকেন্ডে যা আজকের কম্পিউটারের লক্ষ বছর লাগবে!",
+"f2.t":"AR / VR জগৎ","f2.d":"ভার্চুয়াল ক্লাসরুমে পড়বে! ডিজিটাল বস্তু ছুঁবে! সম্পূর্ণ বাস্তব গেম খেলবে!",
+"f3.t":"মস্তিষ্ক-কম্পিউটার সংযোগ","f3.d":"শুধু চিন্তা দিয়ে কম্পিউটার নিয়ন্ত্রণ করবে! Neuralink ইতিমধ্যে পরীক্ষা করছে!",
+"f4.t":"AGI — মানব স্তরের AI","f4.d":"AI যা মানুষের মতো চিন্তা ও শেখা করতে পারে! তোমার জীবদ্দশায় হতে পারে!",
+"f5.t":"সবুজ কম্পিউটিং","f5.d":"ভবিষ্যতের কম্পিউটার ১০০% নবায়নযোগ্য শক্তিতে চলবে!",
+"f6.t":"সর্বত্র AI সহকারী","f6.d":"প্রতিটি ছাত্রের জন্য ব্যক্তিগত AI শিক্ষক! AI ডাক্তার! তোমার নিজের AI বন্ধু!",
+"fut.ffh":"ভবিষ্যৎ তুমিই!","fut.ffb":"আগামীকালের অ্যাপ, AI, এবং কম্পিউটার আজকের শিক্ষার্থীরাই তৈরি করবে — তুমি! কোড শেখা শুরু করো, পরবর্তী বড় আবিষ্কার তুমিই করতে পারো! 🚀",
+"ft.title":"তুমি দারুণ! শিখতে থাকো!","ft.desc":"প্রতিটি বিশেষজ্ঞ একসময় শুরুর অবস্থায় ছিল। প্রতিটি বড় কোম্পানি শুরু হয়েছিল একজন কৌতূহলী মানুষ দিয়ে — ঠিক যেমন তুমি এখন!","ft.top":"⬆️ উপরে যাও",
+"modal.close":"দারুণ! বুঝেছি! 👍"
+}};
+
+const Qs=[
+{e:'💻',en:'What does CPU stand for?',bn:'CPU মানে কী?',opts:[{en:'Central Processing Unit',bn:'সেন্ট্রাল প্রসেসিং ইউনিট',ok:1},{en:'Computer Primary Utility',bn:'কম্পিউটার প্রাইমারি ইউটিলিটি'},{en:'Core Power Unit',bn:'কোর পাওয়ার ইউনিট'},{en:'Control Processing Unit',bn:'কন্ট্রোল প্রসেসিং ইউনিট'}],fb:{en:'✅ CPU = Central Processing Unit — the BRAIN of the computer! 🧠',bn:'✅ CPU = সেন্ট্রাল প্রসেসিং ইউনিট — কম্পিউটারের মস্তিষ্ক! 🧠'},no:{en:'❌ CPU = Central Processing Unit! The brain!',bn:'❌ CPU = সেন্ট্রাল প্রসেসিং ইউনিট! মস্তিষ্ক!'}},
+{e:'⚡',en:'Which generation used Vacuum Tubes?',bn:'কোন প্রজন্ম ভ্যাকুয়াম টিউব ব্যবহার করত?',opts:[{en:'2nd Generation',bn:'দ্বিতীয় প্রজন্ম'},{en:'1st Generation',bn:'প্রথম প্রজন্ম',ok:1},{en:'3rd Generation',bn:'তৃতীয় প্রজন্ম'},{en:'4th Generation',bn:'চতুর্থ প্রজন্ম'}],fb:{en:'✅ 1st Generation (1940-56) used vacuum tubes — room-filling machines!',bn:'✅ প্রথম প্রজন্ম (১৯৪০-৫৬) ভ্যাকুয়াম টিউব ব্যবহার করত!'},no:{en:'❌ 1st Generation used Vacuum Tubes! ENIAC weighed 30 tons!',bn:'❌ প্রথম প্রজন্ম ভ্যাকুয়াম টিউব ব্যবহার করত! ENIAC ৩০ টন ছিল!'}},
+{e:'💾',en:'RAM stands for...?',bn:'RAM মানে কী?',opts:[{en:'Read All Memory',bn:'রিড অল মেমরি'},{en:'Random Access Memory',bn:'র‍্যান্ডম অ্যাক্সেস মেমরি',ok:1},{en:'Real Active Module',bn:'রিয়েল অ্যাক্টিভ মডিউল'},{en:'Rapid Application Memory',bn:'র‍্যাপিড অ্যাপ্লিকেশন মেমরি'}],fb:{en:'✅ RAM = Random Access Memory! Short-term memory for running programs!',bn:'✅ RAM = র‍্যান্ডম অ্যাক্সেস মেমরি! চলমান প্রোগ্রামের স্বল্পমেয়াদী স্মৃতি!'},no:{en:'❌ RAM = Random Access Memory!',bn:'❌ RAM = র‍্যান্ডম অ্যাক্সেস মেমরি!'}},
+{e:'🌐',en:'Who invented the World Wide Web?',bn:'ওয়ার্ল্ড ওয়াইড ওয়েব কে আবিষ্কার করেন?',opts:[{en:'Bill Gates',bn:'বিল গেটস'},{en:'Tim Berners-Lee',bn:'টিম বার্নার্স-লি',ok:1},{en:'Steve Jobs',bn:'স্টিভ জবস'},{en:'Mark Zuckerberg',bn:'মার্ক জুকারবার্গ'}],fb:{en:'✅ Tim Berners-Lee invented the World Wide Web in 1991!',bn:'✅ টিম বার্নার্স-লি ১৯৯১ সালে ওয়ার্ল্ড ওয়াইড ওয়েব আবিষ্কার করেন!'},no:{en:'❌ Tim Berners-Lee invented the WWW in 1991!',bn:'❌ টিম বার্নার্স-লি ১৯৯১ সালে WWW আবিষ্কার করেন!'}},
+{e:'🔢',en:'What is the SMALLEST unit of data?',bn:'ডেটার ক্ষুদ্রতম একক কী?',opts:[{en:'Byte',bn:'বাইট'},{en:'Bit',bn:'বিট',ok:1},{en:'Kilobyte',bn:'কিলোবাইট'},{en:'Megabyte',bn:'মেগাবাইট'}],fb:{en:'✅ BIT is the smallest! 8 bits = 1 Byte!',bn:'✅ BIT হলো ক্ষুদ্রতম! ৮ বিট = ১ বাইট!'},no:{en:'❌ BIT is the smallest unit! 8 bits = 1 Byte!',bn:'❌ BIT সবচেয়ে ছোট একক! ৮ বিট = ১ বাইট!'}},
+{e:'🖥️',en:'Which OS powers most smartphones?',bn:'বেশিরভাগ স্মার্টফোন কোন OS ব্যবহার করে?',opts:[{en:'iOS',bn:'iOS'},{en:'Windows',bn:'Windows'},{en:'Android',bn:'Android',ok:1},{en:'Linux',bn:'Linux'}],fb:{en:'✅ Android runs on 72% of all smartphones — over 3 BILLION phones!',bn:'✅ Android ৭২% স্মার্টফোনে চলে — ৩ বিলিয়নেরও বেশি ফোন!'},no:{en:'❌ Android! 72% of smartphones worldwide!',bn:'❌ Android! ৭২% স্মার্টফোনে!'}},
+{e:'⚙️',en:'What does an Operating System (OS) do?',bn:'অপারেটিং সিস্টেম (OS) কী করে?',opts:[{en:'Only plays music',bn:'শুধু গান বাজায়'},{en:'Manages hardware & runs all software',bn:'হার্ডওয়্যার পরিচালনা করে ও সব সফটওয়্যার চালায়',ok:1},{en:'Only connects to internet',bn:'শুধু ইন্টারনেটে সংযুক্ত করে'},{en:'Only stores files',bn:'শুধু ফাইল সংরক্ষণ করে'}],fb:{en:'✅ The OS manages ALL hardware and runs all apps! It is the computer boss!',bn:'✅ OS সব হার্ডওয়্যার পরিচালনা করে ও সব অ্যাপ চালায়!'},no:{en:'❌ The OS manages hardware AND runs all software!',bn:'❌ OS হার্ডওয়্যার পরিচালনা করে এবং সব সফটওয়্যার চালায়!'}},
+{e:'👩',en:'Who was the world\'s FIRST programmer?',bn:'বিশ্বের প্রথম প্রোগ্রামার কে ছিলেন?',opts:[{en:'Bill Gates',bn:'বিল গেটস'},{en:'Ada Lovelace',bn:'অ্যাডা লাভলেস',ok:1},{en:'Steve Jobs',bn:'স্টিভ জবস'},{en:'Alan Turing',bn:'অ্যালান টুরিং'}],fb:{en:'✅ Ada Lovelace wrote the first algorithm in 1843 — 180 years ahead! 🌟',bn:'✅ অ্যাডা লাভলেস ১৮৪৩ সালে প্রথম অ্যালগরিদম লিখেছিলেন! 🌟'},no:{en:'❌ Ada Lovelace! First algorithm in 1843!',bn:'❌ অ্যাডা লাভলেস! ১৮৪৩ সালে প্রথম অ্যালগরিদম!'}},
+{e:'🌐',en:'What does a Router do?',bn:'রাউটার কী করে?',opts:[{en:'Prints documents',bn:'ডকুমেন্ট প্রিন্ট করে'},{en:'Connects networks & directs data',bn:'নেটওয়ার্ক সংযুক্ত করে ও ডেটা পরিচালনা করে',ok:1},{en:'Stores all files',bn:'সব ফাইল সংরক্ষণ করে'},{en:'Shows pictures',bn:'ছবি দেখায়'}],fb:{en:'✅ A Router connects different networks and directs data traffic!',bn:'✅ রাউটার বিভিন্ন নেটওয়ার্ক সংযুক্ত করে ও ডেটা পরিচালনা করে!'},no:{en:'❌ A Router connects networks and directs data!',bn:'❌ রাউটার নেটওয়ার্ক সংযুক্ত করে ও ডেটা পরিচালনা করে!'}},
+{e:'🚀',en:'What uses quantum physics for computing?',bn:'কোন প্রযুক্তি কোয়ান্টাম পদার্থবিজ্ঞান ব্যবহার করে?',opts:[{en:'Social Media',bn:'সোশ্যাল মিডিয়া'},{en:'Quantum Computing',bn:'কোয়ান্টাম কম্পিউটিং',ok:1},{en:'Regular WiFi',bn:'সাধারণ WiFi'},{en:'Bluetooth',bn:'ব্লুটুথ'}],fb:{en:'✅ Quantum Computing uses quantum physics — millions of times faster!',bn:'✅ কোয়ান্টাম কম্পিউটিং কোয়ান্টাম পদার্থবিজ্ঞান ব্যবহার করে!'},no:{en:'❌ Quantum Computing! It does impossible calculations!',bn:'❌ কোয়ান্টাম কম্পিউটিং! এটি অসম্ভব গণনা করে!'}}
+];
+
+// i18n
+let lang=localStorage.getItem('cv_lang')||'en';
+function t(k){return(T[lang][k]||T.en[k]||k)}
+function applyLang(){
+  document.documentElement.lang=lang==='bn'?'bn':'en';
+  document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
+  document.querySelectorAll('[data-pht]').forEach(el=>el.placeholder=t(el.dataset.pht));
+  document.getElementById('lEn').classList.toggle('on',lang==='en');
+  document.getElementById('lBn').classList.toggle('on',lang==='bn');
+  if(qi<Qs.length)renderQ();
+  updScore();
+}
+function setLang(l){lang=l;localStorage.setItem('cv_lang',l);applyLang()}
+
+// Drawer
+function toggleD(){
+  document.getElementById('hbg').classList.toggle('open');
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('ov').classList.toggle('on');
+}
+function closeD(){
+  document.getElementById('hbg').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('ov').classList.remove('on');
+}
+
+// Modal
+function popup(ico,hk,bk){
+  document.getElementById('mIco').textContent=ico;
+  document.getElementById('mHd').textContent=t(hk);
+  document.getElementById('mBd').textContent=t(bk);
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on')}
+
+// Tabs
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Binary
+function doBin(){
+  const v=parseInt(document.getElementById('binIn').value);
+  const r=document.getElementById('binRes');
+  if(isNaN(v)||v<0||v>255){r.textContent=lang==='bn'?'⚠️ ০–২৫৫ এর মধ্যে সংখ্যা দিন!':'⚠️ Enter a number between 0 and 255!';return}
+  const b=v.toString(2).padStart(8,'0');
+  document.getElementById('bdisp').textContent=b;
+  r.textContent=lang==='bn'?`${v} → ${b} (বাইনারিতে)! 🎉`:`${v} → ${b} in binary! 🎉`;
+  confetti();
+}
+
+// Quiz
+let qi=0,sc=0,ans=false;
+function updScore(){
+  const el=document.getElementById('qScore');
+  if(el)el.textContent=t('qz.score').replace('$$S',sc);
+}
+function renderQ(){
+  const q=Qs[qi];
+  document.getElementById('qNum').textContent=t('qz.qnum').replace('$$N',qi+1);
+  document.getElementById('qEmo').textContent=q.e;
+  document.getElementById('qTxt').textContent=lang==='bn'?q.bn:q.en;
+  document.getElementById('qNxt').style.display='none';
+  document.getElementById('qFb').className='qfb';
+  document.getElementById('qFb').textContent='';
+  ans=false;
+  const opts=document.getElementById('qOpts');
+  opts.innerHTML='';
+  [...q.opts].sort(()=>Math.random()-.5).forEach(o=>{
+    const b=document.createElement('button');
+    b.className='qopt';
+    b.textContent=lang==='bn'?o.bn:o.en;
+    b.onclick=()=>pick(b,o.ok,q);
+    opts.appendChild(b);
+  });
+  document.getElementById('qP').style.width=(qi/Qs.length*100)+'%';
+  updScore();
+}
+function pick(btn,ok,q){
+  if(ans)return;ans=true;
+  document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('qFb');
+  if(ok){btn.classList.add('ok');sc++;fb.className='qfb ok';fb.textContent=lang==='bn'?q.fb.bn:q.fb.en;confetti()}
+  else{
+    btn.classList.add('no');fb.className='qfb no';fb.textContent=lang==='bn'?q.no.bn:q.no.en;
+    document.querySelectorAll('.qopt').forEach(b=>{
+      const co=q.opts.find(o=>o.ok);if(b.textContent===(lang==='bn'?co.bn:co.en))b.classList.add('ok');
+    });
+  }
+  updScore();document.getElementById('qNxt').style.display='block';
+}
+function nextQ(){qi++;if(qi>=Qs.length)showRes();else renderQ()}
+function showRes(){
+  document.getElementById('qActive').style.display='none';
+  document.getElementById('qP').style.width='100%';
+  const res=document.getElementById('qRes');res.classList.add('on');confetti();
+  const tier=sc>=9?'great':sc>=7?'good':sc>=5?'ok':'try';
+  document.getElementById('rEmo').textContent=sc>=9?'🏆':sc>=7?'🌟':sc>=5?'😊':'💪';
+  document.getElementById('rTit').textContent=t('qz.r.'+tier+'.t');
+  document.getElementById('rMsg').textContent=t('qz.r.'+tier+'.m').replace('$$S',sc);
+}
+function restartQ(){qi=0;sc=0;ans=false;document.getElementById('qActive').style.display='block';document.getElementById('qRes').classList.remove('on');renderQ()}
+
+// Tasks
+function doneTask(btn){btn.classList.add('done');btn.disabled=true;confetti()}
+
+// Confetti
+function confetti(){
+  const cols=['#f43f5e','#f59e0b','#22c55e','#0ea5e9','#a855f7','#ec4899'];
+  for(let i=0;i<32;i++){
+    const c=document.createElement('div');c.className='cpiece';
+    c.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%cols.length]};animation-duration:${Math.random()*2+1}s;animation-delay:${Math.random()*.4}s;transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(c);setTimeout(()=>c.remove(),3200);
+  }
+}
+
+// Stars on click
+const SE=['⭐','💥','✨','🌟','💫','🎉'];
+document.addEventListener('click',e=>{
+  if(e.target.closest('.qopt,.mbox,button,a'))return;
+  const s=document.createElement('div');s.className='star';s.textContent=SE[Math.floor(Math.random()*SE.length)];
+  s.style.left=(e.clientX-12)+'px';s.style.top=(e.clientY-12)+'px';
+  document.body.appendChild(s);setTimeout(()=>s.remove(),650);
+});
+
+// BG dots
+const bgEl=document.getElementById('bg');
+const dc=['#667eea','#f43f5e','#22c55e','#f59e0b','#a855f7','#0ea5e9','#ec4899','#10b981'];
+for(let i=0;i<12;i++){
+  const d=document.createElement('div');d.className='dot';
+  const sz=Math.random()*110+40;
+  d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${dc[i%dc.length]};animation-duration:${Math.random()*18+14}s;animation-delay:${Math.random()*10}s`;
+  bgEl.appendChild(d);
+}
+
+// Scroll reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.07});
+document.querySelectorAll('.sec').forEach(s=>io.observe(s));
+
+// Init
+applyLang();renderQ();
+</script>
+</body>
+</html>

@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kids Computer Courses — ABCD Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --sun:        #FFD93D;
+      --sun-deep:   #F5B800;
+      --sun-pale:   #FFFBDE;
+      --coral:      #FF6B6B;
+      --coral-pale: #FFE8E8;
+      --sky:        #4ECDC4;
+      --sky-pale:   #E0FAF8;
+      --purple:     #A855F7;
+      --purple-pale:#F3E8FF;
+      --mint:       #6BCB77;
+      --mint-pale:  #E6F7E8;
+      --orange:     #FF9A3C;
+      --blue:       #4A90D9;
+      --white:      #FFFFFF;
+      --cream:      #FFFEF7;
+      --ink:        #1E2A4A;
+      --ink-soft:   #4A5180;
+      --muted:      #8B92B8;
+      --border:     rgba(30,42,74,0.1);
+      --r-lg:       24px;
+      --r-xl:       32px;
+      --ease:       cubic-bezier(0.34,1.56,0.64,1);
+      --ease-soft:  cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+      min-height: 100vh;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='6' fill='%23FFD93D' stroke='%23F5B800' stroke-width='2'/%3E%3C/svg%3E") 12 12, auto;
+    }
+
+    /* DOTTED BACKGROUND PATTERN */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(78,205,196,0.15) 1.5px, transparent 1.5px);
+      background-size: 30px 30px;
+    }
+
+    /* SCROLL PROGRESS */
+    #bar {
+      position: fixed; top: 0; left: 0; z-index: 600;
+      height: 5px; width: 0%;
+      background: linear-gradient(90deg, var(--coral), var(--sun), var(--sky));
+      border-radius: 0 3px 3px 0;
+      transition: width .12s linear;
+    }
+
+    /* ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,254,247,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 3px solid var(--sun);
+      padding: 0 48px;
+      height: 70px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--sun), var(--coral));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka One', cursive; font-size: .9rem;
+      color: white; letter-spacing: -.5px;
+      box-shadow: 0 4px 12px rgba(255,107,107,0.35);
+    }
+    .logo-name {
+      font-family: 'Baloo 2', cursive; font-weight: 800;
+      font-size: 1.1rem; color: var(--ink);
+    }
+    .logo-name span { color: var(--coral); }
+
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .78rem; color: var(--muted); font-weight: 600;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb i { font-size: .55rem; }
+    .breadcrumb .active { color: var(--coral); }
+
+    .nav-cta {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--coral); color: white;
+      padding: 10px 22px; border-radius: 100px;
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .85rem; text-decoration: none;
+      box-shadow: 0 4px 16px rgba(255,107,107,0.4);
+      transition: transform .25s var(--ease), box-shadow .25s;
+    }
+    .nav-cta:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,107,0.5); }
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    .hero {
+      position: relative; z-index: 1;
+      background: linear-gradient(160deg, #FFF9E0 0%, #E0FAF8 50%, #FFE8E8 100%);
+      padding: 70px 48px 80px;
+      overflow: hidden;
+      border-bottom: 4px dashed rgba(78,205,196,0.35);
+    }
+
+    /* BIG WOBBLY CIRCLES IN BG */
+    .hero-blob {
+      position: absolute; border-radius: 50%;
+      pointer-events: none;
+    }
+    .blob-1 { width: 400px; height: 400px; top: -120px; right: -80px; background: radial-gradient(circle, rgba(255,217,61,0.25), transparent 70%); animation: blobFloat 6s ease-in-out infinite; }
+    .blob-2 { width: 300px; height: 300px; bottom: -80px; left: -60px; background: radial-gradient(circle, rgba(78,205,196,0.2), transparent 70%); animation: blobFloat 8s ease-in-out infinite reverse; }
+    .blob-3 { width: 200px; height: 200px; top: 30%; right: 25%; background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%); animation: blobFloat 7s ease-in-out infinite 2s; }
+
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(10px, -15px) scale(1.03); }
+      66% { transform: translate(-8px, 8px) scale(0.97); }
+    }
+
+    /* FLOATING EMOJI */
+    .float-emoji {
+      position: absolute; font-size: 2.5rem;
+      animation: emojiFloat linear infinite;
+      pointer-events: none; user-select: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    }
+    @keyframes emojiFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-18px) rotate(5deg); }
+      50% { transform: translateY(-8px) rotate(-3deg); }
+      75% { transform: translateY(-22px) rotate(4deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    .em1 { top: 12%; right: 8%; animation-duration: 4s; font-size: 3rem; }
+    .em2 { top: 55%; right: 18%; animation-duration: 5.5s; animation-delay: -.8s; }
+    .em3 { top: 20%; right: 32%; animation-duration: 3.8s; animation-delay: -1.5s; font-size: 2rem; }
+    .em4 { top: 70%; right: 6%; animation-duration: 6s; animation-delay: -2s; font-size: 2rem; }
+    .em5 { top: 8%; right: 52%; animation-duration: 4.5s; animation-delay: -.5s; font-size: 1.8rem; }
+    .em6 { bottom: 15%; right: 38%; animation-duration: 5s; animation-delay: -3s; font-size: 2.2rem; }
+
+    /* STAR BURST decoration */
+    .star-burst {
+      position: absolute; pointer-events: none;
+      font-size: 1.2rem; color: var(--sun-deep);
+      animation: starSpin 8s linear infinite;
+    }
+    @keyframes starSpin { to { transform: rotate(360deg); } }
+    .sb1 { top: 15%; left: 5%; }
+    .sb2 { top: 60%; left: 12%; animation-direction: reverse; font-size: 1.6rem; }
+    .sb3 { bottom: 20%; right: 48%; font-size: .9rem; color: var(--coral); }
+
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: white; border: 2.5px solid var(--sun);
+      border-radius: 100px; padding: 8px 20px;
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .82rem; color: var(--ink);
+      margin-bottom: 24px;
+      box-shadow: 4px 4px 0 var(--sun-deep);
+    }
+    .hero-badge-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--mint); flex-shrink: 0;
+      box-shadow: 0 0 0 3px var(--mint-pale);
+    }
+
+    .hero h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.0; letter-spacing: .01em;
+      margin-bottom: 20px;
+    }
+    .hero h1 .line1 { color: var(--ink); }
+    .hero h1 .line2 {
+      color: var(--coral);
+      text-shadow: 4px 4px 0 rgba(255,107,107,0.2);
+      display: block;
+    }
+    .hero h1 .line3 { color: var(--sky); display: block; }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--ink-soft);
+      max-width: 500px; line-height: 1.75;
+      margin-bottom: 36px; font-weight: 600;
+    }
+
+    /* HERO CHIPS */
+    .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+    .h-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: white; border: 2px solid;
+      border-radius: 12px; padding: 9px 16px;
+      font-size: .82rem; font-weight: 700;
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.08);
+      transition: transform .25s var(--ease);
+    }
+    .h-chip:hover { transform: translateY(-3px) rotate(-1deg); }
+    .h-chip.c1 { border-color: var(--sun); color: var(--ink); }
+    .h-chip.c2 { border-color: var(--sky); color: var(--ink); }
+    .h-chip.c3 { border-color: var(--coral); color: var(--ink); }
+    .h-chip.c4 { border-color: var(--mint); color: var(--ink); }
+    .h-chip i { font-size: .85rem; }
+
+    /* ══════════════════════════════════════════
+       WAVY DIVIDER
+    ══════════════════════════════════════════ */
+    .wave-divider {
+      width: 100%; overflow: hidden; line-height: 0;
+      position: relative; z-index: 1;
+    }
+    .wave-divider svg { display: block; width: 100%; }
+
+    /* ══════════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════════ */
+    .main { position: relative; z-index: 1; max-width: 1260px; margin: 0 auto; padding: 64px 48px 80px; }
+
+    /* SECTION HEADING */
+    .sec-head { text-align: center; margin-bottom: 48px; }
+    .sec-kicker {
+      display: inline-block;
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .78rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--coral); background: var(--coral-pale);
+      padding: 5px 16px; border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.6rem; color: var(--ink);
+      line-height: 1.1;
+    }
+    .sec-title .accent { color: var(--coral); }
+    .sec-sub {
+      font-size: .95rem; color: var(--muted);
+      max-width: 540px; margin: 10px auto 0;
+      line-height: 1.7; font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════
+       AGE TRACK CARDS — 3 main programmes
+    ══════════════════════════════════════════ */
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+
+    /* THE CARD */
+    .k-card {
+      position: relative;
+      border-radius: var(--r-xl);
+      border: 3px solid;
+      background: white;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.07);
+      transition: transform .35s var(--ease), box-shadow .35s var(--ease-soft);
+      opacity: 0; transform: translateY(30px) scale(.97);
+    }
+    .k-card.reveal { animation: kidReveal .6s var(--ease) forwards; }
+    @keyframes kidReveal { to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .k-card:hover {
+      transform: translateY(-8px) rotate(-0.5deg);
+      box-shadow: 10px 14px 0 rgba(0,0,0,0.1);
+    }
+
+    /* Card color themes */
+    .k-card.theme-yellow { border-color: var(--sun-deep); }
+    .k-card.theme-sky    { border-color: var(--sky); }
+    .k-card.theme-purple { border-color: var(--purple); }
+
+    /* Card top color band */
+    .k-card-band {
+      height: 10px;
+    }
+    .theme-yellow .k-card-band { background: linear-gradient(90deg, var(--sun), var(--orange)); }
+    .theme-sky    .k-card-band { background: linear-gradient(90deg, var(--sky), var(--blue)); }
+    .theme-purple .k-card-band { background: linear-gradient(90deg, var(--purple), var(--coral)); }
+
+    /* Card image area */
+    .k-card-img {
+      height: 200px; position: relative; overflow: hidden;
+      background: var(--sun-pale);
+    }
+    .theme-sky    .k-card-img { background: var(--sky-pale); }
+    .theme-purple .k-card-img { background: var(--purple-pale); }
+
+    .k-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s var(--ease-soft);
+      filter: brightness(.85) saturate(1.1);
+    }
+    .k-card:hover .k-card-img img { transform: scale(1.08); }
+    .k-card-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, white 100%);
+    }
+
+    /* Big emoji overlay on image */
+    .card-emoji {
+      position: absolute; top: 14px; right: 16px; z-index: 2;
+      font-size: 3rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+      animation: emojiFloat 4s ease-in-out infinite;
+    }
+
+    /* Age badge */
+    .age-badge {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      font-family: 'Fredoka One', cursive; font-size: .85rem;
+      padding: 6px 14px; border-radius: 100px;
+      border: 2.5px solid white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+    .theme-yellow .age-badge { background: var(--sun); color: var(--ink); }
+    .theme-sky    .age-badge { background: var(--sky); color: white; }
+    .theme-purple .age-badge { background: var(--purple); color: white; }
+
+    /* Card body */
+    .k-card-body { padding: 22px 24px 4px; flex: 1; }
+    .k-card-code {
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .theme-yellow .k-card-code { color: var(--sun-deep); }
+    .theme-sky    .k-card-code { color: var(--sky); }
+    .theme-purple .k-card-code { color: var(--purple); }
+
+    .k-card-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem; color: var(--ink);
+      line-height: 1.2; margin-bottom: 10px;
+    }
+    .k-card-desc {
+      font-size: .85rem; color: var(--muted);
+      line-height: 1.7; margin-bottom: 18px; font-weight: 600;
+    }
+
+    /* WHAT THEY LEARN */
+    .learn-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .learn-item { display: flex; align-items: flex-start; gap: 10px; font-size: .83rem; color: var(--ink-soft); font-weight: 700; }
+    .learn-dot {
+      width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center; font-size: .7rem; color: white;
+    }
+    .theme-yellow .learn-dot { background: var(--sun-deep); }
+    .theme-sky    .learn-dot { background: var(--sky); }
+    .theme-purple .learn-dot { background: var(--purple); }
+
+    /* Card footer */
+    .k-card-footer {
+      padding: 18px 24px 22px;
+      border-top: 2px dashed;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .theme-yellow .k-card-footer { border-color: rgba(245,184,0,0.25); }
+    .theme-sky    .k-card-footer { border-color: rgba(78,205,196,0.25); }
+    .theme-purple .k-card-footer { border-color: rgba(168,85,247,0.25); }
+
+    .k-fee {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+    }
+    .theme-yellow .k-fee { color: var(--sun-deep); }
+    .theme-sky    .k-fee { color: var(--sky); }
+    .theme-purple .k-fee { color: var(--purple); }
+    .k-fee small { font-family: 'Nunito', sans-serif; font-size: .68rem; color: var(--muted); font-weight: 700; display: block; }
+
+    .k-dur {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .78rem; color: var(--muted); font-weight: 700;
+    }
+    .k-dur i { font-size: .7rem; color: var(--coral); }
+
+    .btn-kid {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 11px 20px; border-radius: 14px;
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .82rem; text-decoration: none; border: none; cursor: pointer;
+      transition: transform .25s var(--ease), box-shadow .25s;
+    }
+    .theme-yellow .btn-kid { background: var(--sun); color: var(--ink); box-shadow: 3px 3px 0 var(--sun-deep); }
+    .theme-sky    .btn-kid { background: var(--sky); color: white; box-shadow: 3px 3px 0 #2ba09a; }
+    .theme-purple .btn-kid { background: var(--purple); color: white; box-shadow: 3px 3px 0 #7c3aed; }
+    .btn-kid:hover { transform: translateY(-3px) scale(1.04); box-shadow: 5px 6px 0 rgba(0,0,0,0.15); }
+
+    /* EXPAND */
+    .k-expand {
+      max-height: 0; overflow: hidden;
+      transition: max-height .45s var(--ease-soft);
+    }
+    .k-expand.open { max-height: 260px; }
+    .k-exp-inner {
+      padding: 16px 24px 20px;
+      border-top: 2px dashed;
+      font-size: .83rem; color: var(--ink-soft); line-height: 1.7; font-weight: 600;
+    }
+    .theme-yellow .k-exp-inner { border-color: rgba(245,184,0,.2); background: var(--sun-pale); }
+    .theme-sky    .k-exp-inner { border-color: rgba(78,205,196,.2); background: var(--sky-pale); }
+    .theme-purple .k-exp-inner { border-color: rgba(168,85,247,.2); background: var(--purple-pale); }
+
+    .exp-label { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: .88rem; color: var(--ink); margin-bottom: 6px; }
+    .exp-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .exp-wa { display: inline-flex; align-items: center; gap: 6px; background: #25d366; color: white; padding: 9px 18px; border-radius: 10px; font-weight: 700; font-size: .78rem; text-decoration: none; transition: background .2s; }
+    .exp-wa:hover { background: #1db954; }
+    .exp-mail { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--ink-soft); border: 2px solid var(--border); padding: 9px 18px; border-radius: 10px; font-weight: 700; font-size: .78rem; text-decoration: none; transition: border-color .2s; }
+    .exp-mail:hover { border-color: var(--ink-soft); }
+
+    .k-toggle {
+      width: 100%; padding: 11px; background: transparent;
+      border: none; border-top: 2px dashed;
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .78rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: background .2s, color .2s;
+    }
+    .theme-yellow .k-toggle { border-color: rgba(245,184,0,.2); color: var(--sun-deep); }
+    .theme-sky    .k-toggle { border-color: rgba(78,205,196,.2); color: var(--sky); }
+    .theme-purple .k-toggle { border-color: rgba(168,85,247,.2); color: var(--purple); }
+    .k-toggle:hover { background: rgba(0,0,0,.03); }
+    .k-toggle i { transition: transform .3s; }
+    .k-toggle.open i { transform: rotate(180deg); }
+
+    /* ══════════════════════════════════════════
+       WHAT KIDS LEARN — FUN SUBJECT BUBBLES
+    ══════════════════════════════════════════ */
+    .subjects-section {
+      margin-bottom: 80px;
+      background: linear-gradient(135deg, var(--ink) 0%, #2D3561 100%);
+      border-radius: var(--r-xl); padding: 56px 52px;
+      position: relative; overflow: hidden;
+    }
+    .subjects-section::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 280px; height: 280px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,217,61,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .subjects-section::after {
+      content: '🎮';
+      position: absolute; bottom: -10px; right: 40px;
+      font-size: 6rem; opacity: .08; pointer-events: none;
+    }
+
+    .subjects-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem; color: white; margin-bottom: 8px;
+    }
+    .subjects-sub { font-size: .88rem; color: rgba(255,255,255,.5); margin-bottom: 36px; font-weight: 600; }
+
+    .bubbles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+    .bubble {
+      background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.12);
+      border-radius: 18px; padding: 20px 16px; text-align: center;
+      transition: transform .3s var(--ease), background .3s, border-color .3s;
+      cursor: default;
+    }
+    .bubble:hover { transform: translateY(-6px) scale(1.04); background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); }
+    .bubble-icon { font-size: 2rem; margin-bottom: 10px; }
+    .bubble-title { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: .88rem; color: white; margin-bottom: 4px; }
+    .bubble-sub { font-size: .72rem; color: rgba(255,255,255,.45); font-weight: 600; }
+    .bubble-tag { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 100px; font-size: .65rem; font-weight: 700; font-family: 'Baloo 2', cursive; }
+    .btag-sun  { background: rgba(255,217,61,.2); color: var(--sun); }
+    .btag-sky  { background: rgba(78,205,196,.2); color: var(--sky); }
+    .btag-coral { background: rgba(255,107,107,.2); color: #ff8f8f; }
+    .btag-purple { background: rgba(168,85,247,.2); color: #c084fc; }
+    .btag-mint { background: rgba(107,203,119,.2); color: var(--mint); }
+
+    /* ══════════════════════════════════════════
+       WHY ABCD FOR KIDS
+    ══════════════════════════════════════════ */
+    .why-section { margin-bottom: 80px; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px; margin-top: 40px;
+    }
+    .why-card {
+      background: white; border: 2.5px solid;
+      border-radius: var(--r-lg); padding: 28px 24px;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
+      transition: transform .3s var(--ease), box-shadow .3s;
+    }
+    .why-card:hover { transform: translateY(-5px) rotate(.5deg); box-shadow: 7px 9px 0 rgba(0,0,0,0.08); }
+    .wc1 { border-color: var(--sun); }
+    .wc2 { border-color: var(--sky); }
+    .wc3 { border-color: var(--coral); }
+    .wc4 { border-color: var(--purple); }
+    .wc5 { border-color: var(--mint); }
+    .wc6 { border-color: var(--orange); }
+
+    .why-emoji { font-size: 2.4rem; margin-bottom: 14px; }
+    .why-title { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--ink); margin-bottom: 8px; }
+    .why-desc { font-size: .82rem; color: var(--muted); line-height: 1.65; font-weight: 600; }
+
+    /* ══════════════════════════════════════════
+       PARENT TESTIMONIALS
+    ══════════════════════════════════════════ */
+    .testimonials-section { margin-bottom: 80px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+    .testi-card {
+      background: white; border-radius: var(--r-lg);
+      border: 2px solid var(--border); padding: 24px;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+      transition: transform .3s var(--ease);
+      opacity: 0; transform: translateY(20px);
+    }
+    .testi-card.reveal { animation: kidReveal .5s var(--ease-soft) forwards; }
+    .testi-card:hover { transform: translateY(-4px) rotate(-0.3deg); }
+    .testi-stars { color: var(--sun-deep); font-size: .85rem; margin-bottom: 12px; letter-spacing: 2px; }
+    .testi-quote {
+      font-size: .87rem; color: var(--ink-soft); line-height: 1.7;
+      font-style: italic; font-weight: 600; margin-bottom: 18px;
+    }
+    .testi-quote::before { content: '"'; font-size: 1.5rem; color: var(--sun); line-height: 0; vertical-align: -8px; margin-right: 3px; font-family: 'Fredoka One', cursive; }
+    .testi-quote::after  { content: '"'; font-size: 1.5rem; color: var(--sun); line-height: 0; vertical-align: -8px; margin-left: 3px; font-family: 'Fredoka One', cursive; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: white;
+      flex-shrink: 0;
+    }
+    .av1 { background: linear-gradient(135deg, var(--coral), var(--orange)); }
+    .av2 { background: linear-gradient(135deg, var(--sky), var(--blue)); }
+    .av3 { background: linear-gradient(135deg, var(--purple), var(--coral)); }
+    .testi-name { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: .88rem; color: var(--ink); }
+    .testi-role { font-size: .73rem; color: var(--muted); font-weight: 600; }
+
+    /* ══════════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════════ */
+    .cta-section {
+      border-radius: var(--r-xl);
+      background: linear-gradient(135deg, var(--sun) 0%, var(--orange) 50%, var(--coral) 100%);
+      padding: 60px 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 40px; flex-wrap: wrap;
+      position: relative; overflow: hidden;
+      border: 3px solid var(--sun-deep);
+      box-shadow: 8px 8px 0 rgba(245,184,0,0.35);
+    }
+    .cta-section::before {
+      content: '🚀';
+      position: absolute; right: 220px; top: 50%; transform: translateY(-50%);
+      font-size: 6rem; opacity: .15; pointer-events: none;
+    }
+    .cta-section::after {
+      content: '⭐';
+      position: absolute; bottom: -10px; right: 60px;
+      font-size: 5rem; opacity: .2; pointer-events: none;
+    }
+    /* .cta-left {} */
+    .cta-kicker {
+      font-family: 'Baloo 2', cursive; font-weight: 700;
+      font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(30,42,74,.7); margin-bottom: 8px;
+    }
+    .cta-left h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.4rem; color: var(--ink);
+      line-height: 1.1; margin-bottom: 12px;
+    }
+    .cta-left p { font-size: .9rem; color: rgba(30,42,74,.75); line-height: 1.65; max-width: 420px; font-weight: 700; }
+    .cta-actions { display: flex; flex-direction: column; gap: 12px; }
+    .cta-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--ink); color: white;
+      padding: 16px 32px; border-radius: 16px;
+      font-family: 'Baloo 2', cursive; font-weight: 700; font-size: .95rem;
+      text-decoration: none;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
+      transition: transform .25s var(--ease), box-shadow .25s;
+    }
+    .cta-wa:hover { transform: translateY(-4px) scale(1.03); box-shadow: 6px 8px 0 rgba(0,0,0,0.2); }
+    .cta-wa i { color: #4caf50; font-size: 1.1rem; }
+    .cta-call {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: white; color: var(--ink);
+      padding: 14px 32px; border-radius: 16px;
+      font-family: 'Baloo 2', cursive; font-weight: 700; font-size: .88rem;
+      text-decoration: none; border: 2px solid rgba(30,42,74,.15);
+      transition: transform .25s var(--ease);
+    }
+    .cta-call:hover { transform: translateY(-3px); }
+
+    /* FAQ MINI */
+    .faq-section { margin-bottom: 80px; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .faq-item {
+      background: white; border: 2px solid var(--border);
+      border-radius: 16px; padding: 20px 22px;
+      transition: border-color .25s, transform .25s var(--ease);
+    }
+    .faq-item:hover { border-color: var(--sky); transform: translateY(-3px); }
+    .faq-q { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: .92rem; color: var(--ink); margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; }
+    .faq-q span { color: var(--coral); font-size: 1.1rem; flex-shrink: 0; }
+    .faq-a { font-size: .82rem; color: var(--muted); line-height: 1.65; font-weight: 600; }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    footer {
+      background: var(--ink); border-top: 4px solid var(--sun);
+      padding: 36px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px; position: relative; z-index: 1;
+    }
+    .f-brand { font-family: 'Baloo 2', cursive; font-size: 1rem; color: rgba(255,255,255,.45); }
+    .f-brand strong { color: white; }
+    .f-brand .sun { color: var(--sun); }
+    .f-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .f-links a { font-size: .78rem; color: rgba(255,255,255,.35); text-decoration: none; font-weight: 700; transition: color .2s; }
+    .f-links a:hover { color: var(--sun); }
+
+    /* FLOAT WA */
+    .float-wa {
+      position: fixed; bottom: 28px; right: 28px; z-index: 300;
+      display: flex; align-items: center; gap: 9px;
+      background: #25d366; color: white;
+      padding: 14px 24px; border-radius: 100px;
+      text-decoration: none; font-family: 'Baloo 2', cursive;
+      font-weight: 700; font-size: .85rem;
+      box-shadow: 0 6px 28px rgba(37,211,102,.5);
+      transition: transform .25s var(--ease), box-shadow .25s;
+    }
+    .float-wa:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 10px 36px rgba(37,211,102,.6); }
+    .float-wa i { font-size: 1.05rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      header { padding: 0 20px; }
+      .hero { padding: 52px 20px 68px; }
+      .em1,.em2,.em3,.em4,.em5,.em6 { font-size: 1.8rem; }
+      .hero h1 { font-size: 3rem; }
+      .main { padding: 44px 20px 64px; }
+      .subjects-section { padding: 36px 24px; }
+      .cta-section { padding: 40px 28px; }
+      .faq-grid { grid-template-columns: 1fr; }
+      footer { padding: 28px 20px; }
+    }
+    @media (max-width: 600px) {
+      .breadcrumb { display: none; }
+      .track-grid, .why-grid, .testi-grid { grid-template-columns: 1fr; }
+      .bubbles-grid { grid-template-columns: 1fr 1fr; }
+      .float-wa span { display: none; }
+      .float-wa { padding: 14px; border-radius: 50%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a href="../index.html" class="logo-wrap">
+    <div class="logo-name">ABCD <span>Learning Hub</span></div>
+  </a>
+  <nav class="breadcrumb">
+    <a href="../index.html">Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="index.html">All Courses</a>
+    <i class="fas fa-chevron-right"></i>
+    <span class="active">Kids Computer</span>
+  </nav>
+  <a href="https://wa.me/918944899747" target="_blank" class="nav-cta">
+    <i class="fab fa-whatsapp"></i> Enquire Now
+  </a>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div class="hero-blob blob-3"></div>
+
+  <!-- Floating emoji characters -->
+  <span class="float-emoji em1">🤖</span>
+  <span class="float-emoji em2">🎮</span>
+  <span class="float-emoji em3">⭐</span>
+  <span class="float-emoji em4">🚀</span>
+  <span class="float-emoji em5">💻</span>
+  <span class="float-emoji em6">🎨</span>
+
+  <!-- Star bursts -->
+  <div class="star-burst sb1">✦</div>
+  <div class="star-burst sb2">✦</div>
+  <div class="star-burst sb3">✦</div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Kids Computer Programmes — ABCD Learning Hub, West Bengal
+    </div>
+
+    <h1>
+      <span class="line1">Where Kids</span>
+      <span class="line2">Learn to Code</span>
+      <span class="line3">&amp; Create! 🎉</span>
+    </h1>
+
+    <p class="hero-sub">Fun, structured, age-appropriate computer education for children — building the digital skills and logical thinking they'll use for life.</p>
+
+    <div class="hero-chips">
+      <div class="h-chip c1"><span>🧒</span> Age 5 – 15+</div>
+      <div class="h-chip c2"><span>🎮</span> Game-Based Learning</div>
+      <div class="h-chip c3"><span>🏆</span> Certificates for Kids</div>
+      <div class="h-chip c4"><span>👩‍🏫</span> Expert Child Mentors</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVY DIVIDER -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#FFFEF7"/>
+  </svg>
+</div>
+
+<!-- ─── MAIN ─── -->
+<div class="main">
+
+  <!-- SECTION HEAD -->
+  <div class="sec-head">
+    <div class="sec-kicker">✨ Choose Your Learning Track</div>
+    <h2 class="sec-title">3 Programmes for <span class="accent">Every Age</span></h2>
+    <p class="sec-sub">Whether your child is just starting out or already curious about coding — we have the perfect programme for them.</p>
+  </div>
+
+  <!-- TRACK CARDS -->
+  <div class="track-grid" id="trackGrid">
+
+    <!-- CARD 1: Kids Programming -->
+    <div class="k-card theme-yellow" style="animation-delay:.05s">
+      <div class="k-card-band"></div>
+      <div class="k-card-img">
+        <img src="https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg" alt="Kids Programming" loading="lazy"/>
+        <span class="card-emoji">🎮</span>
+        <span class="age-badge">All Ages</span>
+      </div>
+      <div class="k-card-body">
+        <div class="k-card-code">Kids-Prog — Beginner Track</div>
+        <div class="k-card-name">Kids Programming</div>
+        <div class="k-card-desc">An exciting, game-based introduction to programming. Kids learn to think logically, create animations, and build their very first games — all without any prior experience needed!</div>
+        <div class="learn-list">
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Scratch programming — build games & animations</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Block-based visual coding (zero typing needed!)</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Logical thinking & problem-solving</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Digital creativity & storytelling</div>
+        </div>
+      </div>
+      <div class="k-card-footer">
+        <div>
+          <div class="k-fee">Rs. 5,000/- <small>One-time fee</small></div>
+          <div class="k-dur"><i class="fas fa-clock"></i> Flexible Duration</div>
+        </div>
+        <button class="btn-kid" onclick="enrollWA('Kids Programming')"><i class="fab fa-whatsapp"></i> Enquire</button>
+      </div>
+      <div class="k-expand" id="exp-kp">
+        <div class="k-exp-inner">
+          <div class="exp-label">📖 About This Programme</div>
+          A fun-first approach to programming designed for children of all ages. Using Scratch — the world's most popular kids' coding platform — children create their own interactive stories, animations, and games while learning real programming concepts like sequences, loops, conditionals, and events. No typing required to start. Classes are small, encouraging, and full of creative projects.
+          <div class="exp-actions">
+            <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20the%20Kids%20Programming%20course%20at%20ABCD%20Learning%20Hub%20for%20my%20child.%20Please%20share%20details." target="_blank" class="exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: Kids Programming Course" class="exp-mail"><i class="fas fa-envelope"></i> Email Us</a>
+          </div>
+        </div>
+      </div>
+      <button class="k-toggle" id="tog-kp" onclick="toggleCard('kp')">
+        <i class="fas fa-chevron-down"></i> Learn More
+      </button>
+    </div>
+
+    <!-- CARD 2: Smart Kids (10+) -->
+    <div class="k-card theme-sky" style="animation-delay:.15s">
+      <div class="k-card-band"></div>
+      <div class="k-card-img">
+        <img src="https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg" alt="Smart Kids Programme" loading="lazy"/>
+        <span class="card-emoji">🖥️</span>
+        <span class="age-badge">Age 10+</span>
+      </div>
+      <div class="k-card-body">
+        <div class="k-card-code">Smart Kids — 3-Year Track</div>
+        <div class="k-card-name">Smart Kids Programme</div>
+        <div class="k-card-desc">A structured 3-year curriculum for children above 10 years. By the end, they'll confidently use computers, type professionally, understand basic coding, and be fully ready for the digital world.</div>
+        <div class="learn-list">
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Computer fundamentals & MS Office Suite</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Touch-typing & keyboard mastery</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Internet safety & digital citizenship</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Basic coding with Scratch & intro HTML</div>
+        </div>
+      </div>
+      <div class="k-card-footer">
+        <div>
+          <div class="k-fee">Rs. 4,000/- <small>per year · 3 Years total</small></div>
+          <div class="k-dur"><i class="fas fa-clock"></i> 3 Years Programme</div>
+        </div>
+        <button class="btn-kid" onclick="enrollWA('Smart Kids Programme')"><i class="fab fa-whatsapp"></i> Enquire</button>
+      </div>
+      <div class="k-expand" id="exp-sk">
+        <div class="k-exp-inner">
+          <div class="exp-label">📖 About This Programme</div>
+          A comprehensive three-year journey for children aged 10 and above. Year 1 covers computer basics, MS Office, and internet fundamentals. Year 2 dives into advanced Office tools, Scratch coding, and digital projects. Year 3 introduces web basics, presentation skills, and a capstone digital project. Children graduate with a full certificate and genuinely future-ready skills.
+          <div class="exp-actions">
+            <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20the%20Smart%20Kids%20Programme%20at%20ABCD%20Learning%20Hub.%20Please%20share%20details." target="_blank" class="exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: Smart Kids Programme" class="exp-mail"><i class="fas fa-envelope"></i> Email Us</a>
+          </div>
+        </div>
+      </div>
+      <button class="k-toggle" id="tog-sk" onclick="toggleCard('sk')">
+        <i class="fas fa-chevron-down"></i> Learn More
+      </button>
+    </div>
+
+    <!-- CARD 3: ICGS (Under 10) -->
+    <div class="k-card theme-purple" style="animation-delay:.25s">
+      <div class="k-card-band"></div>
+      <div class="k-card-img">
+        <img src="https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg" alt="ICGS Programme" loading="lazy"/>
+        <span class="card-emoji">🌟</span>
+        <span class="age-badge">Under 10</span>
+      </div>
+      <div class="k-card-body">
+        <div class="k-card-code">ICGS — 3-Year Junior Track</div>
+        <div class="k-card-name">Intensive Computer Guidance for Smart Kids</div>
+        <div class="k-card-desc">Specially designed for young learners below age 10. Using colourful activities, interactive games, and visual tools — this 3-year programme plants the seeds of digital confidence early.</div>
+        <div class="learn-list">
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Computer basics with fun visual activities</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Scratch Jr. — drag-and-drop coding games</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Touch-typing foundations</div>
+          <div class="learn-item"><div class="learn-dot"><i class="fas fa-check"></i></div>Internet basics & online safety</div>
+        </div>
+      </div>
+      <div class="k-card-footer">
+        <div>
+          <div class="k-fee">Rs. 4,000/- <small>per year · 3 Years total</small></div>
+          <div class="k-dur"><i class="fas fa-clock"></i> 3 Years Programme</div>
+        </div>
+        <button class="btn-kid" onclick="enrollWA('ICGS - Intensive Computer Guidance for Smart Kids')"><i class="fab fa-whatsapp"></i> Enquire</button>
+      </div>
+      <div class="k-expand" id="exp-icgs">
+        <div class="k-exp-inner">
+          <div class="exp-label">📖 About This Programme</div>
+          Designed especially for children below 10 years using age-appropriate, hands-on activities. Year 1 focuses on mouse control, keyboard familiarity, and basic drawing tools. Year 2 introduces Scratch Jr. coding, simple typing practice, and digital art. Year 3 covers basic MS Paint, early Word skills, and fun internet basics — all in a safe, guided classroom environment with very small group sizes.
+          <div class="exp-actions">
+            <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20the%20ICGS%20Kids%20Programme%20at%20ABCD%20Learning%20Hub.%20Please%20share%20details." target="_blank" class="exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: ICGS Kids Programme" class="exp-mail"><i class="fas fa-envelope"></i> Email Us</a>
+          </div>
+        </div>
+      </div>
+      <button class="k-toggle" id="tog-icgs" onclick="toggleCard('icgs')">
+        <i class="fas fa-chevron-down"></i> Learn More
+      </button>
+    </div>
+
+  </div><!-- /track-grid -->
+
+  <!-- SUBJECTS / WHAT KIDS LEARN -->
+  <div class="subjects-section">
+    <div class="subjects-title">🎒 What Kids Learn Here</div>
+    <div class="subjects-sub">A wide range of fun, skill-building subjects across all programmes</div>
+    <div class="bubbles-grid">
+      <div class="bubble">
+        <div class="bubble-icon">🎮</div>
+        <div class="bubble-title">Scratch Coding</div>
+        <div class="bubble-sub">Build games & animations</div>
+        <span class="bubble-tag btag-sun">All ages</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">⌨️</div>
+        <div class="bubble-title">Touch Typing</div>
+        <div class="bubble-sub">Speed & accuracy drills</div>
+        <span class="bubble-tag btag-sky">Age 8+</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">📝</div>
+        <div class="bubble-title">MS Word & Excel</div>
+        <div class="bubble-sub">Office skills for school</div>
+        <span class="bubble-tag btag-coral">Age 10+</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">🌐</div>
+        <div class="bubble-title">Internet Safety</div>
+        <div class="bubble-sub">Safe online habits</div>
+        <span class="bubble-tag btag-purple">All ages</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">🎨</div>
+        <div class="bubble-title">Digital Art</div>
+        <div class="bubble-sub">MS Paint & drawing tools</div>
+        <span class="bubble-tag btag-sun">Age 5+</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">🧩</div>
+        <div class="bubble-title">Logical Thinking</div>
+        <div class="bubble-sub">Puzzles & problem-solving</div>
+        <span class="bubble-tag btag-mint">All ages</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">📊</div>
+        <div class="bubble-title">Basic PowerPoint</div>
+        <div class="bubble-sub">Presentations & slides</div>
+        <span class="bubble-tag btag-sky">Age 10+</span>
+      </div>
+      <div class="bubble">
+        <div class="bubble-icon">🤖</div>
+        <div class="bubble-title">Intro to AI</div>
+        <div class="bubble-sub">What is AI? Fun concepts</div>
+        <span class="bubble-tag btag-purple">Age 12+</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY ABCD FOR KIDS -->
+  <div class="why-section">
+    <div class="sec-head">
+      <div class="sec-kicker">🌟 Why Parents Choose Us</div>
+      <h2 class="sec-title">Why ABCD <span class="accent">for Your Child?</span></h2>
+      <p class="sec-sub">We're not a regular computer class — we're a place where children genuinely love to learn.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card wc1">
+        <div class="why-emoji">👶</div>
+        <div class="why-title">Age-Appropriate Curriculum</div>
+        <div class="why-desc">Every programme is designed specifically for the child's age group. No one-size-fits-all — content evolves as kids grow.</div>
+      </div>
+      <div class="why-card wc2">
+        <div class="why-emoji">🎮</div>
+        <div class="why-title">Game-Based Learning</div>
+        <div class="why-desc">We use games, animations, and creative projects so kids never feel like they're studying — they just enjoy every class.</div>
+      </div>
+      <div class="why-card wc3">
+        <div class="why-emoji">👩‍🏫</div>
+        <div class="why-title">Patient, Trained Instructors</div>
+        <div class="why-desc">Our teachers are specially trained to work with children — encouraging, patient, and skilled at making complex ideas simple and fun.</div>
+      </div>
+      <div class="why-card wc4">
+        <div class="why-emoji">🏆</div>
+        <div class="why-title">Real Certificates</div>
+        <div class="why-desc">Children graduate with a recognised certificate from ABCD Learning Hub — something they'll be proud of and that actually matters.</div>
+      </div>
+      <div class="why-card wc5">
+        <div class="why-emoji">👨‍👩‍👧</div>
+        <div class="why-title">Parent Progress Updates</div>
+        <div class="why-desc">Regular updates on your child's progress via WhatsApp. You'll always know what they're learning and how they're doing.</div>
+      </div>
+      <div class="why-card wc6">
+        <div class="why-emoji">💰</div>
+        <div class="why-title">Most Affordable in WB</div>
+        <div class="why-desc">Premium kids' computer education starting from just Rs. 4,000/year. Sibling discounts available. Quality should never be unaffordable.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testimonials-section">
+    <div class="sec-head">
+      <div class="sec-kicker">💬 Happy Parents</div>
+      <h2 class="sec-title">What Parents <span class="accent">Are Saying</span></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card" style="animation-delay:.05s">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">My daughter used to be scared of computers. After just 3 months at ABCD, she's building her own Scratch games and teaching ME things. Incredible transformation!</div>
+        <div class="testi-author">
+          <div class="testi-avatar av1">P</div>
+          <div>
+            <div class="testi-name">Priya Dutta</div>
+            <div class="testi-role">Parent — Daughter aged 9, ICGS Programme</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card" style="animation-delay:.12s">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">My son joined the Smart Kids programme last year. His school teachers have noticed a huge improvement in his logical thinking and even his handwriting speed at the keyboard!</div>
+        <div class="testi-author">
+          <div class="testi-avatar av2">R</div>
+          <div>
+            <div class="testi-name">Rajesh Mondal</div>
+            <div class="testi-role">Parent — Son aged 11, Smart Kids Programme</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card" style="animation-delay:.19s">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote">The teachers here truly understand children. Patient, kind, and incredibly skilled. My twins both attend and they both love it — that says everything about the quality.</div>
+        <div class="testi-author">
+          <div class="testi-avatar av3">S</div>
+          <div>
+            <div class="testi-name">Susmita Ghosh</div>
+            <div class="testi-role">Parent — Twins aged 7, ICGS Programme</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="sec-head">
+      <div class="sec-kicker">❓ Parent Questions</div>
+      <h2 class="sec-title">Frequently Asked <span class="accent">Questions</span></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q"><span>Q</span> What age can my child start?</div>
+        <div class="faq-a">We have programmes for children as young as 5 years old. The ICGS programme is designed for ages 5–9, Smart Kids for 10+, and Kids Programming is open to all ages with no upper limit.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Q</span> Does my child need their own computer?</div>
+        <div class="faq-a">No! ABCD Learning Hub provides all computers during class time. For practice at home, any basic computer or even a tablet works well — especially for Scratch coding.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Q</span> How many children are in each class?</div>
+        <div class="faq-a">We keep class sizes very small — maximum 8–10 children per batch — so every child gets individual attention from the instructor throughout the class.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Q</span> What certificate does my child receive?</div>
+        <div class="faq-a">Children receive a certificate from ABCD Learning Hub on completing each year or programme. These are recognised credentials that look great in school portfolios and future applications.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Q</span> Are sibling discounts available?</div>
+        <div class="faq-a">Yes! We offer sibling discounts for families enrolling more than one child. Please WhatsApp or call us directly to discuss the available options for your family.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Q</span> Can I attend a trial class first?</div>
+        <div class="faq-a">Absolutely — we offer a free trial class so your child can experience the learning environment before you commit. Contact us via WhatsApp to book your child's free trial session.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <div class="cta-kicker">🎉 Give Your Child a Head Start</div>
+      <h2>Book a Free Trial<br/>Class Today!</h2>
+      <p>No pressure, no commitment — just bring your child and let them experience the joy of learning computers. New batches start every month with limited seats.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="https://wa.me/918944899747?text=Hello!%20I%27d%20like%20to%20book%20a%20free%20trial%20class%20for%20my%20child%20at%20ABCD%20Learning%20Hub's%20Kids%20Computer%20programme.%20Please%20share%20details." target="_blank" class="cta-wa"><i class="fab fa-whatsapp"></i> Book Free Trial</a>
+      <a href="tel:+918944899747" class="cta-call"><i class="fas fa-phone"></i> Call Us Now</a>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-brand">
+    <strong>ABCD Learning Hub</strong> <span class="sun">✦</span> India's Premier Computer Education Institute<br/>
+    <span style="font-size:.75rem;color:rgba(255,255,255,.25)"> +91 89448 99747 · sb.abcd321@gmail.com</span>
+  </div>
+  <div class="f-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">All Courses</a>
+    <a href="diploma-course.html">Diploma</a>
+    <a href="for-office-work.html">Office</a>
+    <a href="ai-course.html">AI Courses</a>
+    <a href="programming.html">Programming</a>
+    <a href="mailto:sb.abcd321@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/918944899747" target="_blank" class="float-wa">
+  <i class="fab fa-whatsapp"></i><span>Chat with Us</span>
+</a>
+
+<script>
+/* TOGGLE CARD EXPAND */
+function toggleCard(id) {
+  const exp = document.getElementById(`exp-${id}`);
+  const tog = document.getElementById(`tog-${id}`);
+  const isOpen = exp.classList.contains('open');
+  // close all
+  document.querySelectorAll('.k-expand.open').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.k-toggle.open').forEach(t => {
+    t.classList.remove('open');
+    t.innerHTML = `<i class="fas fa-chevron-down"></i> Learn More`;
+  });
+  if (!isOpen) {
+    exp.classList.add('open');
+    tog.classList.add('open');
+    tog.innerHTML = `<i class="fas fa-chevron-up"></i> Show Less`;
+  }
+}
+
+/* ENROL WA */
+function enrollWA(name) {
+  const msg = encodeURIComponent(`Hello! I'm interested in the "${name}" course at ABCD Learning Hub for my child. Please share batch details and fees.`);
+  window.open(`https://wa.me/918944899747?text=${msg}`, '_blank');
+}
+
+/* SCROLL REVEAL */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('reveal');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+
+document.querySelectorAll('.k-card, .testi-card').forEach((c, i) => {
+  c.style.animationDelay = `${i * 0.1}s`;
+  io.observe(c);
+});
+
+/* PROGRESS BAR */
+const bar = document.getElementById('bar');
+window.addEventListener('scroll', () => {
+  bar.style.width = `${(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Courses — ABCD Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Raleway:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg:        #0a0b0f;
+      --bg2:       #111218;
+      --bg3:       #16181f;
+      --card:      #13151c;
+      --border:    rgba(255,255,255,0.07);
+      --gold:      #e8b84b;
+      --gold2:     #f5d27a;
+      --white:     #f0ede8;
+      --muted:     #7a7d8a;
+      --accent:    #4f9cf9;
+      --red:       #ff5c5c;
+      --green:     #3ecf8e;
+      --radius:    14px;
+      --transition: .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,11,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Nunito Sans', serif;  
+      font-size: 1.4rem; font-weight: 900;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--white); }
+
+    .back-btn {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 0.85rem;
+      text-decoration: none; font-weight: 500;
+      transition: color var(--transition);
+    }
+    .back-btn:hover { color: var(--gold); }
+
+    /* ── HERO BANNER ── */
+    .hero {
+      position: relative;
+      padding: 90px 40px 70px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(232,184,75,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,184,75,0.1);
+      border: 1px solid rgba(232,184,75,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; color: var(--gold);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Nunito Sans', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem; color: var(--muted); max-width: 560px;
+      margin: 0 auto 40px; line-height: 1.7;
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 40px; flex-wrap: wrap; margin-bottom: 0;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Nunito Sans', serif;
+      font-size: 2rem; font-weight: 900; color: var(--gold);
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .stat-divider { width: 1px; height: 40px; background: var(--border); }
+
+    /* ── FILTER TABS ── */
+    .filter-wrap {
+      position: sticky; top: 65px; z-index: 90;
+      background: rgba(10,11,15,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+    }
+
+    .filter-tabs {
+      display: flex; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex-shrink: 0;
+      background: none; border: none;
+      color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 500;
+      padding: 16px 20px; cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all var(--transition);
+      white-space: nowrap; display: flex; align-items: center; gap: 7px;
+    }
+    .tab-btn i { font-size: 0.8rem; }
+    .tab-btn:hover { color: var(--white); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 1260px; margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* ── CATEGORY SECTION ── */
+    .category-section {
+      margin-bottom: 80px;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .category-section.visible { opacity: 1; transform: translateY(0); }
+
+    .cat-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+    }
+
+    .cat-title-wrap { display: flex; align-items: center; gap: 14px; }
+
+    .cat-icon-badge {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      background: rgba(232,184,75,0.1);
+      border: 1px solid rgba(232,184,75,0.2);
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .cat-title {
+      font-family: 'Nunito Sans', serif;
+      font-size: 1.6rem; font-weight: 700;
+    }
+
+    .cat-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .cat-view-all {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--gold); font-size: 0.85rem; font-weight: 500;
+      text-decoration: none; white-space: nowrap;
+      transition: gap var(--transition);
+    }
+    .cat-view-all:hover { gap: 10px; }
+
+    /* ── COURSE GRID ── */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── COURSE CARD ── */
+    .course-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      position: relative;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(232,184,75,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(232,184,75,0.15);
+    }
+
+    /* TAG BADGE */
+    .card-tag {
+      position: absolute; top: 12px; right: 12px; z-index: 5;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .tag-popular { background: rgba(232,184,75,0.15); color: var(--gold); border: 1px solid rgba(232,184,75,0.4); }
+    .tag-demanding { background: rgba(255,92,92,0.15); color: var(--red); border: 1px solid rgba(255,92,92,0.4); }
+
+    /* CARD IMAGE */
+    .card-img {
+      height: 180px; overflow: hidden; position: relative;
+    }
+    .card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, var(--card) 100%);
+    }
+    .card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.75) saturate(0.8);
+    }
+    .course-card:hover .card-img img { transform: scale(1.06); }
+
+    /* CARD BODY */
+    .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+
+    .card-code {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem; color: var(--gold);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 8px; opacity: 0.8;
+    }
+
+    .card-name {
+      font-family: 'Nunito Sans', serif;
+      font-size: 1.05rem; font-weight: 700;
+      line-height: 1.35; margin-bottom: 10px; color: var(--white);
+    }
+
+    .card-desc {
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.6; margin-bottom: 18px; flex: 1;
+    }
+
+    /* CARD META ROW */
+    .card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-duration {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .meta-duration i { color: var(--accent); font-size: 0.75rem; }
+
+    .meta-fee {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; color: var(--green); font-weight: 700;
+    }
+    .meta-fee.contact { color: var(--muted); font-size: 0.72rem; }
+
+    /* CARD HOVER OVERLAY CTA */
+    .card-cta {
+      position: absolute; inset: 0;
+      background: rgba(10,11,15,0.92);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      opacity: 0;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(4px);
+    }
+    .course-card:hover .card-cta { opacity: 1; }
+
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 100px;
+      font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      border: none; font-family: 'DM Sans', sans-serif;
+      transition: all var(--transition);
+    }
+    .cta-enroll {
+      background: var(--gold);
+      color: #0a0b0f;
+    }
+    .cta-enroll:hover { background: var(--gold2); }
+
+    .cta-details {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .cta-details:hover { border-color: var(--white); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      max-width: 640px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      transform: scale(0.95) translateY(16px);
+      transition: transform 0.3s ease;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+    .modal-img {
+      height: 220px; overflow: hidden; position: relative; border-radius: 20px 20px 0 0;
+    }
+    .modal-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+    .modal-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--bg3) 0%, transparent 60%);
+    }
+
+    .modal-body { padding: 28px 32px 32px; }
+
+    .modal-code {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; color: var(--gold);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      font-family: 'Nunito Sans', serif;
+      font-size: 1.5rem; font-weight: 700;
+      line-height: 1.25; margin-bottom: 16px;
+    }
+
+    .modal-desc {
+      font-size: 0.9rem; color: #a0a3b0;
+      line-height: 1.75; margin-bottom: 24px;
+    }
+
+    .modal-details {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-bottom: 24px;
+    }
+    .detail-chip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px;
+    }
+    .detail-chip-label {
+      font-size: 0.7rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .detail-chip-val {
+      font-weight: 600; font-size: 0.95rem;
+      color: var(--white);
+    }
+    .detail-chip-val.green { color: var(--green); }
+
+    .modal-actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      color: var(--white); font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10;
+      transition: background var(--transition);
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); }
+
+    /* ── SEARCH BAR ── */
+    .search-wrap {
+      max-width: 500px; margin: 0 auto 50px;
+      position: relative;
+    }
+    .search-wrap i {
+      position: absolute; left: 18px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted); font-size: 0.9rem;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 100px; padding: 14px 20px 14px 48px;
+      color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; outline: none;
+      transition: border-color var(--transition);
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { border-color: rgba(232,184,75,0.4); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      display: none;
+    }
+    .empty-state.visible { display: block; }
+    .empty-state i { font-size: 3rem; color: var(--border); margin-bottom: 16px; }
+    .empty-state p { color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+      color: var(--muted); font-size: 0.82rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── ENROLL FLOAT BTN ── */
+    .float-whatsapp {
+      position: fixed; bottom: 30px; right: 30px; z-index: 200;
+      display: flex; align-items: center; gap: 10px;
+      background: #25d366; color: #fff;
+      padding: 14px 22px; border-radius: 100px;
+      text-decoration: none; font-weight: 600; font-size: 0.85rem;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .float-whatsapp:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(37,211,102,0.5);
+    }
+    .float-whatsapp i { font-size: 1.1rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      .hero { padding: 60px 20px 50px; }
+      .filter-wrap { padding: 0 20px; }
+      .main { padding: 40px 20px; }
+      .modal-body { padding: 20px 20px 24px; }
+      .modal-details { grid-template-columns: 1fr; }
+      .stats-row { gap: 24px; }
+      .stat-divider { display: none; }
+      .float-whatsapp span { display: none; }
+      .float-whatsapp { padding: 16px; }
+    }
+
+    /* ── SCROLL REVEAL STAGGER ── */
+    .course-grid .course-card {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color var(--transition), box-shadow var(--transition);
+    }
+    .course-grid .course-card.visible {
+      opacity: 1; transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="../index.html" class="logo">ABCD<span> Learning Hub</span></a>
+  <a href="../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow"><i class="fas fa-graduation-cap"></i> All Programmes — 2025</div>
+  <h1>Explore Our <em>Complete</em><br />Course Catalogue</h1>
+  <p>30+ industry-aligned programmes — from beginner basics to advanced AI engineering. Find your perfect learning path.</p>
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Programmes</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Categories</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Students Placed</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Student Rating</div></div>
+  </div>
+</section>
+
+<!-- FILTER TABS -->
+<div class="filter-wrap">
+  <div class="filter-tabs" id="filterTabs">
+    <button class="tab-btn active" data-filter="all"><i class="fas fa-th"></i> All</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <i class="fas fa-search"></i>
+    <input class="search-input" type="text" id="searchInput" placeholder="Search courses, skills, tools…" />
+  </div>
+
+  <div id="catalogueRoot"></div>
+  <div class="empty-state" id="emptyState">
+    <i class="fas fa-search-minus"></i>
+    <p>No courses match your search. Try a different keyword.</p>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalBtn()"><i class="fas fa-times"></i></button>
+    <div class="modal-img"><img id="modalImg" src="" alt="" /><div class="modal-img-overlay"></div></div>
+    <div class="modal-body">
+      <div class="modal-code" id="modalCode"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-details">
+        <div class="detail-chip">
+          <div class="detail-chip-label"><i class="fas fa-clock"></i> Duration</div>
+          <div class="detail-chip-val" id="modalDur"></div>
+        </div>
+        <div class="detail-chip">
+          <div class="detail-chip-label"><i class="fas fa-tag"></i> Investment</div>
+          <div class="detail-chip-val green" id="modalFee"></div>
+        </div>
+      </div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOAT WHATSAPP -->
+<a href="https://wa.me/918944899747" target="_blank" class="float-whatsapp">
+  <i class="fab fa-whatsapp"></i><span>Enquire on WhatsApp</span>
+</a>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <a href="../index.html">ABCD Learning Hub</a> — India's Premier Computer Education Institute &nbsp;|&nbsp; <a href="mailto:sb.abcd321@gmail.com">sb.abcd321@gmail.com</a> &nbsp;|&nbsp; <a href="tel:+918944899747">+91 89448 99747</a></p>
+</footer>
+
+<script src="../config.js"></script>
+<script>
+/* ════════════════════════════════════════════════════
+   DATA  (inline from config.js)
+════════════════════════════════════════════════════ */
+// const ALL_COURSES = [
+//   {
+//     category:"Diploma Courses", categorySlug:"diploma",
+//     icon:"fas fa-graduation-cap", pageLink:"diploma-course.html",
+//     courses:[
+//       { code:"DCA",         name:"Diploma in Computer Application",                                          desc:"MS Office, internet & computer basics.",                                duration:"6 Months",  fee:"Rs. 5,000/-",  tag:null,        image:"https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg",    longDesc:"A comprehensive introduction covering MS Office Suite (Word, Excel, PowerPoint), internet usage, email, and computer fundamentals. Ideal for beginners and those entering office-based roles." },
+//       { code:"DWT",         name:"Diploma in Web Technology",                                                desc:"Websites, HTML/CSS, Google Workspace.",                                  duration:"9 Months",  fee:"Rs. 8,000/-",  tag:null,        image:"https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg",      longDesc:"Learn how websites work from the ground up. Covers HTML5, CSS3, responsive design, Google Workspace, and basic web hosting — perfect for aspiring web professionals or business owners." },
+//       { code:"DCA-WD",      name:"Diploma in Computer Application & Web Design",                             desc:"From computer foundations to front-end web development.",                duration:"12 Months", fee:"Rs. 12,000/-", tag:null,        image:"https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg",      longDesc:"A dual-track diploma starting with computer fundamentals progressing through HTML, CSS, JavaScript basics, and web design principles. Graduate ready to build and maintain websites professionally." },
+//       { code:"DOAEP",       name:"Diploma in Office Expert & Publishing",                                    desc:"Basic to semi-advanced computer for office professionals.",              duration:"12 Months", fee:"Rs. 8,000/-",  tag:"demanding", image:"https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg",   longDesc:"The most in-demand office programme. Covers MS Office in depth, desktop publishing tools (PageMaker, CorelDraw basics), and professional computer operation skills required in any modern office." },
+//       { code:"ADOAP",       name:"Advance Diploma in Office Accounting Power",                               desc:"Advanced computer, Tally, and accounting software.",                    duration:"12 Months", fee:"Rs. 15,000/-", tag:null,        image:"https://cdn.pixabay.com/photo/2017/10/10/21/47/laptop-2838921_1280.jpg",      longDesc:"Covers Microsoft Excel (macros, pivot tables, VLOOKUP), Tally ERP, financial reporting, and data management. Designed for finance and accounting professionals seeking digital proficiency." },
+//       { code:"DDME",        name:"Diploma in Digital Marketing Education",                                   desc:"SEO, social media, Google Ads, and digital strategy.",                  duration:"12 Months", fee:"Rs. 18,000/-", tag:null,        image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg",  longDesc:"Complete digital marketing diploma covering SEO, SEM, Google Ads, Facebook & Instagram advertising, content marketing, email campaigns, analytics, and building a full digital marketing strategy." },
+//       { code:"ADITA",       name:"Advance Diploma in IT & Application",                                      desc:"Basic to advanced IT including programming languages.",                  duration:"18 Months", fee:"Rs. 25,000/-", tag:null,        image:"https://cdn.pixabay.com/photo/2019/10/03/12/12/programmer-4523101_1280.jpg",  longDesc:"Our most comprehensive IT diploma spanning computer fundamentals, networking basics, one programming language (Python or JavaScript), database concepts, and application development." },
+//       { code:"DGAIA & PPE", name:"Diploma in Generative AI Architecture & Professional Prompt Engineering",  desc:"AI architecture, ChatGPT, LLMs, and prompt engineering.",               duration:"12 Months", fee:"Rs. 24,000/-", tag:"popular",   image:"https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg", longDesc:"The most sought-after programme. Learn the architecture of large language models, master professional prompt engineering, build AI-powered tools, integrate the ChatGPT API, and explore emerging AI applications." },
+//     ]
+//   },
+//   {
+//     category:"For Office Work", categorySlug:"office",
+//     icon:"fas fa-briefcase", pageLink:"for-office-work.html",
+//     courses:[
+//       { code:"DOAEP",  name:"Diploma in Office Expert & Publishing",      desc:"Basic to semi-advanced computer for office use.",            duration:"12 Months", fee:"Rs. 8,000/-",  tag:"demanding", image:"https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg",  longDesc:"The most demanded office programme. Covers all MS Office tools in depth, desktop publishing, and essential computer operation skills. Most demanded by employers across West Bengal." },
+//       { code:"ADOAP",  name:"Advance Diploma in Office Accounting Power",  desc:"Advanced Excel, Tally, and accounting software.",           duration:"12 Months", fee:"Rs. 15,000/-", tag:null,        image:"https://cdn.pixabay.com/photo/2017/10/10/21/47/laptop-2838921_1280.jpg",     longDesc:"Advanced MS Excel, Tally ERP, financial reporting, and data management for accounting and finance professionals." },
+//       { code:"CCCO",   name:"Certificate Course for Computer Operation",   desc:"Quick-start MS Office course for office work.",             duration:"3 Months",  fee:"Rs. 3,000/-",  tag:null,        image:"https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg",   longDesc:"A focused 3-month certificate to get productive in an office environment quickly. Covers MS Word, Excel, PowerPoint, email, internet, and basic computer operation." },
+//       { code:"DDTP",   name:"Diploma in Desk Top Publication",             desc:"DTP tools and MS Office for print and office work.",        duration:"6 Months",  fee:"Rs. 5,000/-",  tag:null,        image:"https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg",   longDesc:"Covers DTP software (PageMaker, CorelDraw), MS Office essentials, and document design for creating professional print and digital materials." },
+//       { code:"CCBA",   name:"Certificate in Computer Basic Application",   desc:"OS, MS Office, internet, and data entry from scratch.",     duration:"6 Months",  fee:"Rs. 5,000/-",  tag:null,        image:"https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg",  longDesc:"Designed for absolute beginners entering the workforce. Covers operating systems, MS Office (Word, Excel), internet navigation, email, and professional data entry techniques." },
+//       { code:"CDEE",   name:"Certificate in Data Entry Expert",            desc:"Professional speed and accuracy data entry training.",      duration:"6 Months",  fee:"Rs. 5,000/-",  tag:null,        image:"https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg",   longDesc:"A focused training programme to master data entry speed, accuracy, keyboard shortcuts, spreadsheet data management, and industry-standard workflows." },
+//     ]
+//   },
+//   {
+//     category:"Kids Computer", categorySlug:"kids",
+//     icon:"fas fa-child", pageLink:"kids-computer.html",
+//     courses:[
+//       { code:"Kids-Prog", name:"Kids Programming",                           desc:"Scratch, block-based coding and logical thinking.",               duration:"Flexible", fee:"Rs. 5,000/-",        tag:null, image:"https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg",  longDesc:"An engaging, gamified introduction to programming for children. Covers Scratch programming, block-based coding, logical thinking, and creating simple animations and games." },
+//       { code:"Smart Kids", name:"Smart Kids Programme",                      desc:"3-year structured computer education for children aged 10+.",     duration:"3 Years",  fee:"Rs. 4,000/- per year", tag:null, image:"https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg", longDesc:"A comprehensive 3-year programme for children above 10 years covering computer basics, MS Office, internet safety, basic coding, and digital skills." },
+//       { code:"ICGS",      name:"Intensive Computer Guidance for Smart Kids", desc:"3-year structured computer programme for children below age 10.", duration:"3 Years",  fee:"Rs. 4,000/- per year", tag:null, image:"https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg", longDesc:"Specially designed for young learners below age 10. A 3-year curriculum using age-appropriate activities, Scratch programming, touch-typing, internet basics, and interactive digital learning tools." },
+//     ]
+//   },
+//   {
+//     category:"AI Courses", categorySlug:"ai",
+//     icon:"fas fa-robot", pageLink:"ai-course.html",
+//     courses:[
+//       { code:"DGAIA & PPE", name:"Diploma in Generative AI Architecture & Professional Prompt Engineering", desc:"AI architecture, ChatGPT API, LLMs, and prompt engineering.",     duration:"12 Months", fee:"Rs. 40,000/-", tag:"popular", image:"https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg", longDesc:"Explore LLM architecture, master prompt engineering, integrate the ChatGPT API, and build real AI-powered applications. The most popular programme in our institute." },
+//       { code:"ADAOBM",     name:"Advanced Diploma in AI Operations for Business & Media",                  desc:"Deploy AI tools across business operations and media workflows.",  duration:"12 Months", fee:"Rs. 25,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg",              longDesc:"Learn to use AI tools for marketing, business operations, content creation, social media automation, and media production." },
+//       { code:"MMMGAI",     name:"Mastery in Multi-Modal Gen-AI: Text, Image, Voice & Video",              desc:"Generate text, image, voice & video content using AI tools.",     duration:"12 Months", fee:"Rs. 35,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg",               longDesc:"Generate text (ChatGPT), images (Midjourney, DALL-E), voice (ElevenLabs), and video (Runway) using professional AI workflows." },
+//       { code:"CPAI",       name:"Certificate in Professional AI",                                         desc:"Core AI knowledge and practical tools for professionals.",          duration:"6 Months",  fee:"Rs. 15,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg",              longDesc:"A foundational AI certificate covering machine learning principles, AI tools, ChatGPT usage, prompt basics, and AI-assisted productivity — for non-technical professionals." },
+//       { code:"AI-WORK",    name:"AI for Official & Routine Knowledge",                                    desc:"Use AI in daily office and professional tasks.",                   duration:"6 Months",  fee:"Rs. 15,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg",               longDesc:"Practical AI training for office workers. Use ChatGPT, Copilot, Gemini, and other AI tools for drafting documents, summarising reports, data analysis, and automating repetitive tasks." },
+//       { code:"AI-EWSM",    name:"AI Essentials for Work & Social Media",                                  desc:"Leverage AI for social media content and digital marketing.",      duration:"6 Months",  fee:"Rs. 15,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg",                  longDesc:"For content creators, marketers, and social media managers. Covers using AI to generate posts, captions, images, reel scripts, ad copy, and social media strategy automation." },
+//       { code:"AD-PAL",     name:"Advanced Diploma in Python for AI & LLM Engineering",                   desc:"Build AI models and LLM-powered applications using Python.",      duration:"12 Months", fee:"Rs. 60,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2019/10/03/12/12/programmer-4523101_1280.jpg",              longDesc:"Learn Python deeply then apply it: training models, fine-tuning LLMs, building RAG systems, integrating APIs, and deploying AI-powered applications. Requires programming background." },
+//       { code:"DAIAC",      name:"Diploma in AI App Creation",                                             desc:"Design and build AI chatbots and intelligent applications.",      duration:"12 Months", fee:"Rs. 35,000/-", tag:null,      image:"https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg", longDesc:"Learn to design, build, and deploy AI-powered applications and chatbots. Covers prompt engineering, no-code AI tools, API integration, chatbot architecture, and publishing AI apps." },
+//     ]
+//   },
+//   {
+//     category:"Programming", categorySlug:"programming",
+//     icon:"fas fa-code", pageLink:"programming.html",
+//     courses:[
+//       { code:"DIPWD",    name:"Diploma in Internet Programming & Web Design",                    desc:"Foundation of coding — HTML, CSS, JS and web design.",            duration:"6 Months",  fee:"Rs. 13,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg",     longDesc:"The ideal entry point into programming. Covers HTML5, CSS3, responsive design, JavaScript fundamentals, and basics of web hosting and deployment." },
+//       { code:"ADWDWDE",  name:"Advance Diploma in Web Designing & Web Development Expert",       desc:"Full web development — front-end, back-end, and databases.",      duration:"12 Months", fee:"Rs. 25,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2019/10/03/12/12/programmer-4523101_1280.jpg", longDesc:"A comprehensive advanced diploma covering the complete web stack: HTML/CSS/JS, React.js, Node.js, REST APIs, MongoDB, Git, and deployment. Prepares students for full-stack developer roles." },
+//       { code:"DCEP",     name:"Diploma in Computer Programming Expert",                          desc:"Master Python, Java or C++ — your choice.",                      duration:"12 Months", fee:"Rs. 25,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg",  longDesc:"Deep mastery of one programming language of your choice (Python, Java, or C++). Covers syntax, OOP, data structures, algorithms, file handling, and real-world project development." },
+//       { code:"ADWDSWDE", name:"Advance Diploma in Web Design Solution & Web Development",        desc:"Advanced web design with frameworks and full-stack development.", duration:"18 Months", fee:"Rs. 27,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg",     longDesc:"Our most extensive programming diploma. Covers advanced CSS frameworks, JavaScript/TypeScript, React, backend development, database design, system architecture, and deployment pipelines." },
+//       { code:"Kids-Prog",name:"Kids Programming",                                                desc:"Block-based and introductory coding for young learners.",         duration:"Flexible",  fee:"Rs. 5,000/-",  tag:null, image:"https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg",  longDesc:"Fun, game-based programming for children using Scratch and visual block coding to teach logical thinking, sequences, loops, and simple programming concepts." },
+//     ]
+//   },
+//   {
+//     category:"Designing Course", categorySlug:"designing",
+//     icon:"fas fa-paint-brush", pageLink:"designing-course.html",
+//     courses:[
+//       { code:"DCA-WD",  name:"Diploma in Computer Application & Web Design",          desc:"Web designing with front-end tools and UI principles.",                    duration:"12 Months", fee:"Rs. 18,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg", longDesc:"Covers web design fundamentals, HTML/CSS for designers, Figma for wireframing, and basic UI principles. Bridge the gap between design thinking and technical implementation." },
+//       { code:"PDGDU",   name:"Professional Diploma in Graphic Design & UI/UX",        desc:"Photoshop, Illustrator, CorelDraw, Figma, Canva — complete design stack.", duration:"12 Months", fee:"Rs. 20,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg", longDesc:"Master Adobe Photoshop, Illustrator, CorelDraw, Figma, and Canva. Covers visual design principles, UI/UX methodology, user research, wireframing, and portfolio building." },
+//       { code:"CDMVC",   name:"Certification in Digital Media & Visual Communication", desc:"Web/app prototyping and visual communication for digital media.",         duration:"12 Months", fee:"Rs. 20,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg", longDesc:"Focused on digital media creation and visual storytelling. Covers motion graphics basics, web and app UI prototyping, brand identity design, and digital communication materials." },
+//       { code:"CCDT",    name:"Certificate in Creative Design Tools",                  desc:"Photoshop, CorelDraw, and Figma for beginners.",                          duration:"6 Months",  fee:"Rs. 8,000/-",  tag:null, image:"https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg", longDesc:"A focused, hands-on certificate for those wanting to get started with professional design tools quickly. Covers Adobe Photoshop, CorelDraw, and Figma with practical project-based tasks." },
+//     ]
+//   },
+//   {
+//     category:"Degree Courses", categorySlug:"degree",
+//     icon:"fas fa-university", pageLink:"degree-course.html",
+//     courses:[
+//       { code:"ITI",      name:"ITI — Industrial Training Institute", desc:"Fitter, Electrician, Welder, Diesel Mechanic.",   duration:"1–2 Years", fee:null, tag:null, image:"https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg",  longDesc:"Comprehensive guidance for ITI trade programmes including Fitter, Electrician, Welder, and Diesel Mechanic. We assist with admission, preparation, and practical skill development." },
+//       { code:"Nursing",  name:"Nursing Programmes",                  desc:"GNM, ANM, B.Sc Nursing — guidance and support.", duration:"2–4 Years", fee:null, tag:null, image:"https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg",   longDesc:"Structured academic guidance for GNM, ANM, and B.Sc Nursing — covering curriculum support, examination preparation, and digital skills relevant to modern healthcare practice." },
+//       { code:"Pharmacy", name:"Pharmacy Programmes",                 desc:"D.Pharm, B.Pharm — guidance and support.",       duration:"2–4 Years", fee:null, tag:null, image:"https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg", longDesc:"Academic support for D.Pharm and B.Pharm students. Covers course-aligned digital tools, documentation skills, and examination preparation resources." },
+//     ]
+//   },
+//   {
+//     category:"Special Courses", categorySlug:"special",
+//     icon:"fas fa-star", pageLink:"special-course.html",
+//     courses:[
+//       { code:"Adv-Excel", name:"Advanced Excel",                       desc:"Pivot tables, VLOOKUP, macros, and advanced formulas.",    duration:"3 Months",  fee:"Rs. 4,000/-",  tag:null, image:"https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg", longDesc:"Master Microsoft Excel professionally. Covers pivot tables, advanced formulas (VLOOKUP, INDEX/MATCH), data validation, conditional formatting, macros/VBA basics, and Excel dashboards." },
+//       { code:"MKD",       name:"Master Key Depression — Speed Typing", desc:"Increase typing speed and accuracy with structured drills.", duration:"3 Months",  fee:"Rs. 2,000/-",  tag:null, image:"https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg", longDesc:"A dedicated typing programme to build professional keyboard speed and accuracy. Covers touch-typing techniques, keyboarding drills, speed benchmarks, and Unicode typing for Bengali/Hindi." },
+//       { code:"ADMS",      name:"Advance Digital Marketing Solution",    desc:"SEO, SEM, Google Ads, social ads, and digital strategy.",  duration:"6 Months",  fee:"Rs. 15,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg", longDesc:"Advanced digital marketing covering SEO, SEM, Google Ads, Facebook/Instagram advertising, YouTube marketing, email campaigns, analytics, and end-to-end strategies." },
+//       { code:"DDME",      name:"Diploma in Digital Marketing Education",desc:"Comprehensive 12-month digital marketing diploma.",          duration:"12 Months", fee:"Rs. 24,000/-", tag:null, image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg", longDesc:"The most comprehensive digital marketing programme — covering all digital channels, advanced analytics, e-commerce marketing, influencer strategies, and professional portfolio development." },
+//     ]
+//   },
+// ];
+
+/* ════════════════════════════════════════════════════
+   RENDER
+════════════════════════════════════════════════════ */
+const root = document.getElementById('catalogueRoot');
+const tabs = document.getElementById('filterTabs');
+const searchInput = document.getElementById('searchInput');
+const emptyState = document.getElementById('emptyState');
+
+// Build filter tabs
+ALL_COURSES.forEach(cat => {
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn';
+  btn.dataset.filter = cat.categorySlug;
+  btn.innerHTML = `<i class="${cat.icon}"></i> ${cat.category}`;
+  tabs.appendChild(btn);
+});
+
+// Render all sections
+function renderAll(filterSlug = 'all', searchTerm = '') {
+  root.innerHTML = '';
+  let anyVisible = false;
+  const term = searchTerm.toLowerCase();
+
+  ALL_COURSES.forEach((cat, ci) => {
+    if (filterSlug !== 'all' && cat.categorySlug !== filterSlug) return;
+
+    const filtered = cat.courses.filter(c =>
+      !term ||
+      c.name.toLowerCase().includes(term) ||
+      c.desc.toLowerCase().includes(term) ||
+      c.code.toLowerCase().includes(term) ||
+      (c.longDesc && c.longDesc.toLowerCase().includes(term))
+    );
+    if (!filtered.length) return;
+
+    anyVisible = true;
+
+    const section = document.createElement('section');
+    section.className = 'category-section';
+    section.dataset.slug = cat.categorySlug;
+
+    const courseCount = `${filtered.length} course${filtered.length !== 1 ? 's' : ''}`;
+
+    section.innerHTML = `
+      <div class="cat-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge"><i class="${cat.icon}"></i></div>
+          <div>
+            <div class="cat-title">${cat.category}</div>
+            <div class="cat-count">${courseCount}</div>
+          </div>
+        </div>
+        <a href="${cat.coursePageLink}" class="cat-view-all">View Full Page <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="course-grid" id="grid-${cat.categorySlug}"></div>
+    `;
+
+    root.appendChild(section);
+
+    const grid = section.querySelector('.course-grid');
+    filtered.forEach((course, idx) => {
+      const card = buildCard(course, cat);
+      card.style.transitionDelay = `${idx * 0.07}s`;
+      grid.appendChild(card);
+    });
+  });
+
+  emptyState.classList.toggle('visible', !anyVisible);
+
+  // Trigger scroll observer
+  observeSections();
+}
+
+function buildCard(course, cat) {
+  const card = document.createElement('div');
+  card.className = 'course-card';
+
+  const tagHtml = course.tag === 'popular'
+    ? `<span class="card-tag tag-popular"><i class="fas fa-fire"></i> Popular</span>`
+    : course.tag === 'demanding'
+    ? `<span class="card-tag tag-demanding"><i class="fas fa-bolt"></i> Demanding</span>`
+    : '';
+
+  const feeDisplay = course.fee ? course.fee : 'Contact Us';
+
+  card.innerHTML = `
+    ${tagHtml}
+    <div class="card-img"><img src="${course.image}" alt="${course.name}" loading="lazy" /></div>
+    <div class="card-body">
+      <div class="card-code">${course.code}</div>
+      <div class="card-name">${course.name}</div>
+      <div class="card-desc">${course.desc}</div>
+      <div class="card-meta">
+        <div class="meta-duration"><i class="fas fa-clock"></i> ${course.duration}</div>
+        <div class="meta-fee ${!course.fee ? 'contact' : ''}">${feeDisplay}</div>
+      </div>
+    </div>
+    <div class="card-cta">
+      <button class="cta-btn cta-enroll" onclick="openWhatsApp('${encodeURIComponent(course.name)}')">
+        <i class="fab fa-whatsapp"></i> Enquire Now
+      </button>
+      <button class="cta-btn cta-details" onclick='openModal(${JSON.stringify(course).replace(/'/g,"&#39;")})'>
+        <i class="fas fa-info-circle"></i> Course Details
+      </button>
+    </div>
+  `;
+
+  return card;
+}
+
+/* ════════════════════════════════════════════════════
+   SCROLL OBSERVER
+════════════════════════════════════════════════════ */
+function observeSections() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // stagger cards
+        e.target.querySelectorAll('.course-card').forEach((c, i) => {
+          setTimeout(() => c.classList.add('visible'), i * 80);
+        });
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll('.category-section').forEach(s => io.observe(s));
+}
+
+/* ════════════════════════════════════════════════════
+   FILTER & SEARCH
+════════════════════════════════════════════════════ */
+let activeFilter = 'all';
+let activeSearch = '';
+
+tabs.addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  renderAll(activeFilter, activeSearch);
+  // Scroll to top of content
+  document.querySelector('.main').scrollIntoView({ behavior: 'smooth' });
+});
+
+searchInput.addEventListener('input', () => {
+  activeSearch = searchInput.value.trim();
+  renderAll(activeFilter, activeSearch);
+});
+
+/* ════════════════════════════════════════════════════
+   MODAL
+════════════════════════════════════════════════════ */
+function openModal(course) {
+  document.getElementById('modalImg').src = course.image;
+  document.getElementById('modalImg').alt = course.name;
+  document.getElementById('modalCode').textContent = course.code;
+  document.getElementById('modalTitle').textContent = course.name;
+  document.getElementById('modalDesc').textContent = course.longDesc || course.desc;
+  document.getElementById('modalDur').textContent = course.duration;
+  document.getElementById('modalFee').textContent = course.fee || 'Contact for details';
+  document.getElementById('modalActions').innerHTML = `
+    <button class="cta-btn cta-enroll" onclick="openWhatsApp('${encodeURIComponent(course.name)}')">
+      <i class="fab fa-whatsapp"></i> Enquire on WhatsApp
+    </button>
+    <a href="mailto:sb.abcd321@gmail.com?subject=Course Enquiry: ${encodeURIComponent(course.name)}" class="cta-btn cta-details">
+      <i class="fas fa-envelope"></i> Email Us
+    </a>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+/* ════════════════════════════════════════════════════
+   WHATSAPP
+════════════════════════════════════════════════════ */
+function openWhatsApp(courseName) {
+  const msg = encodeURIComponent(`Hello! I'm interested in the "${decodeURIComponent(courseName)}" course at ABCD Learning Hub. Please share more details.`);
+  window.open(`https://wa.me/918944899747?text=${msg}`, '_blank');
+}
+
+/* INIT */
+renderAll();
+</script>
+</body>
+</html>

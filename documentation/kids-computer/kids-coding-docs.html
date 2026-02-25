@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KidCode Academy 🚀 - 1 Year Learning Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow:#FFD93D; --orange:#FF6B35; --blue:#4ECDC4; --purple:#A855F7;
+  --pink:#FF6B9D; --green:#6BCB77; --red:#FF4444;
+  --dark:#1A1A2E; --darker:#0F0F1A; --card:#16213E; --card2:#1E1E3F;
+  --text:#E8E8F0; --muted:#9999BB; --border:rgba(255,255,255,0.08);
+  --sidebar-w:290px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--darker);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(1px 1px at 15% 25%,rgba(255,255,255,0.35) 0%,transparent 100%),radial-gradient(1px 1px at 75% 8%,rgba(255,255,255,0.28) 0%,transparent 100%),radial-gradient(1px 1px at 45% 65%,rgba(255,255,255,0.25) 0%,transparent 100%),radial-gradient(2px 2px at 88% 45%,rgba(255,255,255,0.2) 0%,transparent 100%),radial-gradient(1px 1px at 30% 88%,rgba(255,255,255,0.22) 0%,transparent 100%),radial-gradient(2px 2px at 60% 20%,rgba(255,255,255,0.18) 0%,transparent 100%);pointer-events:none;z-index:0;}
+
+/* ====== OVERLAY ====== */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;backdrop-filter:blur(2px);}
+.overlay.show{display:block;}
+
+/* ====== LAYOUT ====== */
+.layout{display:flex;min-height:100vh;position:relative;z-index:1;}
+
+/* ====== SIDEBAR ====== */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--card);
+  border-right:2px solid var(--border);
+  position:fixed;top:0;left:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;
+  padding:0 0 3rem;z-index:300;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  will-change:transform;
+}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--purple);border-radius:10px;}
+
+/* On mobile, hide sidebar by default */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+}
+
+.logo{padding:1.4rem 1.5rem 1rem;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--card);z-index:10;}
+.logo-text{font-family:'Fredoka One',cursive;font-size:1.55rem;background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-sub{font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+
+/* Sidebar close btn (mobile only) */
+.sidebar-close{display:none;position:absolute;top:1.2rem;right:1rem;background:rgba(255,255,255,0.08);border:none;border-radius:8px;color:var(--text);font-size:1.1rem;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;}
+@media(max-width:900px){.sidebar-close{display:flex;}}
+
+.nav-section{padding:0.8rem 1rem 0;}
+.nav-title{font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:0.6rem 0.5rem 0.3rem;font-weight:800;}
+
+.nav-item{
+  display:flex;align-items:center;gap:0.55rem;
+  padding:0.55rem 0.8rem;border-radius:10px;
+  cursor:pointer;font-size:0.86rem;font-weight:600;
+  color:var(--muted);transition:all 0.18s;
+  margin:1px 0;border:none;background:none;width:100%;text-align:left;
+  white-space:nowrap;overflow:hidden;
+}
+.nav-item:hover{background:rgba(255,255,255,0.07);color:var(--text);}
+.nav-item.active{background:linear-gradient(135deg,rgba(168,85,247,0.22),rgba(78,205,196,0.1));color:#fff;}
+.nav-item .icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0;}
+.badge{margin-left:auto;font-size:0.58rem;padding:2px 7px;border-radius:20px;font-weight:800;flex-shrink:0;}
+.badge.new{background:var(--green);color:var(--dark);}
+.badge.hot{background:var(--orange);color:#fff;}
+.badge.pro{background:var(--purple);color:#fff;}
+
+/* ====== MAIN ====== */
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;transition:margin-left 0.35s;}
+@media(max-width:900px){.main{margin-left:0;}}
+
+/* ====== TOPBAR ====== */
+.topbar{
+  position:sticky;top:0;
+  background:rgba(15,15,26,0.96);backdrop-filter:blur(14px);
+  border-bottom:2px solid var(--border);
+  padding:0.85rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:150;gap:1rem;
+}
+.topbar-left{display:flex;align-items:center;gap:0.9rem;min-width:0;}
+.menu-toggle{
+  background:rgba(255,255,255,0.07);border:2px solid var(--border);
+  border-radius:10px;padding:7px 10px;cursor:pointer;font-size:1.1rem;
+  color:var(--text);flex-shrink:0;transition:background 0.2s;
+  display:none;
+}
+@media(max-width:900px){.menu-toggle{display:flex;align-items:center;}}
+.menu-toggle:hover{background:rgba(255,255,255,0.12);}
+.page-title{font-family:'Fredoka One',cursive;font-size:1.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.xp-badge{background:linear-gradient(135deg,var(--yellow),var(--orange));color:var(--dark);font-weight:800;font-size:0.78rem;padding:5px 13px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+
+/* ====== CONTENT ====== */
+.content{padding:2.2rem 2.5rem;max-width:940px;}
+@media(max-width:600px){.content{padding:1.2rem 1rem;}}
+
+/* ====== SECTION ====== */
+.section{display:none;}
+.section.active{display:block;animation:fadeIn 0.32s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ====== HERO ====== */
+.hero{background:linear-gradient(135deg,#1a0533,#0d1b4a,#003322);border:2px solid var(--border);border-radius:24px;padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(168,85,247,0.15) 0%,transparent 70%);pointer-events:none;}
+.hero-emoji{font-size:3.5rem;display:block;margin-bottom:0.8rem;}
+.hero h1{font-family:'Fredoka One',cursive;font-size:2.5rem;line-height:1.1;margin-bottom:0.8rem;background:linear-gradient(135deg,#fff 0%,var(--yellow) 50%,var(--orange) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:1rem;max-width:520px;line-height:1.75;margin-bottom:1.4rem;}
+.hero-tags{display:flex;gap:0.5rem;flex-wrap:wrap;}
+.hero-tag{padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;border:2px solid;}
+.tag-html{border-color:var(--orange);color:var(--orange);background:rgba(255,107,53,0.1);}
+.tag-css{border-color:var(--blue);color:var(--blue);background:rgba(78,205,196,0.1);}
+.tag-js{border-color:var(--yellow);color:var(--yellow);background:rgba(255,217,61,0.1);}
+.tag-py{border-color:var(--green);color:var(--green);background:rgba(107,203,119,0.1);}
+.tag-pro{border-color:var(--purple);color:var(--purple);background:rgba(168,85,247,0.1);}
+@media(max-width:600px){.hero h1{font-size:1.7rem;}.hero{padding:1.5rem;}}
+
+/* ====== SECTION TITLE ====== */
+.section-title{font-family:'Fredoka One',cursive;font-size:1.9rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.6rem;}
+.section-desc{color:var(--muted);margin-bottom:1.8rem;font-size:0.93rem;line-height:1.75;}
+.breadcrumb{display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;color:var(--muted);margin-bottom:1.2rem;flex-wrap:wrap;}
+.breadcrumb span{color:var(--text);}
+
+/* ====== TOPIC GRID ====== */
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;}
+.topic-card{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:1.4rem;cursor:pointer;transition:all 0.25s;overflow:hidden;}
+.topic-card:hover{transform:translateY(-4px);border-color:var(--accent,var(--purple));box-shadow:0 14px 40px rgba(0,0,0,0.45);}
+.topic-card .card-icon{font-size:2rem;margin-bottom:0.7rem;}
+.topic-card h3{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:0.4rem;}
+.topic-card p{font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:0.8rem;}
+.card-lessons{font-size:0.72rem;color:var(--muted);font-weight:700;}
+.card-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:10px;margin-top:0.7rem;overflow:hidden;}
+.card-bar-fill{height:100%;border-radius:10px;}
+.card-html{--accent:var(--orange);}.card-html .card-bar-fill{background:var(--orange);width:100%;}
+.card-css{--accent:var(--blue);}.card-css .card-bar-fill{background:var(--blue);width:100%;}
+.card-js{--accent:var(--yellow);}.card-js .card-bar-fill{background:var(--yellow);width:100%;}
+.card-py{--accent:var(--green);}.card-py .card-bar-fill{background:var(--green);width:100%;}
+.card-proj{--accent:var(--pink);}.card-proj .card-bar-fill{background:var(--pink);width:100%;}
+.card-adv{--accent:var(--purple);}.card-adv .card-bar-fill{background:var(--purple);width:100%;}
+
+/* ====== LESSON ====== */
+.lesson{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:1.6rem 1.8rem;margin-bottom:1.4rem;transition:border-color 0.2s;}
+.lesson:hover{border-color:rgba(168,85,247,0.28);}
+.lesson-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.9rem;flex-wrap:wrap;}
+.lesson-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.82rem;flex-shrink:0;}
+.num-orange{background:rgba(255,107,53,0.18);color:var(--orange);border:2px solid var(--orange);}
+.num-blue{background:rgba(78,205,196,0.18);color:var(--blue);border:2px solid var(--blue);}
+.num-yellow{background:rgba(255,217,61,0.18);color:var(--yellow);border:2px solid var(--yellow);}
+.num-purple{background:rgba(168,85,247,0.18);color:var(--purple);border:2px solid var(--purple);}
+.num-pink{background:rgba(255,107,157,0.18);color:var(--pink);border:2px solid var(--pink);}
+.num-green{background:rgba(107,203,119,0.18);color:var(--green);border:2px solid var(--green);}
+.lesson h3{font-family:'Fredoka One',cursive;font-size:1.15rem;}
+.lesson-tag{margin-left:auto;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+.tag-easy{background:rgba(107,203,119,0.2);color:var(--green);}
+.tag-medium{background:rgba(255,217,61,0.2);color:var(--yellow);}
+.tag-hard{background:rgba(255,107,53,0.2);color:var(--orange);}
+.lesson p{color:var(--muted);font-size:0.89rem;line-height:1.75;margin-bottom:0.8rem;}
+.lesson p:last-child{margin-bottom:0;}
+
+/* ====== CODE BOX ====== */
+.code-box{background:#080812;border:2px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;margin:0.9rem 0;}
+.code-header{background:rgba(255,255,255,0.04);padding:0.55rem 1rem;display:flex;align-items:center;gap:0.45rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-red{background:#FF5F56;}.dot-yellow{background:#FFBD2E;}.dot-green{background:#27C93F;}
+.code-label{margin-left:auto;font-size:0.68rem;color:var(--muted);font-weight:700;letter-spacing:1px;}
+pre{padding:1.1rem 1.4rem;font-size:0.84rem;line-height:1.75;overflow-x:auto;font-family:'Courier New',monospace;}
+.kw{color:#BD93F9;}.tag{color:#FF79C6;}.attr{color:#50FA7B;}.str{color:#F1FA8C;}.comment{color:#6272A4;font-style:italic;}.val{color:#FFB86C;}.fn{color:#8BE9FD;}.sel{color:#FF79C6;}.prop{color:#50FA7B;}
+
+/* ====== CALLOUTS ====== */
+.fun-fact{background:linear-gradient(135deg,rgba(255,217,61,0.07),rgba(255,107,53,0.04));border-left:4px solid var(--yellow);border-radius:0 12px 12px 0;padding:0.9rem 1.1rem;margin:0.9rem 0;font-size:0.87rem;line-height:1.75;}
+.fun-fact strong{color:var(--yellow);}
+.tip{background:rgba(78,205,196,0.07);border-left:4px solid var(--blue);border-radius:0 12px 12px 0;padding:0.9rem 1.1rem;margin:0.9rem 0;font-size:0.87rem;line-height:1.75;}
+.tip strong{color:var(--blue);}
+.warn{background:rgba(255,107,53,0.07);border-left:4px solid var(--orange);border-radius:0 12px 12px 0;padding:0.9rem 1.1rem;margin:0.9rem 0;font-size:0.87rem;line-height:1.75;}
+.warn strong{color:var(--orange);}
+.pro-tip{background:rgba(168,85,247,0.07);border-left:4px solid var(--purple);border-radius:0 12px 12px 0;padding:0.9rem 1.1rem;margin:0.9rem 0;font-size:0.87rem;line-height:1.75;}
+.pro-tip strong{color:var(--purple);}
+
+/* ====== QUIZ ====== */
+.quiz-section{background:linear-gradient(135deg,rgba(168,85,247,0.07),rgba(78,205,196,0.04));border:2px solid rgba(168,85,247,0.18);border-radius:18px;padding:1.5rem 1.8rem;margin-top:1rem;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple);margin-bottom:0.9rem;display:flex;align-items:center;gap:0.45rem;}
+.quiz-q{font-size:0.91rem;font-weight:700;margin-bottom:0.75rem;color:var(--text);}
+.quiz-opts{display:flex;flex-direction:column;gap:0.45rem;margin-bottom:1rem;}
+.quiz-opt{padding:0.65rem 1rem;border-radius:10px;border:2px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);cursor:pointer;font-size:0.86rem;font-weight:600;transition:all 0.18s;text-align:left;color:var(--text);font-family:'Nunito',sans-serif;}
+.quiz-opt:hover{border-color:var(--purple);background:rgba(168,85,247,0.1);}
+.quiz-opt.correct{border-color:var(--green);background:rgba(107,203,119,0.14);color:var(--green);}
+.quiz-opt.wrong{border-color:var(--orange);background:rgba(255,107,53,0.1);color:var(--orange);}
+.quiz-opt:disabled{cursor:default;}
+.quiz-feedback{font-size:0.84rem;font-weight:700;min-height:1.2em;}
+.quiz-feedback.ok{color:var(--green);}.quiz-feedback.no{color:var(--orange);}
+
+/* ====== PRACTICE ====== */
+.practice-card{background:var(--card2);border:2px dashed rgba(255,255,255,0.09);border-radius:14px;padding:1.3rem 1.4rem;margin:0.7rem 0;}
+.practice-card h4{font-size:0.93rem;font-weight:800;margin-bottom:0.45rem;display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;}
+.practice-card p{font-size:0.84rem;color:var(--muted);line-height:1.75;}
+.difficulty{display:inline-flex;gap:2px;margin-left:auto;}
+.star{color:var(--yellow);font-size:0.78rem;}.star-off{color:rgba(255,255,255,0.12);font-size:0.78rem;}
+
+/* ====== TABLE ====== */
+.table-wrap{overflow-x:auto;margin:0.9rem 0;}
+table{width:100%;border-collapse:collapse;font-size:0.86rem;min-width:400px;}
+th{background:rgba(168,85,247,0.14);color:var(--purple);padding:0.75rem 1rem;text-align:left;font-weight:800;}
+td{padding:0.65rem 1rem;border-bottom:1px solid var(--border);color:var(--muted);}
+tr:hover td{background:rgba(255,255,255,0.018);}
+code{background:rgba(255,255,255,0.07);padding:2px 7px;border-radius:6px;font-size:0.83em;font-family:'Courier New',monospace;color:var(--blue);}
+
+/* ====== LEARNING PLAN ====== */
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.plan-month{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.3rem 1.4rem;position:relative;overflow:hidden;}
+.plan-month::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--purple));}
+.plan-month h3{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:0.2rem;display:flex;align-items:center;gap:0.4rem;}
+.plan-month .phase{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:0.7rem;}
+.plan-month ul{list-style:none;padding:0;}
+.plan-month ul li{font-size:0.82rem;color:var(--muted);padding:0.2rem 0;padding-left:1.2rem;position:relative;line-height:1.6;}
+.plan-month ul li::before{content:'▸';position:absolute;left:0;color:var(--accent,var(--purple));}
+.plan-m1{--accent:var(--orange);}
+.plan-m2{--accent:var(--yellow);}
+.plan-m3{--accent:var(--green);}
+.plan-m4{--accent:var(--blue);}
+.plan-m5{--accent:var(--blue);}
+.plan-m6{--accent:var(--purple);}
+.plan-m7{--accent:var(--pink);}
+.plan-m8{--accent:var(--yellow);}
+.plan-m9{--accent:var(--green);}
+.plan-m10{--accent:var(--orange);}
+.plan-m11{--accent:var(--purple);}
+.plan-m12{--accent:var(--yellow);}
+
+/* ====== PHASE BANNER ====== */
+.phase-banner{border-radius:14px;padding:1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+.phase-banner .phase-icon{font-size:2rem;flex-shrink:0;}
+.phase-banner h3{font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:0.2rem;}
+.phase-banner p{font-size:0.82rem;color:var(--muted);}
+.phase-1{background:linear-gradient(135deg,rgba(255,107,53,0.1),rgba(255,217,61,0.05));border:2px solid rgba(255,107,53,0.2);}
+.phase-2{background:linear-gradient(135deg,rgba(78,205,196,0.1),rgba(168,85,247,0.05));border:2px solid rgba(78,205,196,0.2);}
+.phase-3{background:linear-gradient(135deg,rgba(168,85,247,0.1),rgba(255,107,157,0.05));border:2px solid rgba(168,85,247,0.2);}
+.phase-4{background:linear-gradient(135deg,rgba(107,203,119,0.1),rgba(78,205,196,0.05));border:2px solid rgba(107,203,119,0.2);}
+
+/* ====== SKILL BARS ====== */
+.skill-bars{margin:1rem 0;}
+.skill-row{display:flex;align-items:center;gap:1rem;margin-bottom:0.7rem;}
+.skill-name{font-size:0.82rem;font-weight:700;width:110px;flex-shrink:0;}
+.skill-track{flex:1;height:8px;background:rgba(255,255,255,0.07);border-radius:10px;overflow:hidden;}
+.skill-fill{height:100%;border-radius:10px;transition:width 1s ease;}
+
+/* ====== MILESTONE ====== */
+.milestone{display:flex;gap:1rem;align-items:flex-start;padding:1rem;background:var(--card);border-radius:14px;margin-bottom:0.8rem;border:2px solid var(--border);}
+.milestone-icon{font-size:1.8rem;flex-shrink:0;}
+.milestone h4{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:0.2rem;}
+.milestone p{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+
+/* ====== KEYBOARD SHORTCUT ====== */
+.kbd{display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:5px;padding:1px 7px;font-size:0.78em;font-family:'Courier New',monospace;color:var(--text);}
+
+/* ====== CHAPTER DIVIDER ====== */
+.chapter-div{display:flex;align-items:center;gap:1rem;margin:1.5rem 0 1rem;}
+.chapter-div span{font-family:'Fredoka One',cursive;font-size:1.1rem;white-space:nowrap;}
+.chapter-line{flex:1;height:2px;background:var(--border);}
+
+/* ====== SCROLL HINT ====== */
+.scroll-hint{color:var(--muted);font-size:0.8rem;text-align:center;padding:2.5rem 0 1rem;}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="layout">
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar" id="sidebar">
+  <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+  <div class="logo">
+    <div class="logo-text">🚀 KidCode Academy</div>
+    <div class="logo-sub">1 Year · Learn · Build · Shine</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">🏠 Start Here</div>
+    <button class="nav-item active" onclick="showSection('home')"><span class="icon">🌟</span> Welcome Home</button>
+    <button class="nav-item" onclick="showSection('learning-plan')"><span class="icon">📅</span> 1-Year Plan <span class="badge hot">NEW</span></button>
+    <button class="nav-item" onclick="showSection('tools-setup')"><span class="icon">🛠️</span> Setup & Tools</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">🌐 Phase 1 · HTML (Months 1-2)</div>
+    <button class="nav-item" onclick="showSection('html-intro')"><span class="icon">📄</span> What is HTML?</button>
+    <button class="nav-item" onclick="showSection('html-tags')"><span class="icon">🏷️</span> Tags & Elements</button>
+    <button class="nav-item" onclick="showSection('html-structure')"><span class="icon">🏗️</span> Page Structure</button>
+    <button class="nav-item" onclick="showSection('html-links')"><span class="icon">🔗</span> Links & Images</button>
+    <button class="nav-item" onclick="showSection('html-lists')"><span class="icon">📝</span> Lists & Tables</button>
+    <button class="nav-item" onclick="showSection('html-forms')"><span class="icon">📬</span> Forms</button>
+    <button class="nav-item" onclick="showSection('html-semantic')"><span class="icon">🧩</span> Semantic HTML</button>
+    <button class="nav-item" onclick="showSection('html-quiz')"><span class="icon">❓</span> HTML Quiz!</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">🎨 Phase 2 · CSS (Months 3-4)</div>
+    <button class="nav-item" onclick="showSection('css-intro')"><span class="icon">🎨</span> What is CSS?</button>
+    <button class="nav-item" onclick="showSection('css-selectors')"><span class="icon">🎯</span> Selectors</button>
+    <button class="nav-item" onclick="showSection('css-colors')"><span class="icon">🌈</span> Colors & Fonts</button>
+    <button class="nav-item" onclick="showSection('css-box')"><span class="icon">📦</span> Box Model</button>
+    <button class="nav-item" onclick="showSection('css-flex')"><span class="icon">📐</span> Flexbox</button>
+    <button class="nav-item" onclick="showSection('css-grid')"><span class="icon">🗂️</span> CSS Grid</button>
+    <button class="nav-item" onclick="showSection('css-responsive')"><span class="icon">📱</span> Responsive Design</button>
+    <button class="nav-item" onclick="showSection('css-animations')"><span class="icon">✨</span> Animations</button>
+    <button class="nav-item" onclick="showSection('css-quiz')"><span class="icon">❓</span> CSS Quiz!</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">⚡ Phase 3 · JavaScript (Months 5-7)</div>
+    <button class="nav-item" onclick="showSection('js-intro')"><span class="icon">💡</span> What is JavaScript?</button>
+    <button class="nav-item" onclick="showSection('js-variables')"><span class="icon">📦</span> Variables & Data Types</button>
+    <button class="nav-item" onclick="showSection('js-operators')"><span class="icon">➕</span> Operators & Math</button>
+    <button class="nav-item" onclick="showSection('js-strings')"><span class="icon">💬</span> Working with Strings</button>
+    <button class="nav-item" onclick="showSection('js-functions')"><span class="icon">⚙️</span> Functions</button>
+    <button class="nav-item" onclick="showSection('js-conditions')"><span class="icon">🔀</span> If / Else</button>
+    <button class="nav-item" onclick="showSection('js-loops')"><span class="icon">🔄</span> Loops</button>
+    <button class="nav-item" onclick="showSection('js-arrays')"><span class="icon">📋</span> Arrays</button>
+    <button class="nav-item" onclick="showSection('js-objects')"><span class="icon">🗃️</span> Objects</button>
+    <button class="nav-item" onclick="showSection('js-dom')"><span class="icon">🖱️</span> DOM Magic</button>
+    <button class="nav-item" onclick="showSection('js-events')"><span class="icon">🎯</span> Events</button>
+    <button class="nav-item" onclick="showSection('js-quiz')"><span class="icon">❓</span> JS Quiz!</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">🎮 Phase 4 · Projects (Months 8-10)</div>
+    <button class="nav-item" onclick="showSection('proj-intro')"><span class="icon">🗺️</span> Project Guide</button>
+    <button class="nav-item" onclick="showSection('proj-profile')"><span class="icon">👤</span> Profile Page</button>
+    <button class="nav-item" onclick="showSection('proj-quiz-game')"><span class="icon">🎯</span> Quiz Game</button>
+    <button class="nav-item" onclick="showSection('proj-todo')"><span class="icon">✅</span> To-Do App</button>
+    <button class="nav-item" onclick="showSection('proj-calculator')"><span class="icon">🔢</span> Calculator</button>
+    <button class="nav-item" onclick="showSection('proj-weather')"><span class="icon">🌤️</span> Weather App</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">🚀 Phase 5 · Level Up (Months 11-12)</div>
+    <button class="nav-item" onclick="showSection('adv-git')"><span class="icon">📂</span> Git & GitHub</button>
+    <button class="nav-item" onclick="showSection('adv-debugging')"><span class="icon">🐛</span> Debugging Skills</button>
+    <button class="nav-item" onclick="showSection('adv-accessibility')"><span class="icon">♿</span> Accessibility</button>
+    <button class="nav-item" onclick="showSection('adv-next')"><span class="icon">🌠</span> What's Next?</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">📖 References</div>
+    <button class="nav-item" onclick="showSection('ref-cheatsheet')"><span class="icon">📋</span> Cheat Sheet <span class="badge pro">PRO</span></button>
+    <button class="nav-item" onclick="showSection('ref-glossary')"><span class="icon">📚</span> Glossary</button>
+  </div>
+</aside>
+
+<!-- ===================== MAIN ===================== -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Open menu">☰</button>
+      <div class="page-title" id="page-title">🌟 Welcome!</div>
+    </div>
+    <div class="xp-badge">⭐ Coder Level 1</div>
+  </div>
+
+  <div class="content">
+
+<!-- ==================== HOME ==================== -->
+<div class="section active" id="home">
+  <div class="hero">
+    <span class="hero-emoji">🚀</span>
+    <h1>Welcome to KidCode Academy!</h1>
+    <p>Hey there, future coder! 👋 You're about to go on a 1-year coding adventure. By the end, you'll be building real websites and apps — just like the pros. Let's go! 🌟</p>
+    <div class="hero-tags">
+      <span class="hero-tag tag-html">🌐 HTML</span>
+      <span class="hero-tag tag-css">🎨 CSS</span>
+      <span class="hero-tag tag-js">⚡ JavaScript</span>
+      <span class="hero-tag tag-py">🎮 Projects</span>
+      <span class="hero-tag tag-pro">🚀 Level Up</span>
+    </div>
+  </div>
+
+  <div class="fun-fact"><strong>🤔 Did You Know?</strong> There are over 26 million software developers in the world. Companies like Google, Apple, and Roblox pay coders to have FUN making awesome things! You could be one of them! 💻</div>
+
+  <div class="section-title" style="font-size:1.5rem;margin-top:1.5rem">📅 Your 1-Year Journey</div>
+  <div class="topic-grid">
+    <div class="topic-card card-html" onclick="showSection('learning-plan')"><div class="card-icon">🌐</div><h3>Phase 1: HTML</h3><p>Months 1–2. Build the skeleton of web pages!</p><div class="card-lessons">8 Topics · 20 Exercises</div><div class="card-bar"><div class="card-bar-fill"></div></div></div>
+    <div class="topic-card card-css" onclick="showSection('css-intro')"><div class="card-icon">🎨</div><h3>Phase 2: CSS</h3><p>Months 3–4. Make everything beautiful!</p><div class="card-lessons">9 Topics · 24 Exercises</div><div class="card-bar"><div class="card-bar-fill"></div></div></div>
+    <div class="topic-card card-js" onclick="showSection('js-intro')"><div class="card-icon">⚡</div><h3>Phase 3: JavaScript</h3><p>Months 5–7. Add brains and interactivity!</p><div class="card-lessons">12 Topics · 30 Exercises</div><div class="card-bar"><div class="card-bar-fill"></div></div></div>
+    <div class="topic-card card-proj" onclick="showSection('proj-intro')"><div class="card-icon">🎮</div><h3>Phase 4: Projects</h3><p>Months 8–10. Build 5 real apps!</p><div class="card-lessons">5 Projects · Real Skills</div><div class="card-bar"><div class="card-bar-fill"></div></div></div>
+    <div class="topic-card card-adv" onclick="showSection('adv-git')"><div class="card-icon">🚀</div><h3>Phase 5: Level Up</h3><p>Months 11–12. Think like a real developer!</p><div class="card-lessons">4 Topics · Pro Skills</div><div class="card-bar"><div class="card-bar-fill"></div></div></div>
+  </div>
+
+  <div class="tip"><strong>💡 How to Use This Course:</strong> Follow the phases in order! Each one builds on the last. Try to practice <strong>30 minutes every day</strong> — that's all it takes to become amazing at coding! 🎯</div>
+
+  <div class="section-title" style="font-size:1.5rem;margin-top:2rem">🏆 What You'll Be Able to Do</div>
+  <div class="milestone"><div class="milestone-icon">🌐</div><div><h4>Build Real Websites</h4><p>Create pages that anyone in the world can visit and enjoy!</p></div></div>
+  <div class="milestone"><div class="milestone-icon">🎮</div><div><h4>Make Browser Games</h4><p>Build quiz games, number games, and interactive apps from scratch!</p></div></div>
+  <div class="milestone"><div class="milestone-icon">💼</div><div><h4>Show Off Your Portfolio</h4><p>Have a collection of real projects to share with friends, family, and even future employers!</p></div></div>
+  <div class="milestone"><div class="milestone-icon">🤝</div><div><h4>Work with Other Coders</h4><p>Use GitHub like a real developer to save your work and collaborate!</p></div></div>
+</div>
+
+<!-- ==================== LEARNING PLAN ==================== -->
+<div class="section" id="learning-plan">
+  <div class="breadcrumb">📅 <span>1-Year Learning Plan</span></div>
+  <div class="section-title">📅 Your 1-Year Coding Roadmap</div>
+  <div class="section-desc">This plan is designed for kids aged 8–16. Follow it step by step and by Month 12, you'll be a real Junior Web Developer! 🏆 Aim for 30–60 minutes of practice per day, 5 days a week.</div>
+
+  <div class="phase-banner phase-1"><div class="phase-icon">🌐</div><div><h3>Phase 1: Foundation — HTML (Months 1–2)</h3><p>Learn the skeleton of every website. No prior experience needed!</p></div></div>
+  <div class="plan-grid">
+    <div class="plan-month plan-m1"><h3>📅 Month 1</h3><div class="phase">HTML Basics</div><ul><li>What is the internet?</li><li>What is HTML?</li><li>Tags, elements, attributes</li><li>Headings h1–h6</li><li>Paragraphs &amp; text formatting</li><li>Comments in code</li><li>Your first webpage!</li><li>✅ Project: "Hello World" page</li></ul></div>
+    <div class="plan-month plan-m2"><h3>📅 Month 2</h3><div class="phase">HTML Intermediate</div><ul><li>Links (anchor tags)</li><li>Images &amp; alt text</li><li>Lists (ul, ol, li)</li><li>Tables (tr, th, td)</li><li>HTML Forms &amp; inputs</li><li>Semantic HTML tags</li><li>Page structure practice</li><li>✅ Project: Mini fan website</li></ul></div>
+  </div>
+
+  <div class="phase-banner phase-2"><div class="phase-icon">🎨</div><div><h3>Phase 2: Style — CSS (Months 3–4)</h3><p>Transform plain pages into beautiful, colourful experiences!</p></div></div>
+  <div class="plan-grid">
+    <div class="plan-month plan-m3"><h3>📅 Month 3</h3><div class="phase">CSS Fundamentals</div><ul><li>What is CSS &amp; how to link it</li><li>Selectors (tag, class, id)</li><li>Colors (named, hex, rgb)</li><li>Fonts &amp; Google Fonts</li><li>Text properties</li><li>Box model (margin, padding, border)</li><li>Background colors &amp; images</li><li>✅ Project: Style your fan site</li></ul></div>
+    <div class="plan-month plan-m4"><h3>📅 Month 4</h3><div class="phase">CSS Advanced</div><ul><li>Flexbox layout</li><li>CSS Grid layout</li><li>Responsive design &amp; media queries</li><li>Pseudo-classes (:hover, :focus)</li><li>Transitions &amp; transforms</li><li>CSS Animations &amp; keyframes</li><li>CSS variables</li><li>✅ Project: Responsive landing page</li></ul></div>
+  </div>
+
+  <div class="phase-banner phase-3"><div class="phase-icon">⚡</div><div><h3>Phase 3: Brains — JavaScript (Months 5–7)</h3><p>Make your pages interactive, smart, and alive!</p></div></div>
+  <div class="plan-grid">
+    <div class="plan-month plan-m5"><h3>📅 Month 5</h3><div class="phase">JS Basics</div><ul><li>What is JavaScript?</li><li>Variables (let, const)</li><li>Data types (string, number, boolean)</li><li>Operators &amp; math</li><li>String methods</li><li>console.log &amp; alert</li><li>✅ Project: Greeting app</li></ul></div>
+    <div class="plan-month plan-m6"><h3>📅 Month 6</h3><div class="phase">JS Logic</div><ul><li>If / else / else if</li><li>Comparison operators</li><li>Functions (define &amp; call)</li><li>Return values</li><li>For loops</li><li>While loops</li><li>Arrays &amp; array methods</li><li>✅ Project: Number guessing game</li></ul></div>
+    <div class="plan-month plan-m7"><h3>📅 Month 7</h3><div class="phase">JS + DOM</div><ul><li>Objects in JavaScript</li><li>DOM selection methods</li><li>Changing HTML &amp; CSS with JS</li><li>Events (click, input, keydown)</li><li>Event listeners</li><li>Local Storage basics</li><li>✅ Project: Interactive quiz app</li></ul></div>
+  </div>
+
+  <div class="phase-banner phase-4"><div class="phase-icon">🎮</div><div><h3>Phase 4: Build — Projects (Months 8–10)</h3><p>Apply everything you know to build 5 amazing real-world apps!</p></div></div>
+  <div class="plan-grid">
+    <div class="plan-month plan-m8"><h3>📅 Month 8</h3><div class="phase">Project Sprint 1</div><ul><li>Plan your portfolio website</li><li>Build a personal profile page</li><li>Build an interactive quiz game</li><li>Code review: fix and improve</li><li>✅ Submit: 2 completed projects</li></ul></div>
+    <div class="plan-month plan-m9"><h3>📅 Month 9</h3><div class="phase">Project Sprint 2</div><ul><li>Build a To-Do List app</li><li>Build a Calculator app</li><li>Add CSS animations to projects</li><li>Make projects mobile-friendly</li><li>✅ Submit: 2 more projects</li></ul></div>
+    <div class="plan-month plan-m10"><h3>📅 Month 10</h3><div class="phase">Final Big Project</div><ul><li>Plan a Weather app or Blog</li><li>Use APIs (beginner-friendly)</li><li>Build &amp; style the project</li><li>Test on phone &amp; tablet</li><li>✅ Submit: Final project</li></ul></div>
+  </div>
+
+  <div class="phase-banner phase-4" style="background:linear-gradient(135deg,rgba(107,203,119,0.1),rgba(78,205,196,0.05));border-color:rgba(107,203,119,0.25)"><div class="phase-icon">🚀</div><div><h3>Phase 5: Level Up (Months 11–12)</h3><p>Think and work like a real professional developer!</p></div></div>
+  <div class="plan-grid">
+    <div class="plan-month plan-m11"><h3>📅 Month 11</h3><div class="phase">Developer Skills</div><ul><li>Git: save &amp; track your code</li><li>GitHub: share your projects</li><li>Debugging techniques</li><li>Reading error messages</li><li>Web accessibility basics</li><li>✅ Put all projects on GitHub!</li></ul></div>
+    <div class="plan-month plan-m12"><h3>📅 Month 12</h3><div class="phase">Graduation 🎓</div><ul><li>Polish your portfolio</li><li>Deploy a real website (Netlify)</li><li>Explore what's next: React, Python</li><li>Build your coding résumé</li><li>Celebrate! 🎉</li><li>✅ You're a Junior Developer!</li></ul></div>
+  </div>
+
+  <div class="fun-fact"><strong>🏆 By the End of 1 Year, You Will:</strong> Know HTML, CSS &amp; JavaScript · Have 5+ real projects · Have a GitHub profile · Be able to deploy real websites that the whole world can see!</div>
+</div>
+
+<!-- ==================== TOOLS SETUP ==================== -->
+<div class="section" id="tools-setup">
+  <div class="breadcrumb">🛠️ <span>Setup & Tools</span></div>
+  <div class="section-title">🛠️ Setting Up Your Coding Space</div>
+  <div class="section-desc">Before we write any code, let's get your computer ready! Good tools make coding much more fun. Here's exactly what you need — all FREE! 🆓</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>Step 1 — Install VS Code 💻</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p><strong>Visual Studio Code</strong> (VS Code) is a free text editor made by Microsoft. It's what most real developers use to write code. Download it from <code>code.visualstudio.com</code>.</p>
+    <p>After installing, add these helpful extensions by clicking the puzzle-piece icon on the left sidebar:</p>
+    <div class="table-wrap"><table><tr><th>Extension Name</th><th>What it does</th></tr><tr><td>Prettier</td><td>Automatically formats your code so it looks neat 🧹</td></tr><tr><td>Live Server</td><td>Shows your webpage live as you type — like magic! ✨</td></tr><tr><td>Auto Rename Tag</td><td>Renames HTML closing tags automatically 🏷️</td></tr><tr><td>Color Highlight</td><td>Shows actual colors next to color codes 🌈</td></tr></table></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">2</div><h3>Step 2 — Install a Browser 🌐</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Use <strong>Google Chrome</strong> — it has the best developer tools for beginners. Download it free at <code>google.com/chrome</code>.</p>
+    <div class="tip"><strong>💡 Super Power:</strong> In Chrome, press <span class="kbd">F12</span> (or right-click → Inspect) to open the Developer Tools. You can see HTML, CSS, errors, and even change things live! 🔍</div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">3</div><h3>Step 3 — Create Your First File 📄</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Create a folder on your Desktop called <code>MyCode</code>. Inside it, create a file called <code>index.html</code>. Open VS Code and drag your folder into it. You're ready! 🎉</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Keyboard Shortcuts to Remember</span></div><pre><span class="comment">Ctrl + S         → Save your file (do this often!)</span>
+<span class="comment">Ctrl + Z         → Undo a mistake</span>
+<span class="comment">Ctrl + /         → Comment/uncomment a line</span>
+<span class="comment">Alt + Shift + F  → Format/beautify your code</span>
+<span class="comment">Ctrl + Shift + P → Open VS Code command palette</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== HTML INTRO ==================== -->
+<div class="section" id="html-intro">
+  <div class="breadcrumb">🌐 HTML <span>→ What is HTML?</span></div>
+  <div class="section-title">🌐 What is HTML?</div>
+  <div class="section-desc">HTML stands for <strong>HyperText Markup Language</strong>. It's the language every single website in the world is built with. Think of it as LEGO bricks — you snap pieces together to build pages! 🧱</div>
+
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>HTML is Like a Sandwich 🥪</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Most HTML tags come in pairs — an <strong>opening tag</strong> and a <strong>closing tag</strong>. The closing tag has a <code>/</code> in it. The content goes in the middle, like the filling!</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Example</span></div><pre><span class="comment">&lt;!-- Opening tag → Content → Closing tag --&gt;</span>
+<span class="tag">&lt;p&gt;</span>I am a paragraph! 🍔<span class="tag">&lt;/p&gt;</span>
+
+<span class="tag">&lt;h1&gt;</span>I am a big heading! 🎉<span class="tag">&lt;/h1&gt;</span>
+
+<span class="tag">&lt;strong&gt;</span>I am bold text!<span class="tag">&lt;/strong&gt;</span>
+
+<span class="tag">&lt;em&gt;</span>I am italic text!<span class="tag">&lt;/em&gt;</span></pre></div>
+    <div class="fun-fact"><strong>🌟 Fun Fact:</strong> HTML was invented in 1991 by Tim Berners-Lee, a scientist in Switzerland. He wanted a way to share documents with other scientists. It turned into the World Wide Web!</div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">2</div><h3>The Basic HTML Template 📄</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Every HTML file starts with the same basic structure. Think of it as the rules of the game — you need them before you play!</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">index.html</span></div><pre><span class="tag">&lt;!DOCTYPE html&gt;</span>     <span class="comment">&lt;!-- Tells browser: "I'm an HTML file!" --&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="str">"en"</span><span class="tag">&gt;</span>       <span class="comment">&lt;!-- Root element + language --&gt;</span>
+
+  <span class="tag">&lt;head&gt;</span>             <span class="comment">&lt;!-- Hidden info (not shown on page) --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="str">"UTF-8"</span><span class="tag">&gt;</span>        <span class="comment">&lt;!-- Support all letters --&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"viewport"</span> <span class="attr">content</span>=<span class="str">"width=device-width"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My Awesome Page 🌟<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+
+  <span class="tag">&lt;body&gt;</span>             <span class="comment">&lt;!-- Everything VISIBLE goes here! --&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hello World! 🌍<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>This is my very first webpage!<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+
+<span class="tag">&lt;/html&gt;</span></pre></div>
+    <div class="tip"><strong>💡 VS Code Shortcut:</strong> In VS Code, type <code>!</code> and press <span class="kbd">Tab</span> — it automatically creates the full template for you! This is called an Emmet shortcut! 🚀</div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">3</div><h3>HTML Attributes 🔧</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Attributes give extra information to a tag. They live inside the opening tag and have a <code>name="value"</code> format.</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Attributes</span></div><pre><span class="comment">&lt;!-- The tag has an attribute --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"https://google.com"</span><span class="tag">&gt;</span>Go to Google<span class="tag">&lt;/a&gt;</span>
+<span class="comment">&lt;!--   ↑ attribute name  ↑ attribute value --&gt;</span>
+
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"cat.jpg"</span> <span class="attr">alt</span>=<span class="str">"A cute cat"</span> <span class="attr">width</span>=<span class="str">"200"</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"intro"</span> <span class="attr">id</span>=<span class="str">"first-para"</span><span class="tag">&gt;</span>Hello!<span class="tag">&lt;/p&gt;</span></pre></div>
+    <div class="quiz-section">
+      <div class="quiz-title">🎯 Quick Check!</div>
+      <div class="quiz-q">What does the <code>DOCTYPE html</code> line tell the browser?</div>
+      <div class="quiz-opts" id="q-html-doc">
+        <button class="quiz-opt" onclick="ans(this,false,'q-html-doc-fb')">To download the page</button>
+        <button class="quiz-opt" onclick="ans(this,true,'q-html-doc-fb')">That this file is an HTML document</button>
+        <button class="quiz-opt" onclick="ans(this,false,'q-html-doc-fb')">To style the page</button>
+      </div>
+      <div class="quiz-feedback" id="q-html-doc-fb"></div>
+    </div>
+  </div>
+
+  <div class="chapter-div"><div class="chapter-line"></div><span>🏋️ Practice Problems</span><div class="chapter-line"></div></div>
+  <div class="practice-card"><h4>📝 Exercise 1 <div class="difficulty"><span class="star">★</span><span class="star-off">★</span><span class="star-off">★</span></div></h4><p>Create a file called <code>hello.html</code>. Write the full HTML template and add your name in an <code>&lt;h1&gt;</code> and your favourite colour in a <code>&lt;p&gt;</code>. Open it in your browser!</p></div>
+  <div class="practice-card"><h4>📝 Exercise 2 <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star-off">★</span></div></h4><p>Write 5 paragraphs about yourself: favourite food, favourite game, favourite movie, your city, and your dream job. Use <code>&lt;strong&gt;</code> for the most important word in each paragraph.</p></div>
+  <div class="practice-card"><h4>🌟 Challenge: Superhero Profile <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div></h4><p>Create a "Superhero Profile" page. Use <code>&lt;h1&gt;</code> for superhero name, <code>&lt;h2&gt;</code> for sections like "Superpowers" and "Weaknesses", <code>&lt;p&gt;</code> for descriptions, <code>&lt;em&gt;</code> for dramatic words, and <code>&lt;strong&gt;</code> for the most powerful power!</p></div>
+</div>
+
+<!-- ==================== HTML TAGS ==================== -->
+<div class="section" id="html-tags">
+  <div class="breadcrumb">🌐 HTML <span>→ Tags & Elements</span></div>
+  <div class="section-title">🏷️ Tags & Elements</div>
+  <div class="section-desc">HTML has dozens of tags, each with a special job. Let's learn the most important ones — you'll use these every single day! 🛠️</div>
+
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>Heading Tags h1–h6 🎯</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Headings organize your content like chapters in a book. <code>h1</code> is the biggest and most important — only use ONE per page! <code>h2</code>–<code>h6</code> get progressively smaller.</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Headings</span></div><pre><span class="tag">&lt;h1&gt;</span>The Main Title of the Page 📖<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span>A Section Title<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span>A Sub-section<span class="tag">&lt;/h3&gt;</span>
+<span class="tag">&lt;h4&gt;</span>A smaller heading<span class="tag">&lt;/h4&gt;</span>
+<span class="tag">&lt;h5&gt;</span>Even smaller<span class="tag">&lt;/h5&gt;</span>
+<span class="tag">&lt;h6&gt;</span>The smallest heading<span class="tag">&lt;/h6&gt;</span></pre></div>
+    <div class="warn"><strong>⚠️ Important Rule:</strong> Only ever use <code>&lt;h1&gt;</code> ONCE on a page — for the main title. This helps search engines (like Google) understand your page! 🔍</div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">2</div><h3>Complete Tags Cheat Sheet 📋</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="table-wrap"><table><tr><th>Tag</th><th>Name</th><th>What it does</th></tr>
+    <tr><td><code>&lt;p&gt;</code></td><td>Paragraph</td><td>A block of text</td></tr>
+    <tr><td><code>&lt;strong&gt;</code></td><td>Strong</td><td>Bold important text</td></tr>
+    <tr><td><code>&lt;em&gt;</code></td><td>Emphasis</td><td>Italic text</td></tr>
+    <tr><td><code>&lt;u&gt;</code></td><td>Underline</td><td>Underlined text</td></tr>
+    <tr><td><code>&lt;mark&gt;</code></td><td>Mark</td><td>Highlighted text 🟡</td></tr>
+    <tr><td><code>&lt;del&gt;</code></td><td>Delete</td><td><del>Strikethrough</del> text</td></tr>
+    <tr><td><code>&lt;br&gt;</code></td><td>Line Break</td><td>Forces a new line (no closing tag!)</td></tr>
+    <tr><td><code>&lt;hr&gt;</code></td><td>Horizontal Rule</td><td>A horizontal divider line</td></tr>
+    <tr><td><code>&lt;div&gt;</code></td><td>Division</td><td>An invisible box/container</td></tr>
+    <tr><td><code>&lt;span&gt;</code></td><td>Span</td><td>Inline container for styling</td></tr>
+    <tr><td><code>&lt;sup&gt;</code></td><td>Superscript</td><td>Text above like E=mc<sup>2</sup></td></tr>
+    <tr><td><code>&lt;sub&gt;</code></td><td>Subscript</td><td>Text below like H<sub>2</sub>O</td></tr></table></div>
+  </div>
+
+  <div class="chapter-div"><div class="chapter-line"></div><span>🏋️ Practice Problems</span><div class="chapter-line"></div></div>
+  <div class="practice-card"><h4>📝 Exercise 1 <div class="difficulty"><span class="star">★</span><span class="star-off">★</span><span class="star-off">★</span></div></h4><p>Create a "My Favourite Things" page using all 6 heading sizes for different categories. Under each heading, add a paragraph with details.</p></div>
+  <div class="practice-card"><h4>📝 Exercise 2 <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star-off">★</span></div></h4><p>Write a short adventure story using at least 6 different text tags: <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;mark&gt;</code>, <code>&lt;del&gt;</code>, <code>&lt;u&gt;</code>, and <code>&lt;p&gt;</code>.</p></div>
+</div>
+
+<!-- ==================== HTML STRUCTURE ==================== -->
+<div class="section" id="html-structure">
+  <div class="breadcrumb">🌐 HTML <span>→ Page Structure</span></div>
+  <div class="section-title">🏗️ Page Structure</div>
+  <div class="section-desc">Well-organized HTML is easier to read and maintain. Let's learn how to structure pages like real professionals! 🏠</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>Block vs Inline Elements 📐</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <p><strong>Block elements</strong> take up the full width of the page — they start on a new line. <strong>Inline elements</strong> only take up as much space as they need and sit next to other content.</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Block vs Inline</span></div><pre><span class="comment">&lt;!-- BLOCK elements (each on its own line) --&gt;</span>
+<span class="tag">&lt;div&gt;</span>I'm a block element<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;p&gt;</span>I'm also a block element<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Me too!<span class="tag">&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- INLINE elements (sit inside text) --&gt;</span>
+<span class="tag">&lt;p&gt;</span>My name is <span class="tag">&lt;strong&gt;</span>Alex<span class="tag">&lt;/strong&gt;</span> and I like
+<span class="tag">&lt;span</span> <span class="attr">style</span>=<span class="str">"color:red"</span><span class="tag">&gt;</span>coding<span class="tag">&lt;/span&gt;</span>!<span class="tag">&lt;/p&gt;</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== HTML LINKS ==================== -->
+<div class="section" id="html-links">
+  <div class="breadcrumb">🌐 HTML <span>→ Links & Images</span></div>
+  <div class="section-title">🔗 Links & Images</div>
+  <div class="section-desc">Links connect pages together — that's literally how the "web" works! Images make pages come alive! 🖼️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>Creating Links 🔗</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>The <code>&lt;a&gt;</code> tag (anchor) makes clickable links. The <code>href</code> attribute says where to go. You can link to websites, other pages, or even different sections of the same page!</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Links</span></div><pre><span class="comment">&lt;!-- External link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"https://www.google.com"</span><span class="tag">&gt;</span>Go to Google 🔍<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Open in a new tab (don't close my page!) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"https://youtube.com"</span> <span class="attr">target</span>=<span class="str">"_blank"</span><span class="tag">&gt;</span>YouTube 🎥<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Link to another page in your project --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"about.html"</span><span class="tag">&gt;</span>About Me Page<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Jump to a section on the same page --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#contact"</span><span class="tag">&gt;</span>Jump to Contact 📍<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Link an image (click image to go somewhere) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"https://nasa.gov"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"rocket.png"</span> <span class="attr">alt</span>=<span class="str">"Rocket 🚀"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/a&gt;</span></pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">2</div><h3>Adding Images 🖼️</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>Images use the <code>&lt;img&gt;</code> tag. It's a self-closing tag — no closing tag needed! Always add <code>alt</code> text: it helps people with screen readers and when images fail to load.</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Images</span></div><pre><span class="comment">&lt;!-- Image from internet --&gt;</span>
+<span class="tag">&lt;img</span>
+  <span class="attr">src</span>=<span class="str">"https://placekitten.com/300/200"</span>
+  <span class="attr">alt</span>=<span class="str">"A cute kitten 🐱"</span>
+  <span class="attr">width</span>=<span class="str">"300"</span>
+  <span class="attr">height</span>=<span class="str">"200"</span>
+<span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Image from your project folder --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"images/my-photo.jpg"</span> <span class="attr">alt</span>=<span class="str">"My photo"</span><span class="tag">&gt;</span></pre></div>
+    <div class="tip"><strong>💡 Pro Tip:</strong> Create an <code>images/</code> folder inside your project folder and keep all images there. Then reference them as <code>src="images/filename.jpg"</code> — clean and organized! 📁</div>
+  </div>
+  <div class="chapter-div"><div class="chapter-line"></div><span>🏋️ Practice Problems</span><div class="chapter-line"></div></div>
+  <div class="practice-card"><h4>📝 Exercise 1 <div class="difficulty"><span class="star">★</span><span class="star-off">★</span><span class="star-off">★</span></div></h4><p>Create a "My Favourite Websites" page with 5 links, each opening in a new tab. Add a short description paragraph under each link.</p></div>
+  <div class="practice-card"><h4>🌟 Challenge: Animal Gallery <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div></h4><p>Create an "Amazing Animals" gallery page. Find 6 free animal images online (use <code>unsplash.com</code> — free!). Show each image with its name as a heading and a fun fact paragraph. Wrap each image in a link to that animal's Wikipedia page!</p></div>
+</div>
+
+<!-- ==================== HTML LISTS ==================== -->
+<div class="section" id="html-lists">
+  <div class="breadcrumb">🌐 HTML <span>→ Lists & Tables</span></div>
+  <div class="section-title">📝 Lists & Tables</div>
+  <div class="section-desc">Lists help organize information and tables display data in rows and columns — like a spreadsheet! 📊</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>All Types of Lists 📋</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Lists</span></div><pre><span class="comment">&lt;!-- Unordered list (bullet points) --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>🍕 Pizza<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>🍔 Burger<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>🍦 Ice Cream<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="comment">&lt;!-- Ordered list (numbered) --&gt;</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Wake up 😴<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Eat breakfast 🥞<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Learn to code! 💻<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+
+<span class="comment">&lt;!-- Nested list (list inside a list) --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Fruits
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="tag">&lt;li&gt;</span>🍎 Apple<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span>🍌 Banana<span class="tag">&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Vegetables<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">2</div><h3>Creating Tables 📊</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <p>Tables have rows (<code>&lt;tr&gt;</code>), header cells (<code>&lt;th&gt;</code>), and data cells (<code>&lt;td&gt;</code>). Always wrap them in <code>&lt;table&gt;</code>!</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Table</span></div><pre><span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>                          <span class="comment">&lt;!-- Header section --&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Name 🧑<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Age 🎂<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Hobby 🎮<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>                          <span class="comment">&lt;!-- Data rows --&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Alex<span class="tag">&lt;/td&gt;&lt;td&gt;</span>10<span class="tag">&lt;/td&gt;&lt;td&gt;</span>Drawing ✏️<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Sam<span class="tag">&lt;/td&gt;&lt;td&gt;</span>12<span class="tag">&lt;/td&gt;&lt;td&gt;</span>Gaming 🎮<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== HTML FORMS ==================== -->
+<div class="section" id="html-forms">
+  <div class="breadcrumb">🌐 HTML <span>→ Forms</span></div>
+  <div class="section-title">📬 HTML Forms</div>
+  <div class="section-desc">Every login, signup, search box, and contact form uses HTML forms. Learn these and you can capture user input! 🔐</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>All Form Elements 📬</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Form</span></div><pre><span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="str">"submit.html"</span> <span class="attr">method</span>=<span class="str">"post"</span><span class="tag">&gt;</span>
+
+  <span class="comment">&lt;!-- Text input --&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="str">"name"</span><span class="tag">&gt;</span>Your Name: 👤<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"text"</span> <span class="attr">id</span>=<span class="str">"name"</span> <span class="attr">placeholder</span>=<span class="str">"Type your name..."</span> <span class="attr">required</span><span class="tag">&gt;</span>
+
+  <span class="comment">&lt;!-- Email --&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="str">"email"</span><span class="tag">&gt;</span>Email: 📧<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"email"</span> <span class="attr">id</span>=<span class="str">"email"</span> <span class="attr">placeholder</span>=<span class="str">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="631a0c161123060e020a0f4d000c0e">[email&#160;protected]</a>"</span><span class="tag">&gt;</span>
+
+  <span class="comment">&lt;!-- Number --&gt;</span>
+  <span class="tag">&lt;label</span><span class="tag">&gt;</span>Your Age: 🎂<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"number"</span> <span class="attr">min</span>=<span class="str">"5"</span> <span class="attr">max</span>=<span class="str">"18"</span><span class="tag">&gt;</span>
+
+  <span class="comment">&lt;!-- Dropdown --&gt;</span>
+  <span class="tag">&lt;label</span><span class="tag">&gt;</span>Favourite Color: 🎨<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;select&gt;</span>
+    <span class="tag">&lt;option&gt;</span>🔴 Red<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option&gt;</span>🔵 Blue<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option&gt;</span>🟢 Green<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;/select&gt;</span>
+
+  <span class="comment">&lt;!-- Radio buttons (pick one) --&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Are you a: <span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"radio"</span> <span class="attr">name</span>=<span class="str">"type"</span> <span class="attr">value</span>=<span class="str">"student"</span><span class="tag">&gt;</span> Student
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"radio"</span> <span class="attr">name</span>=<span class="str">"type"</span> <span class="attr">value</span>=<span class="str">"teacher"</span><span class="tag">&gt;</span> Teacher
+
+  <span class="comment">&lt;!-- Checkbox (pick many) --&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"checkbox"</span><span class="tag">&gt;</span> I agree to be awesome 😎
+
+  <span class="comment">&lt;!-- Text area --&gt;</span>
+  <span class="tag">&lt;label</span><span class="tag">&gt;</span>Tell me about yourself:<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;textarea</span> <span class="attr">rows</span>=<span class="str">"4"</span> <span class="attr">placeholder</span>=<span class="str">"Write here..."</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+
+  <span class="comment">&lt;!-- Submit button --&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="str">"submit"</span><span class="tag">&gt;</span>Send! 🚀<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;/form&gt;</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== HTML SEMANTIC ==================== -->
+<div class="section" id="html-semantic">
+  <div class="breadcrumb">🌐 HTML <span>→ Semantic HTML</span></div>
+  <div class="section-title">🧩 Semantic HTML</div>
+  <div class="section-desc">Semantic tags describe what they contain — not just how they look. They make your code more readable, help search engines, and help people with disabilities. Use them always! ♿</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">1</div><h3>Semantic Tags Explained 🏠</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Semantic HTML Layout</span></div><pre><span class="tag">&lt;header&gt;</span>   <span class="comment">&lt;!-- Logo, site name, top navigation --&gt;</span>
+  <span class="tag">&lt;h1&gt;</span>🌟 My Awesome Site<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;nav&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"index.html"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"about.html"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"contact.html"</span><span class="tag">&gt;</span>Contact<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span>
+
+<span class="tag">&lt;main&gt;</span>       <span class="comment">&lt;!-- The main content of the page --&gt;</span>
+
+  <span class="tag">&lt;section&gt;</span>  <span class="comment">&lt;!-- A group of related content --&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>Latest News 📰<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;article&gt;</span> <span class="comment">&lt;!-- A standalone piece of content --&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>Coding is Fun!<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p&gt;</span>Today I learned HTML...<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/article&gt;</span>
+  <span class="tag">&lt;/section&gt;</span>
+
+  <span class="tag">&lt;aside&gt;</span>    <span class="comment">&lt;!-- Sidebar info (tips, ads, links) --&gt;</span>
+    <span class="tag">&lt;h4&gt;</span>💡 Coding Tips<span class="tag">&lt;/h4&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Practice every day!<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/aside&gt;</span>
+
+<span class="tag">&lt;/main&gt;</span>
+
+<span class="tag">&lt;footer&gt;</span>   <span class="comment">&lt;!-- Bottom of page: credits, links --&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Made with ❤️ by a Kid Coder! 2025<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/footer&gt;</span></pre></div>
+    <div class="fun-fact"><strong>🌟 Why Semantic HTML Matters:</strong> Google reads your semantic tags to understand what your page is about. If you use <code>&lt;article&gt;</code> and <code>&lt;header&gt;</code>, Google ranks your page higher in search results! 📈</div>
+  </div>
+</div>
+
+<!-- ==================== HTML QUIZ ==================== -->
+<div class="section" id="html-quiz">
+  <div class="breadcrumb">🌐 HTML <span>→ Quiz!</span></div>
+  <div class="section-title">❓ HTML Mastery Quiz! 🎉</div>
+  <div class="section-desc">Test everything you've learned about HTML! Don't worry about getting some wrong — mistakes help us learn! 😊</div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q1</div><div class="quiz-q">Which tag creates a clickable hyperlink?</div><div class="quiz-opts" id="hq1"><button class="quiz-opt" onclick="ans(this,false,'hq1-fb')">&lt;link&gt;</button><button class="quiz-opt" onclick="ans(this,true,'hq1-fb')">&lt;a href="..."&gt;</button><button class="quiz-opt" onclick="ans(this,false,'hq1-fb')">&lt;click&gt;</button></div><div class="quiz-feedback" id="hq1-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q2</div><div class="quiz-q">Which tag shows an image?</div><div class="quiz-opts" id="hq2"><button class="quiz-opt" onclick="ans(this,false,'hq2-fb')">&lt;picture src="..."&gt;</button><button class="quiz-opt" onclick="ans(this,true,'hq2-fb')">&lt;img src="..."&gt;</button><button class="quiz-opt" onclick="ans(this,false,'hq2-fb')">&lt;image src="..."&gt;</button></div><div class="quiz-feedback" id="hq2-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q3</div><div class="quiz-q">Where does visible page content go?</div><div class="quiz-opts" id="hq3"><button class="quiz-opt" onclick="ans(this,false,'hq3-fb')">&lt;head&gt;</button><button class="quiz-opt" onclick="ans(this,true,'hq3-fb')">&lt;body&gt;</button><button class="quiz-opt" onclick="ans(this,false,'hq3-fb')">&lt;html&gt;</button></div><div class="quiz-feedback" id="hq3-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q4</div><div class="quiz-q">What does &lt;ul&gt; create?</div><div class="quiz-opts" id="hq4"><button class="quiz-opt" onclick="ans(this,true,'hq4-fb')">Bullet point list</button><button class="quiz-opt" onclick="ans(this,false,'hq4-fb')">Numbered list</button><button class="quiz-opt" onclick="ans(this,false,'hq4-fb')">A table</button></div><div class="quiz-feedback" id="hq4-fb"></div></div>
+  <div class="quiz-section"><div class="quiz-title">🎯 Q5</div><div class="quiz-q">Which semantic tag wraps the main content of a page?</div><div class="quiz-opts" id="hq5"><button class="quiz-opt" onclick="ans(this,false,'hq5-fb')">&lt;content&gt;</button><button class="quiz-opt" onclick="ans(this,false,'hq5-fb')">&lt;section&gt;</button><button class="quiz-opt" onclick="ans(this,true,'hq5-fb')">&lt;main&gt;</button></div><div class="quiz-feedback" id="hq5-fb"></div></div>
+</div>
+
+<!-- ==================== CSS INTRO ==================== -->
+<div class="section" id="css-intro">
+  <div class="breadcrumb">🎨 CSS <span>→ What is CSS?</span></div>
+  <div class="section-title">🎨 What is CSS?</div>
+  <div class="section-desc">CSS — Cascading Style Sheets — controls how your HTML looks. If HTML is the skeleton, CSS is the clothes, hair, and makeup! Without CSS, websites would all be boring black text on white backgrounds. 😴</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>CSS Syntax Rules 🔤</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>CSS is made of <strong>rules</strong>. Each rule has a <strong>selector</strong> (who to style) and a <strong>declaration block</strong> with properties and values.</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Rule Anatomy</span></div><pre><span class="comment">/* selector { property: value; } */</span>
+
+<span class="sel">h1</span> {                    <span class="comment">/* selector: target h1 tags */</span>
+  <span class="prop">color</span>: <span class="val">hotpink</span>;        <span class="comment">/* property: value */</span>
+  <span class="prop">font-size</span>: <span class="val">48px</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}
+
+<span class="sel">p</span> {
+  <span class="prop">color</span>: <span class="val">#333</span>;
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;    <span class="comment">/* Space between lines */</span>
+  <span class="prop">font-size</span>: <span class="val">16px</span>;
+}</pre></div>
+    <div class="fun-fact"><strong>🌟 "Cascading" Means:</strong> Styles flow downward like a waterfall. If you style <code>&lt;body&gt;</code>, all children inherit those styles unless you override them. The more specific rule always wins! 🌊</div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">2</div><h3>3 Ways to Add CSS 🔗</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Ways to add CSS</span></div><pre><span class="comment">&lt;!-- 1. EXTERNAL file (BEST practice!) --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"style.css"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- 2. Internal &lt;style&gt; tag in &lt;head&gt; --&gt;</span>
+<span class="tag">&lt;style&gt;</span>
+  <span class="sel">body</span> { <span class="prop">background</span>: <span class="val">lightblue</span>; }
+<span class="tag">&lt;/style&gt;</span>
+
+<span class="comment">&lt;!-- 3. Inline (avoid this! Hard to manage) --&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">style</span>=<span class="str">"color: red; font-size: 20px;"</span><span class="tag">&gt;</span>Red text<span class="tag">&lt;/p&gt;</span></pre></div>
+    <div class="pro-tip"><strong>🚀 Pro Tip:</strong> Always use Method 1 — a separate <code>style.css</code> file. It keeps your HTML and CSS separate, making your code much cleaner and easier to update! 🧹</div>
+  </div>
+  <div class="chapter-div"><div class="chapter-line"></div><span>🏋️ Practice Problems</span><div class="chapter-line"></div></div>
+  <div class="practice-card"><h4>📝 Exercise 1 <div class="difficulty"><span class="star">★</span><span class="star-off">★</span><span class="star-off">★</span></div></h4><p>Create <code>style.css</code> and link it to your HTML. Make the background your favourite color, change all text to white, and center all headings.</p></div>
+  <div class="practice-card"><h4>📝 Exercise 2 <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star-off">★</span></div></h4><p>Style your HTML fan site! Give different colors to <code>h1</code>, <code>h2</code>, and <code>p</code>. Add <code>font-size</code>, <code>line-height</code>, and change the <code>font-family</code>.</p></div>
+</div>
+
+<!-- ==================== CSS SELECTORS ==================== -->
+<div class="section" id="css-selectors">
+  <div class="breadcrumb">🎨 CSS <span>→ Selectors</span></div>
+  <div class="section-title">🎯 CSS Selectors</div>
+  <div class="section-desc">Selectors tell CSS which elements to style. Master these and you can style any element exactly how you want! 🫵</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>All Selector Types 🎯</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Selectors</span></div><pre><span class="comment">/* Tag: targets ALL elements of this type */</span>
+<span class="sel">h1</span> { <span class="prop">color</span>: <span class="val">red</span>; }
+<span class="sel">p</span>  { <span class="prop">color</span>: <span class="val">gray</span>; }
+
+<span class="comment">/* Class: targets elements with class="name" */</span>
+<span class="sel">.highlight</span> { <span class="prop">background</span>: <span class="val">yellow</span>; }
+<span class="sel">.big-text</span>   { <span class="prop">font-size</span>: <span class="val">28px</span>; }
+
+<span class="comment">/* ID: targets ONE specific element */</span>
+<span class="sel">#hero-title</span> { <span class="prop">font-size</span>: <span class="val">64px</span>; }
+
+<span class="comment">/* Multiple selectors at once */</span>
+<span class="sel">h1, h2, h3</span> { <span class="prop">font-family</span>: <span class="val">cursive</span>; }
+
+<span class="comment">/* Descendant: p inside a div */</span>
+<span class="sel">div p</span> { <span class="prop">color</span>: <span class="val">blue</span>; }
+
+<span class="comment">/* Hover state */</span>
+<span class="sel">button:hover</span> {
+  <span class="prop">background</span>: <span class="val">hotpink</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+}
+
+<span class="comment">/* Focus state (when clicked / keyboard) */</span>
+<span class="sel">input:focus</span> {
+  <span class="prop">border-color</span>: <span class="val">blue</span>;
+  <span class="prop">outline</span>: <span class="val">3px solid lightblue</span>;
+}</pre></div>
+    <div class="tip"><strong>💡 Class vs ID:</strong> Use <strong>class</strong> when many elements share the same style. Use <strong>ID</strong> for one-of-a-kind elements. A good rule: 90% of the time, use class! 😊</div>
+  </div>
+</div>
+
+<!-- ==================== CSS COLORS ==================== -->
+<div class="section" id="css-colors">
+  <div class="breadcrumb">🎨 CSS <span>→ Colors & Fonts</span></div>
+  <div class="section-title">🌈 Colors & Fonts</div>
+  <div class="section-desc">Colors and fonts are the most fun part of CSS! Make your pages look truly unique and beautiful! 💅</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>Color Methods 🌈</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Colors</span></div><pre><span class="sel">div</span> {
+  <span class="comment">/* 1. Named colors (easy to read!) */</span>
+  <span class="prop">color</span>: <span class="val">tomato</span>;
+  <span class="prop">color</span>: <span class="val">dodgerblue</span>;
+  <span class="prop">color</span>: <span class="val">hotpink</span>;
+
+  <span class="comment">/* 2. HEX codes (6 digits: R R G G B B) */</span>
+  <span class="prop">color</span>: <span class="val">#FF6B35</span>;      <span class="comment">/* Orange */</span>
+  <span class="prop">color</span>: <span class="val">#4ECDC4</span>;      <span class="comment">/* Teal */</span>
+  <span class="prop">color</span>: <span class="val">#fff</span>;         <span class="comment">/* White (short) */</span>
+
+  <span class="comment">/* 3. RGB (Red Green Blue, 0-255) */</span>
+  <span class="prop">color</span>: <span class="val">rgb(255, 0, 128)</span>;
+
+  <span class="comment">/* 4. RGBA (with transparency 0-1) */</span>
+  <span class="prop">color</span>: <span class="val">rgba(255, 0, 128, 0.5)</span>;  <span class="comment">/* 50% transparent */</span>
+
+  <span class="comment">/* 5. Gradient backgrounds! */</span>
+  <span class="prop">background</span>: <span class="val">linear-gradient(to right, #FF6B35, #FFD93D)</span>;
+  <span class="prop">background</span>: <span class="val">radial-gradient(circle, purple, blue)</span>;
+}</pre></div>
+    <div class="fun-fact"><strong>🌈 Fun Fact:</strong> There are 16.7 million different colors you can make with HEX codes! That's more than the number of colors humans can actually see! 🤯</div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">2</div><h3>Fonts & Typography 🔤</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Typography</span></div><pre><span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="val">'Nunito', Arial, sans-serif</span>;  <span class="comment">/* Fallbacks! */</span>
+  <span class="prop">font-size</span>: <span class="val">16px</span>;
+  <span class="prop">font-weight</span>: <span class="val">400</span>;    <span class="comment">/* 100 thin → 900 black */</span>
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;    <span class="comment">/* Space between lines */</span>
+  <span class="prop">letter-spacing</span>: <span class="val">0.5px</span>;
+}
+
+<span class="sel">h1</span> {
+  <span class="prop">font-weight</span>: <span class="val">900</span>;    <span class="comment">/* Extra bold! */</span>
+  <span class="prop">text-transform</span>: <span class="val">uppercase</span>;
+  <span class="prop">text-shadow</span>: <span class="val">2px 2px 10px rgba(0,0,0,0.3)</span>;
+}
+
+<span class="comment">/* Google Fonts — add this in HTML head first:
+&lt;link href="https://fonts.googleapis.com/css2?
+family=Fredoka+One&family=Nunito:wght@400;700"
+rel="stylesheet"&gt; */</span>
+
+<span class="sel">.fancy</span> { <span class="prop">font-family</span>: <span class="val">'Fredoka One', cursive</span>; }</pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">3</div><h3>CSS Variables 🔧</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <p>CSS Variables (custom properties) let you store values and reuse them. Change the variable once, and it updates everywhere! This is like a magic paintbrush! 🪄</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Variables</span></div><pre><span class="comment">/* Define variables in :root (global) */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--primary</span>: <span class="val">#FF6B35</span>;
+  <span class="prop">--secondary</span>: <span class="val">#4ECDC4</span>;
+  <span class="prop">--text</span>: <span class="val">#333</span>;
+  <span class="prop">--radius</span>: <span class="val">12px</span>;
+}
+
+<span class="comment">/* Use them with var() */</span>
+<span class="sel">button</span> {
+  <span class="prop">background</span>: <span class="val">var(--primary)</span>;
+  <span class="prop">border-radius</span>: <span class="val">var(--radius)</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+}
+
+<span class="sel">h1</span> { <span class="prop">color</span>: <span class="val">var(--primary)</span>; }
+<span class="sel">p</span>  { <span class="prop">color</span>: <span class="val">var(--text)</span>; }</pre></div>
+  </div>
+</div>
+
+<!-- ==================== CSS BOX MODEL ==================== -->
+<div class="section" id="css-box">
+  <div class="breadcrumb">🎨 CSS <span>→ Box Model</span></div>
+  <div class="section-title">📦 The Box Model</div>
+  <div class="section-desc">Every HTML element is a rectangular box. Once you understand the box model, spacing in CSS makes total sense! 📦</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>Box Model Layers 📦</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <p>Imagine a gift box: the present is <strong>content</strong>, the bubble wrap is <strong>padding</strong>, the box itself is <strong>border</strong>, and the space between boxes on a shelf is <strong>margin</strong>!</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Box Model</span></div><pre><span class="sel">.card</span> {
+  <span class="prop">width</span>: <span class="val">300px</span>;            <span class="comment">/* Content width */</span>
+  <span class="prop">height</span>: <span class="val">200px</span>;           <span class="comment">/* Content height */</span>
+
+  <span class="prop">padding</span>: <span class="val">20px</span>;           <span class="comment">/* Space INSIDE (all sides) */</span>
+  <span class="prop">padding-top</span>: <span class="val">10px</span>;       <span class="comment">/* Just top padding */</span>
+  <span class="prop">padding</span>: <span class="val">10px 20px</span>;     <span class="comment">/* top/bottom  left/right */</span>
+
+  <span class="prop">border</span>: <span class="val">3px solid hotpink</span>; <span class="comment">/* The outline */</span>
+  <span class="prop">border-radius</span>: <span class="val">16px</span>;    <span class="comment">/* Rounded corners! */</span>
+
+  <span class="prop">margin</span>: <span class="val">20px</span>;            <span class="comment">/* Space OUTSIDE */</span>
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;          <span class="comment">/* Center horizontally! */</span>
+
+  <span class="comment">/* box-sizing: border-box means padding is
+     INCLUDED in the width — use this always! */</span>
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+
+<span class="comment">/* Apply box-sizing to EVERYTHING (best practice) */</span>
+<span class="sel">* </span>{ <span class="prop">box-sizing</span>: <span class="val">border-box</span>; }</pre></div>
+    <div class="tip"><strong>💡 Always add this!</strong> Put <code>* { box-sizing: border-box; }</code> at the TOP of every CSS file. It makes sizing elements much more predictable! This is what every professional uses! 💼</div>
+  </div>
+</div>
+
+<!-- ==================== CSS FLEX ==================== -->
+<div class="section" id="css-flex">
+  <div class="breadcrumb">🎨 CSS <span>→ Flexbox</span></div>
+  <div class="section-title">📐 Flexbox Layout</div>
+  <div class="section-desc">Flexbox makes arranging elements in a row or column super easy! Before flexbox, centering things was a nightmare. Now it's one line of code! 🎉</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>Flexbox Fundamentals 📐</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Flexbox</span></div><pre><span class="comment">/* Parent becomes a flex container */</span>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+
+  <span class="comment">/* Direction */</span>
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;         <span class="comment">/* default (horizontal) */</span>
+  <span class="prop">flex-direction</span>: <span class="val">column</span>;      <span class="comment">/* vertical */</span>
+
+  <span class="comment">/* Horizontal alignment */</span>
+  <span class="prop">justify-content</span>: <span class="val">center</span>;     <span class="comment">/* center items */</span>
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>; <span class="comment">/* spread out */</span>
+  <span class="prop">justify-content</span>: <span class="val">flex-end</span>;   <span class="comment">/* push to right */</span>
+
+  <span class="comment">/* Vertical alignment */</span>
+  <span class="prop">align-items</span>: <span class="val">center</span>;        <span class="comment">/* center vertically */</span>
+  <span class="prop">align-items</span>: <span class="val">flex-start</span>;    <span class="comment">/* top aligned */</span>
+
+  <span class="prop">gap</span>: <span class="val">16px</span>;                   <span class="comment">/* space between items */</span>
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;             <span class="comment">/* wrap to next line */</span>
+}
+
+<span class="comment">/* Children can grow/shrink */</span>
+<span class="sel">.item</span> {
+  <span class="prop">flex</span>: <span class="val">1</span>;      <span class="comment">/* grow equally */</span>
+  <span class="prop">flex</span>: <span class="val">0 0 200px</span>; <span class="comment">/* fixed 200px, no grow/shrink */</span>
+}</pre></div>
+    <div class="fun-fact"><strong>✨ The Magic Centering Code:</strong> To perfectly center ANYTHING horizontally AND vertically:<br><code>display: flex; justify-content: center; align-items: center;</code><br>That's it! 3 properties! Professional developers use this every day! 🎯</div>
+  </div>
+</div>
+
+<!-- ==================== CSS GRID ==================== -->
+<div class="section" id="css-grid">
+  <div class="breadcrumb">🎨 CSS <span>→ CSS Grid</span></div>
+  <div class="section-title">🗂️ CSS Grid</div>
+  <div class="section-desc">CSS Grid is like Flexbox's big sibling! Where Flexbox works in one direction, Grid works in BOTH rows AND columns at the same time! Perfect for complex layouts. 🗂️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>Grid Basics 🗂️</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Grid</span></div><pre><span class="sel">.grid-container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+
+  <span class="comment">/* 3 equal columns */</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">1fr 1fr 1fr</span>;
+
+  <span class="comment">/* Same as above, shorthand */</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>;
+
+  <span class="comment">/* Auto-fit: as many columns as fit! */</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fit, minmax(200px, 1fr))</span>;
+
+  <span class="prop">gap</span>: <span class="val">20px</span>;     <span class="comment">/* Space between all cells */</span>
+}
+
+<span class="comment">/* An item can span multiple columns */</span>
+<span class="sel">.featured</span> {
+  <span class="prop">grid-column</span>: <span class="val">span 2</span>;   <span class="comment">/* Take 2 columns! */</span>
+  <span class="prop">grid-row</span>: <span class="val">span 2</span>;      <span class="comment">/* Take 2 rows! */</span>
+}</pre></div>
+    <div class="tip"><strong>💡 Grid vs Flexbox?</strong> Use <strong>Flexbox</strong> for single-direction layouts (navbar, button groups). Use <strong>Grid</strong> for 2D layouts (card grids, page layouts). You'll often use BOTH together! 🤝</div>
+  </div>
+</div>
+
+<!-- ==================== CSS RESPONSIVE ==================== -->
+<div class="section" id="css-responsive">
+  <div class="breadcrumb">🎨 CSS <span>→ Responsive Design</span></div>
+  <div class="section-title">📱 Responsive Design</div>
+  <div class="section-desc">Responsive design means your website looks great on ALL screen sizes — from tiny phones to huge TV screens! More than 60% of web traffic is on phones, so this is really important! 📱</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>Media Queries 📱</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <p>Media queries let you apply different CSS for different screen sizes. Think of it as giving your website a different outfit for each device! 👗</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Media Queries</span></div><pre><span class="comment">/* Default styles (for all screens) */</span>
+<span class="sel">.cards</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>;
+  <span class="prop">gap</span>: <span class="val">20px</span>;
+}
+
+<span class="comment">/* Tablet (smaller than 768px) */</span>
+<span class="sel">@media (max-width: 768px)</span> {
+  <span class="sel">.cards</span> {
+    <span class="prop">grid-template-columns</span>: <span class="val">repeat(2, 1fr)</span>;
+  }
+}
+
+<span class="comment">/* Phone (smaller than 480px) */</span>
+<span class="sel">@media (max-width: 480px)</span> {
+  <span class="sel">.cards</span> {
+    <span class="prop">grid-template-columns</span>: <span class="val">1fr</span>;  <span class="comment">/* 1 column! */</span>
+  }
+  <span class="sel">h1</span> { <span class="prop">font-size</span>: <span class="val">1.5rem</span>; }       <span class="comment">/* Smaller text */</span>
+  <span class="sel">.sidebar</span> { <span class="prop">display</span>: <span class="val">none</span>; }     <span class="comment">/* Hide sidebar */</span>
+}
+
+<span class="comment">/* Even add this in your HTML head: */</span>
+<span class="comment">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== CSS ANIMATIONS ==================== -->
+<div class="section" id="css-animations">
+  <div class="breadcrumb">🎨 CSS <span>→ Animations</span></div>
+  <div class="section-title">✨ CSS Animations</div>
+  <div class="section-desc">Make things MOVE without any JavaScript! CSS animations and transitions make your site feel alive and modern! 🌟</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">1</div><h3>Transitions 🔄</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Transitions</span></div><pre><span class="sel">button</span> {
+  <span class="prop">background</span>: <span class="val">royalblue</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">padding</span>: <span class="val">12px 24px</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="comment">/* Smoothly animate ANY change over 0.3s */</span>
+  <span class="prop">transition</span>: <span class="val">all 0.3s ease</span>;
+}
+
+<span class="sel">button:hover</span> {
+  <span class="prop">background</span>: <span class="val">hotpink</span>;
+  <span class="prop">transform</span>: <span class="val">scale(1.1) translateY(-3px)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 8px 25px rgba(255,107,157,0.4)</span>;
+}</pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">2</div><h3>Keyframe Animations ✨</h3><span class="lesson-tag tag-hard">Hard</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS Keyframes</span></div><pre><span class="comment">/* Define the animation */</span>
+<span class="sel">@keyframes</span> <span class="fn">spin</span> {
+  <span class="val">from</span> { <span class="prop">transform</span>: <span class="val">rotate(0deg)</span>; }
+  <span class="val">to</span>   { <span class="prop">transform</span>: <span class="val">rotate(360deg)</span>; }
+}
+
+<span class="sel">@keyframes</span> <span class="fn">bounce</span> {
+  <span class="val">0%, 100%</span> { <span class="prop">transform</span>: <span class="val">translateY(0)</span>; }
+  <span class="val">50%</span>      { <span class="prop">transform</span>: <span class="val">translateY(-20px)</span>; }
+}
+
+<span class="sel">@keyframes</span> <span class="fn">pulse</span> {
+  <span class="val">0%, 100%</span> { <span class="prop">opacity</span>: <span class="val">1</span>; <span class="prop">transform</span>: <span class="val">scale(1)</span>; }
+  <span class="val">50%</span>      { <span class="prop">opacity</span>: <span class="val">0.7</span>; <span class="prop">transform</span>: <span class="val">scale(1.05)</span>; }
+}
+
+<span class="sel">@keyframes</span> <span class="fn">slideIn</span> {
+  <span class="val">from</span> { <span class="prop">opacity</span>: <span class="val">0</span>; <span class="prop">transform</span>: <span class="val">translateX(-50px)</span>; }
+  <span class="val">to</span>   { <span class="prop">opacity</span>: <span class="val">1</span>; <span class="prop">transform</span>: <span class="val">translateX(0)</span>; }
+}
+
+<span class="comment">/* Apply animations */</span>
+<span class="sel">.spinner</span>  { <span class="prop">animation</span>: <span class="val">spin 2s linear infinite</span>; }
+<span class="sel">.bouncer</span>  { <span class="prop">animation</span>: <span class="val">bounce 1s ease infinite</span>; }
+<span class="sel">.pulsing</span>  { <span class="prop">animation</span>: <span class="val">pulse 2s ease infinite</span>; }
+<span class="sel">.welcome</span>  { <span class="prop">animation</span>: <span class="val">slideIn 0.5s ease forwards</span>; }</pre></div>
+  </div>
+</div>
+
+<!-- ==================== CSS QUIZ ==================== -->
+<div class="section" id="css-quiz">
+  <div class="breadcrumb">🎨 CSS <span>→ Quiz!</span></div>
+  <div class="section-title">❓ CSS Mastery Quiz! 🎨</div>
+  <div class="section-desc">Time to test your CSS skills! 💪</div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q1</div><div class="quiz-q">How do you select elements with class="box"?</div><div class="quiz-opts" id="cq1"><button class="quiz-opt" onclick="ans(this,false,'cq1-fb')">#box { }</button><button class="quiz-opt" onclick="ans(this,true,'cq1-fb')">.box { }</button><button class="quiz-opt" onclick="ans(this,false,'cq1-fb')">box { }</button></div><div class="quiz-feedback" id="cq1-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q2</div><div class="quiz-q">Which property adds space INSIDE an element?</div><div class="quiz-opts" id="cq2"><button class="quiz-opt" onclick="ans(this,false,'cq2-fb')">margin</button><button class="quiz-opt" onclick="ans(this,true,'cq2-fb')">padding</button><button class="quiz-opt" onclick="ans(this,false,'cq2-fb')">spacing</button></div><div class="quiz-feedback" id="cq2-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q3</div><div class="quiz-q">What makes elements line up in a row?</div><div class="quiz-opts" id="cq3"><button class="quiz-opt" onclick="ans(this,false,'cq3-fb')">display: block</button><button class="quiz-opt" onclick="ans(this,true,'cq3-fb')">display: flex</button><button class="quiz-opt" onclick="ans(this,false,'cq3-fb')">display: line</button></div><div class="quiz-feedback" id="cq3-fb"></div></div>
+  <div class="quiz-section"><div class="quiz-title">🎯 Q4</div><div class="quiz-q">Which applies different styles for phones vs desktops?</div><div class="quiz-opts" id="cq4"><button class="quiz-opt" onclick="ans(this,false,'cq4-fb')">@keyframes</button><button class="quiz-opt" onclick="ans(this,false,'cq4-fb')">:hover</button><button class="quiz-opt" onclick="ans(this,true,'cq4-fb')">@media query</button></div><div class="quiz-feedback" id="cq4-fb"></div></div>
+</div>
+
+<!-- ==================== JS INTRO ==================== -->
+<div class="section" id="js-intro">
+  <div class="breadcrumb">⚡ JavaScript <span>→ What is JavaScript?</span></div>
+  <div class="section-title">⚡ What is JavaScript?</div>
+  <div class="section-desc">JavaScript (JS) is the programming language of the web! If HTML is the body and CSS is the clothing, JavaScript is the brain! It makes things interactive and alive. 🧠</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>Your First JavaScript Code ⚡</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">JavaScript Basics</span></div><pre><span class="comment">// Single-line comment (browser ignores this)</span>
+<span class="comment">/* Multi-line
+   comment */</span>
+
+<span class="comment">// Print to console (DevTools)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello World! 🌍"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">42</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">true</span>);
+
+<span class="comment">// Show a popup dialog</span>
+<span class="fn">alert</span>(<span class="str">"Welcome! 🎉"</span>);
+
+<span class="comment">// Ask user a question, get their answer</span>
+<span class="kw">let</span> name = <span class="fn">prompt</span>(<span class="str">"What's your name?"</span>);
+<span class="fn">alert</span>(<span class="str">"Hello, "</span> + name + <span class="str">"! 😊"</span>);</pre></div>
+    <div class="fun-fact"><strong>🌟 Fun Fact:</strong> JavaScript was written in just <strong>10 days</strong> in 1995 by a programmer named Brendan Eich. He wanted it to be easy enough that beginners could use it. Now it's one of the most popular programming languages in the world! 🚀</div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">2</div><h3>Where to Write JavaScript 📍</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">JavaScript placement</span></div><pre><span class="comment">&lt;!-- BEST: External JS file --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="comment">&lt;!-- Good: Internal, at the END of body --&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="comment">&lt;!-- All HTML content here --&gt;</span>
+
+  <span class="tag">&lt;script&gt;</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"JS runs after HTML loads!"</span>);
+  <span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span></pre></div>
+    <div class="tip"><strong>💡 Why at the bottom?</strong> Putting <code>&lt;script&gt;</code> at the end of <code>&lt;body&gt;</code> ensures all the HTML loads first, then JS runs. Otherwise JS might try to find elements that don't exist yet! 🏃</div>
+  </div>
+</div>
+
+<!-- ==================== JS VARIABLES ==================== -->
+<div class="section" id="js-variables">
+  <div class="breadcrumb">⚡ JS <span>→ Variables & Data Types</span></div>
+  <div class="section-title">📦 Variables & Data Types</div>
+  <div class="section-desc">Variables are containers that hold information. Every useful program stores data in variables! 📦</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>let, const, and Data Types 📦</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Variables</span></div><pre><span class="comment">// let = can change later</span>
+<span class="kw">let</span> score = <span class="val">0</span>;
+score = <span class="val">100</span>;  <span class="comment">// OK!</span>
+
+<span class="comment">// const = CANNOT change</span>
+<span class="kw">const</span> MAX_SCORE = <span class="val">1000</span>;
+<span class="comment">// MAX_SCORE = 500; // ERROR! Can't change const</span>
+
+<span class="comment">// ---- DATA TYPES ----</span>
+<span class="kw">let</span> age      = <span class="val">12</span>;              <span class="comment">// Number</span>
+<span class="kw">let</span> name     = <span class="str">"Alex"</span>;          <span class="comment">// String (text)</span>
+<span class="kw">let</span> happy    = <span class="val">true</span>;            <span class="comment">// Boolean (true/false)</span>
+<span class="kw">let</span> nothing  = <span class="val">null</span>;            <span class="comment">// Null (empty on purpose)</span>
+<span class="kw">let</span> unknown;                     <span class="comment">// Undefined (not set yet)</span>
+<span class="kw">let</span> fruits   = [<span class="str">"apple"</span>, <span class="str">"banana"</span>]; <span class="comment">// Array (list)</span>
+<span class="kw">let</span> person   = { name: <span class="str">"Sam"</span>, age: <span class="val">10</span> }; <span class="comment">// Object</span>
+
+<span class="comment">// Check what type something is:</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> age);    <span class="comment">// "number"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> name);   <span class="comment">// "string"</span></pre></div>
+    <div class="quiz-section"><div class="quiz-title">🎯 Quick Quiz!</div><div class="quiz-q">Which keyword creates a variable that CANNOT be changed?</div><div class="quiz-opts" id="jq-const"><button class="quiz-opt" onclick="ans(this,false,'jq-const-fb')">let</button><button class="quiz-opt" onclick="ans(this,true,'jq-const-fb')">const</button><button class="quiz-opt" onclick="ans(this,false,'jq-const-fb')">var</button></div><div class="quiz-feedback" id="jq-const-fb"></div></div>
+  </div>
+  <div class="chapter-div"><div class="chapter-line"></div><span>🏋️ Practice Problems</span><div class="chapter-line"></div></div>
+  <div class="practice-card"><h4>📝 Exercise 1 <div class="difficulty"><span class="star">★</span><span class="star-off">★</span><span class="star-off">★</span></div></h4><p>Create variables for: your name (const), your age (let), your favourite food (const), whether you like coding (let as boolean). Print them all with <code>console.log()</code>.</p></div>
+  <div class="practice-card"><h4>📝 Exercise 2 <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star-off">★</span></div></h4><p>Create a <code>score</code> variable starting at 0. Add 10 five times (score = score + 10). Then multiply by 2. Print the final score. What is it?</p></div>
+  <div class="practice-card"><h4>🌟 Challenge <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div></h4><p>Create a "personal card" using variables: name, age, city, hobbies (as an array of 3 items). Build a message string using all these variables and print it with <code>console.log()</code>.</p></div>
+</div>
+
+<!-- ==================== JS OPERATORS ==================== -->
+<div class="section" id="js-operators">
+  <div class="breadcrumb">⚡ JS <span>→ Operators & Math</span></div>
+  <div class="section-title">➕ Operators & Math</div>
+  <div class="section-desc">JavaScript can do all kinds of math and comparisons! These operators are the building blocks of all programs. 🧮</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>All Operators 🧮</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Operators</span></div><pre><span class="comment">// ARITHMETIC (Math)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">10</span> + <span class="val">5</span>);    <span class="comment">// 15  (add)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">10</span> - <span class="val">3</span>);    <span class="comment">// 7   (subtract)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">4</span> * <span class="val">3</span>);     <span class="comment">// 12  (multiply)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">10</span> / <span class="val">2</span>);    <span class="comment">// 5   (divide)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">10</span> % <span class="val">3</span>);    <span class="comment">// 1   (remainder)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">2</span> ** <span class="val">4</span>);    <span class="comment">// 16  (power: 2^4)</span>
+
+<span class="comment">// SHORTHAND</span>
+<span class="kw">let</span> x = <span class="val">10</span>;
+x += <span class="val">5</span>;   <span class="comment">// x = x + 5 → 15</span>
+x -= <span class="val">3</span>;   <span class="comment">// x = x - 3 → 12</span>
+x++;      <span class="comment">// x = x + 1 → 13</span>
+x--;      <span class="comment">// x = x - 1 → 12</span>
+
+<span class="comment">// COMPARISON (return true/false)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">5</span> == <span class="val">5</span>);   <span class="comment">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">5</span> === <span class="val">5</span>);  <span class="comment">// true (strict: same type too)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">5</span> != <span class="val">3</span>);   <span class="comment">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">10</span> > <span class="val">5</span>);   <span class="comment">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">10</span> <= <span class="val">10</span>); <span class="comment">// true</span>
+
+<span class="comment">// LOGICAL</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">true</span> && <span class="val">true</span>);  <span class="comment">// true  (AND: both true)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="val">true</span> || <span class="val">false</span>); <span class="comment">// true  (OR: at least one)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(!<span class="val">true</span>);         <span class="comment">// false (NOT: flip it)</span>
+
+<span class="comment">// Useful Math functions</span>
+<span class="fn">console</span>.<span class="fn">log</span>(Math.<span class="fn">round</span>(<span class="val">4.7</span>));   <span class="comment">// 5</span>
+<span class="fn">console</span>.<span class="fn">log</span>(Math.<span class="fn">max</span>(<span class="val">3</span>, 7, <span class="val">1</span>));  <span class="comment">// 7</span>
+<span class="fn">console</span>.<span class="fn">log</span>(Math.<span class="fn">min</span>(<span class="val">3</span>, 7, <span class="val">1</span>));  <span class="comment">// 1</span>
+<span class="fn">console</span>.<span class="fn">log</span>(Math.<span class="fn">abs</span>(-<span class="val">5</span>));       <span class="comment">// 5 (remove negative)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(Math.<span class="fn">random</span>());      <span class="comment">// 0.0 to 0.9999...</span>
+<span class="fn">console</span>.<span class="fn">log</span>(Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="val">10</span>)); <span class="comment">// 0-9</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== JS STRINGS ==================== -->
+<div class="section" id="js-strings">
+  <div class="breadcrumb">⚡ JS <span>→ Working with Strings</span></div>
+  <div class="section-title">💬 Working with Strings</div>
+  <div class="section-desc">Strings are text! Almost every program works with text — names, messages, usernames. JavaScript has tons of built-in tools to manipulate strings! ✏️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>String Methods 💬</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">String Methods</span></div><pre><span class="kw">let</span> name = <span class="str">"Alex the Coder"</span>;
+
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">length</span>);            <span class="comment">// 14 (how many chars)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">toUpperCase</span>());     <span class="comment">// "ALEX THE CODER"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">toLowerCase</span>());     <span class="comment">// "alex the coder"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">includes</span>(<span class="str">"Coder"</span>));  <span class="comment">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">startsWith</span>(<span class="str">"Alex"</span>)); <span class="comment">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">indexOf</span>(<span class="str">"the"</span>));    <span class="comment">// 5 (position)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">slice</span>(<span class="val">0</span>, <span class="val">4</span>));       <span class="comment">// "Alex"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">replace</span>(<span class="str">"Alex"</span>, <span class="str">"Sam"</span>)); <span class="comment">// "Sam the Coder"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">split</span>(<span class="str">" "</span>));        <span class="comment">// ["Alex","the","Coder"]</span>
+<span class="fn">console</span>.<span class="fn">log</span>(name.<span class="fn">trim</span>());            <span class="comment">// removes spaces at start/end</span>
+
+<span class="comment">// Template literals (backtick strings) - SUPER USEFUL!</span>
+<span class="kw">let</span> age = <span class="val">12</span>;
+<span class="kw">let</span> message = <span class="str">`Hello, my name is ${name} and I am ${age} years old!`</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(message);</pre></div>
+    <div class="tip"><strong>💡 Template Literals are Amazing!</strong> Instead of <code>"Hello " + name + "!"</code>, use backtick quotes and write <code>`Hello ${name}!`</code> — so much cleaner! Professional developers use this all the time! ⭐</div>
+  </div>
+</div>
+
+<!-- ==================== JS FUNCTIONS ==================== -->
+<div class="section" id="js-functions">
+  <div class="breadcrumb">⚡ JS <span>→ Functions</span></div>
+  <div class="section-title">⚙️ Functions</div>
+  <div class="section-desc">Functions are reusable blocks of code. Write once, use many times! Think of them as your own custom commands. 🎛️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>Defining & Calling Functions ⚙️</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Functions</span></div><pre><span class="comment">// Basic function (no input, no output)</span>
+<span class="kw">function</span> <span class="fn">sayHello</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello! 👋"</span>);
+}
+<span class="fn">sayHello</span>();  <span class="comment">// Call it!</span>
+
+<span class="comment">// Function with parameters (inputs)</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name, emoji) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`Hello ${name}! ${emoji}`</span>);
+}
+<span class="fn">greet</span>(<span class="str">"Alex"</span>, <span class="str">"🎉"</span>);
+<span class="fn">greet</span>(<span class="str">"Sam"</span>, <span class="str">"🚀"</span>);
+
+<span class="comment">// Function with return value</span>
+<span class="kw">function</span> <span class="fn">add</span>(a, b) {
+  <span class="kw">return</span> a + b;
+}
+<span class="kw">let</span> result = <span class="fn">add</span>(<span class="val">5</span>, <span class="val">3</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(result);  <span class="comment">// 8</span>
+
+<span class="comment">// Default parameters (if nothing passed in)</span>
+<span class="kw">function</span> <span class="fn">power</span>(base, exp = <span class="val">2</span>) {
+  <span class="kw">return</span> base ** exp;
+}
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">power</span>(<span class="val">5</span>));    <span class="comment">// 25 (5²)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">power</span>(<span class="val">2</span>, <span class="val">10</span>)); <span class="comment">// 1024 (2¹⁰)</span>
+
+<span class="comment">// Arrow functions (shorter syntax)</span>
+<span class="kw">const</span> <span class="fn">multiply</span> = (a, b) => a * b;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">multiply</span>(<span class="val">4</span>, <span class="val">5</span>));  <span class="comment">// 20</span></pre></div>
+  </div>
+  <div class="chapter-div"><div class="chapter-line"></div><span>🏋️ Practice Problems</span><div class="chapter-line"></div></div>
+  <div class="practice-card"><h4>📝 Exercise 1 <div class="difficulty"><span class="star">★</span><span class="star-off">★</span><span class="star-off">★</span></div></h4><p>Write a function <code>isEven(number)</code> that returns <code>true</code> if the number is even, <code>false</code> if odd. Test it with: 4, 7, 10, 13.</p></div>
+  <div class="practice-card"><h4>📝 Exercise 2 <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star-off">★</span></div></h4><p>Write a function <code>getGrade(score)</code> that returns "A" (90+), "B" (80+), "C" (70+), "D" (60+), or "F" (below 60). Test it with several scores.</p></div>
+  <div class="practice-card"><h4>🌟 Challenge <div class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div></h4><p>Write a function <code>celsiusToFahrenheit(c)</code> and another <code>fahrenheitToCelsius(f)</code>. (Formula: F = C × 9/5 + 32). Test by converting 0°C, 100°C, and 98.6°F.</p></div>
+</div>
+
+<!-- ==================== JS CONDITIONS ==================== -->
+<div class="section" id="js-conditions">
+  <div class="breadcrumb">⚡ JS <span>→ If / Else</span></div>
+  <div class="section-title">🔀 If / Else Conditions</div>
+  <div class="section-desc">Conditions let your program make decisions! Every video game, website, and app uses conditions constantly. 🎮</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>If, Else If, Else 🔀</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Conditions</span></div><pre><span class="kw">let</span> score = <span class="val">78</span>;
+
+<span class="kw">if</span> (score >= <span class="val">90</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"A - Outstanding! ⭐⭐⭐"</span>);
+} <span class="kw">else if</span> (score >= <span class="val">80</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"B - Great job! ⭐⭐"</span>);
+} <span class="kw">else if</span> (score >= <span class="val">70</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"C - Good effort! ⭐"</span>);
+} <span class="kw">else</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Keep practicing! 💪"</span>);
+}
+
+<span class="comment">// Multiple conditions with AND / OR</span>
+<span class="kw">let</span> age = <span class="val">12</span>;
+<span class="kw">let</span> hasParent = <span class="val">true</span>;
+
+<span class="kw">if</span> (age >= <span class="val">13</span> || hasParent) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"You can watch! 🎬"</span>);
+}
+
+<span class="comment">// Ternary operator (shortcut if/else)</span>
+<span class="kw">let</span> mood = score > <span class="val">70</span> ? <span class="str">"Happy 😊"</span> : <span class="str">"Sad 😢"</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(mood);
+
+<span class="comment">// Switch statement (multiple options)</span>
+<span class="kw">let</span> day = <span class="str">"Monday"</span>;
+<span class="kw">switch</span>(day) {
+  <span class="kw">case</span> <span class="str">"Monday"</span>:  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"New week! 💪"</span>); <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">"Friday"</span>:  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Weekend soon! 🎉"</span>); <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">"Saturday"</span>:
+  <span class="kw">case</span> <span class="str">"Sunday"</span>:  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Weekend! 🏖️"</span>); <span class="kw">break</span>;
+  <span class="kw">default</span>:       <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"A regular day 📅"</span>);
+}</pre></div>
+  </div>
+</div>
+
+<!-- ==================== JS LOOPS ==================== -->
+<div class="section" id="js-loops">
+  <div class="breadcrumb">⚡ JS <span>→ Loops</span></div>
+  <div class="section-title">🔄 Loops</div>
+  <div class="section-desc">Loops repeat code! Imagine if you had to write the same line 1000 times — with a loop, you just write 3 lines! 🔄</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>All Loop Types 🔄</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Loops</span></div><pre><span class="comment">// FOR loop: count from start to end</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="val">1</span>; i <= <span class="val">5</span>; i++) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`Step ${i}`</span>);
+}
+
+<span class="comment">// Count DOWN</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="val">5</span>; i >= <span class="val">1</span>; i--) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`🚀 T-minus ${i}...`</span>);
+}
+
+<span class="comment">// WHILE loop: keep going while condition is true</span>
+<span class="kw">let</span> lives = <span class="val">3</span>;
+<span class="kw">while</span> (lives > <span class="val">0</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`❤️ Lives: ${lives}`</span>);
+  lives--;
+}
+
+<span class="comment">// FOR...OF: loop through array items</span>
+<span class="kw">const</span> animals = [<span class="str">"🐶 Dog"</span>, <span class="str">"🐱 Cat"</span>, <span class="str">"🐰 Rabbit"</span>];
+<span class="kw">for</span> (<span class="kw">const</span> animal <span class="kw">of</span> animals) {
+  <span class="fn">console</span>.<span class="fn">log</span>(animal);
+}
+
+<span class="comment">// BREAK: exit a loop early</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="val">0</span>; i < <span class="val">10</span>; i++) {
+  <span class="kw">if</span> (i === <span class="val">5</span>) <span class="kw">break</span>;  <span class="comment">// Stop when i = 5</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(i);
+}
+
+<span class="comment">// CONTINUE: skip this iteration</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="val">1</span>; i <= <span class="val">10</span>; i++) {
+  <span class="kw">if</span> (i % <span class="val">2</span> === <span class="val">0</span>) <span class="kw">continue</span>;  <span class="comment">// Skip even numbers</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(i);   <span class="comment">// Prints: 1 3 5 7 9</span>
+}</pre></div>
+  </div>
+</div>
+
+<!-- ==================== JS ARRAYS ==================== -->
+<div class="section" id="js-arrays">
+  <div class="breadcrumb">⚡ JS <span>→ Arrays</span></div>
+  <div class="section-title">📋 Arrays</div>
+  <div class="section-desc">Arrays store lists of things! A list of high scores, a list of player names, a shopping list — all stored in arrays! 📋</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>Array Methods 📋</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Arrays</span></div><pre><span class="kw">let</span> fruits = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>];
+
+<span class="comment">// Access items (index starts at 0!)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(fruits[<span class="val">0</span>]);     <span class="comment">// "apple"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(fruits[<span class="val">2</span>]);     <span class="comment">// "cherry"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(fruits.<span class="fn">length</span>); <span class="comment">// 3</span>
+
+<span class="comment">// Add items</span>
+fruits.<span class="fn">push</span>(<span class="str">"mango"</span>);       <span class="comment">// Add to END</span>
+fruits.<span class="fn">unshift</span>(<span class="str">"kiwi"</span>);    <span class="comment">// Add to START</span>
+
+<span class="comment">// Remove items</span>
+fruits.<span class="fn">pop</span>();               <span class="comment">// Remove from END</span>
+fruits.<span class="fn">shift</span>();             <span class="comment">// Remove from START</span>
+
+<span class="comment">// Find items</span>
+<span class="fn">console</span>.<span class="fn">log</span>(fruits.<span class="fn">includes</span>(<span class="str">"banana"</span>)); <span class="comment">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(fruits.<span class="fn">indexOf</span>(<span class="str">"cherry"</span>));  <span class="comment">// 2</span>
+
+<span class="comment">// Loop through array</span>
+fruits.<span class="fn">forEach</span>(<span class="kw">function</span>(fruit) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`🍎 ${fruit}`</span>);
+});
+
+<span class="comment">// Map: create a new array by transforming each item</span>
+<span class="kw">let</span> scores = [<span class="val">60</span>, <span class="val">75</span>, <span class="val">90</span>];
+<span class="kw">let</span> doubled = scores.<span class="fn">map</span>(s => s * <span class="val">2</span>);  <span class="comment">// [120, 150, 180]</span>
+
+<span class="comment">// Filter: keep only items that pass the test</span>
+<span class="kw">let</span> highScores = scores.<span class="fn">filter</span>(s => s >= <span class="val">80</span>); <span class="comment">// [90]</span>
+
+<span class="comment">// Sort alphabetically</span>
+fruits.<span class="fn">sort</span>();
+<span class="comment">// Sort numbers</span>
+scores.<span class="fn">sort</span>((a, b) => a - b);  <span class="comment">// ascending</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== JS OBJECTS ==================== -->
+<div class="section" id="js-objects">
+  <div class="breadcrumb">⚡ JS <span>→ Objects</span></div>
+  <div class="section-title">🗃️ Objects</div>
+  <div class="section-desc">Objects store related data together — like a profile card or a game character. They use key-value pairs! 🗃️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>Creating & Using Objects 🗃️</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Objects</span></div><pre><span class="comment">// Define an object</span>
+<span class="kw">const</span> player = {
+  name: <span class="str">"SuperKid"</span>,
+  age: <span class="val">12</span>,
+  level: <span class="val">5</span>,
+  isOnline: <span class="val">true</span>,
+  powers: [<span class="str">"fly"</span>, <span class="str">"laser eyes"</span>],
+
+  <span class="comment">// Functions inside objects = methods</span>
+  <span class="fn">greet</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`Hi! I'm ${this.name}!`</span>);
+  }
+};
+
+<span class="comment">// Access properties</span>
+<span class="fn">console</span>.<span class="fn">log</span>(player.name);       <span class="comment">// "SuperKid"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(player[<span class="str">"level"</span>]);   <span class="comment">// 5</span>
+<span class="fn">console</span>.<span class="fn">log</span>(player.powers[<span class="val">0</span>]);  <span class="comment">// "fly"</span>
+
+<span class="comment">// Call a method</span>
+player.<span class="fn">greet</span>();
+
+<span class="comment">// Modify properties</span>
+player.level = <span class="val">6</span>;
+player.score = <span class="val">9999</span>;  <span class="comment">// Add new property!</span>
+
+<span class="comment">// Array of objects (very common!)</span>
+<span class="kw">const</span> students = [
+  { name: <span class="str">"Alex"</span>, grade: <span class="val">95</span> },
+  { name: <span class="str">"Sam"</span>,  grade: <span class="val">87</span> },
+  { name: <span class="str">"Jo"</span>,   grade: <span class="val">72</span> }
+];
+
+students.<span class="fn">forEach</span>(student => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`${student.name}: ${student.grade}`</span>);
+});</pre></div>
+  </div>
+</div>
+
+<!-- ==================== JS DOM ==================== -->
+<div class="section" id="js-dom">
+  <div class="breadcrumb">⚡ JS <span>→ DOM Magic</span></div>
+  <div class="section-title">🖱️ DOM — Document Object Model</div>
+  <div class="section-desc">The DOM is JavaScript's way of talking to your HTML! You can find any element on the page and change its text, style, or content — all with JavaScript! 🪄</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>Finding Elements 🔍</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">DOM Selection</span></div><pre><span class="comment">// Find by ID</span>
+<span class="kw">const</span> title = document.<span class="fn">getElementById</span>(<span class="str">"main-title"</span>);
+
+<span class="comment">// Find by class (returns all matches)</span>
+<span class="kw">const</span> cards = document.<span class="fn">getElementsByClassName</span>(<span class="str">"card"</span>);
+
+<span class="comment">// Modern: CSS selector (returns FIRST match)</span>
+<span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="str">"button"</span>);
+<span class="kw">const</span> hero = document.<span class="fn">querySelector</span>(<span class="str">"#hero"</span>);
+<span class="kw">const</span> item = document.<span class="fn">querySelector</span>(<span class="str">".card"</span>);
+
+<span class="comment">// Modern: CSS selector (returns ALL matches)</span>
+<span class="kw">const</span> allCards = document.<span class="fn">querySelectorAll</span>(<span class="str">".card"</span>);
+
+<span class="comment">// Change content</span>
+title.textContent = <span class="str">"New Title! 🎉"</span>;
+title.innerHTML = <span class="str">"Hello &lt;strong&gt;World&lt;/strong&gt;!"</span>;
+
+<span class="comment">// Change style</span>
+title.style.color = <span class="str">"hotpink"</span>;
+title.style.fontSize = <span class="str">"48px"</span>;
+title.style.display = <span class="str">"none"</span>;  <span class="comment">// Hide it!</span>
+
+<span class="comment">// Add/remove CSS classes</span>
+title.<span class="fn">classList</span>.<span class="fn">add</span>(<span class="str">"active"</span>);
+title.<span class="fn">classList</span>.<span class="fn">remove</span>(<span class="str">"hidden"</span>);
+title.<span class="fn">classList</span>.<span class="fn">toggle</span>(<span class="str">"dark-mode"</span>); <span class="comment">// on/off!</span>
+
+<span class="comment">// Create new elements!</span>
+<span class="kw">const</span> newPara = document.<span class="fn">createElement</span>(<span class="str">"p"</span>);
+newPara.textContent = <span class="str">"I was made by JavaScript!"</span>;
+document.body.<span class="fn">appendChild</span>(newPara);</pre></div>
+    <div class="tip"><strong>💡 Use querySelector!</strong> Modern JavaScript developers use <code>document.querySelector()</code> and <code>document.querySelectorAll()</code> because they accept any CSS selector — much more powerful! 💪</div>
+  </div>
+</div>
+
+<!-- ==================== JS EVENTS ==================== -->
+<div class="section" id="js-events">
+  <div class="breadcrumb">⚡ JS <span>→ Events</span></div>
+  <div class="section-title">🎯 Events</div>
+  <div class="section-desc">Events are things that happen on a page — clicks, key presses, mouse movements! JavaScript lets you "listen" for these and do things when they happen! 🎧</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">1</div><h3>Event Listeners 🎯</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Events</span></div><pre><span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="str">"#myButton"</span>);
+
+<span class="comment">// Click event</span>
+btn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="kw">function</span>() {
+  <span class="fn">alert</span>(<span class="str">"Button clicked! 🎉"</span>);
+});
+
+<span class="comment">// Arrow function version (shorter)</span>
+btn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  btn.style.background = <span class="str">"hotpink"</span>;
+});
+
+<span class="comment">// Input event (fires as you type)</span>
+<span class="kw">const</span> input = document.<span class="fn">querySelector</span>(<span class="str">"input"</span>);
+input.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, () => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"You typed: "</span> + input.value);
+});
+
+<span class="comment">// Key events</span>
+document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, (event) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Key pressed: "</span> + event.key);
+  <span class="kw">if</span> (event.key === <span class="str">"Escape"</span>) {
+    <span class="fn">alert</span>(<span class="str">"Escape pressed!"</span>);
+  }
+});
+
+<span class="comment">// Mouse events</span>
+btn.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, () => console.<span class="fn">log</span>(<span class="str">"👆 Hovering!"</span>));
+btn.<span class="fn">addEventListener</span>(<span class="str">"mouseout"</span>,  () => console.<span class="fn">log</span>(<span class="str">"👋 Left!"</span>));</pre></div>
+    <div class="fun-fact"><strong>🌟 Common Events to Know:</strong> <code>click</code>, <code>dblclick</code>, <code>input</code>, <code>change</code>, <code>submit</code>, <code>keydown</code>, <code>keyup</code>, <code>mouseover</code>, <code>mouseout</code>, <code>load</code>, <code>resize</code>, <code>scroll</code>. You'll use these in almost every project! 📋</div>
+  </div>
+</div>
+
+<!-- ==================== JS QUIZ ==================== -->
+<div class="section" id="js-quiz">
+  <div class="breadcrumb">⚡ JS <span>→ Quiz!</span></div>
+  <div class="section-title">❓ JavaScript Mastery Quiz! ⚡</div>
+  <div class="section-desc">Prove your JavaScript skills! ⚡</div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q1</div><div class="quiz-q">Which keyword creates a variable that CAN change?</div><div class="quiz-opts" id="jq1"><button class="quiz-opt" onclick="ans(this,false,'jq1-fb')">const</button><button class="quiz-opt" onclick="ans(this,true,'jq1-fb')">let</button><button class="quiz-opt" onclick="ans(this,false,'jq1-fb')">fixed</button></div><div class="quiz-feedback" id="jq1-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q2</div><div class="quiz-q">What does <code>console.log("hi")</code> do?</div><div class="quiz-opts" id="jq2"><button class="quiz-opt" onclick="ans(this,false,'jq2-fb')">Shows a popup</button><button class="quiz-opt" onclick="ans(this,true,'jq2-fb')">Prints to browser DevTools console</button><button class="quiz-opt" onclick="ans(this,false,'jq2-fb')">Changes the page title</button></div><div class="quiz-feedback" id="jq2-fb"></div></div>
+  <div class="quiz-section" style="margin-bottom:1rem"><div class="quiz-title">🎯 Q3</div><div class="quiz-q">What index does the FIRST item of an array have?</div><div class="quiz-opts" id="jq3"><button class="quiz-opt" onclick="ans(this,false,'jq3-fb')">1</button><button class="quiz-opt" onclick="ans(this,true,'jq3-fb')">0</button><button class="quiz-opt" onclick="ans(this,false,'jq3-fb')">-1</button></div><div class="quiz-feedback" id="jq3-fb"></div></div>
+  <div class="quiz-section"><div class="quiz-title">🎯 Q4</div><div class="quiz-q">How do you add a click event to an element?</div><div class="quiz-opts" id="jq4"><button class="quiz-opt" onclick="ans(this,false,'jq4-fb')">element.onClick()</button><button class="quiz-opt" onclick="ans(this,true,'jq4-fb')">element.addEventListener("click", fn)</button><button class="quiz-opt" onclick="ans(this,false,'jq4-fb')">element.addEvent("click")</button></div><div class="quiz-feedback" id="jq4-fb"></div></div>
+</div>
+
+<!-- ==================== PROJECTS ==================== -->
+<div class="section" id="proj-intro">
+  <div class="breadcrumb">🎮 <span>Project Guide</span></div>
+  <div class="section-title">🗺️ Project Building Guide</div>
+  <div class="section-desc">Now you have the skills — time to BUILD! Real projects are how you become a REAL developer. These 5 projects will give you amazing things to show off! 🏆</div>
+  <div class="phase-banner phase-4"><div class="phase-icon">🎯</div><div><h3>How to Approach Every Project</h3><p>Plan → Build → Test → Fix → Show Off! 🚀</p></div></div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">📋</div><h3>Project Plan Template</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Before starting ANY project</span></div><pre><span class="comment">1. PLAN IT:</span>
+   <span class="comment">- What does this project DO?</span>
+   <span class="comment">- Who will use it?</span>
+   <span class="comment">- What files do I need? (HTML, CSS, JS)</span>
+   <span class="comment">- Draw a rough sketch on paper first!</span>
+
+<span class="comment">2. BUILD IT (HTML first → CSS → JS):</span>
+   <span class="comment">- Write all the HTML structure</span>
+   <span class="comment">- Style with CSS</span>
+   <span class="comment">- Add JavaScript interactivity</span>
+
+<span class="comment">3. TEST IT:</span>
+   <span class="comment">- Does it work on mobile? (resize browser)</span>
+   <span class="comment">- Are there any console errors? (F12)</span>
+   <span class="comment">- Ask a friend to try it!</span>
+
+<span class="comment">4. POLISH IT:</span>
+   <span class="comment">- Fix bugs</span>
+   <span class="comment">- Make it look nicer</span>
+   <span class="comment">- Add your name in the footer</span></pre></div>
+  </div>
+</div>
+
+<div class="section" id="proj-profile">
+  <div class="breadcrumb">🎮 Projects <span>→ Profile Page</span></div>
+  <div class="section-title">👤 Project 1: Personal Profile Page</div>
+  <div class="section-desc"><strong>Skills used:</strong> HTML, CSS, Flexbox, basic JavaScript<br><strong>Estimated time:</strong> 2–3 days | <strong>Difficulty:</strong> ⭐⭐☆☆☆</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">1</div><h3>What to Build 🏗️</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <p>A one-page website all about YOU! Include your name, a photo, your hobbies, your favourite things, and a contact section.</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML Starter — index.html</span></div><pre><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="str">"en"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Alex's Profile 🌟<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+  <span class="tag">&lt;header&gt;</span>
+    <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"photo.jpg"</span> <span class="attr">alt</span>=<span class="str">"My photo"</span> <span class="attr">class</span>=<span class="str">"avatar"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hi! I'm Alex 👋<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"subtitle"</span><span class="tag">&gt;</span>Future Web Developer · Age 12 · 🌍 Earth<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+
+  <span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;section</span> <span class="attr">class</span>=<span class="str">"about"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h2&gt;</span>About Me 🧑<span class="tag">&lt;/h2&gt;</span>
+      <span class="tag">&lt;p&gt;</span>I love coding, gaming, and drawing...<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+
+    <span class="tag">&lt;section</span> <span class="attr">class</span>=<span class="str">"hobbies"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h2&gt;</span>My Hobbies 🎮<span class="tag">&lt;/h2&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"hobby-grid"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"hobby-card"</span><span class="tag">&gt;</span>🎮 Gaming<span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"hobby-card"</span><span class="tag">&gt;</span>🎨 Drawing<span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"hobby-card"</span><span class="tag">&gt;</span>💻 Coding<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;/main&gt;</span>
+
+  <span class="tag">&lt;footer&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Made with ❤️ and lots of ☕ by Alex | 2025<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/footer&gt;</span>
+
+  <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">2</div><h3>Bonus Features to Add 🌟</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="practice-card"><h4>⭐ Bonus 1: Dark Mode Toggle</h4><p>Add a 🌙 button that switches between light and dark mode using JavaScript and CSS variables!</p></div>
+    <div class="practice-card"><h4>⭐ Bonus 2: Skills Progress Bars</h4><p>Add animated progress bars showing your skill levels in different things (e.g., "HTML: 80%", "CSS: 60%").</p></div>
+    <div class="practice-card"><h4>⭐ Bonus 3: Typing Animation</h4><p>Make your name or subtitle appear as if it's being typed, one letter at a time, using JavaScript!</p></div>
+  </div>
+</div>
+
+<div class="section" id="proj-quiz-game">
+  <div class="breadcrumb">🎮 Projects <span>→ Quiz Game</span></div>
+  <div class="section-title">🎯 Project 2: Quiz Game</div>
+  <div class="section-desc"><strong>Skills used:</strong> HTML, CSS, JavaScript, Arrays, Events<br><strong>Estimated time:</strong> 4–5 days | <strong>Difficulty:</strong> ⭐⭐⭐☆☆</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">1</div><h3>The Core Logic 🧠</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">script.js — Quiz Logic</span></div><pre><span class="kw">const</span> questions = [
+  {
+    question: <span class="str">"What does HTML stand for?"</span>,
+    options: [<span class="str">"Happy Text Making Language"</span>, <span class="str">"HyperText Markup Language"</span>, <span class="str">"Hyper Tool Making Language"</span>],
+    correct: <span class="val">1</span>   <span class="comment">// index of correct answer</span>
+  },
+  {
+    question: <span class="str">"Which CSS property changes text color?"</span>,
+    options: [<span class="str">"text-color"</span>, <span class="str">"font-color"</span>, <span class="str">"color"</span>],
+    correct: <span class="val">2</span>
+  }
+];
+
+<span class="kw">let</span> currentQuestion = <span class="val">0</span>;
+<span class="kw">let</span> score = <span class="val">0</span>;
+
+<span class="kw">function</span> <span class="fn">showQuestion</span>() {
+  <span class="kw">const</span> q = questions[currentQuestion];
+  document.<span class="fn">querySelector</span>(<span class="str">"#question"</span>).textContent = q.question;
+
+  <span class="kw">const</span> optionsDiv = document.<span class="fn">querySelector</span>(<span class="str">"#options"</span>);
+  optionsDiv.innerHTML = <span class="str">""</span>;
+
+  q.options.<span class="fn">forEach</span>((option, index) => {
+    <span class="kw">const</span> btn = document.<span class="fn">createElement</span>(<span class="str">"button"</span>);
+    btn.textContent = option;
+    btn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => <span class="fn">checkAnswer</span>(index));
+    optionsDiv.<span class="fn">appendChild</span>(btn);
+  });
+}
+
+<span class="kw">function</span> <span class="fn">checkAnswer</span>(selected) {
+  <span class="kw">const</span> q = questions[currentQuestion];
+  <span class="kw">if</span> (selected === q.correct) {
+    score++;
+    <span class="fn">alert</span>(<span class="str">"✅ Correct!"</span>);
+  } <span class="kw">else</span> {
+    <span class="fn">alert</span>(<span class="str">"❌ Wrong! The answer was: "</span> + q.options[q.correct]);
+  }
+  currentQuestion++;
+  <span class="kw">if</span> (currentQuestion < questions.<span class="fn">length</span>) {
+    <span class="fn">showQuestion</span>();
+  } <span class="kw">else</span> {
+    document.<span class="fn">querySelector</span>(<span class="str">"#question"</span>).textContent =
+      <span class="str">`Game Over! Score: ${score}/${questions.length} 🏆`</span>;
+  }
+}
+
+<span class="fn">showQuestion</span>();  <span class="comment">// Start!</span></pre></div>
+  </div>
+</div>
+
+<div class="section" id="proj-todo">
+  <div class="breadcrumb">🎮 Projects <span>→ To-Do App</span></div>
+  <div class="section-title">✅ Project 3: To-Do List App</div>
+  <div class="section-desc"><strong>Skills used:</strong> HTML, CSS, JavaScript, DOM, localStorage<br><strong>Estimated time:</strong> 5–7 days | <strong>Difficulty:</strong> ⭐⭐⭐⭐☆</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">1</div><h3>Features to Build 📋</h3><span class="lesson-tag tag-hard">Hard</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">script.js — To-Do Logic</span></div><pre><span class="kw">let</span> todos = <span class="fn">JSON</span>.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">"todos"</span>)) || [];
+
+<span class="kw">function</span> <span class="fn">addTodo</span>() {
+  <span class="kw">const</span> input = document.<span class="fn">querySelector</span>(<span class="str">"#todo-input"</span>);
+  <span class="kw">const</span> text = input.value.<span class="fn">trim</span>();
+  <span class="kw">if</span> (!text) <span class="kw">return</span>;  <span class="comment">// Don't add empty todos</span>
+
+  todos.<span class="fn">push</span>({ text: text, done: <span class="val">false</span>, id: Date.<span class="fn">now</span>() });
+  input.value = <span class="str">""</span>;
+  <span class="fn">saveTodos</span>();
+  <span class="fn">renderTodos</span>();
+}
+
+<span class="kw">function</span> <span class="fn">toggleDone</span>(id) {
+  todos = todos.<span class="fn">map</span>(t => t.id === id ? {...t, done: !t.done} : t);
+  <span class="fn">saveTodos</span>();
+  <span class="fn">renderTodos</span>();
+}
+
+<span class="kw">function</span> <span class="fn">deleteTodo</span>(id) {
+  todos = todos.<span class="fn">filter</span>(t => t.id !== id);
+  <span class="fn">saveTodos</span>();
+  <span class="fn">renderTodos</span>();
+}
+
+<span class="kw">function</span> <span class="fn">saveTodos</span>() {
+  localStorage.<span class="fn">setItem</span>(<span class="str">"todos"</span>, <span class="fn">JSON</span>.<span class="fn">stringify</span>(todos));
+}
+
+<span class="kw">function</span> <span class="fn">renderTodos</span>() {
+  <span class="kw">const</span> list = document.<span class="fn">querySelector</span>(<span class="str">"#todo-list"</span>);
+  list.innerHTML = todos.<span class="fn">map</span>(todo => <span class="str">`
+    &lt;li class="${todo.done ? 'done' : ''}"&gt;
+      &lt;span onclick="toggleDone(${todo.id})"&gt;${todo.text}&lt;/span&gt;
+      &lt;button onclick="deleteTodo(${todo.id})"&gt;🗑️&lt;/button&gt;
+    &lt;/li&gt;
+  `</span>).<span class="fn">join</span>(<span class="str">""</span>);
+}
+
+<span class="fn">renderTodos</span>();  <span class="comment">// Load saved todos on page open</span></pre></div>
+  </div>
+</div>
+
+<div class="section" id="proj-calculator">
+  <div class="breadcrumb">🎮 Projects <span>→ Calculator</span></div>
+  <div class="section-title">🔢 Project 4: Calculator</div>
+  <div class="section-desc"><strong>Skills used:</strong> HTML, CSS Grid, JavaScript<br><strong>Estimated time:</strong> 3–4 days | <strong>Difficulty:</strong> ⭐⭐⭐☆☆</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">1</div><h3>Calculator Logic 🧮</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">script.js</span></div><pre><span class="kw">let</span> display = <span class="str">""</span>;
+
+<span class="kw">function</span> <span class="fn">pressKey</span>(value) {
+  <span class="kw">if</span> (value === <span class="str">"C"</span>) {
+    display = <span class="str">""</span>;
+  } <span class="kw">else if</span> (value === <span class="str">"="</span>) {
+    <span class="kw">try</span> {
+      display = <span class="fn">String</span>(<span class="fn">eval</span>(display));
+    } <span class="kw">catch</span> {
+      display = <span class="str">"Error ❌"</span>;
+    }
+  } <span class="kw">else if</span> (value === <span class="str">"⌫"</span>) {
+    display = display.<span class="fn">slice</span>(<span class="val">0</span>, -<span class="val">1</span>);
+  } <span class="kw">else</span> {
+    display += value;
+  }
+  document.<span class="fn">querySelector</span>(<span class="str">"#display"</span>).textContent = display || <span class="str">"0"</span>;
+}
+
+<span class="comment">/* HTML: make a grid of buttons
+   C  ⌫  %  ÷
+   7  8  9  ×
+   4  5  6  −
+   1  2  3  +
+   0  .     =  */</span></pre></div>
+  </div>
+</div>
+
+<div class="section" id="proj-weather">
+  <div class="breadcrumb">🎮 Projects <span>→ Weather App</span></div>
+  <div class="section-title">🌤️ Project 5: Weather App</div>
+  <div class="section-desc"><strong>Skills used:</strong> HTML, CSS, JavaScript, fetch API<br><strong>Estimated time:</strong> 7–10 days | <strong>Difficulty:</strong> ⭐⭐⭐⭐⭐</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-green">1</div><h3>Using APIs 🌐</h3><span class="lesson-tag tag-hard">Hard</span></div>
+    <p>An API (Application Programming Interface) lets your website talk to other services — like a weather service! You send a request and get data back. This is how real apps work! 🌤️</p>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Weather App JS (using OpenWeatherMap API)</span></div><pre><span class="kw">const</span> API_KEY = <span class="str">"YOUR_FREE_API_KEY"</span>; <span class="comment">// Get from openweathermap.org</span>
+
+<span class="kw">async function</span> <span class="fn">getWeather</span>(city) {
+  <span class="kw">const</span> url = <span class="str">`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`</span>;
+
+  <span class="kw">try</span> {
+    <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(url);
+    <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
+
+    <span class="fn">console</span>.<span class="fn">log</span>(data);
+
+    document.<span class="fn">querySelector</span>(<span class="str">"#city"</span>).textContent = data.name;
+    document.<span class="fn">querySelector</span>(<span class="str">"#temp"</span>).textContent = <span class="str">`${Math.round(data.main.temp)}°C`</span>;
+    document.<span class="fn">querySelector</span>(<span class="str">"#desc"</span>).textContent = data.weather[<span class="val">0</span>].description;
+
+    <span class="comment">// Change background based on weather</span>
+    <span class="kw">const</span> weather = data.weather[<span class="val">0</span>].main;
+    document.body.style.background = weather === <span class="str">"Clear"</span> ?
+      <span class="str">"linear-gradient(135deg, #87CEEB, #FFD700)"</span> :
+      <span class="str">"linear-gradient(135deg, #4a4a6a, #6a8fa0)"</span>;
+
+  } <span class="kw">catch</span> (error) {
+    <span class="fn">alert</span>(<span class="str">"City not found! Try again 🌍"</span>);
+  }
+}
+
+document.<span class="fn">querySelector</span>(<span class="str">"#search-btn"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {
+  <span class="kw">const</span> city = document.<span class="fn">querySelector</span>(<span class="str">"#city-input"</span>).value;
+  <span class="fn">getWeather</span>(city);
+});</pre></div>
+      <div class="tip"><strong>💡 Get a Free API Key:</strong> Sign up at <code>openweathermap.org</code> — it's completely free! They give you access to weather data for any city in the world! 🌍</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADV GIT ==================== -->
+<div class="section" id="adv-git">
+  <div class="breadcrumb">🚀 Level Up <span>→ Git & GitHub</span></div>
+  <div class="section-title">📂 Git & GitHub</div>
+  <div class="section-desc">Git saves your code history — like a time machine! GitHub is a website where you can store and share your projects. Every professional developer uses these tools every single day! 💼</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-purple">1</div><h3>Essential Git Commands 📂</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Git Commands (in Terminal)</span></div><pre><span class="comment"># Set up Git (do this once)</span>
+git config --global user.name <span class="str">"YourName"</span>
+git config --global user.email <span class="str">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="067f697346636b676f6a2865696b">[email&#160;protected]</a>"</span>
+
+<span class="comment"># Start tracking a project</span>
+git init
+
+<span class="comment"># Check what's changed</span>
+git status
+
+<span class="comment"># Stage all files for saving</span>
+git add .
+
+<span class="comment"># Save a "snapshot" of your code</span>
+git commit -m <span class="str">"Add homepage design"</span>
+
+<span class="comment"># See history of saves</span>
+git log --oneline
+
+<span class="comment"># Push to GitHub</span>
+git push origin main
+
+<span class="comment"># Download someone else's code</span>
+git clone https://github.com/username/repo</pre></div>
+    <div class="fun-fact"><strong>🌟 Why GitHub?</strong> GitHub is like a social network for coders! You can show your projects to the world, contribute to other people's projects, and even get hired based on your GitHub profile! 🚀</div>
+  </div>
+</div>
+
+<!-- ==================== ADV DEBUGGING ==================== -->
+<div class="section" id="adv-debugging">
+  <div class="breadcrumb">🚀 Level Up <span>→ Debugging</span></div>
+  <div class="section-title">🐛 Debugging Skills</div>
+  <div class="section-desc">Bugs are errors in code. Every programmer writes bugs — the skill is finding and fixing them! Good debuggers make great developers. 🔍</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-purple">1</div><h3>Common JS Errors & Fixes 🐛</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Common Errors</span></div><pre><span class="comment">// ERROR 1: Undefined variable</span>
+<span class="fn">console</span>.<span class="fn">log</span>(score);  <span class="comment">// ReferenceError: score not defined</span>
+<span class="comment">// FIX: declare the variable first!</span>
+<span class="kw">let</span> score = <span class="val">0</span>;
+
+<span class="comment">// ERROR 2: Wrong element ID</span>
+document.<span class="fn">getElementById</span>(<span class="str">"scroe"</span>);  <span class="comment">// Typo! Returns null</span>
+<span class="comment">// FIX: check spelling matches HTML</span>
+
+<span class="comment">// ERROR 3: Using element before page loads</span>
+<span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="str">"button"</span>);
+btn.<span class="fn">addEventListener</span>...  <span class="comment">// May fail if script is in head!</span>
+<span class="comment">// FIX: put script at end of body</span>
+
+<span class="comment">// DEBUGGING TIPS:</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"--- Checkpoint 1 ---"</span>);  <span class="comment">// Track code flow</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Value:"</span>, myVariable);   <span class="comment">// See variable contents</span>
+<span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Something went wrong!"</span>);
+
+<span class="comment">// In DevTools (F12), you can PAUSE code:</span>
+<span class="kw">debugger</span>;  <span class="comment">// Code stops here in DevTools</span></pre></div>
+    <div class="tip"><strong>💡 Debugging Steps:</strong> (1) Read the error message carefully. (2) Find the line number. (3) Add <code>console.log()</code> before and after the problem. (4) Search the error on Google — every error has been solved before! 🔍</div>
+  </div>
+</div>
+
+<!-- ==================== ADV ACCESSIBILITY ==================== -->
+<div class="section" id="adv-accessibility">
+  <div class="breadcrumb">🚀 Level Up <span>→ Accessibility</span></div>
+  <div class="section-title">♿ Web Accessibility</div>
+  <div class="section-desc">Accessibility means making your website usable by EVERYONE — including people who use screen readers, people with color blindness, or people who can't use a mouse. Good developers always think about this! ❤️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-purple">1</div><h3>Key Accessibility Rules ♿</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">Accessibility Best Practices</span></div><pre><span class="comment">&lt;!-- 1. Always add alt text to images --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"dog.jpg"</span> <span class="attr">alt</span>=<span class="str">"A golden retriever playing in the park"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- 2. Use proper heading order (h1 → h2 → h3) --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Main Title<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Section Title<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;h3&gt;</span>Sub-section<span class="tag">&lt;/h3&gt;</span>
+
+<span class="comment">&lt;!-- 3. Link labels should describe what happens --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"..."</span><span class="tag">&gt;</span>Read more about dogs ✅<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"..."</span><span class="tag">&gt;</span>Click here ❌<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- 4. Use semantic tags (not just divs for everything) --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="str">"..."</span><span class="tag">&gt;</span>Submit ✅<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">onclick</span>=<span class="str">"..."</span><span class="tag">&gt;</span>Submit ❌<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">/* 5. Don't rely only on color to show information */</span>
+<span class="sel">.error</span> {
+  <span class="prop">color</span>: <span class="val">red</span>;          <span class="comment">/* Color alone isn't enough */</span>
+  <span class="prop">border-left</span>: <span class="val">4px solid red</span>; <span class="comment">/* Add shape too! */</span>
+}
+
+<span class="comment">/* 6. Make sure text has enough contrast */</span>
+<span class="comment">/* Dark text on light bg, or light text on dark bg */</span></pre></div>
+  </div>
+</div>
+
+<!-- ==================== ADV NEXT ==================== -->
+<div class="section" id="adv-next">
+  <div class="breadcrumb">🚀 Level Up <span>→ What's Next?</span></div>
+  <div class="section-title">🌠 What's Next After This Course?</div>
+  <div class="section-desc">Congratulations! You've completed 1 year of learning web development! 🎓 But the world of coding is HUGE. Here's what you can explore next! 🚀</div>
+  <div class="fun-fact"><strong>🏆 You've Mastered:</strong> HTML (the skeleton) · CSS (the style) · JavaScript (the brains) · Real Projects · Git & GitHub · Debugging · Accessibility. You're officially a Junior Web Developer! 🎉</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-purple">1</div><h3>Your Next Learning Paths 🗺️</h3><span class="lesson-tag tag-medium">Medium</span></div>
+    <div class="table-wrap"><table><tr><th>Path</th><th>What it is</th><th>Why learn it?</th></tr>
+    <tr><td>⚛️ React</td><td>A JavaScript library for building apps</td><td>Used by Facebook, Netflix, Airbnb</td></tr>
+    <tr><td>🐍 Python</td><td>A beginner-friendly programming language</td><td>Great for AI, games, science</td></tr>
+    <tr><td>🗃️ Databases</td><td>SQL & MongoDB for storing data</td><td>Every app needs to store data!</td></tr>
+    <tr><td>🖥️ Backend</td><td>Node.js, servers, APIs</td><td>Build the "behind the scenes" of apps</td></tr>
+    <tr><td>📱 Mobile</td><td>React Native or Flutter</td><td>Build iPhone and Android apps!</td></tr>
+    <tr><td>🎮 Game Dev</td><td>Unity (C#) or Godot</td><td>Make your own video games!</td></tr></table></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-purple">2</div><h3>Free Resources to Keep Learning 📚</h3><span class="lesson-tag tag-easy">Easy</span></div>
+    <div class="table-wrap"><table><tr><th>Website</th><th>What it's for</th></tr>
+    <tr><td><code>freecodecamp.org</code></td><td>Free certificates in web development</td></tr>
+    <tr><td><code>css-tricks.com</code></td><td>Amazing CSS tips and tutorials</td></tr>
+    <tr><td><code>javascript.info</code></td><td>The best free JS textbook online</td></tr>
+    <tr><td><code>codepen.io</code></td><td>Experiment with code in your browser</td></tr>
+    <tr><td><code>frontendmentor.io</code></td><td>Real design challenges to practice</td></tr>
+    <tr><td><code>theodinproject.com</code></td><td>Full free web dev curriculum</td></tr></table></div>
+  </div>
+  <div class="fun-fact"><strong>🌟 Final Message:</strong> The most important thing in coding is to <strong>keep building</strong>! Every project teaches you something new. Every bug you fix makes you smarter. Every line of code you write is practice. You have everything you need. Now go build something AMAZING! 🚀💫</div>
+</div>
+
+<!-- ==================== CHEAT SHEET ==================== -->
+<div class="section" id="ref-cheatsheet">
+  <div class="breadcrumb">📖 References <span>→ Cheat Sheet</span></div>
+  <div class="section-title">📋 Complete Cheat Sheet</div>
+  <div class="section-desc">Your quick reference for everything! Save this page or print it! 🖨️</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-orange">HTML</div><h3>HTML Quick Reference 🌐</h3></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">HTML</span></div><pre><span class="tag">&lt;h1&gt;</span>to<span class="tag">&lt;h6&gt;</span>  Headings      <span class="tag">&lt;p&gt;</span>          Paragraph
+<span class="tag">&lt;a href=""&gt;</span>  Link          <span class="tag">&lt;img src=""&gt;</span>  Image
+<span class="tag">&lt;ul&gt;&lt;li&gt;</span>    Bullet list   <span class="tag">&lt;ol&gt;&lt;li&gt;</span>     Numbered list
+<span class="tag">&lt;table&gt;</span>      Table         <span class="tag">&lt;form&gt;</span>        Form
+<span class="tag">&lt;input&gt;</span>      Text box      <span class="tag">&lt;button&gt;</span>      Button
+<span class="tag">&lt;div&gt;</span>        Box           <span class="tag">&lt;span&gt;</span>        Inline box
+<span class="tag">&lt;header&gt;</span>     Header        <span class="tag">&lt;nav&gt;</span>         Navigation
+<span class="tag">&lt;main&gt;</span>       Main content  <span class="tag">&lt;footer&gt;</span>      Footer
+<span class="tag">&lt;section&gt;</span>    Section       <span class="tag">&lt;article&gt;</span>     Article
+<span class="tag">&lt;strong&gt;</span>     Bold          <span class="tag">&lt;em&gt;</span>          Italic</pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-blue">CSS</div><h3>CSS Quick Reference 🎨</h3></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">CSS</span></div><pre><span class="prop">color</span>: <span class="val">red</span>;                <span class="prop">background</span>: <span class="val">blue</span>;
+<span class="prop">font-size</span>: <span class="val">16px</span>;           <span class="prop">font-weight</span>: <span class="val">bold</span>;
+<span class="prop">font-family</span>: <span class="val">Arial</span>;        <span class="prop">text-align</span>: <span class="val">center</span>;
+<span class="prop">width</span>: <span class="val">200px</span>;              <span class="prop">height</span>: <span class="val">100px</span>;
+<span class="prop">margin</span>: <span class="val">20px</span>;              <span class="prop">padding</span>: <span class="val">10px</span>;
+<span class="prop">border</span>: <span class="val">2px solid red</span>;    <span class="prop">border-radius</span>: <span class="val">10px</span>;
+<span class="prop">display</span>: <span class="val">flex</span>;             <span class="prop">display</span>: <span class="val">grid</span>;
+<span class="prop">gap</span>: <span class="val">16px</span>;                 <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+<span class="prop">justify-content</span>: <span class="val">center</span>;   <span class="prop">align-items</span>: <span class="val">center</span>;
+<span class="prop">position</span>: <span class="val">relative</span>;       <span class="prop">z-index</span>: <span class="val">10</span>;
+<span class="prop">opacity</span>: <span class="val">0.5</span>;              <span class="prop">transition</span>: <span class="val">all 0.3s</span>;
+<span class="prop">transform</span>: <span class="val">scale(1.2)</span>;    <span class="prop">animation</span>: <span class="val">name 1s infinite</span>;</pre></div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-yellow">JS</div><h3>JavaScript Quick Reference ⚡</h3></div>
+    <div class="code-box"><div class="code-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="code-label">JavaScript</span></div><pre><span class="kw">let</span> x = <span class="val">5</span>;          <span class="kw">const</span> Y = <span class="val">10</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(x);     <span class="fn">alert</span>(<span class="str">"hi"</span>);
+<span class="kw">if</span> (x > <span class="val">3</span>) {}       <span class="kw">for</span> (<span class="kw">let</span> i=<span class="val">0</span>; i<<span class="val">5</span>; i++) {}
+<span class="kw">function</span> <span class="fn">fn</span>(a) { <span class="kw">return</span> a; }   <span class="kw">const</span> <span class="fn">fn</span> = a => a;
+[<span class="val">1</span>,<span class="val">2</span>,<span class="val">3</span>].<span class="fn">push</span>(<span class="val">4</span>);    [<span class="val">1</span>,<span class="val">2</span>,<span class="val">3</span>].<span class="fn">length</span>;
+{ name: <span class="str">"Alex"</span> }    obj.name;
+document.<span class="fn">querySelector</span>(<span class="str">"#id"</span>);
+element.textContent = <span class="str">"new"</span>;
+element.style.color = <span class="str">"red"</span>;
+element.<span class="fn">classList</span>.<span class="fn">toggle</span>(<span class="str">"class"</span>);
+element.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () => {});</pre></div>
+  </div>
+</div>
+
+<!-- ==================== GLOSSARY ==================== -->
+<div class="section" id="ref-glossary">
+  <div class="breadcrumb">📖 References <span>→ Glossary</span></div>
+  <div class="section-title">📚 Coder's Glossary</div>
+  <div class="section-desc">All the important words every coder should know! 🧠</div>
+  <div class="lesson">
+    <div class="lesson-header"><div class="lesson-num num-purple">A–Z</div><h3>Coding Dictionary 📖</h3></div>
+    <div class="table-wrap"><table>
+      <tr><th>Word</th><th>What it means</th></tr>
+      <tr><td><strong>Algorithm</strong></td><td>Step-by-step instructions to solve a problem</td></tr>
+      <tr><td><strong>API</strong></td><td>A way for programs to talk to each other</td></tr>
+      <tr><td><strong>Array</strong></td><td>A list of values stored in one variable</td></tr>
+      <tr><td><strong>Attribute</strong></td><td>Extra info added to an HTML tag (e.g., src, href)</td></tr>
+      <tr><td><strong>Boolean</strong></td><td>A value that is either true or false</td></tr>
+      <tr><td><strong>Bug</strong></td><td>An error or mistake in your code</td></tr>
+      <tr><td><strong>Cache</strong></td><td>Saved copies of data to make loading faster</td></tr>
+      <tr><td><strong>Callback</strong></td><td>A function that runs when something else finishes</td></tr>
+      <tr><td><strong>Class</strong></td><td>A reusable CSS selector applied with class=""</td></tr>
+      <tr><td><strong>Comment</strong></td><td>Notes in code that the computer ignores</td></tr>
+      <tr><td><strong>Conditional</strong></td><td>Code that only runs if a condition is true (if/else)</td></tr>
+      <tr><td><strong>CSS</strong></td><td>Cascading Style Sheets — controls visual appearance</td></tr>
+      <tr><td><strong>Database</strong></td><td>Organized storage for large amounts of data</td></tr>
+      <tr><td><strong>Debugging</strong></td><td>Finding and fixing errors in code</td></tr>
+      <tr><td><strong>DOM</strong></td><td>Document Object Model — JS's view of the HTML</td></tr>
+      <tr><td><strong>Event</strong></td><td>Something that happens (click, keypress, load)</td></tr>
+      <tr><td><strong>Function</strong></td><td>A reusable block of code with a name</td></tr>
+      <tr><td><strong>Git</strong></td><td>Software that tracks changes to your code</td></tr>
+      <tr><td><strong>HTML</strong></td><td>HyperText Markup Language — the structure of pages</td></tr>
+      <tr><td><strong>ID</strong></td><td>A unique CSS/JS identifier used with id=""</td></tr>
+      <tr><td><strong>JavaScript</strong></td><td>The programming language that powers web interactivity</td></tr>
+      <tr><td><strong>Loop</strong></td><td>Code that repeats multiple times</td></tr>
+      <tr><td><strong>Method</strong></td><td>A function that belongs to an object or data type</td></tr>
+      <tr><td><strong>Object</strong></td><td>A collection of related properties and methods</td></tr>
+      <tr><td><strong>Parameter</strong></td><td>A variable that receives data passed into a function</td></tr>
+      <tr><td><strong>Responsive</strong></td><td>Looks good on all screen sizes</td></tr>
+      <tr><td><strong>Return</strong></td><td>Sends a value back from a function</td></tr>
+      <tr><td><strong>Semantic</strong></td><td>HTML that describes the meaning of content</td></tr>
+      <tr><td><strong>String</strong></td><td>Text data in code (always in quotes)</td></tr>
+      <tr><td><strong>Variable</strong></td><td>A named container that stores a value</td></tr>
+    </table></div>
+  </div>
+</div>
+
+      <div class="scroll-hint">🎉 You're doing amazing! Keep coding every day! 🚀⭐</div>
+    </div><!-- /content -->
+  </main>
+</div><!-- /layout -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const pageTitles = {
+  'home':'🌟 Welcome!','learning-plan':'📅 1-Year Plan','tools-setup':'🛠️ Setup & Tools',
+  'html-intro':'🌐 What is HTML?','html-tags':'🏷️ Tags & Elements','html-structure':'🏗️ Page Structure',
+  'html-links':'🔗 Links & Images','html-lists':'📝 Lists & Tables','html-forms':'📬 Forms',
+  'html-semantic':'🧩 Semantic HTML','html-quiz':'❓ HTML Quiz!',
+  'css-intro':'🎨 What is CSS?','css-selectors':'🎯 Selectors','css-colors':'🌈 Colors & Fonts',
+  'css-box':'📦 Box Model','css-flex':'📐 Flexbox','css-grid':'🗂️ CSS Grid',
+  'css-responsive':'📱 Responsive','css-animations':'✨ Animations','css-quiz':'❓ CSS Quiz!',
+  'js-intro':'⚡ What is JS?','js-variables':'📦 Variables','js-operators':'➕ Operators',
+  'js-strings':'💬 Strings','js-functions':'⚙️ Functions','js-conditions':'🔀 If / Else',
+  'js-loops':'🔄 Loops','js-arrays':'📋 Arrays','js-objects':'🗃️ Objects',
+  'js-dom':'🖱️ DOM Magic','js-events':'🎯 Events','js-quiz':'❓ JS Quiz!',
+  'proj-intro':'🗺️ Project Guide','proj-profile':'👤 Profile Page','proj-quiz-game':'🎯 Quiz Game',
+  'proj-todo':'✅ To-Do App','proj-calculator':'🔢 Calculator','proj-weather':'🌤️ Weather App',
+  'adv-git':'📂 Git & GitHub','adv-debugging':'🐛 Debugging','adv-accessibility':'♿ Accessibility',
+  'adv-next':'🌠 What\'s Next?','ref-cheatsheet':'📋 Cheat Sheet','ref-glossary':'📚 Glossary'
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    const oc = btn.getAttribute('onclick') || '';
+    if (oc.includes("'" + id + "'")) btn.classList.add('active');
+  });
+  document.getElementById('page-title').textContent = pageTitles[id] || '📚 Learning';
+  window.scrollTo({top:0, behavior:'smooth'});
+  // Close sidebar on mobile after navigation
+  if (window.innerWidth <= 900) closeSidebar();
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const isOpen = sidebar.classList.contains('open');
+  if (isOpen) {
+    closeSidebar();
+  } else {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  }
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function ans(btn, isCorrect, fbId) {
+  const container = btn.closest('.quiz-opts');
+  if (container.dataset.answered) return;
+  container.dataset.answered = '1';
+  container.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+  const fb = document.getElementById(fbId);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.textContent = '🎉 Correct! Great job! ⭐';
+    fb.className = 'quiz-feedback ok';
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '❌ Not quite! Check the notes and try again! 😊';
+    fb.className = 'quiz-feedback no';
+    container.querySelectorAll('.quiz-opt').forEach(b => {
+      const oc = b.getAttribute('onclick') || '';
+      if (oc.includes('true')) b.classList.add('correct');
+    });
+  }
+}
+
+</script>
+</body>
+</html>

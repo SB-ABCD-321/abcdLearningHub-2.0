@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerPoint Docs — Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0f;
+    --surface: #13131a;
+    --surface2: #1c1c28;
+    --border: #2a2a3a;
+    --accent: #d8552a;
+    --accent2: #f0a500;
+    --accent3: #3a9fd8;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --code-bg: #0a0a12;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: white;
+    letter-spacing: -1px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sidebar-nav {
+    padding: 16px 12px;
+    flex: 1;
+  }
+
+  .nav-section {
+    margin-bottom: 20px;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 12px 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 7px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 400;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: rgba(216,85,42,0.12); color: var(--accent); font-weight: 500; }
+
+  .nav-item .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  .nav-item.active .dot { opacity: 1; }
+
+  .badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .badge.beginner { background: rgba(58,159,216,0.15); color: var(--accent3); }
+  .badge.advanced { background: rgba(216,85,42,0.15); color: var(--accent); }
+  .badge.new { background: rgba(240,165,0,0.15); color: var(--accent2); }
+
+  /* MAIN CONTENT */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    max-width: 900px;
+    padding: 0 60px 80px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 70px 0 50px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: 'PPT';
+    position: absolute;
+    right: -20px;
+    top: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 160px;
+    font-weight: 800;
+    color: rgba(216,85,42,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(216,85,42,0.1);
+    border: 1px solid rgba(216,85,42,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 30px;
+    font-weight: 300;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* SECTIONS */
+  section {
+    margin-bottom: 72px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(16px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .section-num {
+    width: 26px; height: 26px;
+    background: var(--accent);
+    border-radius: 6px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 28px 0 10px;
+  }
+
+  p {
+    color: #b0b0c8;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  /* CARDS */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .cards.three { grid-template-columns: 1fr 1fr 1fr; }
+  .cards.one { grid-template-columns: 1fr; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover { border-color: rgba(216,85,42,0.35); transform: translateY(-2px); }
+
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .card p {
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout.tip { background: rgba(58,159,216,0.08); border: 1px solid rgba(58,159,216,0.2); }
+  .callout.warn { background: rgba(240,165,0,0.08); border: 1px solid rgba(240,165,0,0.2); }
+  .callout.info { background: rgba(216,85,42,0.08); border: 1px solid rgba(216,85,42,0.2); }
+  .callout.success { background: rgba(80,200,100,0.08); border: 1px solid rgba(80,200,100,0.2); }
+
+  .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .callout-content { flex: 1; }
+  .callout-title { font-weight: 600; font-size: 13.5px; margin-bottom: 4px; color: var(--text); }
+  .callout p { font-size: 13px; margin: 0; }
+
+  /* CODE */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .code-header {
+    padding: 10px 18px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .code-header::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: block;
+  }
+
+  .code-block pre {
+    padding: 18px 22px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: #c8d3f5;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+
+  .code-block code .kw { color: #c099ff; }
+  .code-block code .str { color: #c3e88d; }
+  .code-block code .cm { color: #636da6; font-style: italic; }
+  .code-block code .fn { color: #82aaff; }
+  .code-block code .num { color: #ff966c; }
+
+  /* STEPS */
+  .steps {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 34px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .step-num {
+    width: 34px; height: 34px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-content h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    margin-top: 6px;
+  }
+
+  .step-content p { font-size: 13.5px; margin: 0; }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: var(--surface);
+  }
+
+  th {
+    padding: 12px 18px;
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 11px 18px;
+    font-size: 13.5px;
+    color: #b0b0c8;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+  }
+
+  tbody tr:last-child td { border: none; }
+  tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* KEYBOARD */
+  kbd {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  /* SLIDE VISUAL */
+  .slide-preview {
+    background: white;
+    border-radius: 10px;
+    padding: 40px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+  }
+
+  .slide-preview.dark {
+    background: #1a1a4e;
+  }
+
+  .slide-preview.gradient {
+    background: linear-gradient(135deg, #c62a00, #d8552a, #f0a500);
+  }
+
+  .slide-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+
+  .slide-title.white { color: white; }
+
+  .slide-body {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .slide-body.white { color: rgba(255,255,255,0.85); }
+
+  .slide-accent-bar {
+    width: 50px; height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  .slide-accent-bar.white { background: white; }
+
+  .slide-label {
+    position: absolute;
+    top: 12px; right: 14px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .slide-label.white { color: rgba(255,255,255,0.4); }
+
+  /* SHORTCUT GRID */
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .shortcut-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .shortcut-desc {
+    font-size: 13px;
+    color: #b0b0c8;
+  }
+
+  .shortcut-keys {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .shortcut-keys span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 50px 0;
+  }
+
+  /* ANCHOR */
+  [id] { scroll-margin-top: 30px; }
+
+  /* SCROLLBAR */
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-280px); }
+    .main { margin-left: 0; padding: 0 24px 60px; }
+    .hero h1 { font-size: 34px; }
+    .cards { grid-template-columns: 1fr; }
+    .cards.three { grid-template-columns: 1fr 1fr; }
+    .shortcut-grid { grid-template-columns: 1fr; }
+  }
+
+  /* INLINE HIGHLIGHT */
+  mark {
+    background: rgba(216,85,42,0.18);
+    color: var(--accent);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 0.95em;
+  }
+
+  /* TOC link */
+  .toc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent3);
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .toc-link:hover { text-decoration: underline; }
+
+  /* Progress indicator */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 280px; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform-origin: left;
+    transform: scaleX(0);
+    z-index: 200;
+    transition: transform 0.1s;
+    id: progress;
+  }
+
+  /* Floating level badge */
+  .level-row {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0 28px;
+    flex-wrap: wrap;
+  }
+
+  .level-pill {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .level-pill.b { background: rgba(58,159,216,0.1); border: 1px solid rgba(58,159,216,0.25); color: var(--accent3); }
+  .level-pill.i { background: rgba(240,165,0,0.1); border: 1px solid rgba(240,165,0,0.25); color: var(--accent2); }
+  .level-pill.a { background: rgba(216,85,42,0.1); border: 1px solid rgba(216,85,42,0.25); color: var(--accent); }
+
+  ul.doc-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0;
+  }
+
+  ul.doc-list li {
+    padding: 6px 0;
+    padding-left: 20px;
+    font-size: 14px;
+    color: #b0b0c8;
+    position: relative;
+    font-weight: 300;
+  }
+
+  ul.doc-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+    top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-badge">
+      <div class="logo-icon">P</div>
+      <div>
+        <div class="logo-text">PPT Docs</div>
+        <div class="logo-sub">Complete Guide</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-title">Getting Started</div>
+      <a class="nav-item active" href="#intro"><span class="dot"></span>Introduction <span class="badge beginner">Beginner</span></a>
+      <a class="nav-item" href="#why"><span class="dot"></span>Why Use PowerPoint</a>
+      <a class="nav-item" href="#when"><span class="dot"></span>When to Use It</a>
+      <a class="nav-item" href="#benefits"><span class="dot"></span>Benefits</a>
+      <a class="nav-item" href="#interface"><span class="dot"></span>The Interface</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Fundamentals</div>
+      <a class="nav-item" href="#first-pres"><span class="dot"></span>Your First Presentation</a>
+      <a class="nav-item" href="#slides"><span class="dot"></span>Working with Slides</a>
+      <a class="nav-item" href="#text"><span class="dot"></span>Text & Formatting</a>
+      <a class="nav-item" href="#images"><span class="dot"></span>Images & Media</a>
+      <a class="nav-item" href="#themes"><span class="dot"></span>Themes & Design</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Intermediate</div>
+      <a class="nav-item" href="#animations"><span class="dot"></span>Animations <span class="badge new">✦</span></a>
+      <a class="nav-item" href="#transitions"><span class="dot"></span>Slide Transitions</a>
+      <a class="nav-item" href="#charts"><span class="dot"></span>Charts & Data</a>
+      <a class="nav-item" href="#smartart"><span class="dot"></span>SmartArt & Diagrams</a>
+      <a class="nav-item" href="#speaker-notes"><span class="dot"></span>Speaker Notes</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Advanced</div>
+      <a class="nav-item" href="#master"><span class="dot"></span>Slide Master <span class="badge advanced">Pro</span></a>
+      <a class="nav-item" href="#macros"><span class="dot"></span>Macros & VBA</a>
+      <a class="nav-item" href="#hyperlinks"><span class="dot"></span>Hyperlinks & Actions</a>
+      <a class="nav-item" href="#export"><span class="dot"></span>Exporting & Sharing</a>
+      <a class="nav-item" href="#shortcuts"><span class="dot"></span>Keyboard Shortcuts</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Best Practices</div>
+      <a class="nav-item" href="#design-tips"><span class="dot"></span>Design Tips</a>
+      <a class="nav-item" href="#storytelling"><span class="dot"></span>Storytelling with Slides</a>
+      <a class="nav-item" href="#mistakes"><span class="dot"></span>Common Mistakes</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero" id="intro">
+    <div class="hero-eyebrow">📊 Complete Documentation</div>
+    <h1>Master <span>Microsoft</span><br>PowerPoint</h1>
+    <p class="hero-desc">From your very first slide to advanced animations and Slide Master — everything you need to create stunning, professional presentations.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">🎯 Beginner-Friendly</span>
+      <span class="hero-tag">⚡ Intermediate Skills</span>
+      <span class="hero-tag">🚀 Advanced Techniques</span>
+      <span class="hero-tag">💡 Best Practices</span>
+      <span class="hero-tag">⌨️ Shortcuts</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <section>
+    <div class="section-eyebrow"><div class="section-num">01</div><span class="section-label">Introduction</span></div>
+    <h2>What is Microsoft PowerPoint?</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+    <p>Microsoft PowerPoint is the world's most widely used presentation software, developed by Microsoft and first released in 1987. It lets you create visual slideshows — called <mark>presentations</mark> — combining text, images, shapes, charts, video, and animations on a series of slides.</p>
+    <p>PowerPoint is part of the Microsoft 365 suite and runs on Windows, macOS, iOS, Android, and web browsers. Whether you're pitching a business idea, teaching a class, or reporting quarterly data, PowerPoint is the tool professionals reach for.</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <h4>Born in 1987</h4>
+        <p>Originally created by Forethought, Inc. and acquired by Microsoft the same year. Now used by over 500 million people worldwide.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <h4>Used Everywhere</h4>
+        <p>35 million presentations are created every day using PowerPoint — in boardrooms, classrooms, hospitals, and governments.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h4>Integrates Everything</h4>
+        <p>Seamlessly works with Excel, Word, Teams, OneDrive, and third-party apps. Live data, co-authoring, AI tools — all built in.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h4>AI-Powered in 2025</h4>
+        <p>Microsoft Copilot inside PowerPoint can draft full decks, rewrite text, summarize, and even suggest visual layouts using AI.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="section-eyebrow"><div class="section-num">02</div><span class="section-label">Purpose</span></div>
+    <h2>Why Use PowerPoint?</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+    <p>Humans process visuals <strong>60,000× faster</strong> than plain text. PowerPoint turns ideas into visual stories. Here's exactly why it matters:</p>
+
+    <div class="cards three">
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h4>Visual Memory</h4>
+        <p>People retain 65% of information paired with visuals vs. only 10% from text alone.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h4>Focus Attention</h4>
+        <p>One idea per slide trains your audience to concentrate on what matters most.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✨</div>
+        <h4>Look Professional</h4>
+        <p>A polished deck signals credibility. First impressions in presentations are largely visual.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📣</div>
+        <h4>Guide the Story</h4>
+        <p>Slides give you a roadmap — keeping both you and your audience on the same page.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📤</div>
+        <h4>Leave a Document</h4>
+        <p>A .pptx file can be sent as a follow-up — your presentation lives on after you finish speaking.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h4>Universal Format</h4>
+        <p>Everyone can open PowerPoint. It's the lingua franca of professional presentations.</p>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <div class="callout-title">Pro Insight</div>
+        <p>PowerPoint is not just for presenting live. Many teams use it to create visual documents, proposal PDFs, one-pagers, and social media graphics.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- WHEN -->
+  <section id="when">
+    <div class="section-eyebrow"><div class="section-num">03</div><span class="section-label">Use Cases</span></div>
+    <h2>When to Use PowerPoint</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+    <p>PowerPoint is powerful — but it's not always the right tool. Here's a clear breakdown of when it shines:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Use PowerPoint?</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Business pitch to investors</td><td>✅ Yes</td><td>Visual impact, professional, memorable</td></tr>
+          <tr><td>Classroom lecture</td><td>✅ Yes</td><td>Paces content delivery, adds visuals</td></tr>
+          <tr><td>Sales demo</td><td>✅ Yes</td><td>Guides the narrative, supports product story</td></tr>
+          <tr><td>Conference talk (keynote)</td><td>✅ Yes</td><td>Large-screen impact, full visual control</td></tr>
+          <tr><td>Quick email update</td><td>❌ No</td><td>Email or Word doc is faster & more appropriate</td></tr>
+          <tr><td>Complex data analysis</td><td>⚠️ Partial</td><td>Use Excel for analysis; paste results into PPT</td></tr>
+          <tr><td>Team brainstorm</td><td>⚠️ Partial</td><td>Whiteboard apps (FigJam, Miro) may work better</td></tr>
+          <tr><td>Training material / e-learning</td><td>✅ Yes</td><td>Export to video or use with narration</td></tr>
+          <tr><td>Portfolio or resume</td><td>✅ Yes</td><td>Creative, visual-first format stands out</td></tr>
+          <tr><td>Research report</td><td>✅ Yes</td><td>Executive summary decks are standard in research</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div class="section-eyebrow"><div class="section-num">04</div><span class="section-label">Advantages</span></div>
+    <h2>Benefits of PowerPoint</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <h4>Easy to Design</h4>
+        <p>Drag-and-drop interface, hundreds of built-in templates, and Designer AI suggestions mean you don't need to be a graphic designer.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <h4>Real-Time Collaboration</h4>
+        <p>Multiple people can edit the same presentation simultaneously via Microsoft 365, with live cursors and comments.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h4>Cross-Platform</h4>
+        <p>Works on Windows, Mac, iPad, Android, and the browser. Your file looks the same everywhere.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h4>Rich Export Options</h4>
+        <p>Export to PDF, video (.mp4), images (PNG/JPG), HTML, or even a self-playing kiosk slideshow.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h4>Password Protection</h4>
+        <p>Encrypt files with passwords, set permissions, and track who made what changes with version history.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h4>AI Design Help</h4>
+        <p>Designer and Copilot features automatically suggest layouts, rewrite text, and create presentations from prompts.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- INTERFACE -->
+  <section id="interface">
+    <div class="section-eyebrow"><div class="section-num">05</div><span class="section-label">Interface Tour</span></div>
+    <h2>The PowerPoint Interface</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+    <p>Understanding the layout is step one. PowerPoint's interface has four main regions:</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📌</div>
+        <h4>The Ribbon</h4>
+        <p>The tabbed toolbar at the top. Contains all commands organized into tabs: Home, Insert, Design, Transitions, Animations, Slide Show, Review, View, and Help.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗂️</div>
+        <h4>Slide Panel (Left)</h4>
+        <p>Thumbnail view of all your slides. Drag to reorder, right-click to add/delete/duplicate slides.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🖼️</div>
+        <h4>Editing Canvas (Center)</h4>
+        <p>The main editing area. Click any element to select it, drag to move, use handles to resize.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h4>Notes Panel (Bottom)</h4>
+        <p>Type speaker notes below the canvas. Visible to you on Presenter View, hidden from the audience.</p>
+      </div>
+    </div>
+
+    <h3>Key Ribbon Tabs Explained</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tab</th><th>What You Do Here</th></tr></thead>
+        <tbody>
+          <tr><td><mark>Home</mark></td><td>Font, size, bold/italic/underline, alignment, bullets, slide layout, paste options</td></tr>
+          <tr><td><mark>Insert</mark></td><td>Add pictures, shapes, icons, charts, tables, video, audio, hyperlinks, SmartArt</td></tr>
+          <tr><td><mark>Design</mark></td><td>Themes, color variants, slide size, Designer AI panel</td></tr>
+          <tr><td><mark>Transitions</mark></td><td>Animation between slides, duration, trigger settings</td></tr>
+          <tr><td><mark>Animations</mark></td><td>Entrance/exit/emphasis effects for individual objects on a slide</td></tr>
+          <tr><td><mark>Slide Show</mark></td><td>Start slideshow, Presenter View, rehearse timings, set up kiosk mode</td></tr>
+          <tr><td><mark>Review</mark></td><td>Spell check, thesaurus, comments, track changes, compare versions</td></tr>
+          <tr><td><mark>View</mark></td><td>Normal, Outline, Slide Sorter, Reading View, Slide Master, rulers, gridlines, zoom</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FIRST PRESENTATION -->
+  <section id="first-pres">
+    <div class="section-eyebrow"><div class="section-num">06</div><span class="section-label">Tutorial</span></div>
+    <h2>Creating Your First Presentation</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+    <p>Follow these steps to build a presentation from scratch in under 10 minutes:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Open PowerPoint and Choose a Template</h4>
+          <p>Launch PowerPoint → Click <mark>New</mark> → Browse templates or choose <mark>Blank Presentation</mark>. Templates give you a head start with matching fonts, colors, and layouts.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Click the Title Placeholder</h4>
+          <p>Click <em>"Click to add title"</em> and type your presentation title. Then click the subtitle area and add a supporting line or your name/date.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Add a New Slide</h4>
+          <p>Press <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows) or use <mark>Home → New Slide</mark>. Choose a layout from the dropdown — "Title and Content" is great for most slides.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Add Content</h4>
+          <p>Type bullet points in the content area. Keep it to <strong>5–6 bullets max</strong> per slide. Use visuals wherever possible instead of walls of text.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Choose a Design Theme</h4>
+          <p>Go to the <mark>Design</mark> tab and click any theme to instantly apply matching fonts and colors to all slides. Use <mark>Variants</mark> to pick a color scheme.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>Preview & Save</h4>
+          <p>Press <kbd>F5</kbd> to preview from slide 1. Press <kbd>Escape</kbd> to exit. Save with <kbd>Ctrl</kbd> + <kbd>S</kbd> as <mark>.pptx</mark>. Save to OneDrive for auto-save.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">🎉</div>
+      <div class="callout-content">
+        <div class="callout-title">You did it!</div>
+        <p>That's a basic presentation. Now let's go deeper into each area to make it truly excellent.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SLIDES -->
+  <section id="slides">
+    <div class="section-eyebrow"><div class="section-num">07</div><span class="section-label">Fundamentals</span></div>
+    <h2>Working with Slides</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+    </div>
+
+    <h3>Slide Layouts</h3>
+    <p>Every slide has a <mark>layout</mark> — a template that positions placeholders for you. Choose the right layout from <mark>Home → Layout</mark>:</p>
+
+    <div class="cards three">
+      <div class="card">
+        <h4>Title Slide</h4>
+        <p>For your opening slide. Large title + smaller subtitle. Use it once at the start.</p>
+      </div>
+      <div class="card">
+        <h4>Title and Content</h4>
+        <p>Most common layout. Heading at top, body below. Great for bullets, images, charts.</p>
+      </div>
+      <div class="card">
+        <h4>Two Content</h4>
+        <p>Split the slide into two columns — perfect for comparisons: before/after, pro/con, etc.</p>
+      </div>
+      <div class="card">
+        <h4>Blank</h4>
+        <p>Complete freedom. Add anything anywhere. Best for custom creative slides.</p>
+      </div>
+      <div class="card">
+        <h4>Section Header</h4>
+        <p>Marks the start of a new topic/chapter. Big text, high contrast. Helps audience navigate.</p>
+      </div>
+      <div class="card">
+        <h4>Title Only</h4>
+        <p>Just a title bar — content area is free. Good for large image or diagram slides.</p>
+      </div>
+    </div>
+
+    <h3>Organizing Slides</h3>
+    <ul class="doc-list">
+      <li><strong>Duplicate:</strong> Right-click a slide thumbnail → <mark>Duplicate Slide</mark> or <kbd>Ctrl</kbd> + <kbd>D</kbd></li>
+      <li><strong>Reorder:</strong> Drag slide thumbnails up/down in the side panel</li>
+      <li><strong>Delete:</strong> Click a slide → press <kbd>Delete</kbd></li>
+      <li><strong>Section:</strong> Right-click between slides → <mark>Add Section</mark> to group slides by topic</li>
+      <li><strong>Hide:</strong> Right-click → <mark>Hide Slide</mark> — it stays in the file but skips during playback</li>
+    </ul>
+
+    <h3>Slide Size</h3>
+    <p>Go to <mark>Design → Slide Size</mark>. Modern standard is <strong>Widescreen 16:9</strong>. Use <strong>Standard 4:3</strong> only for older projectors. Custom sizes let you make social media formats (square, portrait, etc.).</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TEXT -->
+  <section id="text">
+    <div class="section-eyebrow"><div class="section-num">08</div><span class="section-label">Formatting</span></div>
+    <h2>Text & Formatting</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <h3>Adding Text</h3>
+    <p>Click any <mark>placeholder</mark> to type. Or go to <mark>Insert → Text Box</mark> and draw a box anywhere on the canvas. Text boxes give you full freedom in positioning.</p>
+
+    <h3>Formatting Basics</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Action</th><th>Shortcut</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Bold</td><td><kbd>Ctrl</kbd>+<kbd>B</kbd></td><td>Use sparingly — max 1–2 words per slide</td></tr>
+          <tr><td>Italic</td><td><kbd>Ctrl</kbd>+<kbd>I</kbd></td><td>For emphasis, citations, foreign words</td></tr>
+          <tr><td>Underline</td><td><kbd>Ctrl</kbd>+<kbd>U</kbd></td><td>Avoid — often confused with links</td></tr>
+          <tr><td>Font size up/down</td><td><kbd>Ctrl</kbd>+<kbd>]</kbd> / <kbd>[</kbd></td><td>Adjust without clicking font size box</td></tr>
+          <tr><td>Change case</td><td><kbd>Shift</kbd>+<kbd>F3</kbd></td><td>Cycles: lowercase → UPPERCASE → Title Case</td></tr>
+          <tr><td>Align left/center/right</td><td><kbd>Ctrl</kbd>+<kbd>L/E/R</kbd></td><td>Center aligns work great for slide headings</td></tr>
+          <tr><td>Clear formatting</td><td><kbd>Ctrl</kbd>+<kbd>Space</kbd></td><td>Removes all font formatting from selection</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-content">
+        <div class="callout-title">Typography Rules</div>
+        <p>Stick to <strong>max 2 font families</strong> per deck. Use one for headings, one for body. Never use Comic Sans or Papyrus in professional contexts. Minimum font size on slides: <strong>24pt</strong> for body, <strong>36pt+</strong> for titles.</p>
+      </div>
+    </div>
+
+    <h3>WordArt & Decorative Text</h3>
+    <p>Go to <mark>Insert → WordArt</mark> to add styled display text with fills, outlines, and shadows. Choose a style, then customize in <mark>Shape Format → Text Effects</mark>. Great for title slides, but use sparingly.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- IMAGES -->
+  <section id="images">
+    <div class="section-eyebrow"><div class="section-num">09</div><span class="section-label">Media</span></div>
+    <h2>Images, Video & Audio</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <h3>Inserting Images</h3>
+    <ul class="doc-list">
+      <li><strong>From computer:</strong> <mark>Insert → Pictures → This Device</mark></li>
+      <li><strong>Stock photos (free):</strong> <mark>Insert → Pictures → Stock Images</mark> — thousands of pro photos, icons, illustrations, cutouts</li>
+      <li><strong>Online images:</strong> <mark>Insert → Pictures → Online Pictures</mark> (Bing search, licensed)</li>
+      <li><strong>Screenshot:</strong> <mark>Insert → Screenshot</mark> — capture any open window instantly</li>
+    </ul>
+
+    <h3>Editing Images in PowerPoint</h3>
+    <p>Select an image → use the <mark>Picture Format</mark> tab that appears:</p>
+    <ul class="doc-list">
+      <li><strong>Remove Background:</strong> AI-powered tool that cuts out backgrounds automatically</li>
+      <li><strong>Artistic Effects:</strong> Blur, pencil sketch, watercolor, glow, and more</li>
+      <li><strong>Corrections:</strong> Adjust brightness, contrast, and sharpness</li>
+      <li><strong>Color:</strong> Apply color tones, saturation adjustments, or recolor effects</li>
+      <li><strong>Crop to Shape:</strong> Crop a photo into a circle, star, or any shape</li>
+      <li><strong>Alt Text:</strong> Add descriptions for screen readers — important for accessibility</li>
+    </ul>
+
+    <h3>Inserting Video</h3>
+    <p>Go to <mark>Insert → Video</mark>. You can embed a video from your device or link to an online video (YouTube, etc.). Embedded videos play offline — linked ones require internet. Set autoplay, loop, or click-to-play behavior in <mark>Playback</mark> tab.</p>
+
+    <h3>Inserting Audio</h3>
+    <p>Go to <mark>Insert → Audio</mark>. Add background music, sound effects, or recorded narrations. Use the <mark>Playback</mark> tab to set start trigger (on click vs automatic) and hide the speaker icon during presentation.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <div class="callout-title">Compress Media</div>
+        <p>Large images and videos bloat file size. Go to <mark>File → Info → Compress Media</mark> to reduce file size without significantly impacting quality. Also use <mark>Compress Pictures</mark> in Picture Format tab.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- THEMES -->
+  <section id="themes">
+    <div class="section-eyebrow"><div class="section-num">10</div><span class="section-label">Design</span></div>
+    <h2>Themes & Design</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <p>A <mark>Theme</mark> bundles fonts, colors, and background styles together. Switching themes updates your entire deck in one click.</p>
+
+    <h3>Example Slide Styles</h3>
+
+    <div class="slide-preview">
+      <div class="slide-label">Slide 1 / Light Theme</div>
+      <div class="slide-accent-bar"></div>
+      <div class="slide-title">Q4 Financial Results</div>
+      <div class="slide-body">Revenue grew 23% year-over-year · EBITDA margin improved to 31% · Customer base expanded to 1.4M users</div>
+    </div>
+
+    <div class="slide-preview dark">
+      <div class="slide-label white">Slide 2 / Dark Theme</div>
+      <div class="slide-accent-bar white"></div>
+      <div class="slide-title white">The Future of AI</div>
+      <div class="slide-body white">By 2030, generative AI will contribute $15.7T to the global economy. Are you ready?</div>
+    </div>
+
+    <div class="slide-preview gradient">
+      <div class="slide-label white">Slide 3 / Gradient Theme</div>
+      <div class="slide-title white">Welcome.</div>
+      <div class="slide-body white">Annual Company All-Hands · February 2025 · San Francisco</div>
+    </div>
+
+    <h3>Custom Color Palette</h3>
+    <p>Go to <mark>Design → Variants → Colors → Customize Colors</mark>. Define your brand colors for accent 1–6, text, and backgrounds. Save it with your company name to reuse across presentations.</p>
+
+    <h3>PowerPoint Designer</h3>
+    <p>When you add an image or text, PowerPoint's AI <mark>Designer</mark> panel (on the right) suggests professional layout options automatically. Click any suggestion to apply it. Requires Microsoft 365 and internet connection.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ANIMATIONS -->
+  <section id="animations">
+    <div class="section-eyebrow"><div class="section-num">11</div><span class="section-label">Intermediate</span></div>
+    <h2>Animations</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <p>Animations control how <strong>individual objects</strong> appear, move, or leave a slide. They're different from transitions (which affect the whole slide change).</p>
+
+    <h3>Types of Animations</h3>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🟢</div>
+        <h4>Entrance</h4>
+        <p>How an object appears on screen. Examples: Fade, Fly In, Bounce, Float In, Wipe. Use to reveal content progressively.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔴</div>
+        <h4>Exit</h4>
+        <p>How an object leaves the screen. Examples: Fade Out, Fly Out, Shrink & Turn. Use to clear content before showing the next idea.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🟡</div>
+        <h4>Emphasis</h4>
+        <p>Draw attention to something already on screen. Pulse, Spin, Grow/Shrink, Teeter. Great for highlighting key data.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔵</div>
+        <h4>Motion Path</h4>
+        <p>Move an object along a path you draw. Lines, arcs, turns, custom paths. Ideal for showing processes, flows, or storytelling.</p>
+      </div>
+    </div>
+
+    <h3>Adding an Animation</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content"><h4>Select an object</h4><p>Click the text box, image, or shape you want to animate.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content"><h4>Go to Animations tab</h4><p>Click the effect you want in the gallery. A preview plays immediately.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content"><h4>Set timing</h4><p>Use <mark>Start</mark> dropdown: "On Click" (manual), "With Previous" (same time as last animation), or "After Previous" (auto after last one).</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content"><h4>Open Animation Pane</h4><p>Click <mark>Animation Pane</mark> in the ribbon to see a timeline of all animations. Drag to reorder, double-click to fine-tune timing.</p></div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-content">
+        <div class="callout-title">Animation Warning</div>
+        <p>Less is more. Overusing animations is the #1 sign of an amateur presentation. Use 1–2 entrance effects max per deck, consistently. Avoid Bounce, Spin, or Boomerang in professional settings.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TRANSITIONS -->
+  <section id="transitions">
+    <div class="section-eyebrow"><div class="section-num">12</div><span class="section-label">Intermediate</span></div>
+    <h2>Slide Transitions</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+    <p>Transitions happen when you move from one slide to the next. They add polish — but restraint is key.</p>
+
+    <div class="cards three">
+      <div class="card">
+        <h4>✨ Subtle</h4>
+        <p>Fade, Cut, Push, Wipe, Split. These are professional defaults. Fade is the safest, most elegant choice for business.</p>
+      </div>
+      <div class="card">
+        <h4>🎯 Exciting</h4>
+        <p>Ripple, Honeycomb, Vortex. Use for high-energy presentations — conferences, pitches — but sparingly.</p>
+      </div>
+      <div class="card">
+        <h4>🌟 Dynamic</h4>
+        <p>Morph — PowerPoint's best transition. Smoothly morphs between two slides showing the same objects differently. Cinematic when done right.</p>
+      </div>
+    </div>
+
+    <h3>The Morph Transition</h3>
+    <p>Morph is PowerPoint's most powerful transition. It animates objects smoothly between slides if they share the same elements. To use it:</p>
+    <ul class="doc-list">
+      <li>Duplicate a slide (<kbd>Ctrl</kbd>+<kbd>D</kbd>)</li>
+      <li>On the duplicate, move/resize/recolor objects differently</li>
+      <li>Apply <mark>Transitions → Morph</mark> to the second slide</li>
+      <li>PowerPoint automatically figures out how to animate between them</li>
+    </ul>
+
+    <h3>Apply to All Slides</h3>
+    <p>Set one transition on any slide, then click <mark>Apply to All</mark> in the Transitions tab for consistency across the deck. Set duration to <strong>0.5–0.7 seconds</strong> for a crisp, professional feel.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CHARTS -->
+  <section id="charts">
+    <div class="section-eyebrow"><div class="section-num">13</div><span class="section-label">Data</span></div>
+    <h2>Charts & Data Visualization</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <p>Go to <mark>Insert → Chart</mark> to add a chart. PowerPoint opens a mini Excel spreadsheet for entering your data. Choose the right chart type for your message:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Chart Type</th><th>Best For</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Bar / Column</td><td>Comparing categories</td><td>Sales by region, scores by team</td></tr>
+          <tr><td>Line</td><td>Trends over time</td><td>Monthly revenue growth, temperature over years</td></tr>
+          <tr><td>Pie / Donut</td><td>Part-to-whole (max 5 segments)</td><td>Market share, budget allocation</td></tr>
+          <tr><td>Scatter</td><td>Correlation between two variables</td><td>Height vs weight, spend vs. revenue</td></tr>
+          <tr><td>Area</td><td>Volume over time</td><td>Traffic over months, cumulative signups</td></tr>
+          <tr><td>Waterfall</td><td>Sequential additions/subtractions</td><td>Cash flow, profit bridge</td></tr>
+          <tr><td>Treemap</td><td>Hierarchical proportions</td><td>Category breakdown, file sizes</td></tr>
+          <tr><td>Funnel</td><td>Progressive reduction</td><td>Sales pipeline, conversion rates</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <div class="callout-title">Paste from Excel</div>
+        <p>Build complex charts in Excel, then <strong>copy → Paste Special → Paste as Linked</strong> in PowerPoint. This keeps charts auto-updating when your Excel data changes. Update with <mark>Refresh Data</mark>.</p>
+      </div>
+    </div>
+
+    <h3>Chart Design Tips</h3>
+    <ul class="doc-list">
+      <li>Reduce clutter: remove gridlines, unnecessary axis labels, and legends when possible</li>
+      <li>Highlight your key data point with a contrasting color; gray everything else</li>
+      <li>Always add a direct label on the most important bar or data point</li>
+      <li>Give the chart a title that states the <em>conclusion</em>, not just the topic: "Revenue Grew 40% in Q4" not "Revenue by Quarter"</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SMARTART -->
+  <section id="smartart">
+    <div class="section-eyebrow"><div class="section-num">14</div><span class="section-label">Diagrams</span></div>
+    <h2>SmartArt & Diagrams</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <p>SmartArt lets you turn bullet points into visual diagrams instantly. Go to <mark>Insert → SmartArt</mark> and choose a category:</p>
+
+    <div class="cards three">
+      <div class="card"><h4>📋 List</h4><p>Bullet alternatives — visual checklists, feature lists, vertical stacks.</p></div>
+      <div class="card"><h4>🔄 Process</h4><p>Step-by-step workflows, sequences, procedures with arrows and numbered stages.</p></div>
+      <div class="card"><h4>⭕ Cycle</h4><p>Circular processes, repetitive stages — Agile loops, feedback cycles.</p></div>
+      <div class="card"><h4>🔺 Hierarchy</h4><p>Org charts, org structures, decision trees, corporate hierarchies.</p></div>
+      <div class="card"><h4>🕸️ Relationship</h4><p>Venn diagrams, overlapping concepts, connections between ideas.</p></div>
+      <div class="card"><h4>🔢 Matrix</h4><p>2×2 matrices — risk vs impact, effort vs value, urgency/importance grids.</p></div>
+    </div>
+
+    <h3>Converting Bullets to SmartArt</h3>
+    <p>Select any bulleted text box → Right-click → <mark>Convert to SmartArt</mark> → choose a layout. PowerPoint maps your bullets into a visual structure automatically. You can then edit individual shapes, colors, and sizes.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SPEAKER NOTES -->
+  <section id="speaker-notes">
+    <div class="section-eyebrow"><div class="section-num">15</div><span class="section-label">Presenting</span></div>
+    <h2>Speaker Notes & Presenter View</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <p>Speaker notes are your private script — visible only to you during the presentation, invisible to the audience on the projector.</p>
+
+    <h3>Adding Notes</h3>
+    <p>Click the <mark>Notes</mark> area below the slide canvas and type. No formatting required — just your talking points, cues, data to mention, or transition phrases.</p>
+
+    <h3>Presenter View</h3>
+    <p>When you connect a second screen (projector), go to <mark>Slide Show → Presenter View</mark>. You see:</p>
+    <ul class="doc-list">
+      <li>Current slide large on one screen</li>
+      <li>Your notes, next slide preview, timer, and slide nav on your laptop screen</li>
+      <li>A digital laser pointer and zoom tool</li>
+      <li>Slide navigation thumbnails</li>
+    </ul>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <div class="callout-title">Rehearse Timings</div>
+        <p>Use <mark>Slide Show → Rehearse Timings</mark> to auto-record how long you spend on each slide. PowerPoint saves these times and can auto-advance slides during playback — great for timed speeches or self-running kiosks.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SLIDE MASTER -->
+  <section id="master">
+    <div class="section-eyebrow"><div class="section-num">16</div><span class="section-label">Advanced</span></div>
+    <h2>Slide Master</h2>
+    <div class="level-row">
+      <span class="level-pill a">● Advanced</span>
+    </div>
+
+    <p>The <mark>Slide Master</mark> is the backbone of a professional, consistent presentation. Think of it as the "parent" of all slides — changes here cascade to every slide automatically.</p>
+
+    <h3>Accessing the Slide Master</h3>
+    <p>Go to <mark>View → Slide Master</mark>. You'll see the master slide at the top, with layout variants below it. Edit the master to change global fonts, colors, logos, footers, and backgrounds.</p>
+
+    <h3>What to Control in Slide Master</h3>
+    <ul class="doc-list">
+      <li><strong>Company logo:</strong> Place it in the master once — it appears on every slide without touching each one</li>
+      <li><strong>Font theme:</strong> Set heading and body fonts globally — changing them here updates every slide</li>
+      <li><strong>Color palette:</strong> Lock in brand colors for consistent fills, accents, and lines</li>
+      <li><strong>Footer & slide numbers:</strong> Insert → Header & Footer → set once, applies everywhere</li>
+      <li><strong>Layout variants:</strong> Customize individual layouts (Title slide has no logo, section headers use different backgrounds, etc.)</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="callout-icon">🚀</div>
+      <div class="callout-content">
+        <div class="callout-title">Pro Workflow: Build a Template</div>
+        <p>Design your Slide Master → save as <mark>.potx</mark> (PowerPoint Template). Now anyone on your team opens your template and all slides match your brand automatically. Share it to your company templates folder for company-wide use.</p>
+      </div>
+    </div>
+
+    <h3>Custom Slide Layouts</h3>
+    <p>Inside Slide Master view, right-click any layout → <mark>Insert Layout</mark> to create a new layout variant. Add custom placeholders for specific content types — quote slides, team bios, full-image backgrounds. Teams use these to create "branded" slide types that are always consistent.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- MACROS -->
+  <section id="macros">
+    <div class="section-eyebrow"><div class="section-num">17</div><span class="section-label">Advanced</span></div>
+    <h2>Macros & VBA Automation</h2>
+    <div class="level-row">
+      <span class="level-pill a">● Advanced</span>
+    </div>
+
+    <p>PowerPoint supports <mark>Visual Basic for Applications (VBA)</mark> — Microsoft's scripting language — to automate repetitive tasks, generate slides dynamically, or create interactive experiences.</p>
+
+    <h3>Enabling Macros</h3>
+    <p>Go to <mark>File → Options → Trust Center → Trust Center Settings → Macro Settings</mark>. Enable macros only for files from trusted sources. Save macro-enabled files as <mark>.pptm</mark>.</p>
+
+    <h3>Example: Auto-resize All Text Boxes</h3>
+    <div class="code-block">
+      <div class="code-header">VBA Macro — PowerPoint Basic Editor</div>
+      <pre><code><span class="cm">' Open Developer tab → Visual Basic → Insert → Module</span>
+<span class="cm">' Then paste this macro</span>
+
+<span class="kw">Sub</span> <span class="fn">AutoResizeTextBoxes</span>()
+    <span class="kw">Dim</span> sld <span class="kw">As</span> Slide
+    <span class="kw">Dim</span> shp <span class="kw">As</span> Shape
+
+    <span class="kw">For Each</span> sld <span class="kw">In</span> ActivePresentation.Slides
+        <span class="kw">For Each</span> shp <span class="kw">In</span> sld.Shapes
+            <span class="kw">If</span> shp.HasTextFrame <span class="kw">Then</span>
+                shp.TextFrame.AutoSize = ppAutoSizeShapeToFitText
+            <span class="kw">End If</span>
+        <span class="kw">Next</span> shp
+    <span class="kw">Next</span> sld
+
+    MsgBox <span class="str">"Done! All text boxes resized."</span>
+<span class="kw">End Sub</span></code></pre>
+    </div>
+
+    <h3>Example: Add Slide Numbers to Every Slide</h3>
+    <div class="code-block">
+      <div class="code-header">VBA Macro — Add Slide Numbers</div>
+      <pre><code><span class="kw">Sub</span> <span class="fn">AddSlideNumbers</span>()
+    <span class="kw">Dim</span> sld <span class="kw">As</span> Slide
+    <span class="kw">Dim</span> txb <span class="kw">As</span> Shape
+    <span class="kw">Dim</span> total <span class="kw">As</span> Integer
+
+    total = ActivePresentation.Slides.Count
+
+    <span class="kw">For Each</span> sld <span class="kw">In</span> ActivePresentation.Slides
+        <span class="cm">' Add a small text box at bottom-right</span>
+        <span class="kw">Set</span> txb = sld.Shapes.AddTextbox( _
+            msoTextOrientationHorizontal, <span class="num">820</span>, <span class="num">520</span>, <span class="num">60</span>, <span class="num">20</span>)
+        txb.TextFrame.TextRange.Text = sld.SlideIndex &amp; <span class="str">" / "</span> &amp; total
+        txb.TextFrame.TextRange.Font.Size = <span class="num">10</span>
+        txb.TextFrame.TextRange.Font.Color.RGB = RGB(<span class="num">150</span>, <span class="num">150</span>, <span class="num">150</span>)
+    <span class="kw">Next</span> sld
+<span class="kw">End Sub</span></code></pre>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-content">
+        <div class="callout-title">Security Note</div>
+        <p>Never run macros from files you didn't create or don't trust. Macros can execute code on your system. Always verify the source before enabling them.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- HYPERLINKS -->
+  <section id="hyperlinks">
+    <div class="section-eyebrow"><div class="section-num">18</div><span class="section-label">Advanced</span></div>
+    <h2>Hyperlinks & Action Buttons</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+      <span class="level-pill a">● Advanced</span>
+    </div>
+
+    <h3>Adding Hyperlinks</h3>
+    <p>Select any text or object → <mark>Insert → Link</mark> (<kbd>Ctrl</kbd>+<kbd>K</kbd>). You can link to:</p>
+    <ul class="doc-list">
+      <li>A website URL (opens in browser during presentation)</li>
+      <li>Another slide in the same presentation (great for non-linear navigation)</li>
+      <li>A different PowerPoint file entirely</li>
+      <li>An email address (opens mail client)</li>
+      <li>A file on your computer</li>
+    </ul>
+
+    <h3>Action Buttons</h3>
+    <p>Go to <mark>Insert → Shapes → Action Buttons</mark> (at the bottom of the Shapes panel). Pre-built navigation buttons (Next, Back, Home, Help) that automatically trigger actions when clicked. Perfect for interactive kiosk presentations or e-learning modules.</p>
+
+    <h3>Interactive Quiz Example</h3>
+    <p>Build multi-choice quizzes by linking answer options to "Correct!" or "Try Again!" slides. The audience clicks answers; navigation takes them to the appropriate result slide. All in PowerPoint, no coding needed.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- EXPORT -->
+  <section id="export">
+    <div class="section-eyebrow"><div class="section-num">19</div><span class="section-label">Sharing</span></div>
+    <h2>Exporting & Sharing</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Format</th><th>How To</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td><mark>PDF</mark></td><td>File → Export → Create PDF/XPS</td><td>Sharing for viewing, printing, sending by email</td></tr>
+          <tr><td><mark>Video (MP4)</mark></td><td>File → Export → Create a Video</td><td>Auto-playing slideshows, YouTube, social media</td></tr>
+          <tr><td><mark>PNG/JPG (Images)</mark></td><td>File → Export → Change File Type → PNG</td><td>Individual slide graphics for web, social posts</td></tr>
+          <tr><td><mark>PowerPoint Show (.ppsx)</mark></td><td>Save As → .ppsx</td><td>Opens directly in full screen — no editing mode</td></tr>
+          <tr><td><mark>Animated GIF</mark></td><td>File → Export → Animated GIF</td><td>Short looping animations for email/social</td></tr>
+          <tr><td><mark>Word Handout</mark></td><td>File → Export → Create Handouts</td><td>Printable 3-or-6-slides-per-page handouts</td></tr>
+          <tr><td><mark>Share Link</mark></td><td>Share → Copy Link</td><td>Collaborative editing via OneDrive/SharePoint</td></tr>
+          <tr><td><mark>Present in Teams</mark></td><td>Share → Present in Teams</td><td>Video call presentation with live annotations</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Protecting Your Presentation</h3>
+    <ul class="doc-list">
+      <li><strong>Mark as Final:</strong> File → Info → Protect Presentation → Mark as Final (discourages editing)</li>
+      <li><strong>Encrypt with Password:</strong> File → Info → Protect Presentation → Encrypt with Password</li>
+      <li><strong>Restrict Editing:</strong> Prevent others from making changes while allowing viewing</li>
+      <li><strong>Digital Signature:</strong> Add a certificate-based signature to verify authenticity</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SHORTCUTS -->
+  <section id="shortcuts">
+    <div class="section-eyebrow"><div class="section-num">20</div><span class="section-label">Efficiency</span></div>
+    <h2>Essential Keyboard Shortcuts</h2>
+    <div class="level-row">
+      <span class="level-pill b">● Beginner</span>
+      <span class="level-pill i">● Intermediate</span>
+      <span class="level-pill a">● Advanced</span>
+    </div>
+
+    <h3>General</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-item"><span class="shortcut-desc">New Slide</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>M</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Duplicate Slide</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>D</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Save</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>S</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Undo / Redo</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>Z/Y</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Select All</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>A</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Find & Replace</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>H</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Group Objects</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>G</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Ungroup</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>Shift</kbd><span>+</span><kbd>G</kbd></div></div>
+    </div>
+
+    <h3>Presentation Mode</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-item"><span class="shortcut-desc">Start from Slide 1</span><div class="shortcut-keys"><kbd>F5</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Start from Current Slide</span><div class="shortcut-keys"><kbd>Shift</kbd><span>+</span><kbd>F5</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Next Slide</span><div class="shortcut-keys"><kbd>→</kbd><span>or</span><kbd>Space</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Previous Slide</span><div class="shortcut-keys"><kbd>←</kbd><span>or</span><kbd>Backspace</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Black Screen</span><div class="shortcut-keys"><kbd>B</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">White Screen</span><div class="shortcut-keys"><kbd>W</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Go to Slide #</span><div class="shortcut-keys"><kbd>N</kbd><span>+</span><kbd>Enter</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">End Slideshow</span><div class="shortcut-keys"><kbd>Esc</kbd></div></div>
+    </div>
+
+    <h3>Formatting</h3>
+    <div class="shortcut-grid">
+      <div class="shortcut-item"><span class="shortcut-desc">Bold / Italic / Underline</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>B/I/U</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Increase Font Size</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>]</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Decrease Font Size</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>[</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Center / Left / Right Align</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>E/L/R</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Format Shape Dialog</span><div class="shortcut-keys"><kbd>Ctrl</kbd><span>+</span><kbd>1</kbd></div></div>
+      <div class="shortcut-item"><span class="shortcut-desc">Change Case</span><div class="shortcut-keys"><kbd>Shift</kbd><span>+</span><kbd>F3</kbd></div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- DESIGN TIPS -->
+  <section id="design-tips">
+    <div class="section-eyebrow"><div class="section-num">21</div><span class="section-label">Best Practices</span></div>
+    <h2>Design Tips for Better Slides</h2>
+    <div class="level-row">
+      <span class="level-pill i">● Intermediate</span>
+      <span class="level-pill a">● Advanced</span>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📐</div>
+        <h4>Use the Rule of Thirds</h4>
+        <p>Imagine your slide divided into a 3×3 grid. Place key elements at the intersection points — not dead center. It creates natural visual balance and interest.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <h4>Limit Your Color Palette</h4>
+        <p>Stick to 3 colors max: one primary, one secondary, one accent. Pull them from your brand guide or use PowerPoint's built-in theme colors.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔤</div>
+        <h4>Max 2 Font Families</h4>
+        <p>One for headings (bold, distinctive), one for body (clean, legible at distance). 28pt minimum for body on slides; 40pt+ for headings.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📏</div>
+        <h4>Align Everything</h4>
+        <p>Use <mark>Home → Arrange → Align</mark> to snap objects to common edges or centers. Turn on gridlines (<kbd>Shift</kbd>+<kbd>F9</kbd>) for pixel-perfect placement.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌫️</div>
+        <h4>Use White Space</h4>
+        <p>Don't fill every inch of a slide. Empty space is not wasted — it directs attention to what remains. Crowded slides overwhelm audiences.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🖼️</div>
+        <h4>Use Full-Bleed Images</h4>
+        <p>Stretch high-quality images to fill the entire slide background. It's dramatic and professional. Layer text over a dark overlay for legibility.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-content">
+        <div class="callout-title">The 1-6-6 Rule</div>
+        <p><strong>1 idea per slide. 6 bullet points maximum. 6 words per bullet.</strong> If you need to say more, say it verbally. Your slides are visual support — not your script.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- STORYTELLING -->
+  <section id="storytelling">
+    <div class="section-eyebrow"><div class="section-num">22</div><span class="section-label">Communication</span></div>
+    <h2>Storytelling with Slides</h2>
+    <div class="level-row">
+      <span class="level-pill a">● Advanced</span>
+    </div>
+
+    <p>The best presentations aren't just informative — they're <em>memorable</em>. That requires narrative structure.</p>
+
+    <h3>The Classic Narrative Arc</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content"><h4>The Hook</h4><p>Start with a surprising statistic, a bold statement, a question, or a short story. Grab attention in the first 15 seconds before your audience mentally checks out.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content"><h4>The Problem / Tension</h4><p>Establish what's wrong, what's missing, or what challenge exists. People pay attention when there's a problem to solve. Create tension before offering the solution.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content"><h4>The Evidence</h4><p>Build your case with data, examples, stories, case studies, and visuals. This is the bulk of your presentation — each slide one supporting point.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content"><h4>The Resolution</h4><p>Present your solution, recommendation, or conclusion. Make it clear, simple, and compelling. This is your pitch moment.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content"><h4>The Call to Action</h4><p>What should your audience do next? Be specific: "Approve the budget," "Sign up today," "Book a demo." End with one clear action.</p></div>
+      </div>
+    </div>
+
+    <h3>Pyramid Principle (McKinsey Style)</h3>
+    <p>Used by top consulting firms: start with your <strong>conclusion first</strong>, then support it with 3 key arguments, each supported by data and examples. Audiences know where you're going from the start — reducing cognitive load.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- MISTAKES -->
+  <section id="mistakes">
+    <div class="section-eyebrow"><div class="section-num">23</div><span class="section-label">Avoid These</span></div>
+    <h2>Common Mistakes to Avoid</h2>
+    <div class="level-row">
+      <span class="level-pill b">● All Levels</span>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📖</div>
+        <h4>Reading the Slides</h4>
+        <p>The biggest presentation sin. Your audience can read. Talk <em>to</em> them; let the slide support — not replace — your words.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📜</div>
+        <h4>Walls of Text</h4>
+        <p>If a slide has more than 50 words, it's a document not a slide. Break it up, cut it down, or use a visual instead.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎡</div>
+        <h4>Animation Overload</h4>
+        <p>Flying text, bouncing images, spinning logos — these distract, not enhance. Use Fade and appear only. One animation type per deck.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌈</div>
+        <h4>Too Many Colors</h4>
+        <p>Using 8 different accent colors signals amateur design. Pick a 3-color palette and be religious about it.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h4>No Chart Labels</h4>
+        <p>Charts without clear titles, axis labels, or data callouts confuse audiences. Always label the one number you want people to remember.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔤</div>
+        <h4>Inconsistent Fonts</h4>
+        <p>Mixing 4 different fonts across slides looks unprofessional. Use Slide Master to lock fonts globally and prevent drift.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h4>Clip Art & Low-Res Images</h4>
+        <p>Pixelated images or outdated clip art destroy credibility. Use high-resolution stock photos from PowerPoint's built-in Stock Images.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💾</div>
+        <h4>Not Saving Backups</h4>
+        <p>Always save to OneDrive for auto-save and version history. Keep a local copy too. "My computer crashed" is not an acceptable excuse.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">🏆</div>
+      <div class="callout-content">
+        <div class="callout-title">You're Now a PowerPoint Expert</div>
+        <p>From your first slide to Slide Masters, VBA macros, and storytelling frameworks — you now have everything you need to create truly exceptional presentations. Practice, iterate, and present with confidence.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = window.scrollY / total;
+    document.getElementById('progress').style.transform = `scaleX(${progress})`;
+  });
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => item.classList.remove('active'));
+        const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -75% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

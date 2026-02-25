@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Mastery — Complete Formula & Function Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a4a;
+    --green-light: #22a05e;
+    --green-pale: #e8f5ee;
+    --gold: #c8860a;
+    --gold-light: #f0a820;
+    --dark: #111a14;
+    --dark2: #1e2e22;
+    --mid: #2e4435;
+    --text: #1c2e21;
+    --text-muted: #5a7a62;
+    --border: #c8dcd0;
+    --bg: #f4f9f6;
+    --bg2: #ffffff;
+    --code-bg: #0d1f15;
+    --code-text: #7dffb3;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    color: #fff;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--gold);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 32px;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    background: var(--gold);
+    color: var(--dark);
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 800;
+  }
+  .logo span { color: var(--gold-light); }
+  .header-search {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 8px 14px;
+    gap: 8px;
+    width: 300px;
+  }
+  .header-search input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    width: 100%;
+  }
+  .header-search input::placeholder { color: rgba(255,255,255,0.4); }
+  .search-icon { color: rgba(255,255,255,0.5); font-size: 1rem; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 60%, #0a1f0f 100%);
+    color: #fff;
+    padding: 64px 32px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(34,160,94,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(200,134,10,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 em { color: var(--gold-light); font-style: normal; }
+  .hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    max-width: 600px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .badge-row {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    justify-content: center; position: relative;
+  }
+  .badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.8);
+  }
+  .badge.gold { background: rgba(200,134,10,0.2); border-color: var(--gold); color: var(--gold-light); }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 200px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 67px;
+    height: calc(100vh - 67px);
+    overflow-y: auto;
+    padding: 24px 0;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .nav-section { margin-bottom: 8px; }
+  .nav-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 8px 20px 4px;
+  }
+  .nav-item {
+    display: block;
+    padding: 8px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .nav-item:hover, .nav-item.active {
+    color: var(--green);
+    background: var(--green-pale);
+    border-left-color: var(--green);
+  }
+  .nav-item .level-badge {
+    float: right;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .lvl-b { background: #dff0d8; color: #2d6a2d; }
+  .lvl-i { background: #fff3cd; color: #8a6500; }
+  .lvl-a { background: #fde8e8; color: #9b1c1c; }
+
+  /* MAIN CONTENT */
+  .main {
+    flex: 1;
+    padding: 40px 48px;
+    min-width: 0;
+  }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .section-hero {
+    background: linear-gradient(135deg, var(--dark2), var(--dark));
+    color: #fff;
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-hero::after {
+    content: attr(data-icon);
+    position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+    font-size: 5rem; opacity: 0.12;
+  }
+  .section-hero h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .section-hero p { color: rgba(255,255,255,0.7); font-size: 1rem; }
+  .level-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .pill-b { background: rgba(45,200,120,0.2); color: #7dffc0; border: 1px solid rgba(45,200,120,0.3); }
+  .pill-i { background: rgba(240,168,32,0.2); color: #ffd07a; border: 1px solid rgba(240,168,32,0.3); }
+  .pill-a { background: rgba(255,100,100,0.2); color: #ff9999; border: 1px solid rgba(255,100,100,0.3); }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--green-pale);
+    color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .card p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* FORMULA BLOCKS */
+  .formula-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .formula-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: #f9fbfa;
+    cursor: pointer;
+    user-select: none;
+  }
+  .formula-header:hover { background: var(--green-pale); }
+  .formula-title-group { display: flex; align-items: center; gap: 12px; }
+  .func-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--green);
+    background: var(--green-pale);
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .func-desc { font-size: 0.88rem; color: var(--text-muted); font-style: italic; }
+  .expand-icon { color: var(--text-muted); font-size: 1.1rem; transition: transform 0.2s; }
+  .formula-block.open .expand-icon { transform: rotate(90deg); }
+  .formula-body {
+    display: none;
+    padding: 20px;
+  }
+  .formula-block.open .formula-body { display: block; }
+
+  .syntax-box {
+    background: var(--code-bg);
+    color: var(--code-text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin: 12px 0;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  .syntax-box .kw { color: #ffd07a; }
+  .syntax-box .arg { color: #80d8ff; }
+  .syntax-box .cm { color: #5a8a6a; font-style: italic; }
+
+  .params-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 0.87rem;
+  }
+  .params-table th {
+    background: var(--green-pale);
+    color: var(--green);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .params-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .params-table td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--gold);
+    font-size: 0.83rem;
+    white-space: nowrap;
+  }
+  .optional-badge {
+    font-size: 0.68rem;
+    background: #fff3cd;
+    color: #8a6500;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* REAL-LIFE EXAMPLES */
+  .example-box {
+    background: linear-gradient(135deg, #f0faf5, #e8f5ee);
+    border: 1px solid #b8ddc8;
+    border-left: 4px solid var(--green);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    margin: 14px 0;
+  }
+  .example-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .example-formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--dark2);
+    background: rgba(255,255,255,0.7);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+    border: 1px solid #c0ddc8;
+  }
+  .example-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+
+  .warning-box {
+    background: #fff8e6;
+    border: 1px solid #f0c060;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.87rem;
+    color: #6b4800;
+  }
+  .warning-box strong { color: var(--gold); font-family: 'Syne', sans-serif; }
+
+  .tip-box {
+    background: #e8f4ff;
+    border: 1px solid #90c8f0;
+    border-left: 4px solid #3090e0;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.87rem;
+    color: #1a4060;
+  }
+  .tip-box strong { color: #1a7ac8; font-family: 'Syne', sans-serif; }
+
+  /* EXCEL TABLE SIMULATOR */
+  .excel-table {
+    border-collapse: collapse;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    margin: 16px 0;
+    width: 100%;
+    max-width: 600px;
+  }
+  .excel-table th {
+    background: #217346;
+    color: #fff;
+    padding: 6px 14px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #1a5c38;
+  }
+  .excel-table td {
+    padding: 6px 14px;
+    border: 1px solid #c0d8c0;
+    background: #fff;
+    text-align: right;
+  }
+  .excel-table td.label { text-align: left; background: #f0f7f0; font-weight: 600; color: var(--dark2); }
+  .excel-table td.formula { background: #e8f5ee; color: var(--green); font-style: italic; }
+  .excel-table td.result { background: #fffaec; color: var(--gold); font-weight: 600; }
+  .excel-table tr.header-row td { background: #e8f0e8; font-weight: 700; text-align: center; }
+
+  /* PRACTICAL QUESTIONS */
+  .pq-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .pq-header {
+    padding: 18px 22px;
+    background: linear-gradient(90deg, var(--dark2), var(--dark));
+    color: #fff;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .pq-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pq-q { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.95rem; color: #fff; }
+  .pq-category { font-size: 0.77rem; color: var(--gold-light); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+  .pq-body { padding: 20px 22px; }
+  .pq-solution-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* SECTION HEADERS */
+  .section-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--dark);
+    margin: 36px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-heading::before {
+    content: '';
+    display: block;
+    width: 6px; height: 24px;
+    background: var(--green);
+    border-radius: 3px;
+  }
+  h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin: 16px 0 8px; color: var(--dark); }
+
+  /* OVERVIEW TAB */
+  .overview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .ov-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ov-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(26,122,74,0.12); }
+  .ov-card-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .ov-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .ov-card p { font-size: 0.78rem; color: var(--text-muted); }
+  .ov-card .count {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    background: var(--green-pale);
+    color: var(--green);
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 24px 20px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+
+  /* SCROLLBAR */
+  .main::-webkit-scrollbar { width: 6px; }
+
+  /* TOC inside sections */
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    font-size: 0.85rem;
+  }
+  .toc strong { font-family: 'Syne', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); display: block; margin-bottom: 10px; }
+  .toc a { color: var(--green); text-decoration: none; display: inline-block; margin: 3px 12px 3px 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { background: var(--green-pale); color: var(--green); }
+  .tab-btn.active { background: var(--green); color: #fff; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* CHEAT SHEET TABLE */
+  .cheat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    margin-bottom: 24px;
+  }
+  .cheat-table thead tr th {
+    background: var(--dark2);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .cheat-table tbody tr:hover { background: var(--green-pale); }
+  .cheat-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .cheat-table td:first-child { font-family: 'IBM Plex Mono', monospace; color: var(--green); font-weight: 500; }
+  .cheat-table td:nth-child(2) { font-family: 'IBM Plex Mono', monospace; color: var(--gold); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">X</div>
+      Excel <span>Mastery</span>
+    </div>
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search formulas, functions..." oninput="handleSearch(this.value)">
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <h1>The Complete <em>Excel</em> Reference</h1>
+  <p>Every formula, function, and technique — from your first SUM to complex array magic. Real-world examples included.</p>
+  <div class="badge-row">
+    <span class="badge">📊 100+ Functions</span>
+    <span class="badge gold">⚡ Advanced Arrays</span>
+    <span class="badge">🔗 VLOOKUP to XLOOKUP</span>
+    <span class="badge">🧮 Real-Life Problems</span>
+    <span class="badge">📈 Dynamic Arrays</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-title">Start Here</div>
+      <a class="nav-item active" onclick="showSection('overview')">🏠 Overview</a>
+      <a class="nav-item" onclick="showSection('basics')">📐 Excel Basics <span class="level-badge lvl-b">BEG</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Core Functions</div>
+      <a class="nav-item" onclick="showSection('math')">➕ Math & Stats <span class="level-badge lvl-b">BEG</span></a>
+      <a class="nav-item" onclick="showSection('text')">📝 Text Functions <span class="level-badge lvl-b">BEG</span></a>
+      <a class="nav-item" onclick="showSection('datetime')">📅 Date & Time <span class="level-badge lvl-i">INT</span></a>
+      <a class="nav-item" onclick="showSection('logical')">⚖️ Logical (IF/AND/OR) <span class="level-badge lvl-b">BEG</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Lookup & Reference</div>
+      <a class="nav-item" onclick="showSection('lookup')">🔎 VLOOKUP / HLOOKUP <span class="level-badge lvl-i">INT</span></a>
+      <a class="nav-item" onclick="showSection('xlookup')">⚡ XLOOKUP & INDEX/MATCH <span class="level-badge lvl-i">INT</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Advanced</div>
+      <a class="nav-item" onclick="showSection('arrays')">🔷 Array Formulas <span class="level-badge lvl-a">ADV</span></a>
+      <a class="nav-item" onclick="showSection('dynamic')">🌀 Dynamic Arrays <span class="level-badge lvl-a">ADV</span></a>
+      <a class="nav-item" onclick="showSection('financial')">💰 Financial Functions <span class="level-badge lvl-a">ADV</span></a>
+      <a class="nav-item" onclick="showSection('statistical')">📊 Statistical & Forecast <span class="level-badge lvl-a">ADV</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Practical</div>
+      <a class="nav-item" onclick="showSection('practical')">🧩 Real-Life Problems</a>
+      <a class="nav-item" onclick="showSection('cheatsheet')">📋 Cheat Sheet</a>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <div id="overview" class="section active">
+      <div class="section-hero" data-icon="📊">
+        <div class="level-pill pill-b">ALL LEVELS</div>
+        <h2>Welcome to Excel Mastery</h2>
+        <p>Your complete reference from beginner to expert. Navigate any topic using the sidebar.</p>
+      </div>
+      <h2 class="section-heading">Explore by Category</h2>
+      <div class="overview-cards">
+        <div class="ov-card" onclick="showSection('basics')">
+          <div class="ov-card-icon">📐</div>
+          <h3>Excel Basics</h3>
+          <p>Cell references, operators, error types</p>
+          <span class="count">BEG · Foundation</span>
+        </div>
+        <div class="ov-card" onclick="showSection('math')">
+          <div class="ov-card-icon">➕</div>
+          <h3>Math & Stats</h3>
+          <p>SUM, COUNT, AVERAGE, ROUND and more</p>
+          <span class="count">BEG · 15+ Functions</span>
+        </div>
+        <div class="ov-card" onclick="showSection('text')">
+          <div class="ov-card-icon">📝</div>
+          <h3>Text Functions</h3>
+          <p>LEN, LEFT, RIGHT, FIND, SUBSTITUTE</p>
+          <span class="count">BEG · 12+ Functions</span>
+        </div>
+        <div class="ov-card" onclick="showSection('datetime')">
+          <div class="ov-card-icon">📅</div>
+          <h3>Date & Time</h3>
+          <p>TODAY, DATEDIF, WORKDAY, NETWORKDAYS</p>
+          <span class="count">INT · 10+ Functions</span>
+        </div>
+        <div class="ov-card" onclick="showSection('logical')">
+          <div class="ov-card-icon">⚖️</div>
+          <h3>Logical</h3>
+          <p>IF, AND, OR, IFS, SWITCH, IFERROR</p>
+          <span class="count">BEG · 8+ Functions</span>
+        </div>
+        <div class="ov-card" onclick="showSection('lookup')">
+          <div class="ov-card-icon">🔎</div>
+          <h3>Lookup</h3>
+          <p>VLOOKUP, HLOOKUP, MATCH, CHOOSE</p>
+          <span class="count">INT · Classic</span>
+        </div>
+        <div class="ov-card" onclick="showSection('xlookup')">
+          <div class="ov-card-icon">⚡</div>
+          <h3>XLOOKUP & INDEX</h3>
+          <p>Modern lookups, INDEX/MATCH combos</p>
+          <span class="count">INT · Modern</span>
+        </div>
+        <div class="ov-card" onclick="showSection('arrays')">
+          <div class="ov-card-icon">🔷</div>
+          <h3>Array Formulas</h3>
+          <p>CSE arrays, SUMPRODUCT magic</p>
+          <span class="count">ADV · Power</span>
+        </div>
+        <div class="ov-card" onclick="showSection('dynamic')">
+          <div class="ov-card-icon">🌀</div>
+          <h3>Dynamic Arrays</h3>
+          <p>FILTER, SORT, UNIQUE, SEQUENCE</p>
+          <span class="count">ADV · New Excel</span>
+        </div>
+        <div class="ov-card" onclick="showSection('financial')">
+          <div class="ov-card-icon">💰</div>
+          <h3>Financial</h3>
+          <p>PMT, NPV, IRR, FV, RATE, XIRR</p>
+          <span class="count">ADV · Finance</span>
+        </div>
+        <div class="ov-card" onclick="showSection('practical')">
+          <div class="ov-card-icon">🧩</div>
+          <h3>Real-Life Problems</h3>
+          <p>HR, Sales, Finance, Inventory tasks</p>
+          <span class="count">ALL · 20+ Problems</span>
+        </div>
+        <div class="ov-card" onclick="showSection('cheatsheet')">
+          <div class="ov-card-icon">📋</div>
+          <h3>Cheat Sheet</h3>
+          <p>Quick-reference all formulas at a glance</p>
+          <span class="count">ALL · Quick Ref</span>
+        </div>
+      </div>
+
+      <h2 class="section-heading">How to Read This Docs</h2>
+      <div class="card-grid">
+        <div class="card"><div class="card-icon">📗</div><h3>Syntax Box</h3><p>Green monospace blocks show the exact formula syntax with all parameters labeled.</p></div>
+        <div class="card"><div class="card-icon">💡</div><h3>Real-Life Examples</h3><p>Every function includes a workplace scenario — HR, sales, finance, or operations.</p></div>
+        <div class="card"><div class="card-icon">⚠️</div><h3>Gotchas & Tips</h3><p>Yellow boxes warn about common mistakes. Blue boxes give pro tips and shortcuts.</p></div>
+      </div>
+    </div>
+
+    <!-- BASICS -->
+    <div id="basics" class="section">
+      <div class="section-hero" data-icon="📐">
+        <div class="level-pill pill-b">BEGINNER</div>
+        <h2>Excel Basics</h2>
+        <p>Cell references, arithmetic operators, and understanding error messages.</p>
+      </div>
+
+      <h2 class="section-heading">Cell References</h2>
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group">
+            <span class="func-name">Relative</span>
+            <span class="func-desc">Changes when you copy the formula to another cell</span>
+          </div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">=A1+B1</span>  <span class="cm">// If copied down one row, becomes =A2+B2</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life Use</div>
+            <div class="example-formula">Revenue spreadsheet: =C2*D2 (Price × Qty) — drag down for all rows automatically</div>
+          </div>
+        </div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">Absolute $A$1</span><span class="func-desc">Locked — never changes when copied</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">=$B$1*C2</span>  <span class="cm">// $B$1 stays fixed; C2 shifts as you copy</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life Use</div>
+            <div class="example-formula">=C2*$F$1 — Apply a fixed tax rate in F1 to every row's sales value</div>
+          </div>
+          <div class="tip-box"><strong>💡 Tip:</strong> Press <kbd>F4</kbd> to cycle between relative, absolute, and mixed references.</div>
+        </div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">Mixed $A1 / A$1</span><span class="func-desc">Lock just row or just column</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">=$A2</span>  <span class="cm">// Column A locked, row moves</span>
+<span class="kw">=A$2</span>  <span class="cm">// Row 2 locked, column moves</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life Use</div>
+            <div class="example-formula">Multiplication table: =$A3*B$2 — fill right and down for all combinations</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-heading">Error Reference Guide</h2>
+      <table class="cheat-table">
+        <thead><tr><th>Error</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>#DIV/0!</td><td>Dividing by zero or empty cell</td><td>=IFERROR(A1/B1,"N/A")</td></tr>
+          <tr><td>#VALUE!</td><td>Wrong data type (text in math formula)</td><td>Check cell types; use VALUE()</td></tr>
+          <tr><td>#REF!</td><td>Formula refers to deleted cells</td><td>Restore deleted cells or rewrite formula</td></tr>
+          <tr><td>#NAME?</td><td>Misspelled function name</td><td>Check spelling; verify function exists</td></tr>
+          <tr><td>#N/A</td><td>Value not found (VLOOKUP/MATCH)</td><td>Wrap in IFERROR or IFNA</td></tr>
+          <tr><td>#NUM!</td><td>Invalid numeric value</td><td>Check for negative numbers in SQRT, etc.</td></tr>
+          <tr><td>#NULL!</td><td>Incorrect range operator (space vs comma)</td><td>Check range references and separators</td></tr>
+          <tr><td>######</td><td>Column too narrow to display value</td><td>Widen the column</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MATH & STATS -->
+    <div id="math" class="section">
+      <div class="section-hero" data-icon="➕">
+        <div class="level-pill pill-b">BEGINNER — INTERMEDIATE</div>
+        <h2>Math & Statistical Functions</h2>
+        <p>From simple sums to conditional aggregations and rounding.</p>
+      </div>
+
+      <div class="toc"><strong>Functions in this section</strong>
+        <a href="#">SUM</a><a href="#">SUMIF</a><a href="#">SUMIFS</a><a href="#">COUNT</a><a href="#">COUNTIF</a><a href="#">COUNTIFS</a><a href="#">AVERAGE</a><a href="#">AVERAGEIF</a><a href="#">MIN/MAX</a><a href="#">ROUND</a><a href="#">MOD</a><a href="#">SUBTOTAL</a><a href="#">AGGREGATE</a>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SUM</span><span class="func-desc">Add up numbers in a range</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SUM</span>(<span class="arg">number1</span>, [<span class="arg">number2</span>], ...)</div>
+          <table class="params-table"><thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>number1</td><td>First number or range to add</td></tr>
+            <tr><td>number2... <span class="optional-badge">optional</span></td><td>Additional numbers or ranges. Up to 255 arguments.</td></tr>
+          </tbody></table>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Monthly Sales Total</div>
+            <div class="example-formula">=SUM(B2:B13) → Adds January through December sales</div>
+            <div class="example-formula">=SUM(B2:B13, D2:D13) → Adds two product lines together</div>
+          </div>
+          <table class="excel-table">
+            <tr class="header-row"><td>Month</td><td>Sales</td></tr>
+            <tr><td class="label">January</td><td>45000</td></tr>
+            <tr><td class="label">February</td><td>52000</td></tr>
+            <tr><td class="label">March</td><td>61000</td></tr>
+            <tr><td class="label"><strong>TOTAL</strong></td><td class="result">158,000</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SUMIF</span><span class="func-desc">Sum values that meet ONE condition</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SUMIF</span>(<span class="arg">range</span>, <span class="arg">criteria</span>, [<span class="arg">sum_range</span>])</div>
+          <table class="params-table"><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody>
+            <tr><td>range</td><td>The cells to evaluate against criteria</td></tr>
+            <tr><td>criteria</td><td>Condition: number, text, expression like "&gt;100", or "*East*"</td></tr>
+            <tr><td>sum_range <span class="optional-badge">optional</span></td><td>Cells to sum. If omitted, sums the range itself.</td></tr>
+          </tbody></table>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Sales by Region</div>
+            <div class="example-formula">=SUMIF(C2:C100,"North",D2:D100) → Total sales from North region only</div>
+            <div class="example-formula">=SUMIF(D2:D100,"&gt;10000",D2:D100) → Sum only orders above ₹10,000</div>
+            <div class="example-formula">=SUMIF(B2:B100,"*Mumbai*",D2:D100) → Sum where city contains "Mumbai"</div>
+          </div>
+          <div class="tip-box"><strong>💡 Wildcards:</strong> Use * for any characters, ? for single character, ~* to escape literal asterisk.</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SUMIFS</span><span class="func-desc">Sum values that meet MULTIPLE conditions</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SUMIFS</span>(<span class="arg">sum_range</span>, <span class="arg">range1</span>, <span class="arg">criteria1</span>, [<span class="arg">range2</span>, <span class="arg">criteria2</span>], ...)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Region + Product + Quarter Filter</div>
+            <div class="example-formula">=SUMIFS(E2:E1000, B2:B1000,"North", C2:C1000,"Laptops", D2:D1000,"Q1") → Total laptop sales in Q1 for North region</div>
+            <div class="example-formula">=SUMIFS(D2:D100, C2:C100,">="&DATE(2024,1,1), C2:C100,"<="&DATE(2024,3,31)) → Sum Jan–Mar 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">COUNTIF / COUNTIFS</span><span class="func-desc">Count cells matching conditions</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">COUNTIF</span>(<span class="arg">range</span>, <span class="arg">criteria</span>)
+<span class="kw">COUNTIFS</span>(<span class="arg">range1</span>, <span class="arg">criteria1</span>, [<span class="arg">range2</span>, <span class="arg">criteria2</span>]...)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: HR Attendance / Defect Tracking</div>
+            <div class="example-formula">=COUNTIF(B2:B200,"Absent") → Count absent employees</div>
+            <div class="example-formula">=COUNTIFS(C2:C200,"Defect",D2:D200,"High") → Count high-severity defects</div>
+            <div class="example-formula">=COUNTIF(E2:E100,"&gt;="&TODAY()-30) → Orders in last 30 days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">AVERAGEIF / AVERAGEIFS</span><span class="func-desc">Conditional average</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">AVERAGEIF</span>(<span class="arg">range</span>, <span class="arg">criteria</span>, [<span class="arg">average_range</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Average salary by department</div>
+            <div class="example-formula">=AVERAGEIF(C2:C500,"Engineering",D2:D500) → Avg salary for Engineering dept</div>
+            <div class="example-formula">=AVERAGEIFS(D2:D500,C2:C500,"Engineering",E2:E500,"Senior") → Avg senior engineer salary</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">ROUND / ROUNDUP / ROUNDDOWN / MROUND</span><span class="func-desc">Control decimal precision</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">ROUND</span>(<span class="arg">number</span>, <span class="arg">num_digits</span>)
+<span class="kw">ROUNDUP</span>(<span class="arg">number</span>, <span class="arg">num_digits</span>)   <span class="cm">// Always rounds away from zero</span>
+<span class="kw">ROUNDDOWN</span>(<span class="arg">number</span>, <span class="arg">num_digits</span>) <span class="cm">// Always rounds toward zero</span>
+<span class="kw">MROUND</span>(<span class="arg">number</span>, <span class="arg">multiple</span>)      <span class="cm">// Round to nearest multiple</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Invoice & Pricing</div>
+            <div class="example-formula">=ROUND(A2*1.18, 2) → Price with 18% GST, rounded to 2 decimals</div>
+            <div class="example-formula">=ROUNDUP(units/12, 0) → Minimum boxes to order (always round up)</div>
+            <div class="example-formula">=MROUND(salary, 500) → Round salary to nearest ₹500</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SUBTOTAL</span><span class="func-desc">Aggregates that ignore filtered rows</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SUBTOTAL</span>(<span class="arg">function_num</span>, <span class="arg">ref1</span>, ...)</div>
+          <p style="font-size:0.86rem;margin:10px 0;color:var(--text-muted);">Common function_num values: <strong>1</strong>=AVERAGE, <strong>2</strong>=COUNT, <strong>3</strong>=COUNTA, <strong>9</strong>=SUM, <strong>11</strong>=VAR. Add 100 (e.g., 109) to also ignore manually hidden rows.</p>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Dynamic filtered totals</div>
+            <div class="example-formula">=SUBTOTAL(9,D2:D1000) → SUM of only visible rows after applying filters — perfect for report footers</div>
+            <div class="example-formula">=SUBTOTAL(3,A2:A1000) → Count of filtered records</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXT FUNCTIONS -->
+    <div id="text" class="section">
+      <div class="section-hero" data-icon="📝">
+        <div class="level-pill pill-b">BEGINNER — INTERMEDIATE</div>
+        <h2>Text Functions</h2>
+        <p>Manipulate, clean, extract, and combine text data.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">LEFT / RIGHT / MID</span><span class="func-desc">Extract portions of text</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">LEFT</span>(<span class="arg">text</span>, <span class="arg">num_chars</span>)
+<span class="kw">RIGHT</span>(<span class="arg">text</span>, <span class="arg">num_chars</span>)
+<span class="kw">MID</span>(<span class="arg">text</span>, <span class="arg">start_num</span>, <span class="arg">num_chars</span>)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Employee ID / Product Code Parsing</div>
+            <div class="example-formula">=LEFT(A2,3) → Extract department code from "ENG-00421" → "ENG"</div>
+            <div class="example-formula">=RIGHT(A2,5) → Extract 5-digit ZIP from address string</div>
+            <div class="example-formula">=MID(A2,5,4) → Extract year from "INV-2024-0042" → "2024"</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">LEN / FIND / SEARCH</span><span class="func-desc">Measure and locate text</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">LEN</span>(<span class="arg">text</span>)                   <span class="cm">// Count characters</span>
+<span class="kw">FIND</span>(<span class="arg">find_text</span>, <span class="arg">within</span>)  <span class="cm">// Case-sensitive position</span>
+<span class="kw">SEARCH</span>(<span class="arg">find_text</span>, <span class="arg">within</span>) <span class="cm">// Case-insensitive, supports wildcards</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Split first/last name</div>
+            <div class="example-formula">=LEFT(A2,FIND(" ",A2)-1) → Extract first name from "Rahul Sharma"</div>
+            <div class="example-formula">=MID(A2,FIND(" ",A2)+1,LEN(A2)) → Extract last name</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SUBSTITUTE / REPLACE</span><span class="func-desc">Swap text within a string</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SUBSTITUTE</span>(<span class="arg">text</span>, <span class="arg">old_text</span>, <span class="arg">new_text</span>, [<span class="arg">instance_num</span>])
+<span class="kw">REPLACE</span>(<span class="arg">old_text</span>, <span class="arg">start_num</span>, <span class="arg">num_chars</span>, <span class="arg">new_text</span>)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Data Cleaning</div>
+            <div class="example-formula">=SUBSTITUTE(A2,"-","") → Remove dashes from phone "98-765-43210" → "9876543210"</div>
+            <div class="example-formula">=SUBSTITUTE(A2," ","_") → Replace spaces with underscores for filenames</div>
+            <div class="example-formula">=SUBSTITUTE(A2,",","",1) → Remove only the FIRST comma</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">TRIM / CLEAN / UPPER / LOWER / PROPER</span><span class="func-desc">Clean and format text</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">TRIM</span>(<span class="arg">text</span>)    <span class="cm">// Remove extra spaces (keeps single spaces between words)</span>
+<span class="kw">CLEAN</span>(<span class="arg">text</span>)   <span class="cm">// Remove non-printable characters</span>
+<span class="kw">UPPER</span>(<span class="arg">text</span>)   <span class="cm">// ALL CAPS</span>
+<span class="kw">LOWER</span>(<span class="arg">text</span>)   <span class="cm">// all lowercase</span>
+<span class="kw">PROPER</span>(<span class="arg">text</span>)  <span class="cm">// First Letter Of Each Word Capitalized</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: CRM Data Cleanup</div>
+            <div class="example-formula">=TRIM(CLEAN(A2)) → Fix names imported from another system with weird spacing</div>
+            <div class="example-formula">=PROPER(TRIM(A2)) → "  john DOE  " → "John Doe"</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">CONCATENATE / CONCAT / TEXTJOIN / &amp;</span><span class="func-desc">Join text strings</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">&amp;</span>                                           <span class="cm">// Simplest join operator</span>
+<span class="kw">CONCAT</span>(<span class="arg">text1</span>, <span class="arg">text2</span>, ...)              <span class="cm">// No separator (replaces CONCATENATE)</span>
+<span class="kw">TEXTJOIN</span>(<span class="arg">delimiter</span>, <span class="arg">ignore_empty</span>, <span class="arg">text1</span>, ...) <span class="cm">// Join with separator</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Build Full Address / Email</div>
+            <div class="example-formula">=A2&" "&B2 → "Rahul" & "Sharma" → "Rahul Sharma"</div>
+            <div class="example-formula">=LOWER(A2)&"."&LOWER(B2)&"@company.com" → "rahul.sharma@company.com"</div>
+            <div class="example-formula">=TEXTJOIN(", ",TRUE,C2:C10) → Join all city names: "Delhi, Mumbai, Chennai"</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">TEXT</span><span class="func-desc">Format numbers as custom text</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">TEXT</span>(<span class="arg">value</span>, <span class="arg">format_text</span>)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Report Formatting</div>
+            <div class="example-formula">=TEXT(A2,"₹#,##0.00") → ₹1,24,500.00</div>
+            <div class="example-formula">=TEXT(TODAY(),"DD MMM YYYY") → "21 Feb 2026"</div>
+            <div class="example-formula">="Report for: "&TEXT(A2,"MMMM YYYY") → "Report for: February 2026"</div>
+            <div class="example-formula">=TEXT(A2,"000000") → Pad 42 to "000042" (for employee IDs)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATE & TIME -->
+    <div id="datetime" class="section">
+      <div class="section-hero" data-icon="📅">
+        <div class="level-pill pill-i">INTERMEDIATE</div>
+        <h2>Date & Time Functions</h2>
+        <p>Calculate deadlines, tenure, working days, and time differences.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">TODAY / NOW / DATE / TIME</span><span class="func-desc">Get and build dates</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">TODAY</span>()                          <span class="cm">// Today's date (updates daily)</span>
+<span class="kw">NOW</span>()                            <span class="cm">// Current date AND time</span>
+<span class="kw">DATE</span>(<span class="arg">year</span>, <span class="arg">month</span>, <span class="arg">day</span>)         <span class="cm">// Build a date from components</span>
+<span class="kw">TIME</span>(<span class="arg">hour</span>, <span class="arg">minute</span>, <span class="arg">second</span>)     <span class="cm">// Build a time value</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Project & Contract Management</div>
+            <div class="example-formula">=TODAY()+30 → Due date 30 days from today</div>
+            <div class="example-formula">=DATE(YEAR(A2),MONTH(A2)+3,DAY(A2)) → Add 3 months to any date</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">DATEDIF</span><span class="func-desc">Calculate difference between two dates (hidden gem!)</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">DATEDIF</span>(<span class="arg">start_date</span>, <span class="arg">end_date</span>, <span class="arg">unit</span>)
+<span class="cm">// Units: "Y"=years, "M"=months, "D"=days
+// "YM"=months ignoring years, "MD"=days ignoring months&years
+// "YD"=days ignoring years</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Employee Tenure & Age</div>
+            <div class="example-formula">=DATEDIF(B2,TODAY(),"Y") → Years of service (e.g., 7)</div>
+            <div class="example-formula">=DATEDIF(B2,TODAY(),"Y")&" yrs "&DATEDIF(B2,TODAY(),"YM")&" mos" → "7 yrs 3 mos"</div>
+            <div class="example-formula">=DATEDIF(DOB,TODAY(),"Y") → Employee age in complete years</div>
+          </div>
+          <div class="warning-box"><strong>⚠️ Note:</strong> DATEDIF is undocumented but works in all Excel versions. It does NOT appear in autocomplete — type it manually.</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">NETWORKDAYS / NETWORKDAYS.INTL</span><span class="func-desc">Count working days between dates</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">NETWORKDAYS</span>(<span class="arg">start_date</span>, <span class="arg">end_date</span>, [<span class="arg">holidays</span>])
+<span class="kw">NETWORKDAYS.INTL</span>(<span class="arg">start</span>, <span class="arg">end</span>, [<span class="arg">weekend</span>], [<span class="arg">holidays</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Project Scheduling & SLA Tracking</div>
+            <div class="example-formula">=NETWORKDAYS(A2,B2,HolidayList) → Working days between start and deadline</div>
+            <div class="example-formula">=NETWORKDAYS.INTL(A2,B2,1,HolidayList) → Weekend=Sat+Sun; 7=Sunday only</div>
+            <div class="example-formula">=IF(NETWORKDAYS(A2,TODAY())>5,"⚠️ Overdue","✅ On Track") → SLA status</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">WORKDAY / WORKDAY.INTL / EDATE / EOMONTH</span><span class="func-desc">Calculate future/past dates</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">WORKDAY</span>(<span class="arg">start_date</span>, <span class="arg">days</span>, [<span class="arg">holidays</span>])  <span class="cm">// Date N workdays from start</span>
+<span class="kw">EDATE</span>(<span class="arg">start_date</span>, <span class="arg">months</span>)              <span class="cm">// Date N months away</span>
+<span class="kw">EOMONTH</span>(<span class="arg">start_date</span>, <span class="arg">months</span>)            <span class="cm">// Last day of a month</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Contract Expiry & Invoice Due Date</div>
+            <div class="example-formula">=WORKDAY(TODAY(),5) → Date 5 business days from today (delivery date)</div>
+            <div class="example-formula">=EDATE(A2,12) → Contract renewal: exactly 12 months from start</div>
+            <div class="example-formula">=EOMONTH(TODAY(),0) → Last day of current month (invoice cut-off)</div>
+            <div class="example-formula">=EOMONTH(TODAY(),1)+1 → First day of next month</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">YEAR / MONTH / DAY / WEEKDAY / WEEKNUM</span><span class="func-desc">Extract date parts</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">YEAR</span>(<span class="arg">date</span>)  <span class="kw">MONTH</span>(<span class="arg">date</span>)  <span class="kw">DAY</span>(<span class="arg">date</span>)
+<span class="kw">WEEKDAY</span>(<span class="arg">date</span>, [<span class="arg">return_type</span>])  <span class="cm">// 1=Sun-Sat, 2=Mon-Sun</span>
+<span class="kw">WEEKNUM</span>(<span class="arg">date</span>, [<span class="arg">return_type</span>])</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Sales by Month/Quarter/Week</div>
+            <div class="example-formula">=IF(WEEKDAY(A2,2)>5,"Weekend","Weekday") → Flag weekend transactions</div>
+            <div class="example-formula">="Q"&INT((MONTH(A2)-1)/3+1) → Convert date to "Q1", "Q2", "Q3", "Q4"</div>
+            <div class="example-formula">=WEEKNUM(A2,2) → Week number for WoW reporting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGICAL -->
+    <div id="logical" class="section">
+      <div class="section-hero" data-icon="⚖️">
+        <div class="level-pill pill-b">BEGINNER — INTERMEDIATE</div>
+        <h2>Logical Functions</h2>
+        <p>Decision-making, conditions, and error handling in formulas.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">IF</span><span class="func-desc">The fundamental decision function</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">IF</span>(<span class="arg">logical_test</span>, <span class="arg">value_if_true</span>, <span class="arg">value_if_false</span>)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Performance Rating</div>
+            <div class="example-formula">=IF(B2>=90,"Excellent",IF(B2>=75,"Good",IF(B2>=60,"Average","Poor")))</div>
+            <div class="example-formula">=IF(Stock=0,"🔴 Out of Stock",IF(Stock<10,"🟡 Low Stock","🟢 Available"))</div>
+            <div class="example-formula">=IF(Sales>Target,"Bonus: "&TEXT(Sales-Target,"₹#,##0"),"No Bonus")</div>
+          </div>
+          <div class="warning-box"><strong>⚠️ Nesting Limit:</strong> You can nest IF up to 64 levels deep, but beyond 3–4 it gets hard to read. Use IFS or SWITCH instead.</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">IFS</span><span class="func-desc">Test multiple conditions — cleaner than nested IF</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">IFS</span>(<span class="arg">condition1</span>, <span class="arg">value1</span>, <span class="arg">condition2</span>, <span class="arg">value2</span>, ...)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Grade Classification</div>
+            <div class="example-formula">=IFS(A2>=90,"A",A2>=80,"B",A2>=70,"C",A2>=60,"D",TRUE,"F")</div>
+            <div class="example-note">The last TRUE acts as "else" — it always matches if nothing else does.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SWITCH</span><span class="func-desc">Match exact values (like a lookup table)</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SWITCH</span>(<span class="arg">expression</span>, <span class="arg">val1</span>, <span class="arg">result1</span>, [<span class="arg">val2</span>, <span class="arg">result2</span>], ..., [<span class="arg">default</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Department Code Expansion</div>
+            <div class="example-formula">=SWITCH(A2,"HR","Human Resources","IT","Information Technology","FIN","Finance","Unknown")</div>
+            <div class="example-formula">=SWITCH(WEEKDAY(TODAY(),2),6,"Weekend",7,"Weekend","Weekday")</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">AND / OR / NOT / XOR</span><span class="func-desc">Combine logical conditions</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">AND</span>(<span class="arg">cond1</span>, <span class="arg">cond2</span>...) <span class="cm">// TRUE if ALL are true</span>
+<span class="kw">OR</span>(<span class="arg">cond1</span>, <span class="arg">cond2</span>...)  <span class="cm">// TRUE if ANY is true</span>
+<span class="kw">NOT</span>(<span class="arg">condition</span>)       <span class="cm">// Reverses TRUE/FALSE</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Loan Eligibility</div>
+            <div class="example-formula">=IF(AND(Salary>30000,CreditScore>700,Age>=21),"Eligible","Not Eligible")</div>
+            <div class="example-formula">=IF(OR(Status="VIP",Purchase>100000),"Priority Queue","Standard")</div>
+            <div class="example-formula">=IF(AND(Attendance>=75,NOT(OnLeave)),"Eligible for Bonus","Ineligible")</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">IFERROR / IFNA</span><span class="func-desc">Handle errors gracefully</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">IFERROR</span>(<span class="arg">value</span>, <span class="arg">value_if_error</span>)  <span class="cm">// Handles ALL errors</span>
+<span class="kw">IFNA</span>(<span class="arg">value</span>, <span class="arg">value_if_na</span>)      <span class="cm">// Handles only #N/A</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Safe Lookups</div>
+            <div class="example-formula">=IFERROR(VLOOKUP(A2,Sheet2!A:C,3,0),"Not Found")</div>
+            <div class="example-formula">=IFERROR(B2/C2,0) → Show 0 instead of #DIV/0! on new rows</div>
+            <div class="example-formula">=IFNA(XLOOKUP(A2,Table[ID],Table[Name]),"Unknown Employee")</div>
+          </div>
+          <div class="tip-box"><strong>💡 Best Practice:</strong> Prefer IFNA over IFERROR for lookups — it only masks #N/A, so other errors (like #REF!) still surface to warn you.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOOKUP -->
+    <div id="lookup" class="section">
+      <div class="section-hero" data-icon="🔎">
+        <div class="level-pill pill-i">INTERMEDIATE</div>
+        <h2>VLOOKUP & Classic Lookups</h2>
+        <p>The most-used lookup functions — learn these cold.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">VLOOKUP</span><span class="func-desc">Look up a value in the first column, return from another</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">VLOOKUP</span>(<span class="arg">lookup_value</span>, <span class="arg">table_array</span>, <span class="arg">col_index_num</span>, [<span class="arg">range_lookup</span>])</div>
+          <table class="params-table"><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody>
+            <tr><td>lookup_value</td><td>What you're looking for (a value, cell, or text)</td></tr>
+            <tr><td>table_array</td><td>The table range. Lookup column MUST be first column.</td></tr>
+            <tr><td>col_index_num</td><td>Column number to return (1=first column in range)</td></tr>
+            <tr><td>range_lookup</td><td>FALSE = exact match (always use this!). TRUE = approximate (sorted data only)</td></tr>
+          </tbody></table>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Employee Directory / Price List</div>
+            <div class="example-formula">=VLOOKUP(A2,EmployeeTable,4,FALSE) → Get Department for Employee ID</div>
+            <div class="example-formula">=IFERROR(VLOOKUP(D2,Products!A:E,3,0),"SKU not found") → Safe price lookup</div>
+          </div>
+          <div class="warning-box"><strong>⚠️ Limitations:</strong> VLOOKUP cannot look left. It breaks when you insert/delete columns (col_index is a number). For modern use, prefer XLOOKUP or INDEX/MATCH.</div>
+          <table class="excel-table">
+            <tr class="header-row"><td>A - EMP_ID</td><td>B - Name</td><td>C - Dept</td><td>D - Salary</td></tr>
+            <tr><td class="label">E001</td><td>Rahul Sharma</td><td>Engineering</td><td>95,000</td></tr>
+            <tr><td class="label">E002</td><td>Priya Patel</td><td>Finance</td><td>82,000</td></tr>
+            <tr><td class="label" colspan="3"><strong>=VLOOKUP("E002",A:D,3,FALSE)</strong></td><td class="result">Finance</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">HLOOKUP</span><span class="func-desc">Like VLOOKUP but scans across rows</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">HLOOKUP</span>(<span class="arg">lookup_value</span>, <span class="arg">table_array</span>, <span class="arg">row_index_num</span>, [<span class="arg">range_lookup</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Monthly commission rates in a horizontal table</div>
+            <div class="example-formula">=HLOOKUP("March",CommissionTable,2,FALSE) → Get March's rate from row 2</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">MATCH</span><span class="func-desc">Find the position of a value in a range</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">MATCH</span>(<span class="arg">lookup_value</span>, <span class="arg">lookup_array</span>, [<span class="arg">match_type</span>])
+<span class="cm">// match_type: 0=exact, 1=less than (sorted asc), -1=greater than (sorted desc)</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Find row position for dynamic INDEX</div>
+            <div class="example-formula">=MATCH("E003",EmployeeIDs,0) → Returns 3 (the row position)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">CHOOSE</span><span class="func-desc">Pick one of several values by index number</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">CHOOSE</span>(<span class="arg">index_num</span>, <span class="arg">value1</span>, <span class="arg">value2</span>, ...)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Quarter from month number</div>
+            <div class="example-formula">=CHOOSE(MONTH(A2),1,1,1,2,2,2,3,3,3,4,4,4) → Returns quarter number 1–4</div>
+            <div class="example-formula">=CHOOSE(WEEKDAY(A2),"Sun","Mon","Tue","Wed","Thu","Fri","Sat")</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- XLOOKUP & INDEX/MATCH -->
+    <div id="xlookup" class="section">
+      <div class="section-hero" data-icon="⚡">
+        <div class="level-pill pill-i">INTERMEDIATE — ADVANCED</div>
+        <h2>XLOOKUP & INDEX/MATCH</h2>
+        <p>Modern, flexible, and more powerful replacements for VLOOKUP.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">XLOOKUP</span><span class="func-desc">The modern, flexible lookup — replaces VLOOKUP + HLOOKUP + IFERROR</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">XLOOKUP</span>(<span class="arg">lookup_value</span>, <span class="arg">lookup_array</span>, <span class="arg">return_array</span>, 
+         [<span class="arg">if_not_found</span>], [<span class="arg">match_mode</span>], [<span class="arg">search_mode</span>])</div>
+          <table class="params-table"><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody>
+            <tr><td>lookup_value</td><td>What to search for</td></tr>
+            <tr><td>lookup_array</td><td>Column or row to search in</td></tr>
+            <tr><td>return_array</td><td>Column or row to return — can be to the LEFT!</td></tr>
+            <tr><td>if_not_found <span class="optional-badge">optional</span></td><td>Custom message if not found (replaces IFERROR wrapping)</td></tr>
+            <tr><td>match_mode <span class="optional-badge">optional</span></td><td>0=exact, -1=exact or next smaller, 1=exact or next larger, 2=wildcard</td></tr>
+            <tr><td>search_mode <span class="optional-badge">optional</span></td><td>1=first to last, -1=last to first, 2=binary ascending, -2=binary descending</td></tr>
+          </tbody></table>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Employee Info, Product Pricing</div>
+            <div class="example-formula">=XLOOKUP(A2,EmpTable[ID],EmpTable[Salary],"Not Found") → Salary by Employee ID</div>
+            <div class="example-formula">=XLOOKUP(A2,Products[SKU],Products[Price],"SKU Missing",0,-1) → Search from bottom (find latest price)</div>
+            <div class="example-formula">=XLOOKUP(A2,Table[Name],Table[[Dept]:[Manager]]) → Return multiple columns at once!</div>
+          </div>
+          <div class="tip-box"><strong>💡 XLOOKUP Advantages:</strong> Returns value to the left ✓ · Built-in error message ✓ · Search last-to-first ✓ · Exact match by default ✓ · Works with both rows & columns ✓</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">INDEX / MATCH</span><span class="func-desc">The power combo — infinitely flexible lookup</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">INDEX</span>(<span class="arg">array</span>, <span class="arg">row_num</span>, [<span class="arg">col_num</span>])   <span class="cm">// Return value at row/col position</span>
+<span class="kw">MATCH</span>(<span class="arg">value</span>, <span class="arg">array</span>, 0)              <span class="cm">// Find position of value</span>
+
+<span class="cm">// Combined pattern:</span>
+<span class="kw">=INDEX</span>(<span class="arg">return_col</span>, <span class="kw">MATCH</span>(<span class="arg">lookup_val</span>, <span class="arg">search_col</span>, 0))</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Two-way table lookup</div>
+            <div class="example-formula">=INDEX(B2:E10,MATCH("E003",A2:A10,0),MATCH("Salary",B1:E1,0)) → Find value at intersection of Employee and column header</div>
+            <div class="example-formula">=INDEX(A2:A100,MATCH(MAX(D2:D100),D2:D100,0)) → Find name of top-earning employee</div>
+            <div class="example-formula">=INDEX(A:A,MATCH(1,(B:B="Delhi")*(C:C="Q1"),0)) → Match on TWO criteria (Ctrl+Shift+Enter)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">XMATCH</span><span class="func-desc">Modern MATCH with extra options</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">XMATCH</span>(<span class="arg">lookup_value</span>, <span class="arg">lookup_array</span>, [<span class="arg">match_mode</span>], [<span class="arg">search_mode</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Find rank or position</div>
+            <div class="example-formula">=XMATCH(A2,SortedScores,-1) → Find position with approximate match for grade bands</div>
+            <div class="example-formula">=XMATCH("*Mumbai*",CityList,2) → Wildcard search for "Mumbai" anywhere in cell</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARRAY FORMULAS -->
+    <div id="arrays" class="section">
+      <div class="section-hero" data-icon="🔷">
+        <div class="level-pill pill-a">ADVANCED</div>
+        <h2>Array Formulas & SUMPRODUCT</h2>
+        <p>Do calculations across entire ranges without helper columns.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SUMPRODUCT</span><span class="func-desc">Multiply arrays and sum — the most versatile advanced function</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SUMPRODUCT</span>(<span class="arg">array1</span>, [<span class="arg">array2</span>], ...)
+<span class="cm">// Multiplies corresponding elements, then sums all results
+// Use -- to convert TRUE/FALSE to 1/0 for conditions</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Weighted Averages, Multi-Condition Sums</div>
+            <div class="example-formula">=SUMPRODUCT(B2:B100,C2:C100) → Total revenue: qty × price for each row, summed</div>
+            <div class="example-formula">=SUMPRODUCT((A2:A100="North")*(C2:C100="Q1"),D2:D100) → Conditional sum (no CSE needed!)</div>
+            <div class="example-formula">=SUMPRODUCT(B2:B10*C2:C10)/SUM(C2:C10) → Weighted average (grade × weight / total weight)</div>
+            <div class="example-formula">=SUMPRODUCT((LEN(A2:A100)-LEN(SUBSTITUTE(A2:A100,",","")))+1) → Count comma-separated items across all cells</div>
+          </div>
+          <div class="tip-box"><strong>💡 Why SUMPRODUCT?</strong> It works without Ctrl+Shift+Enter, handles text conditions natively, and can replace COUNTIFS/SUMIFS when you need extra flexibility.</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">CSE Array Formulas { }</span><span class="func-desc">Legacy arrays entered with Ctrl+Shift+Enter</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="cm">// Enter with Ctrl+Shift+Enter — Excel adds { } automatically
+// In Excel 365, most CSE formulas can just be entered normally</span>
+
+{<span class="kw">=SUM</span>(IF(<span class="arg">A2:A100="North"</span>, <span class="arg">B2:B100</span>*<span class="arg">C2:C100</span>))}
+<span class="cm">// Sum of (price × qty) for North region only</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Count unique values</div>
+            <div class="example-formula">{=SUM(1/COUNTIF(A2:A100,A2:A100))} → Count distinct values in a range</div>
+            <div class="example-formula">{=MAX(IF(B2:B100="Sales",C2:C100))} → Max salary in Sales department</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">AGGREGATE</span><span class="func-desc">SUBTOTAL's powerful sibling — ignores errors AND hidden rows</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">AGGREGATE</span>(<span class="arg">function_num</span>, <span class="arg">options</span>, <span class="arg">array</span>, [<span class="arg">k</span>])
+<span class="cm">// Options: 5=ignore hidden, 6=ignore errors, 7=ignore both
+// Functions include: 14=LARGE, 15=SMALL, 17=MODE, 19=PERCENTILE</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Top-N sales, robust stats</div>
+            <div class="example-formula">=AGGREGATE(14,6,D2:D100,1) → Largest value ignoring errors (#N/A in some cells)</div>
+            <div class="example-formula">=AGGREGATE(15,7,D2:D100,3) → 3rd smallest value, ignore hidden rows and errors</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC ARRAYS -->
+    <div id="dynamic" class="section">
+      <div class="section-hero" data-icon="🌀">
+        <div class="level-pill pill-a">ADVANCED — Excel 365 / 2021+</div>
+        <h2>Dynamic Array Functions</h2>
+        <p>Revolutionary functions that spill results automatically into multiple cells.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">FILTER</span><span class="func-desc">Extract rows matching a condition — dynamic and live</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">FILTER</span>(<span class="arg">array</span>, <span class="arg">include</span>, [<span class="arg">if_empty</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Dynamic department list, filtered orders</div>
+            <div class="example-formula">=FILTER(A2:D100,C2:C100="North","No data") → Show only North region rows — updates live!</div>
+            <div class="example-formula">=FILTER(A2:D100,(C2:C100="North")*(D2:D100>50000)) → Multiple conditions: North AND Sales > 50K</div>
+            <div class="example-formula">=FILTER(A2:D100,(C2:C100="North")+(C2:C100="South")) → OR: North or South region</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SORT / SORTBY</span><span class="func-desc">Return a sorted array dynamically</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SORT</span>(<span class="arg">array</span>, [<span class="arg">sort_index</span>], [<span class="arg">sort_order</span>], [<span class="arg">by_col</span>])
+<span class="kw">SORTBY</span>(<span class="arg">array</span>, <span class="arg">by_array1</span>, [<span class="arg">order1</span>], [<span class="arg">by_array2</span>], ...)</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Live leaderboard, sorted report</div>
+            <div class="example-formula">=SORT(A2:C100,3,-1) → Sort by column 3, descending (top sales first)</div>
+            <div class="example-formula">=SORTBY(A2:C100,C2:C100,-1,B2:B100,1) → Sort by sales desc, then by name asc</div>
+            <div class="example-formula">=SORT(FILTER(A2:C100,C2:C100>10000),3,-1) → Filter then sort in one formula!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">UNIQUE</span><span class="func-desc">Extract a distinct list from a range</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">UNIQUE</span>(<span class="arg">array</span>, [<span class="arg">by_col</span>], [<span class="arg">exactly_once</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Build dynamic dropdown source</div>
+            <div class="example-formula">=UNIQUE(B2:B500) → Unique list of cities from 500-row dataset</div>
+            <div class="example-formula">=SORT(UNIQUE(C2:C200)) → Sorted unique department names for a dropdown</div>
+            <div class="example-formula">=COUNTA(UNIQUE(A2:A100)) → Count distinct customers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">SEQUENCE</span><span class="func-desc">Generate number series automatically</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">SEQUENCE</span>(<span class="arg">rows</span>, [<span class="arg">cols</span>], [<span class="arg">start</span>], [<span class="arg">step</span>])</div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Auto-number, date series</div>
+            <div class="example-formula">=SEQUENCE(12,1,DATE(2024,1,1),30) → 12 monthly dates starting Jan 2024</div>
+            <div class="example-formula">=SEQUENCE(10) → Numbers 1 to 10</div>
+            <div class="example-formula">=TEXT(SEQUENCE(12,1,DATE(2024,1,1),28),"MMM YY") → Month labels: Jan 24, Feb 24...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">TOCOL / TOROW / VSTACK / HSTACK / TEXTSPLIT / TEXTBEFORE / TEXTAFTER</span><span class="func-desc">Excel 2023+ advanced manipulation</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">TOCOL</span>(<span class="arg">array</span>)                                 <span class="cm">// Flatten 2D range into one column</span>
+<span class="kw">VSTACK</span>(<span class="arg">array1</span>, <span class="arg">array2</span>)                       <span class="cm">// Stack ranges vertically</span>
+<span class="kw">HSTACK</span>(<span class="arg">array1</span>, <span class="arg">array2</span>)                       <span class="cm">// Stack ranges horizontally</span>
+<span class="kw">TEXTSPLIT</span>(<span class="arg">text</span>, <span class="arg">col_delim</span>, [<span class="arg">row_delim</span>])     <span class="cm">// Split text into array</span>
+<span class="kw">TEXTBEFORE</span>(<span class="arg">text</span>, <span class="arg">delimiter</span>)                  <span class="cm">// Text before first delimiter</span>
+<span class="kw">TEXTAFTER</span>(<span class="arg">text</span>, <span class="arg">delimiter</span>)                   <span class="cm">// Text after first delimiter</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Combine multiple data tables</div>
+            <div class="example-formula">=VSTACK(Jan_Data,Feb_Data,Mar_Data) → Combine 3 month sheets into one table</div>
+            <div class="example-formula">=TEXTBEFORE(A2,"@") → Extract username from email "rahul@company.com" → "rahul"</div>
+            <div class="example-formula">=TEXTSPLIT(A2,",") → Split "Delhi, Mumbai, Chennai" into 3 cells</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCIAL -->
+    <div id="financial" class="section">
+      <div class="section-hero" data-icon="💰">
+        <div class="level-pill pill-a">ADVANCED</div>
+        <h2>Financial Functions</h2>
+        <p>Loan calculations, investment analysis, depreciation, and cash flow.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">PMT</span><span class="func-desc">Calculate periodic loan payment</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">PMT</span>(<span class="arg">rate</span>, <span class="arg">nper</span>, <span class="arg">pv</span>, [<span class="arg">fv</span>], [<span class="arg">type</span>])
+<span class="cm">// rate: interest rate per period (annual rate ÷ 12 for monthly)
+// nper: total number of payments
+// pv: present value (loan amount) — enter as negative
+// fv: future value after last payment (default 0)
+// type: 0=end of period, 1=beginning</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Home Loan / Car EMI Calculator</div>
+            <div class="example-formula">=PMT(8.5%/12, 240, -5000000) → Monthly EMI for ₹50L home loan at 8.5% for 20 years</div>
+            <div class="example-formula">=PMT(B1/12, B2*12, -B3) → Dynamic EMI calculator (rate in B1, years in B2, amount in B3)</div>
+          </div>
+          <div class="warning-box"><strong>⚠️ Sign Convention:</strong> PMT returns a negative number (cash outflow). Wrap in ABS() or enter PV as negative to get a positive result.</div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">NPV / XNPV</span><span class="func-desc">Net Present Value of cash flows</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">NPV</span>(<span class="arg">rate</span>, <span class="arg">value1</span>, [<span class="arg">value2</span>], ...)       <span class="cm">// Assumes equal time periods</span>
+<span class="kw">XNPV</span>(<span class="arg">rate</span>, <span class="arg">values</span>, <span class="arg">dates</span>)             <span class="cm">// Unequal time periods (more accurate)</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Project investment decision</div>
+            <div class="example-formula">=NPV(10%,B2:B7)-B1 → NPV of 6-year project (subtract initial investment in B1)</div>
+            <div class="example-formula">=IF(NPV(10%,B2:B7)-B1>0,"✅ Accept Project","❌ Reject Project")</div>
+            <div class="example-formula">=XNPV(10%,C2:C10,D2:D10) → NPV with actual dates (handles irregular cash flows)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">IRR / XIRR</span><span class="func-desc">Internal Rate of Return</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">IRR</span>(<span class="arg">values</span>, [<span class="arg">guess</span>])
+<span class="kw">XIRR</span>(<span class="arg">values</span>, <span class="arg">dates</span>, [<span class="arg">guess</span>])</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Compare multiple investments</div>
+            <div class="example-formula">=IRR(B1:B7) → IRR where B1=-1000000 (investment) and B2:B7=annual returns</div>
+            <div class="example-formula">=IF(IRR(B1:B7)>10%,"Better than benchmark","Underperforms")</div>
+            <div class="example-formula">=XIRR(C1:C10,D1:D10) → IRR with actual dates for PE/VC deal analysis</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">FV / PV / RATE / NPER</span><span class="func-desc">Time Value of Money functions</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">FV</span>(<span class="arg">rate</span>, <span class="arg">nper</span>, <span class="arg">pmt</span>, [<span class="arg">pv</span>])    <span class="cm">// Future value of investment</span>
+<span class="kw">PV</span>(<span class="arg">rate</span>, <span class="arg">nper</span>, <span class="arg">pmt</span>, [<span class="arg">fv</span>])    <span class="cm">// Present value of future payments</span>
+<span class="kw">RATE</span>(<span class="arg">nper</span>, <span class="arg">pmt</span>, <span class="arg">pv</span>, [<span class="arg">fv</span>])    <span class="cm">// Interest rate per period</span>
+<span class="kw">NPER</span>(<span class="arg">rate</span>, <span class="arg">pmt</span>, <span class="arg">pv</span>, [<span class="arg">fv</span>])    <span class="cm">// Number of periods</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: SIP / Retirement Planning</div>
+            <div class="example-formula">=FV(12%/12,240,-10000,0) → Value of ₹10,000/mo SIP at 12% for 20 years</div>
+            <div class="example-formula">=NPER(7%/12,-15000,0,10000000) → Months to save ₹1 Crore at ₹15K/mo</div>
+            <div class="example-formula">=RATE(48,ABS(PMT_amount),-LoanAmount)*12 → Find annual interest rate on existing loan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATISTICAL -->
+    <div id="statistical" class="section">
+      <div class="section-hero" data-icon="📊">
+        <div class="level-pill pill-a">ADVANCED</div>
+        <h2>Statistical & Forecast Functions</h2>
+        <p>Rank, percentile, distribution, regression, and forecasting.</p>
+      </div>
+
+      <div class="formula-block open">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">RANK / RANK.EQ / PERCENTRANK</span><span class="func-desc">Rank values within a dataset</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">RANK.EQ</span>(<span class="arg">number</span>, <span class="arg">ref</span>, [<span class="arg">order</span>])      <span class="cm">// 0=descending (1=highest), 1=ascending</span>
+<span class="kw">PERCENTRANK.INC</span>(<span class="arg">array</span>, <span class="arg">x</span>)          <span class="cm">// Percentile rank 0 to 1</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Sales leaderboard, performance ranking</div>
+            <div class="example-formula">=RANK.EQ(B2,$B$2:$B$100,0) → Rank salesperson's sales (1=highest)</div>
+            <div class="example-formula">=TEXT(PERCENTRANK.INC($C$2:$C$100,C2),"0%")&" percentile" → "87% percentile"</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">LARGE / SMALL / PERCENTILE</span><span class="func-desc">Find nth largest/smallest values</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">LARGE</span>(<span class="arg">array</span>, <span class="arg">k</span>)           <span class="cm">// kth largest value</span>
+<span class="kw">SMALL</span>(<span class="arg">array</span>, <span class="arg">k</span>)           <span class="cm">// kth smallest value</span>
+<span class="kw">PERCENTILE.INC</span>(<span class="arg">array</span>, <span class="arg">k</span>)  <span class="cm">// Value at kth percentile (k=0 to 1)</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Top performers, pay bands</div>
+            <div class="example-formula">=LARGE(SalesData,3) → Third highest sale amount</div>
+            <div class="example-formula">=PERCENTILE.INC(SalaryRange,0.9) → 90th percentile salary (top 10% cutoff)</div>
+            <div class="example-formula">=INDEX(EmpNames,MATCH(LARGE(Sales,1),Sales,0)) → Name of the top salesperson</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-header" onclick="toggleBlock(this)">
+          <div class="formula-title-group"><span class="func-name">STDEV / VAR / CORREL / FORECAST</span><span class="func-desc">Statistical analysis and prediction</span></div>
+          <span class="expand-icon">▶</span>
+        </div>
+        <div class="formula-body">
+          <div class="syntax-box"><span class="kw">STDEV.S</span>(<span class="arg">range</span>)             <span class="cm">// Sample standard deviation</span>
+<span class="kw">VAR.S</span>(<span class="arg">range</span>)               <span class="cm">// Sample variance</span>
+<span class="kw">CORREL</span>(<span class="arg">array1</span>, <span class="arg">array2</span>)    <span class="cm">// Correlation coefficient (-1 to 1)</span>
+<span class="kw">FORECAST.LINEAR</span>(<span class="arg">x</span>, <span class="arg">known_ys</span>, <span class="arg">known_xs</span>) <span class="cm">// Linear regression prediction</span>
+<span class="kw">FORECAST.ETS</span>(<span class="arg">target_date</span>, <span class="arg">values</span>, <span class="arg">timeline</span>) <span class="cm">// Exponential smoothing forecast</span></div>
+          <div class="example-box">
+            <div class="example-label">📋 Real-Life: Quality control, sales forecasting</div>
+            <div class="example-formula">=CORREL(AdvertisingSpend,Sales) → Does ad spend correlate with sales? (close to 1 = yes)</div>
+            <div class="example-formula">=FORECAST.LINEAR(13,B2:B12,A2:A12) → Predict month 13 sales from 12 months of data</div>
+            <div class="example-formula">=FORECAST.ETS(DATE(2025,1,1),Sales,Dates) → Advanced seasonal forecast</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICAL QUESTIONS -->
+    <div id="practical" class="section">
+      <div class="section-hero" data-icon="🧩">
+        <div class="level-pill pill-i">ALL LEVELS</div>
+        <h2>Real-Life Practical Problems</h2>
+        <p>Solved examples from HR, Sales, Finance, Operations, and Inventory.</p>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showTab(this,'tab-hr')">👥 HR</button>
+        <button class="tab-btn" onclick="showTab(this,'tab-sales')">📈 Sales</button>
+        <button class="tab-btn" onclick="showTab(this,'tab-finance')">💰 Finance</button>
+        <button class="tab-btn" onclick="showTab(this,'tab-ops')">⚙️ Operations</button>
+      </div>
+
+      <div id="tab-hr" class="tab-panel active">
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">1</div><div><div class="pq-q">Calculate employee tenure in "X years Y months" format</div><div class="pq-category">HR · Date & Time · DATEDIF</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=DATEDIF(B2,TODAY(),"Y")&" yrs "&DATEDIF(B2,TODAY(),"YM")&" mos"</div>
+          <div class="example-box"><div class="example-label">Explanation</div><div class="example-note">B2 = Join Date. "Y" gives complete years; "YM" gives additional months beyond those years. Result: "7 yrs 3 mos"</div></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">2</div><div><div class="pq-q">Flag employees whose probation ends within 30 days</div><div class="pq-category">HR · IF · TODAY</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=IF(AND(C2-TODAY()<=30,C2>=TODAY()),"⚠️ Review Soon","OK")</div>
+          <div class="example-box"><div class="example-label">Explanation</div><div class="example-note">C2 = Probation End Date. Flags if end date is within next 30 days and hasn't passed.</div></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">3</div><div><div class="pq-q">Calculate performance bonus (5% of salary if score ≥ 80, else 0)</div><div class="pq-category">HR · IF · Salary</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=IF(D2>=80,C2*5%,0)</div>
+          <div class="example-box"><div class="example-note">C2 = Salary, D2 = Performance Score. Extend: =IFS(D2>=90,C2*10%,D2>=80,C2*5%,TRUE,0) for tiered bonus.</div></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">4</div><div><div class="pq-q">Count employees absent more than 3 days in the month</div><div class="pq-category">HR · COUNTIFS</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=COUNTIFS(B2:B200,"Absent",C2:C200,">"&DATE(2026,1,1),C2:C200,"<="&DATE(2026,1,31))
+<span class="cm">// Or: Count employees where COUNTIF of their absences > 3</span></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">5</div><div><div class="pq-q">Create employee ID: first 3 letters of name + 4-digit join year</div><div class="pq-category">HR · TEXT · LEFT</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=UPPER(LEFT(A2,3))&TEXT(YEAR(B2),"0000")</div>
+          <div class="example-box"><div class="example-note">"Rahul Sharma" joined 2023 → "RAH2023"</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-sales" class="tab-panel">
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">1</div><div><div class="pq-q">Find top 3 salesperson names by total sales</div><div class="pq-category">Sales · INDEX · MATCH · LARGE</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// In E2, E3, E4 (for rank 1, 2, 3):</span>
+=INDEX($A$2:$A$100,MATCH(LARGE($D$2:$D$100,ROW()-1),$D$2:$D$100,0))</div>
+          <div class="example-box"><div class="example-note">A=Names, D=Total Sales. ROW()-1 gives 1,2,3 as you copy down rows 2,3,4.</div></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">2</div><div><div class="pq-q">Calculate YoY growth % for each product</div><div class="pq-category">Sales · Math · IF</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=IFERROR((C2-B2)/B2,"N/A")</div>
+          <div class="example-box"><div class="example-note">B2=Last Year Sales, C2=This Year. Format cell as %. Returns "N/A" if last year was 0.</div></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">3</div><div><div class="pq-q">Assign sales tier: Diamond (>500K), Gold (>300K), Silver (>100K), Bronze</div><div class="pq-category">Sales · IFS</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=IFS(B2>500000,"💎 Diamond",B2>300000,"🥇 Gold",B2>100000,"🥈 Silver",TRUE,"🥉 Bronze")</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">4</div><div><div class="pq-q">Pull all orders from a specific customer dynamically</div><div class="pq-category">Sales · FILTER · Dynamic Arrays</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=FILTER(A2:E500,B2:B500=H1,"No orders found")</div>
+          <div class="example-box"><div class="example-note">H1 = Customer name entered by user. Result spills automatically. No pivot table needed!</div></div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">5</div><div><div class="pq-q">Sales commission: 3% base + extra 2% if target exceeded + extra 1% if region is North</div><div class="pq-category">Sales · SUMPRODUCT · IF</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=B2*(3%+IF(B2>C2,2%,0)+IF(D2="North",1%,0))</div>
+          <div class="example-box"><div class="example-note">B2=Sales, C2=Target, D2=Region. Calculates layered commission cleanly.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-finance" class="tab-panel">
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">1</div><div><div class="pq-q">Build an EMI calculator (Home Loan)</div><div class="pq-category">Finance · PMT</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// B1=Loan Amount, B2=Annual Rate%, B3=Tenure (years)</span>
+Monthly EMI   =ABS(PMT(B2/12,B3*12,-B1))
+Total Payment =ABS(PMT(B2/12,B3*12,-B1))*B3*12
+Total Interest =Total_Payment - B1</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">2</div><div><div class="pq-q">Aging report: Flag invoices by overdue days (30/60/90+)</div><div class="pq-category">Finance · DATEDIF · IFS</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// C2 = Invoice Date, D2 = Due Date, E2 = Paid (Yes/No)</span>
+Overdue Days  =IF(E2="Yes",0,MAX(0,TODAY()-D2))
+Aging Bucket  =IF(E2="Yes","Paid",IFS(F2=0,"Current",F2<=30,"0-30 days",F2<=60,"31-60 days",F2<=90,"61-90 days",TRUE,"90+ days URGENT"))</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">3</div><div><div class="pq-q">Apply 18% GST and show breakdown (Base, GST, Total)</div><div class="pq-category">Finance · Math · TEXT</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">Base Amount  =A2
+GST (18%)    =ROUND(A2*18%,2)
+Total        =A2+ROUND(A2*18%,2)
+CGST (9%)    =ROUND(A2*9%,2)
+SGST (9%)    =ROUND(A2*9%,2)</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">4</div><div><div class="pq-q">Calculate depreciation using SLM and WDV methods</div><div class="pq-category">Finance · SLN · DB</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// SLN = Straight Line Method</span>
+=SLN(Cost,Salvage_Value,Useful_Life)
+
+<span class="cm">// DB = Written Down Value (Declining Balance)</span>
+=DB(Cost,Salvage_Value,Useful_Life,Period)
+
+<span class="cm">// Example: ₹10L asset, ₹1L salvage, 10 years, Year 3</span>
+=SLN(1000000,100000,10)           <span class="cm">→ ₹90,000/year</span>
+=DB(1000000,100000,10,3)          <span class="cm">→ Year 3 WDV depreciation</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-ops" class="tab-panel">
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">1</div><div><div class="pq-q">Inventory: Flag products below reorder level and calculate reorder quantity</div><div class="pq-category">Operations · IF · MAX</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// B=Current Stock, C=Reorder Level, D=Max Stock</span>
+Status          =IF(B2<=C2,"🔴 REORDER NOW","✅ OK")
+Reorder Qty     =IF(B2<=C2,MAX(0,D2-B2),0)
+Days Remaining  =INT(B2/AVERAGE_DAILY_USE)</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">2</div><div><div class="pq-q">Project schedule: Highlight tasks that are overdue or complete</div><div class="pq-category">Operations · IF · TODAY · Conditional Formatting</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// C=Due Date, D=Status</span>
+=IF(D2="Complete","✅ Done",IF(C2<TODAY(),"🔴 Overdue "&TEXT(TODAY()-C2,"0")&" days","🟢 "& TEXT(C2-TODAY(),"0")&" days left"))</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">3</div><div><div class="pq-q">SLA Tracking: Was the ticket resolved within SLA (8 working hours)?</div><div class="pq-category">Operations · NETWORKDAYS · Time</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box"><span class="cm">// B=Opened Timestamp, C=Resolved Timestamp</span>
+Hours Taken     =(C2-B2)*24
+Working Hours   =NETWORKDAYS(B2,C2)*8 - (time adjustments)
+SLA Status      =IF((C2-B2)*24<=8,"✅ Within SLA","⚠️ SLA Breached")</div>
+          </div>
+        </div>
+        <div class="pq-block">
+          <div class="pq-header"><div class="pq-num">4</div><div><div class="pq-q">Supplier scorecard: Weighted average of Quality (40%), Delivery (35%), Price (25%)</div><div class="pq-category">Operations · SUMPRODUCT</div></div></div>
+          <div class="pq-body"><div class="pq-solution-label">Solution</div>
+          <div class="syntax-box">=SUMPRODUCT(B2:D2,{0.4,0.35,0.25})
+
+<span class="cm">// B2=Quality Score, C2=Delivery Score, D2=Price Score (all out of 100)
+// Or with named cells: =Quality*40%+Delivery*35%+Price*25%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHEAT SHEET -->
+    <div id="cheatsheet" class="section">
+      <div class="section-hero" data-icon="📋">
+        <div class="level-pill pill-b">ALL LEVELS</div>
+        <h2>Excel Formula Cheat Sheet</h2>
+        <p>Quick-reference for every function covered in this documentation.</p>
+      </div>
+
+      <h2 class="section-heading">Math & Aggregation</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>SUM</td><td>=SUM(range)</td><td>Add all numbers in range</td></tr>
+        <tr><td>SUMIF</td><td>=SUMIF(range,criteria,sum_range)</td><td>Sum with one condition</td></tr>
+        <tr><td>SUMIFS</td><td>=SUMIFS(sum,r1,c1,r2,c2...)</td><td>Sum with multiple conditions</td></tr>
+        <tr><td>SUMPRODUCT</td><td>=SUMPRODUCT(arr1,arr2)</td><td>Multiply arrays then sum</td></tr>
+        <tr><td>COUNT/COUNTA</td><td>=COUNT(range)</td><td>Count numbers / non-empty cells</td></tr>
+        <tr><td>COUNTIF</td><td>=COUNTIF(range,criteria)</td><td>Count with one condition</td></tr>
+        <tr><td>COUNTIFS</td><td>=COUNTIFS(r1,c1,r2,c2...)</td><td>Count with multiple conditions</td></tr>
+        <tr><td>AVERAGE</td><td>=AVERAGE(range)</td><td>Arithmetic mean</td></tr>
+        <tr><td>AVERAGEIF</td><td>=AVERAGEIF(range,criteria,avg)</td><td>Conditional average</td></tr>
+        <tr><td>ROUND</td><td>=ROUND(num,digits)</td><td>Round to decimal places</td></tr>
+        <tr><td>ROUNDUP/DOWN</td><td>=ROUNDUP(num,digits)</td><td>Force round direction</td></tr>
+        <tr><td>MROUND</td><td>=MROUND(num,multiple)</td><td>Round to nearest multiple</td></tr>
+        <tr><td>MOD</td><td>=MOD(num,divisor)</td><td>Remainder after division</td></tr>
+        <tr><td>SUBTOTAL</td><td>=SUBTOTAL(func_num,range)</td><td>Aggregate ignoring filtered rows</td></tr>
+        <tr><td>AGGREGATE</td><td>=AGGREGATE(func,opt,range)</td><td>Advanced aggregate, ignores errors</td></tr>
+        <tr><td>ABS</td><td>=ABS(number)</td><td>Absolute value</td></tr>
+        <tr><td>POWER</td><td>=POWER(num,power)</td><td>Raise to a power</td></tr>
+        <tr><td>SQRT</td><td>=SQRT(number)</td><td>Square root</td></tr>
+      </tbody></table>
+
+      <h2 class="section-heading">Text</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>LEFT</td><td>=LEFT(text,n)</td><td>Extract n chars from left</td></tr>
+        <tr><td>RIGHT</td><td>=RIGHT(text,n)</td><td>Extract n chars from right</td></tr>
+        <tr><td>MID</td><td>=MID(text,start,n)</td><td>Extract from middle</td></tr>
+        <tr><td>LEN</td><td>=LEN(text)</td><td>Count characters</td></tr>
+        <tr><td>FIND</td><td>=FIND(find,within)</td><td>Position of text (case-sensitive)</td></tr>
+        <tr><td>SEARCH</td><td>=SEARCH(find,within)</td><td>Position of text (not case-sensitive)</td></tr>
+        <tr><td>SUBSTITUTE</td><td>=SUBSTITUTE(text,old,new)</td><td>Replace text occurrences</td></tr>
+        <tr><td>REPLACE</td><td>=REPLACE(text,start,n,new)</td><td>Replace by position</td></tr>
+        <tr><td>TRIM</td><td>=TRIM(text)</td><td>Remove extra spaces</td></tr>
+        <tr><td>CLEAN</td><td>=CLEAN(text)</td><td>Remove non-printable chars</td></tr>
+        <tr><td>UPPER/LOWER/PROPER</td><td>=PROPER(text)</td><td>Change text case</td></tr>
+        <tr><td>TEXTJOIN</td><td>=TEXTJOIN(",",TRUE,range)</td><td>Join with separator</td></tr>
+        <tr><td>TEXT</td><td>=TEXT(value,"format")</td><td>Format number as text</td></tr>
+        <tr><td>VALUE</td><td>=VALUE(text)</td><td>Convert text to number</td></tr>
+        <tr><td>TEXTBEFORE</td><td>=TEXTBEFORE(text,"@")</td><td>Text before delimiter (365)</td></tr>
+        <tr><td>TEXTAFTER</td><td>=TEXTAFTER(text,"@")</td><td>Text after delimiter (365)</td></tr>
+        <tr><td>TEXTSPLIT</td><td>=TEXTSPLIT(text,",")</td><td>Split text into array (365)</td></tr>
+      </tbody></table>
+
+      <h2 class="section-heading">Date & Time</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>TODAY</td><td>=TODAY()</td><td>Today's date</td></tr>
+        <tr><td>NOW</td><td>=NOW()</td><td>Current date and time</td></tr>
+        <tr><td>DATE</td><td>=DATE(y,m,d)</td><td>Build a date</td></tr>
+        <tr><td>DATEDIF</td><td>=DATEDIF(start,end,"Y")</td><td>Difference in years/months/days</td></tr>
+        <tr><td>YEAR/MONTH/DAY</td><td>=YEAR(date)</td><td>Extract date parts</td></tr>
+        <tr><td>WEEKDAY</td><td>=WEEKDAY(date,2)</td><td>Day of week number</td></tr>
+        <tr><td>WEEKNUM</td><td>=WEEKNUM(date)</td><td>Week number of year</td></tr>
+        <tr><td>NETWORKDAYS</td><td>=NETWORKDAYS(start,end,holidays)</td><td>Count working days</td></tr>
+        <tr><td>WORKDAY</td><td>=WORKDAY(start,days)</td><td>Date N working days away</td></tr>
+        <tr><td>EDATE</td><td>=EDATE(date,months)</td><td>Date N months away</td></tr>
+        <tr><td>EOMONTH</td><td>=EOMONTH(date,0)</td><td>Last day of month</td></tr>
+      </tbody></table>
+
+      <h2 class="section-heading">Logical</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>IF</td><td>=IF(test,true,false)</td><td>Basic conditional</td></tr>
+        <tr><td>IFS</td><td>=IFS(c1,v1,c2,v2,TRUE,else)</td><td>Multiple conditions</td></tr>
+        <tr><td>SWITCH</td><td>=SWITCH(val,c1,v1,c2,v2,def)</td><td>Exact value matching</td></tr>
+        <tr><td>AND</td><td>=AND(c1,c2,c3)</td><td>All must be true</td></tr>
+        <tr><td>OR</td><td>=OR(c1,c2,c3)</td><td>Any one must be true</td></tr>
+        <tr><td>NOT</td><td>=NOT(condition)</td><td>Reverse true/false</td></tr>
+        <tr><td>IFERROR</td><td>=IFERROR(value,if_err)</td><td>Handle any error</td></tr>
+        <tr><td>IFNA</td><td>=IFNA(value,if_na)</td><td>Handle #N/A only</td></tr>
+        <tr><td>ISBLANK/ISNUMBER</td><td>=ISBLANK(A1)</td><td>Test cell type</td></tr>
+      </tbody></table>
+
+      <h2 class="section-heading">Lookup & Reference</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>VLOOKUP</td><td>=VLOOKUP(val,range,col,FALSE)</td><td>Look up in first column</td></tr>
+        <tr><td>HLOOKUP</td><td>=HLOOKUP(val,range,row,FALSE)</td><td>Look up in first row</td></tr>
+        <tr><td>XLOOKUP</td><td>=XLOOKUP(val,look,return,"N/F")</td><td>Modern flexible lookup</td></tr>
+        <tr><td>INDEX</td><td>=INDEX(range,row,col)</td><td>Return value at position</td></tr>
+        <tr><td>MATCH</td><td>=MATCH(val,range,0)</td><td>Find position of value</td></tr>
+        <tr><td>XMATCH</td><td>=XMATCH(val,range,0,-1)</td><td>Modern MATCH with options</td></tr>
+        <tr><td>CHOOSE</td><td>=CHOOSE(index,v1,v2,v3)</td><td>Pick value by index</td></tr>
+        <tr><td>OFFSET</td><td>=OFFSET(ref,rows,cols,h,w)</td><td>Dynamic range reference</td></tr>
+        <tr><td>INDIRECT</td><td>=INDIRECT("Sheet1!A1")</td><td>Reference from text string</td></tr>
+      </tbody></table>
+
+      <h2 class="section-heading">Dynamic Arrays (Excel 365+)</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>FILTER</td><td>=FILTER(array,include,"empty")</td><td>Return filtered rows</td></tr>
+        <tr><td>SORT</td><td>=SORT(array,col,-1)</td><td>Return sorted array</td></tr>
+        <tr><td>SORTBY</td><td>=SORTBY(array,by,-1)</td><td>Sort by another column</td></tr>
+        <tr><td>UNIQUE</td><td>=UNIQUE(range)</td><td>Distinct values</td></tr>
+        <tr><td>SEQUENCE</td><td>=SEQUENCE(rows,cols,start,step)</td><td>Generate number series</td></tr>
+        <tr><td>RANDARRAY</td><td>=RANDARRAY(rows,cols,min,max)</td><td>Random number grid</td></tr>
+        <tr><td>VSTACK</td><td>=VSTACK(arr1,arr2)</td><td>Stack ranges vertically</td></tr>
+        <tr><td>HSTACK</td><td>=HSTACK(arr1,arr2)</td><td>Stack ranges horizontally</td></tr>
+        <tr><td>TOCOL</td><td>=TOCOL(range)</td><td>Flatten to single column</td></tr>
+        <tr><td>BYROW/BYCOL</td><td>=BYROW(range,LAMBDA(...))</td><td>Apply formula per row/col</td></tr>
+        <tr><td>LAMBDA</td><td>=LAMBDA(x,x*x)</td><td>Define reusable custom functions</td></tr>
+      </tbody></table>
+
+      <h2 class="section-heading">Financial</h2>
+      <table class="cheat-table"><thead><tr><th>Function</th><th>Syntax</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>PMT</td><td>=PMT(rate,nper,pv)</td><td>Loan payment (EMI)</td></tr>
+        <tr><td>IPMT</td><td>=IPMT(rate,period,nper,pv)</td><td>Interest portion of payment</td></tr>
+        <tr><td>PPMT</td><td>=PPMT(rate,period,nper,pv)</td><td>Principal portion of payment</td></tr>
+        <tr><td>FV</td><td>=FV(rate,nper,pmt)</td><td>Future value of investment</td></tr>
+        <tr><td>PV</td><td>=PV(rate,nper,pmt)</td><td>Present value</td></tr>
+        <tr><td>NPV</td><td>=NPV(rate,v1,v2...)</td><td>Net present value</td></tr>
+        <tr><td>XNPV</td><td>=XNPV(rate,values,dates)</td><td>NPV with irregular dates</td></tr>
+        <tr><td>IRR</td><td>=IRR(cashflows)</td><td>Internal rate of return</td></tr>
+        <tr><td>XIRR</td><td>=XIRR(values,dates)</td><td>IRR with actual dates</td></tr>
+        <tr><td>RATE</td><td>=RATE(nper,pmt,pv)</td><td>Interest rate per period</td></tr>
+        <tr><td>NPER</td><td>=NPER(rate,pmt,pv)</td><td>Number of periods</td></tr>
+        <tr><td>SLN</td><td>=SLN(cost,salvage,life)</td><td>Straight-line depreciation</td></tr>
+        <tr><td>DB</td><td>=DB(cost,salvage,life,period)</td><td>Declining balance depreciation</td></tr>
+      </tbody></table>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(id)) n.classList.add('active');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleBlock(header) {
+  const block = header.parentElement;
+  block.classList.toggle('open');
+}
+
+function showTab(btn, tabId) {
+  btn.closest('.section').querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.closest('.section').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+function handleSearch(val) {
+  if (!val.trim()) return;
+  const lower = val.toLowerCase();
+  const sectionMap = {
+    'sum':'math','count':'math','average':'math','round':'math','subtotal':'math','aggregate':'math','sumproduct':'arrays',
+    'left':'text','right':'text','mid':'text','len':'text','find':'text','substitute':'text','trim':'text','text':'text','concat':'text','textjoin':'text',
+    'today':'datetime','date':'datetime','datedif':'datetime','networkdays':'datetime','workday':'datetime','edate':'datetime','eomonth':'datetime',
+    'if':'logical','ifs':'logical','switch':'logical','and':'logical','or':'logical','iferror':'logical','ifna':'logical',
+    'vlookup':'lookup','hlookup':'lookup','match':'lookup','choose':'lookup',
+    'xlookup':'xlookup','index':'xlookup','xmatch':'xlookup',
+    'filter':'dynamic','sort':'dynamic','unique':'dynamic','sequence':'dynamic','vstack':'dynamic','textsplit':'dynamic',
+    'pmt':'financial','npv':'financial','irr':'financial','fv':'financial','pv':'financial','rate':'financial',
+    'rank':'statistical','large':'statistical','small':'statistical','forecast':'statistical','correl':'statistical'
+  };
+  for (const [key, section] of Object.entries(sectionMap)) {
+    if (lower.includes(key)) { showSection(section); return; }
+  }
+}
+
+// Open all blocks by default in basics
+document.querySelectorAll('.formula-block').forEach(b => {
+  if (!b.classList.contains('open')) return;
+});
+</script>
+</body>
+</html>

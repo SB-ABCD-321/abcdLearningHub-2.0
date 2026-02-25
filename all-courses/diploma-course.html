@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diploma Courses — ABCD Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet" /> -->
+
+   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --ink:       #1a1a20;
+      --ink2:      #2c2c35;
+      --ink3:      #3e3e4a;
+      --surface:   #f5f1ea;
+      --surface2:  #ede8df;
+      --surface3:  #e4ddd1;
+      --ivory:     #faf7f2;
+      --gold:      #b8942a;
+      --gold-lt:   #d4aa44;
+      --gold-pale: #f0e5c4;
+      --red-acc:   #c0392b;
+      --green-acc: #2d6a4f;
+      --muted:     #7a7570;
+      --border:    rgba(26,26,32,0.1);
+      --border2:   rgba(26,26,32,0.06);
+      --shadow-sm: 0 2px 12px rgba(26,26,32,0.08);
+      --shadow-md: 0 8px 40px rgba(26,26,32,0.14);
+      --shadow-lg: 0 20px 80px rgba(26,26,32,0.2);
+      --r: 16px;
+      --ease: cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Outfit',sans-serif;background:var(--ivory);color:var(--ink);overflow-x:hidden;min-height:100vh}
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E")}
+
+    /* PROGRESS BAR */
+    #progress{position:fixed;top:0;left:0;z-index:300;height:3px;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-lt));transition:width .1s linear}
+
+    /* HEADER */
+    header{position:sticky;top:0;z-index:100;background:rgba(250,247,242,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between}
+    .logo-wrap{display:flex;align-items:center;gap:14px;text-decoration:none}
+    .logo-mark{width:38px;height:38px;border-radius:10px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',cursive;font-size:1rem;color:var(--gold-lt);letter-spacing:.5px}
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--ink);letter-spacing:.01em}
+    .logo-text span{color:var(--gold)}
+    .nav-right{display:flex;align-items:center;gap:24px}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--muted)}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--ink)}
+    .breadcrumb i{font-size:.6rem}
+    .btn-wa-header{display:flex;align-items:center;gap:7px;background:var(--ink);color:var(--ivory);padding:9px 18px;border-radius:100px;text-decoration:none;font-size:.8rem;font-weight:500;transition:background .2s,transform .2s}
+    .btn-wa-header:hover{background:var(--ink2);transform:translateY(-1px)}
+    .btn-wa-header i{color:#4caf50}
+
+    /* HERO */
+    .hero{position:relative;overflow:hidden;background:var(--ink);min-height:560px;display:flex;flex-direction:column;justify-content:flex-end}
+    .hero-bg{position:absolute;inset:0;background-image:url('https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg');background-size:cover;background-position:center;filter:brightness(.22) saturate(.4)}
+    .hero::before{content:'';position:absolute;bottom:-1px;left:0;right:0;height:120px;background:var(--ivory);clip-path:polygon(0 100%,100% 100%,100% 100%,0 30%);z-index:3}
+    .hero-content{position:relative;z-index:2;padding:70px 48px 100px;max-width:900px}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:24px}
+    .eyebrow-line{width:40px;height:2px;background:var(--gold-lt)}
+    .eyebrow-text{font-family:'Bebas Neue',cursive;font-size:.85rem;color:var(--gold-lt);letter-spacing:.2em}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;line-height:.95;color:var(--ivory);letter-spacing:-.02em;margin-bottom:8px}
+    .hero h1 .thin{font-weight:300;font-style:italic}
+    .hero h1 .accent{color:var(--gold-lt)}
+    .hero-sub{font-size:1rem;color:rgba(250,247,242,.55);margin-top:20px;max-width:460px;line-height:1.65;font-weight:300}
+    .hero-stats{position:absolute;right:48px;bottom:110px;z-index:2;display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+    .hstat{display:flex;align-items:baseline;gap:6px}
+    .hstat-num{font-family:'Bebas Neue',cursive;font-size:2.8rem;color:var(--gold-lt);line-height:1}
+    .hstat-label{font-size:.72rem;color:rgba(250,247,242,.45);text-transform:uppercase;letter-spacing:.1em}
+    .hstat-div{width:40px;height:1px;background:rgba(250,247,242,.12);align-self:center;margin:4px 0}
+
+    /* INTRO STRIP */
+    .intro-strip{background:var(--surface2);border-bottom:1px solid var(--border);padding:22px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+    .intro-strip-text{font-size:.85rem;color:var(--muted);max-width:560px;line-height:1.6}
+    .intro-strip-pills{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:6px;background:var(--ivory);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:.76rem;font-weight:500;color:var(--ink3)}
+    .pill i{font-size:.7rem;color:var(--gold)}
+
+    /* PAGE WRAP */
+    .page-wrap{max-width:1280px;margin:0 auto;padding:64px 48px 80px}
+
+    /* SECTION HEADING */
+    .sec-heading{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:16px;flex-wrap:wrap}
+    .sec-kicker{font-family:'Bebas Neue',cursive;font-size:.72rem;color:var(--gold);letter-spacing:.25em;margin-bottom:6px}
+    .sec-title{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;line-height:1.05;letter-spacing:-.02em}
+    .sec-title em{font-style:italic;color:var(--muted);font-weight:400}
+    .sec-count{font-size:.78rem;color:var(--muted);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-weight:500;align-self:flex-start;margin-top:8px}
+
+    /* FEATURED CARD */
+    .featured-card{display:grid;grid-template-columns:1fr 1fr;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-md);margin-bottom:0;background:var(--ink);position:relative;min-height:420px;cursor:pointer;transition:box-shadow .35s var(--ease),transform .35s var(--ease)}
+    .featured-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+    .feat-img{position:relative;overflow:hidden}
+    .feat-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.55) saturate(.6);transition:transform .7s var(--ease),filter .5s}
+    .featured-card:hover .feat-img img{transform:scale(1.05);filter:brightness(.45) saturate(.5)}
+    .feat-img-overlay{position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,var(--ink) 100%)}
+    .feat-tag{position:absolute;top:20px;left:20px;z-index:2;display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--ink);font-family:'Bebas Neue',cursive;font-size:.8rem;letter-spacing:.12em;padding:6px 14px;border-radius:100px}
+    .feat-body{padding:44px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+    .feat-body::before{content:'01';position:absolute;top:20px;right:28px;font-family:'Bebas Neue',cursive;font-size:5rem;color:rgba(250,247,242,.04);line-height:1;pointer-events:none}
+    .feat-code{font-family:'Bebas Neue',cursive;font-size:.75rem;color:var(--gold-lt);letter-spacing:.25em;margin-bottom:14px}
+    .feat-name{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:700;color:var(--ivory);line-height:1.2;margin-bottom:16px}
+    .feat-desc{font-size:.88rem;color:rgba(250,247,242,.55);line-height:1.7;margin-bottom:28px;font-weight:300}
+    .feat-meta{display:flex;align-items:center;gap:20px;margin-bottom:28px}
+    .feat-meta-chip{display:flex;align-items:center;gap:7px;font-size:.82rem}
+    .feat-meta-chip i{font-size:.75rem;color:var(--gold-lt)}
+    .feat-meta-chip span{color:rgba(250,247,242,.65)}
+    .feat-meta-chip strong{color:var(--ivory);font-weight:500}
+    .feat-fee{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--gold-lt);margin-bottom:28px}
+    .feat-actions{display:flex;gap:12px}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--ink);padding:12px 24px;border-radius:100px;font-size:.84rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s,transform .2s}
+    .btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:rgba(250,247,242,.7);padding:12px 24px;border-radius:100px;font-size:.84rem;font-weight:500;text-decoration:none;border:1px solid rgba(250,247,242,.2);cursor:pointer;font-family:'Outfit',sans-serif;transition:border-color .2s,color .2s,transform .2s}
+    .btn-ghost:hover{border-color:rgba(250,247,242,.5);color:var(--ivory);transform:translateY(-2px)}
+
+    /* FEATURED EXPAND */
+    .feat-expand{overflow:hidden;max-height:0;transition:max-height .45s var(--ease);background:rgba(250,247,242,.04);border-radius:0 0 20px 20px;border:1px solid rgba(250,247,242,.07);border-top:none;margin-bottom:48px}
+    .feat-expand.open{max-height:300px}
+    .feat-expand-inner{padding:22px 40px;font-size:.84rem;color:rgba(250,247,242,.55);line-height:1.75;font-weight:300}
+    .feat-expand-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--ivory);margin-bottom:8px}
+
+    /* COURSE GRID */
+    .course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+
+    /* PREMIUM CARD */
+    .p-card{background:var(--ivory);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .3s;cursor:default;opacity:0;transform:translateY(28px)}
+    .p-card.reveal{animation:cardReveal .6s var(--ease) forwards}
+    @keyframes cardReveal{to{opacity:1;transform:translateY(0)}}
+    .p-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(184,148,42,.45)}
+
+    /* card image */
+    .p-card-img{height:200px;position:relative;overflow:hidden;background:var(--ink2)}
+    .p-card-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.65) saturate(.7);transition:transform .6s var(--ease),filter .4s}
+    .p-card:hover .p-card-img img{transform:scale(1.08);filter:brightness(.5) saturate(.5)}
+    .p-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(26,26,32,.85) 100%)}
+    .card-num{position:absolute;top:14px;left:16px;z-index:2;font-family:'Bebas Neue',cursive;font-size:.75rem;color:rgba(250,247,242,.5);letter-spacing:.1em}
+    .card-dur-pill{position:absolute;bottom:14px;right:14px;z-index:2;display:flex;align-items:center;gap:5px;background:rgba(26,26,32,.75);backdrop-filter:blur(8px);border:1px solid rgba(250,247,242,.12);border-radius:100px;padding:5px 12px;font-size:.73rem;color:rgba(250,247,242,.8)}
+    .card-dur-pill i{font-size:.65rem;color:var(--gold-lt)}
+    .p-card-tag{position:absolute;top:14px;right:14px;z-index:3;font-family:'Bebas Neue',cursive;font-size:.72rem;letter-spacing:.12em;padding:4px 11px;border-radius:100px}
+    .tag-pop{background:var(--gold);color:var(--ink)}
+    .tag-dem{background:var(--red-acc);color:#fff}
+
+    /* card body */
+    .p-card-body{padding:22px 22px 0;flex:1;display:flex;flex-direction:column}
+    .p-card-code{font-family:'Bebas Neue',cursive;font-size:.68rem;color:var(--gold);letter-spacing:.2em;margin-bottom:8px}
+    .p-card-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;line-height:1.3;color:var(--ink);margin-bottom:10px}
+    .p-card-desc{font-size:.82rem;color:var(--muted);line-height:1.65;flex:1;margin-bottom:18px}
+    .p-card-hl{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+    .hl-item{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--ink3)}
+    .hl-item i{width:14px;text-align:center;font-size:.65rem;color:var(--green-acc)}
+
+    /* card footer */
+    .p-card-footer{padding:16px 22px 20px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+    .p-card-fee{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--ink)}
+    .p-card-fee .fee-note{font-size:.7rem;color:var(--muted);font-family:'Outfit',sans-serif;display:block;font-weight:400}
+    .btn-enroll{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--ivory);padding:10px 20px;border-radius:100px;font-size:.79rem;font-weight:500;border:none;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;transition:background .2s,transform .2s}
+    .btn-enroll:hover{background:var(--gold);color:var(--ink);transform:scale(1.03)}
+    .btn-enroll i{font-size:.7rem}
+
+    /* card expand */
+    .p-card-expand{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);background:var(--surface2);border-top:1px solid transparent}
+    .p-card-expand.open{max-height:320px;border-top-color:var(--border)}
+    .expand-inner{padding:18px 22px;font-size:.83rem;color:var(--ink3);line-height:1.75;font-weight:300}
+    .expand-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:8px}
+    .expand-actions{display:flex;gap:10px;margin-top:14px}
+    .btn-exp-wa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:9px 18px;border-radius:100px;font-size:.78rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s}
+    .btn-exp-wa:hover{background:#1db954}
+    .btn-exp-mail{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--ink3);padding:9px 18px;border-radius:100px;font-size:.78rem;font-weight:500;border:1px solid var(--border);text-decoration:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:border-color .2s,color .2s}
+    .btn-exp-mail:hover{border-color:var(--ink);color:var(--ink)}
+
+    /* toggle arrow */
+    .p-card-toggle{width:100%;padding:10px;display:flex;align-items:center;justify-content:center;gap:7px;background:var(--surface3);border:none;cursor:pointer;font-size:.75rem;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:500;transition:background .2s,color .2s;border-top:1px solid var(--border2)}
+    .p-card-toggle:hover{background:var(--surface2);color:var(--ink)}
+    .p-card-toggle i{transition:transform .3s}
+    .p-card-toggle.rotated i{transform:rotate(180deg)}
+
+    /* COMPARISON TABLE */
+    .compare-section{margin-top:72px;background:var(--ink);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-lg)}
+    .compare-head{padding:36px 44px 28px;border-bottom:1px solid rgba(250,247,242,.08)}
+    .compare-head .sec-kicker{color:var(--gold-lt)}
+    .compare-head .sec-title{color:var(--ivory);font-size:1.9rem}
+    .compare-head .sec-title em{color:rgba(250,247,242,.35)}
+    .compare-table-wrap{overflow-x:auto;padding:0 0 8px}
+    table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:680px}
+    thead th{padding:14px 24px;text-align:left;font-weight:600;font-size:.74rem;color:rgba(250,247,242,.4);text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid rgba(250,247,242,.06)}
+    tbody tr{border-bottom:1px solid rgba(250,247,242,.05);transition:background .2s}
+    tbody tr:hover{background:rgba(250,247,242,.03)}
+    tbody td{padding:15px 24px;color:rgba(250,247,242,.7);vertical-align:middle}
+    tbody td:first-child{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--ivory)}
+    .tbl-code{font-family:'Bebas Neue',cursive;font-size:.72rem;color:var(--gold-lt);letter-spacing:.12em;display:block;margin-bottom:2px}
+    .tbl-tag{display:inline-block;padding:2px 9px;border-radius:100px;font-size:.68rem;font-weight:600;font-family:'Outfit',sans-serif}
+    .tbl-pop{background:rgba(184,148,42,.2);color:var(--gold-lt)}
+    .tbl-dem{background:rgba(192,57,43,.2);color:#e87670}
+    .tbl-fee{color:var(--gold-lt);font-weight:600}
+    .tbl-muted{color:rgba(250,247,242,.25);font-style:italic;font-size:.78rem}
+
+    /* CTA BAND */
+    .cta-band{margin-top:64px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);padding:52px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;position:relative;overflow:hidden}
+    .cta-band::before{content:'DIPLOMA';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',cursive;font-size:10rem;color:rgba(26,26,32,.04);pointer-events:none;line-height:1}
+    .cta-text .sec-kicker{color:var(--gold);margin-bottom:8px}
+    .cta-text h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;line-height:1.15;letter-spacing:-.02em}
+    .cta-text p{font-size:.88rem;color:var(--muted);margin-top:10px;line-height:1.65;max-width:420px}
+    .cta-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .cta-btn-wa{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#fff;padding:14px 28px;border-radius:100px;font-size:.88rem;font-weight:600;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.3);transition:background .2s,transform .2s}
+    .cta-btn-wa:hover{background:#1db954;transform:translateY(-2px)}
+    .cta-btn-mail{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--ivory);padding:14px 28px;border-radius:100px;font-size:.88rem;font-weight:600;text-decoration:none;transition:background .2s,transform .2s}
+    .cta-btn-mail:hover{background:var(--ink2);transform:translateY(-2px)}
+
+    /* FOOTER */
+    footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+    .f-left{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:rgba(250,247,242,.5)}
+    .f-left strong{color:var(--ivory)}
+    .f-links{display:flex;gap:20px;flex-wrap:wrap}
+    .f-links a{font-size:.8rem;color:rgba(250,247,242,.4);text-decoration:none;transition:color .2s}
+    .f-links a:hover{color:var(--gold-lt)}
+
+    /* FLOAT WA */
+    .float-wa{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;align-items:center;gap:10px;background:#25d366;color:#fff;padding:13px 22px;border-radius:100px;text-decoration:none;font-weight:600;font-size:.83rem;box-shadow:0 6px 28px rgba(37,211,102,.45);font-family:'Outfit',sans-serif;transition:transform .25s,box-shadow .25s}
+    .float-wa:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(37,211,102,.55)}
+    .float-wa i{font-size:1.05rem}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      header{padding:0 20px}
+      .hero-content{padding:50px 20px 90px}
+      .hero-stats{right:20px;bottom:100px}
+      .hstat-num{font-size:2rem}
+      .intro-strip{padding:18px 20px}
+      .page-wrap{padding:44px 20px 64px}
+      .featured-card{grid-template-columns:1fr;min-height:auto}
+      .feat-img{height:240px}
+      .feat-img-overlay{background:linear-gradient(180deg,transparent 40%,var(--ink) 100%)}
+      .feat-body{padding:28px 24px}
+      .feat-body::before{display:none}
+      .cta-band{padding:36px 28px}
+      footer{padding:28px 20px}
+      .compare-head{padding:24px 20px}
+    }
+    @media(max-width:640px){
+      .hero h1{font-size:3rem}
+      .breadcrumb{display:none}
+      .course-grid{grid-template-columns:1fr}
+      .hero-stats{display:none}
+      .float-wa span{display:none}
+      .float-wa{padding:14px;border-radius:50%}
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a href="../index.html" class="logo-wrap">
+    <div class="logo-text">ABCD <span>Learning Hub</span></div>
+  </a>
+  <nav class="breadcrumb">
+      <a href="../index.html">Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="index.html">All Courses</a>
+      <i class="fas fa-chevron-right"></i>
+      <span style="color:var(--ink);font-weight:500">Diploma Courses</span>
+    </nav>
+  <div class="nav-right">
+    
+    <a href="https://wa.me/918944899747" target="_blank" class="btn-wa-header">
+      <i class="fab fa-whatsapp"></i> Enquire
+    </a>
+  </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <div class="eyebrow-text">ABCD Learning Hub — West Bengal</div>
+    </div>
+    <h1>
+      <span class="thin">Diploma</span><br/>
+      <span class="accent">Programmes</span><br/>
+      <span class="thin">that Build</span> Careers
+    </h1>
+    <p class="hero-sub">8 industry-aligned diploma courses — from foundational computer skills to advanced generative AI engineering. Find your path and graduate job-ready.</p>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-num">8</span><span class="hstat-label">Programmes</span></div>
+    <div class="hstat-div"></div>
+    <div class="hstat"><span class="hstat-num">18</span><span class="hstat-label">Months Max</span></div>
+    <div class="hstat-div"></div>
+    <div class="hstat"><span class="hstat-num">500+</span><span class="hstat-label">Alumni Placed</span></div>
+  </div>
+</section>
+
+<!-- ─── INTRO STRIP ─── -->
+<div class="intro-strip">
+  <p class="intro-strip-text">All diploma programmes include live classes, practical projects, industry-recognised certificates, and placement support until you land your first role.</p>
+  <div class="intro-strip-pills">
+    <span class="pill"><i class="fas fa-certificate"></i> Recognised Certificate</span>
+    <span class="pill"><i class="fas fa-briefcase"></i> Placement Support</span>
+    <span class="pill"><i class="fas fa-laptop-code"></i> 100% Practical</span>
+    <span class="pill"><i class="fas fa-credit-card"></i> EMI Available</span>
+  </div>
+</div>
+
+<!-- ─── PAGE WRAP ─── -->
+<div class="page-wrap">
+
+  <div class="sec-heading">
+    <div>
+      <div class="sec-kicker">ALL DIPLOMA COURSES</div>
+      <h2 class="sec-title">Our Complete <em>Diploma</em> Catalogue</h2>
+    </div>
+    <span class="sec-count">8 Programmes Available</span>
+  </div>
+
+  <!-- FEATURED CARD -->
+  <div class="featured-card" id="featCard" onclick="toggleFeat()">
+    <div class="feat-img">
+      <img src="https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg" alt="Generative AI Diploma" />
+      <div class="feat-img-overlay"></div>
+      <span class="feat-tag"><i class="fas fa-fire"></i> Most Popular</span>
+    </div>
+    <div class="feat-body">
+      <div class="feat-code">DGAIA &amp; PPE — Flagship Diploma</div>
+      <div class="feat-name">Diploma in Generative AI Architecture &amp; Professional Prompt Engineering</div>
+      <div class="feat-desc">The most sought-after programme in West Bengal. Learn LLM architecture, master professional prompt engineering, build AI-powered tools, integrate the ChatGPT API, and explore emerging AI applications across industries.</div>
+      <div class="feat-meta">
+        <div class="feat-meta-chip"><i class="fas fa-clock"></i><span>Duration: </span><strong>12 Months</strong></div>
+        <div class="feat-meta-chip"><i class="fas fa-layer-group"></i><span>Level: </span><strong>Beginner – Advanced</strong></div>
+      </div>
+      <div class="feat-fee">Rs. 24,000/-</div>
+      <div class="feat-actions" onclick="event.stopPropagation()">
+        <a href="https://wa.me/918944899747?text=Hello%21%20I%27m%20interested%20in%20the%20DGAIA%20%26%20PPE%20Diploma%20at%20ABCD%20Learning%20Hub.%20Please%20share%20details." target="_blank" class="btn-primary"><i class="fab fa-whatsapp"></i> Enrol via WhatsApp</a>
+        <button class="btn-ghost" onclick="event.stopPropagation();toggleFeat()"><i class="fas fa-info-circle"></i> Full Details</button>
+      </div>
+    </div>
+  </div>
+  <div class="feat-expand" id="featExpand">
+    <div class="feat-expand-inner">
+      <div class="feat-expand-title">What You'll Learn</div>
+      Architecture of large language models (GPT, Claude, Gemini), professional prompt engineering patterns and frameworks, ChatGPT API integration and automation, building AI-powered tools and workflows, Retrieval-Augmented Generation (RAG) systems, AI for business operations, education, and media content creation. Graduate with a full portfolio of real AI projects ready to show employers.
+      <div class="expand-actions" style="margin-top:14px">
+        <a href="https://wa.me/918944899747?text=I%27m%20interested%20in%20the%20DGAIA%20%26%20PPE%20Diploma" target="_blank" class="btn-exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: DGAIA %26 PPE Diploma" class="btn-exp-mail"><i class="fas fa-envelope"></i> Email Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div style="height:48px"></div>
+
+  <!-- GRID HEADING -->
+  <div class="sec-heading" style="margin-bottom:28px">
+    <div>
+      <div class="sec-kicker">EXPLORE MORE</div>
+      <h2 class="sec-title" style="font-size:1.8rem">All Other <em>Diploma</em> Programmes</h2>
+    </div>
+  </div>
+
+  <!-- COURSE GRID -->
+  <div class="course-grid" id="courseGrid"></div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="compare-section">
+    <div class="compare-head">
+      <div class="sec-kicker">QUICK COMPARE</div>
+      <h2 class="sec-title">All Diploma Courses <em>at a Glance</em></h2>
+    </div>
+    <div class="compare-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Programme</th>
+            <th>Code</th>
+            <th>Duration</th>
+            <th>Fee</th>
+            <th>Best For</th>
+            <th>Badge</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <div class="cta-text">
+      <div class="sec-kicker">READY TO BEGIN?</div>
+      <h2>Start Your Diploma Journey<br/>This Month</h2>
+      <p>New batches begin every month. Seats are limited to ensure personal attention. Book a free counselling session today — no obligation, just clarity.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="https://wa.me/918944899747?text=Hello!%20I%20want%20to%20enquire%20about%20Diploma%20courses%20at%20ABCD%20Learning%20Hub." target="_blank" class="cta-btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      <a href="mailto:sb.abcd321@gmail.com?subject=Diploma Course Enquiry" class="cta-btn-mail"><i class="fas fa-envelope"></i> Email Enquiry</a>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-left">
+    <strong>ABCD Learning Hub</strong> — India's Premier Computer Education Institute<br/>
+    <span style="font-size:.8rem"> +91 89448 99747 &nbsp;·&nbsp; sb.abcd321@gmail.com</span>
+  </div>
+  <div class="f-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">All Courses</a>
+    <a href="ai-course.html">AI Courses</a>
+    <a href="programming.html">Programming</a>
+    <a href="for-office-work.html">Office</a>
+    <a href="mailto:sb.abcd321@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/918944899747" target="_blank" class="float-wa">
+  <i class="fab fa-whatsapp"></i><span>Chat with Us</span>
+</a>
+
+<!-- ════════════ SCRIPT ════════════ -->
+<script>
+const COURSES = [
+  {
+    id:"dca", code:"DCA", num:"01",
+    name:"Diploma in Computer Application",
+    desc:"A comprehensive introduction covering MS Office Suite, internet usage, email, and computer fundamentals. Ideal for beginners entering the workforce.",
+    longDesc:"Covers MS Word, Excel, PowerPoint, internet usage, email communication, operating system basics, and fundamental computer operation skills. The ideal first step for anyone beginning their digital journey.",
+    duration:"6 Months", fee:"Rs. 5,000/-", tag:null,
+    image:"https://cdn.pixabay.com/photo/2016/05/05/11/22/computer-1373684_1280.jpg",
+    highlights:["MS Office Suite (Word, Excel, PowerPoint)","Internet & Email proficiency","OS basics & file management","Data entry fundamentals"],
+    bestFor:"Students, homemakers, first-time computer learners"
+  },
+  {
+    id:"dwt", code:"DWT", num:"02",
+    name:"Diploma in Web Technology",
+    desc:"Learn how websites work — HTML5, CSS3, responsive design, Google Workspace, and basic web hosting.",
+    longDesc:"Learn how websites work from the ground up. Covers HTML5, CSS3, responsive design, Google Workspace (Docs, Sheets, Slides), basic web hosting, and domain management. Perfect for aspiring web professionals.",
+    duration:"9 Months", fee:"Rs. 8,000/-", tag:null,
+    image:"https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg",
+    highlights:["HTML5 & CSS3 from scratch","Responsive web design","Google Workspace mastery","Web hosting & deployment basics"],
+    bestFor:"Entrepreneurs, aspiring web professionals, students"
+  },
+  {
+    id:"dcawd", code:"DCA-WD", num:"03",
+    name:"Diploma in Computer Application & Web Design",
+    desc:"Dual-track diploma from computer fundamentals all the way to front-end web development. A perfect all-round starter.",
+    longDesc:"A dual-track diploma starting with computer fundamentals and progressing through HTML, CSS, JavaScript basics, and web design principles. Graduate with both office skills and the ability to build and maintain professional websites.",
+    duration:"12 Months", fee:"Rs. 12,000/-", tag:null,
+    image:"https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg",
+    highlights:["Computer fundamentals + web design","HTML, CSS & JS basics","UI design principles","Portfolio-ready web projects"],
+    bestFor:"College students, career switchers, beginners"
+  },
+  {
+    id:"doaep", code:"DOAEP", num:"04",
+    name:"Diploma in Office Expert & Publishing",
+    desc:"West Bengal's most demanded office programme — MS Office in depth, DTP tools, and professional office skills.",
+    longDesc:"The single most demanded office programme across West Bengal. Covers all MS Office tools at an advanced level, desktop publishing (PageMaker, CorelDraw basics), professional document creation, and office administration skills required in every modern organisation.",
+    duration:"12 Months", fee:"Rs. 8,000/-", tag:"demanding",
+    image:"https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg",
+    highlights:["Advanced MS Word, Excel, PowerPoint","Desktop Publishing (PageMaker, CorelDraw)","Professional document creation","Office administration workflows"],
+    bestFor:"Job seekers, office staff, government aspirants"
+  },
+  {
+    id:"adoap", code:"ADOAP", num:"05",
+    name:"Advance Diploma in Office Accounting Power",
+    desc:"Advanced Excel, Tally ERP, financial reporting — built for finance and accounting professionals wanting digital mastery.",
+    longDesc:"Covers Microsoft Excel at a professional level (macros, pivot tables, VLOOKUP, financial formulas), Tally ERP, financial reporting, data management, and accounting workflows. Designed specifically for finance professionals seeking modern digital proficiency.",
+    duration:"12 Months", fee:"Rs. 15,000/-", tag:null,
+    image:"https://cdn.pixabay.com/photo/2017/10/10/21/47/laptop-2838921_1280.jpg",
+    highlights:["Advanced Excel (Macros, Pivot, VLOOKUP)","Tally ERP — full course","Financial reporting & MIS","Accounting data management"],
+    bestFor:"Accountants, finance executives, commerce graduates"
+  },
+  {
+    id:"ddme", code:"DDME", num:"06",
+    name:"Diploma in Digital Marketing Education",
+    desc:"Complete 12-month diploma — SEO, SEM, Google Ads, social media advertising, content marketing, and analytics.",
+    longDesc:"A complete digital marketing diploma: SEO, SEM, Google Ads, Facebook & Instagram advertising, content marketing, email campaigns, YouTube marketing, web analytics, and building full digital marketing strategies from scratch.",
+    duration:"12 Months", fee:"Rs. 18,000/-", tag:null,
+    image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg",
+    highlights:["SEO, SEM & Google Ads","Meta (Facebook/Instagram) advertising","Content & email marketing","Analytics & campaign reporting"],
+    bestFor:"Marketing professionals, entrepreneurs, fresh graduates"
+  },
+  {
+    id:"adita", code:"ADITA", num:"07",
+    name:"Advance Diploma in IT & Application",
+    desc:"The most comprehensive IT diploma — computer fundamentals to networking, databases, and one programming language.",
+    longDesc:"Our most comprehensive IT diploma spanning computer fundamentals, networking basics, one programming language (Python or JavaScript of your choice), SQL database concepts, system administration basics, and real-world application development projects.",
+    duration:"18 Months", fee:"Rs. 25,000/-", tag:null,
+    image:"https://cdn.pixabay.com/photo/2019/10/03/12/12/programmer-4523101_1280.jpg",
+    highlights:["Computer fundamentals to advanced IT","Networking basics (TCP/IP, LAN)","Python or JavaScript programming","SQL database fundamentals"],
+    bestFor:"IT aspirants, BCA/BSc students, career switchers"
+  },
+  {
+    id:"dgaia-ppe", code:"DGAIA & PPE", num:"08",
+    name:"Diploma in Generative AI Architecture & Professional Prompt Engineering",
+    desc:"Learn to build and deploy generative AI models, and master professional prompt engineering.",
+    longDesc:"Our most advanced AI diploma covering generative AI architecture, prompt engineering techniques, model fine-tuning, deployment strategies, and real-world applications in business and creative industries.",
+    duration:"12 Months", fee:"Rs. 24,000/-", tag:"popular",
+    image:"https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg",
+    highlights:["Computer fundamentals to advanced IT","Learn about Generative AI","Python or JavaScript programming","API integration and AI tool development"],
+    bestFor:"IT aspirants, BCA/BSc students, career switchers"
+  },
+];
+
+const TABLE_DATA = [
+  {code:"DCA",         name:"Diploma in Computer Application",                                         duration:"6 Months",  fee:"Rs. 5,000/-",  tag:null,        bestFor:"Beginners"},
+  {code:"DWT",         name:"Diploma in Web Technology",                                               duration:"9 Months",  fee:"Rs. 8,000/-",  tag:null,        bestFor:"Entrepreneurs"},
+  {code:"DCA-WD",      name:"Diploma in Computer Application & Web Design",                            duration:"12 Months", fee:"Rs. 12,000/-", tag:null,        bestFor:"Students"},
+  {code:"DOAEP",       name:"Diploma in Office Expert & Publishing",                                   duration:"12 Months", fee:"Rs. 8,000/-",  tag:"demanding", bestFor:"Job Seekers"},
+  {code:"ADOAP",       name:"Advance Diploma in Office Accounting Power",                              duration:"12 Months", fee:"Rs. 15,000/-", tag:null,        bestFor:"Accountants"},
+  {code:"DDME",        name:"Diploma in Digital Marketing Education",                                  duration:"12 Months", fee:"Rs. 18,000/-", tag:null,        bestFor:"Marketers"},
+  {code:"ADITA",       name:"Advance Diploma in IT & Application",                                     duration:"18 Months", fee:"Rs. 25,000/-", tag:null,        bestFor:"IT Aspirants"},
+  {code:"DGAIA & PPE", name:"Diploma in Generative AI Architecture & Professional Prompt Engineering", duration:"12 Months", fee:"Rs. 24,000/-", tag:"popular",   bestFor:"AI Enthusiasts"},
+];
+
+/* render grid */
+const grid = document.getElementById('courseGrid');
+COURSES.forEach((c, i) => {
+  const tagHtml = c.tag === 'popular'
+    ? `<span class="p-card-tag tag-pop"><i class="fas fa-fire"></i> Popular</span>`
+    : c.tag === 'demanding'
+    ? `<span class="p-card-tag tag-dem"><i class="fas fa-bolt"></i> In Demand</span>`
+    : '';
+
+  const hlHtml = c.highlights.map(h => `<div class="hl-item"><i class="fas fa-check-circle"></i>${h}</div>`).join('');
+
+  const card = document.createElement('div');
+  card.className = 'p-card';
+  card.style.animationDelay = `${i * 0.09}s`;
+  card.innerHTML = `
+    ${tagHtml}
+    <div class="p-card-img">
+      <img src="${c.image}" alt="${c.name}" loading="lazy"/>
+      <div class="card-num">${c.num}</div>
+      <div class="card-dur-pill"><i class="fas fa-clock"></i>${c.duration}</div>
+    </div>
+    <div class="p-card-body">
+      <div class="p-card-code">${c.code}</div>
+      <div class="p-card-name">${c.name}</div>
+      <div class="p-card-desc">${c.desc}</div>
+      <div class="p-card-hl">${hlHtml}</div>
+    </div>
+    <div class="p-card-footer">
+      <div class="p-card-fee">${c.fee}<span class="fee-note">Full programme fee</span></div>
+      <button class="btn-enroll" onclick="enrollWA('${encodeURIComponent(c.name)}')">Enquire <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div class="p-card-expand" id="exp-${c.id}">
+      <div class="expand-inner">
+        <div class="expand-title">Programme Overview</div>
+        ${c.longDesc}
+        <div style="margin-top:10px;font-size:.78rem;color:var(--muted)"><i class="fas fa-user"></i>&nbsp; Best For: <strong style="color:var(--ink3)">${c.bestFor}</strong></div>
+        <div class="expand-actions">
+          <a href="https://wa.me/918944899747?text=I%27m%20interested%20in%20${encodeURIComponent(c.name)}%20at%20ABCD%20Learning%20Hub." target="_blank" class="btn-exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: ${encodeURIComponent(c.name)}" class="btn-exp-mail"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+    </div>
+    <button class="p-card-toggle" id="tog-${c.id}" onclick="toggleCard('${c.id}')">
+      <i class="fas fa-chevron-down"></i> View Details
+    </button>
+  `;
+  grid.appendChild(card);
+});
+
+/* render table */
+const tbody = document.getElementById('tableBody');
+TABLE_DATA.forEach(r => {
+  const badge = r.tag === 'popular'
+    ? `<span class="tbl-tag tbl-pop">Popular</span>`
+    : r.tag === 'demanding'
+    ? `<span class="tbl-tag tbl-dem">In Demand</span>`
+    : `<span class="tbl-muted">—</span>`;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${r.name}</td>
+    <td><span class="tbl-code">${r.code}</span></td>
+    <td>${r.duration}</td>
+    <td class="tbl-fee">${r.fee}</td>
+    <td>${r.bestFor}</td>
+    <td>${badge}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* toggle card */
+function toggleCard(id) {
+  const exp = document.getElementById(`exp-${id}`);
+  const tog = document.getElementById(`tog-${id}`);
+  const isOpen = exp.classList.contains('open');
+  document.querySelectorAll('.p-card-expand.open').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.p-card-toggle.rotated').forEach(t => t.classList.remove('rotated'));
+  if (!isOpen) { exp.classList.add('open'); tog.classList.add('rotated'); }
+}
+
+/* toggle featured */
+function toggleFeat() {
+  document.getElementById('featExpand').classList.toggle('open');
+}
+
+/* enrol wa */
+function enrollWA(enc) {
+  const name = decodeURIComponent(enc);
+  window.open(`https://wa.me/918944899747?text=${encodeURIComponent(`Hello! I'm interested in the "${name}" at ABCD Learning Hub. Please share batch dates and fees.`)}`, '_blank');
+}
+
+/* scroll reveal */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); } });
+}, {threshold:.08});
+document.querySelectorAll('.p-card').forEach(c => io.observe(c));
+
+/* progress bar */
+const bar = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  bar.style.width = `${(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100}%`;
+});
+</script>
+</body>
+</html>

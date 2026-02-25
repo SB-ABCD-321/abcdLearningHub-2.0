@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeDocs — Complete Keyboard, WordPad & Typing Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN SYSTEM — Editorial/Technical Documentation Aesthetic
+   Dark slate + amber accent + clean monospace energy
+   ============================================================ */
+:root {
+  --bg-base: #0d0f14;
+  --bg-surface: #13161e;
+  --bg-raised: #1a1e2b;
+  --bg-card: #1e2231;
+  --bg-hover: #242840;
+  --border: #2a2f42;
+  --border-light: #353b55;
+  --amber: #f59e0b;
+  --amber-dim: #b45309;
+  --amber-glow: rgba(245,158,11,0.12);
+  --amber-border: rgba(245,158,11,0.3);
+  --teal: #2dd4bf;
+  --teal-dim: rgba(45,212,191,0.15);
+  --rose: #f43f5e;
+  --sky: #38bdf8;
+  --violet: #a78bfa;
+  --text-primary: #e8ecf4;
+  --text-secondary: #8b92a8;
+  --text-muted: #4f566b;
+  --text-code: #7dd3fc;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ============================================================ HEADER */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,15,20,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 1000;
+  gap: 20px;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--amber), #d97706);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 0 20px rgba(245,158,11,0.4);
+}
+.logo span { color: var(--amber); }
+
+.header-divider { width: 1px; height: 28px; background: var(--border); }
+
+.header-breadcrumb {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.header-breadcrumb .sep { color: var(--border-light); }
+.header-breadcrumb .current { color: var(--text-secondary); }
+
+.header-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.version-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  background: var(--amber-glow);
+  border: 1px solid var(--amber-border);
+  color: var(--amber);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.progress-indicator {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ============================================================ LAYOUT */
+.layout {
+  display: flex;
+  padding-top: var(--header-h);
+  min-height: 100vh;
+}
+
+/* ============================================================ SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 24px 0;
+  z-index: 100;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-section { margin-bottom: 8px; }
+
+.sidebar-section-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 20px 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar-section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 20px;
+  text-decoration: none;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+  border-left-color: var(--border-light);
+}
+
+.nav-item.active {
+  color: var(--amber);
+  background: var(--amber-glow);
+  border-left-color: var(--amber);
+}
+
+.nav-item .nav-icon {
+  font-size: 0.9rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-item .nav-badge {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.nav-sub {
+  padding-left: 32px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ============================================================ MAIN CONTENT */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: calc(100% - var(--sidebar-w) - 240px);
+  padding: 48px 60px;
+}
+
+/* ============================================================ RIGHT TOC */
+.toc-panel {
+  position: fixed;
+  top: var(--header-h);
+  right: 0;
+  width: 240px;
+  height: calc(100vh - var(--header-h));
+  padding: 24px 20px;
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.toc-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.toc-link {
+  display: block;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 4px 0;
+  border-left: 2px solid transparent;
+  padding-left: 10px;
+  margin-left: -10px;
+  transition: all 0.2s;
+  line-height: 1.4;
+}
+.toc-link:hover { color: var(--amber); border-left-color: var(--amber); }
+.toc-link.sub { padding-left: 22px; margin-left: -10px; font-size: 0.7rem; }
+
+/* ============================================================ PAGE SECTIONS */
+.doc-section { display: none; animation: fadeSection 0.3s ease; }
+.doc-section.active { display: block; }
+
+@keyframes fadeSection {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================ TYPOGRAPHY */
+.page-overline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.page-overline::before {
+  content: ''; width: 24px; height: 1px; background: var(--amber);
+}
+
+h1.page-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.page-intro {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin-bottom: 40px;
+  line-height: 1.8;
+  border-left: 3px solid var(--amber);
+  padding-left: 18px;
+}
+
+h2.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 52px 0 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+h2.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 24px;
+  background: linear-gradient(to bottom, var(--amber), transparent);
+  border-radius: 2px;
+}
+
+h3.sub-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin: 32px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+p { margin-bottom: 16px; color: var(--text-secondary); }
+
+strong { color: var(--text-primary); font-weight: 600; }
+
+em { color: var(--amber); font-style: italic; }
+
+/* ============================================================ COMPONENTS */
+
+/* Callout boxes */
+.callout {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 24px 0;
+  display: flex;
+  gap: 14px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.callout-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.callout-body { flex: 1; }
+.callout-body strong { display: block; margin-bottom: 4px; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; }
+
+.callout.info { background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); }
+.callout.info .callout-body strong { color: var(--sky); }
+.callout.info p { color: rgba(148,196,255,0.85); margin: 0; }
+
+.callout.tip { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+.callout.tip .callout-body strong { color: var(--amber); }
+.callout.tip p { color: rgba(251,200,130,0.85); margin: 0; }
+
+.callout.warning { background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.2); }
+.callout.warning .callout-body strong { color: var(--rose); }
+.callout.warning p { color: rgba(255,160,170,0.85); margin: 0; }
+
+.callout.note { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); }
+.callout.note .callout-body strong { color: var(--violet); }
+.callout.note p { color: rgba(200,185,255,0.85); margin: 0; }
+
+/* Key badges */
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-light);
+  border-bottom: 3px solid var(--border);
+  color: var(--text-primary);
+  padding: 3px 9px;
+  border-radius: 6px;
+  min-width: 28px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  margin: 0 2px;
+  white-space: nowrap;
+}
+
+/* Shortcut combos */
+.shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.shortcut .plus { color: var(--text-muted); font-size: 0.7rem; }
+
+/* Tables */
+.doc-table-wrap { overflow-x: auto; margin: 24px 0; border-radius: 10px; border: 1px solid var(--border); }
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.doc-table thead { background: var(--bg-raised); }
+.doc-table thead th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.doc-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.doc-table tbody tr:last-child { border-bottom: none; }
+.doc-table tbody tr:hover { background: var(--bg-hover); }
+.doc-table td { padding: 11px 16px; color: var(--text-secondary); vertical-align: top; }
+.doc-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+/* Code blocks */
+.code-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 20px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--text-code);
+  line-height: 1.7;
+  position: relative;
+  overflow-x: auto;
+}
+.code-block .code-label {
+  position: absolute;
+  top: -1px; right: 12px;
+  font-size: 0.62rem;
+  background: var(--amber);
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 0 0 6px 6px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Steps */
+.steps { margin: 24px 0; }
+.step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.step-num {
+  width: 32px; height: 32px;
+  background: var(--amber-glow);
+  border: 1px solid var(--amber-border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--amber);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-content h4 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.step-content p { margin: 0; font-size: 0.88rem; }
+
+/* Grid cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.25s;
+}
+.info-card:hover {
+  border-color: var(--amber-border);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.info-card .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+.info-card h4 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.info-card p { font-size: 0.82rem; margin: 0; }
+
+/* Keyboard visual */
+.keyboard-visual {
+  background: linear-gradient(135deg, #1a1d26, #13161e);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.kb-section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.kb-row-group { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: nowrap; justify-content: center; }
+.vis-key {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  background: linear-gradient(to bottom, #2a2f42, #1e2231);
+  border: 1px solid #3a3f58;
+  border-bottom: 3px solid #111;
+  border-radius: 5px;
+  color: var(--text-secondary);
+  padding: 6px 4px;
+  min-width: 36px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+  transition: all 0.2s;
+  cursor: default;
+  flex-shrink: 0;
+}
+.vis-key:hover {
+  background: linear-gradient(to bottom, var(--amber-glow), rgba(245,158,11,0.05));
+  border-color: var(--amber-border);
+  color: var(--amber);
+  transform: translateY(-1px);
+}
+.vis-key.wide-15 { min-width: 54px; }
+.vis-key.wide-2 { min-width: 72px; }
+.vis-key.wide-25 { min-width: 90px; }
+.vis-key.wide-3 { min-width: 108px; }
+.vis-key.space { min-width: 240px; }
+.vis-key.zone-home { border-color: rgba(245,158,11,0.5); background: linear-gradient(to bottom, rgba(245,158,11,0.1), rgba(245,158,11,0.05)); color: var(--amber); }
+.vis-key.zone-left { border-color: rgba(56,189,248,0.3); }
+.vis-key.zone-right { border-color: rgba(45,212,191,0.3); }
+
+/* Finger zones legend */
+.finger-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+.finger-tag {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.finger-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Definition list */
+.def-list { margin: 20px 0; }
+.def-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.def-item:first-child { border-top: 1px solid var(--border); }
+.def-term {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--text-code);
+  font-weight: 500;
+  padding-top: 2px;
+}
+.def-desc { color: var(--text-secondary); }
+
+/* Part diagram */
+.wp-diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+.wp-diagram-titlebar {
+  background: linear-gradient(90deg, #1e3a8a, #1d4ed8);
+  padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.wp-diagram-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: rgba(255,255,255,0.9); }
+.wp-win-btns { margin-left: auto; display: flex; gap: 5px; }
+.wp-win-btn { width: 14px; height: 14px; border-radius: 50%; border: none; cursor: default; }
+.ribbon-bar {
+  background: #f0f0f0;
+  padding: 6px 10px;
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+.rb-btn {
+  background: linear-gradient(to bottom, #fff, #e8e8e8);
+  border: 1px solid #b0b0b0;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: #333;
+  cursor: default;
+}
+.rb-select {
+  border: 1px solid #b0b0b0;
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-size: 0.65rem;
+  color: #333;
+  background: white;
+}
+.ruler-bar {
+  background: #e8e8e8;
+  height: 18px;
+  border-bottom: 1px solid #ccc;
+  display: flex; align-items: center;
+  padding: 0 20px;
+}
+.ruler-tick {
+  flex: 1; height: 6px; border-right: 1px solid #aaa;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; color: #888;
+  display: flex; align-items: flex-end;
+}
+.text-area-sim {
+  background: white; min-height: 100px; padding: 16px 20px;
+  font-family: 'Times New Roman', serif; font-size: 0.85rem; color: #222;
+  position: relative;
+}
+.cursor-blink {
+  display: inline-block; width: 1px; height: 14px;
+  background: #333; animation: blink 1s step-end infinite; vertical-align: middle;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.statusbar {
+  background: #f5f5f5; border-top: 1px solid #ccc; padding: 3px 10px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: #555;
+  display: flex; gap: 20px;
+}
+
+/* Parts annotation */
+.parts-annotation {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.part-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px;
+  background: var(--bg-raised);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.part-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; font-weight: 600;
+  flex-shrink: 0;
+}
+.part-item:nth-child(1) .part-num { background: rgba(245,158,11,0.2); color: var(--amber); }
+.part-item:nth-child(2) .part-num { background: rgba(56,189,248,0.2); color: var(--sky); }
+.part-item:nth-child(3) .part-num { background: rgba(45,212,191,0.2); color: var(--teal); }
+.part-item:nth-child(4) .part-num { background: rgba(167,139,250,0.2); color: var(--violet); }
+.part-item:nth-child(5) .part-num { background: rgba(244,63,94,0.2); color: var(--rose); }
+.part-item:nth-child(6) .part-num { background: rgba(74,222,128,0.2); color: #4ade80; }
+.part-title { font-weight: 600; color: var(--text-primary); font-family: 'Syne', sans-serif; font-size: 0.82rem; }
+.part-desc { color: var(--text-muted); font-size: 0.78rem; margin-top: 2px; }
+
+/* Typing posture diagram */
+.posture-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.posture-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex; gap: 12px;
+}
+.posture-icon { font-size: 2rem; flex-shrink: 0; }
+.posture-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 4px; }
+
+/* Metric boxes */
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.metric-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.metric-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--amber);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.metric-label { font-size: 0.75rem; color: var(--text-muted); font-family: 'Syne', sans-serif; }
+
+/* Divider */
+.doc-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* Tag chips */
+.chip {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 2px;
+}
+.chip.beginner { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+.chip.intermediate { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid var(--amber-border); }
+.chip.advanced { background: rgba(244,63,94,0.15); color: var(--rose); border: 1px solid rgba(244,63,94,0.3); }
+
+/* Breadcrumb nav between sections */
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  gap: 16px;
+}
+.page-nav-btn {
+  display: flex; flex-direction: column;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  max-width: 200px;
+}
+.page-nav-btn:hover { border-color: var(--amber-border); background: var(--bg-hover); }
+.page-nav-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.page-nav-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+.page-nav-btn.next { text-align: right; margin-left: auto; }
+
+/* Mobile toggle */
+.sidebar-toggle {
+  display: none;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Scroll progress bar */
+.scroll-bar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  z-index: 999;
+}
+.scroll-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--teal));
+  width: 0%;
+  transition: width 0.1s;
+}
+
+@media (max-width: 1200px) {
+  .toc-panel { display: none; }
+  .main { max-width: calc(100% - var(--sidebar-w)); }
+}
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; max-width: 100%; padding: 32px 20px; }
+  .sidebar-toggle { display: block; }
+  .def-item { grid-template-columns: 1fr; gap: 4px; }
+  .posture-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-bar"><div class="scroll-fill" id="scrollFill"></div></div>
+
+<!-- ============================================================ HEADER -->
+<header class="site-header">
+  <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle menu">☰</button>
+  <a class="logo" href="#">
+    <div class="logo-icon">⌨</div>
+    Type<span>Docs</span>
+  </a>
+  <div class="header-divider"></div>
+  <div class="header-breadcrumb">
+    <span>Teaching Resources</span>
+    <span class="sep">/</span>
+    <span class="current" id="currentPage">Introduction</span>
+  </div>
+  <div class="header-right">
+    <span class="version-badge">v2.0 · 2024 Edition</span>
+    <span class="progress-indicator" id="readProgress">0% read</span>
+  </div>
+</header>
+
+<!-- ============================================================ LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Getting Started</div>
+      <a class="nav-item active" onclick="showPage('intro')">
+        <span class="nav-icon">🏁</span> Introduction
+      </a>
+      <a class="nav-item" onclick="showPage('overview')">
+        <span class="nav-icon">🗺️</span> Course Overview
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Chapter 1 — Keyboard</div>
+      <a class="nav-item" onclick="showPage('kb-anatomy')">
+        <span class="nav-icon">🔍</span> Keyboard Anatomy
+        <span class="nav-badge">14 topics</span>
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('kb-zones')">
+        <span class="nav-icon">🗂️</span> Key Zones & Groups
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('kb-special')">
+        <span class="nav-icon">⚡</span> Special Keys Explained
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('kb-shortcuts')">
+        <span class="nav-icon">🔑</span> Keyboard Shortcuts
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Chapter 2 — WordPad</div>
+      <a class="nav-item" onclick="showPage('wp-intro')">
+        <span class="nav-icon">📄</span> What is WordPad?
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('wp-interface')">
+        <span class="nav-icon">🖥️</span> Interface & Parts
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('wp-formatting')">
+        <span class="nav-icon">🎨</span> Text Formatting
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('wp-files')">
+        <span class="nav-icon">💾</span> Saving & Opening Files
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('wp-advanced')">
+        <span class="nav-icon">🚀</span> Advanced Features
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Chapter 3 — Typing</div>
+      <a class="nav-item" onclick="showPage('typing-posture')">
+        <span class="nav-icon">🪑</span> Posture & Ergonomics
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('typing-homerow')">
+        <span class="nav-icon">🏠</span> Home Row Method
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('typing-technique')">
+        <span class="nav-icon">✋</span> Finger Technique
+      </a>
+      <a class="nav-item nav-sub" onclick="showPage('typing-speed')">
+        <span class="nav-icon">⚡</span> Building Speed & Accuracy
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Reference</div>
+      <a class="nav-item" onclick="showPage('ref-shortcuts')">
+        <span class="nav-icon">📋</span> Full Shortcut Reference
+      </a>
+      <a class="nav-item" onclick="showPage('ref-glossary')">
+        <span class="nav-icon">📖</span> Glossary
+      </a>
+      <a class="nav-item" onclick="showPage('ref-exercises')">
+        <span class="nav-icon">💪</span> Practice Exercises
+      </a>
+    </div>
+
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main" id="mainContent">
+
+    <!-- ================================================================ INTRO -->
+    <div class="doc-section active" id="page-intro">
+      <div class="page-overline">Getting Started · Introduction</div>
+      <h1 class="page-title">Complete Guide to Keyboards, WordPad & Typing</h1>
+      <p class="page-intro">A comprehensive teaching resource covering everything from keyboard anatomy to professional typing technique. Suitable for beginners starting from zero to intermediate learners improving their skills.</p>
+
+      <div class="metric-row">
+        <div class="metric-box"><span class="metric-val">3</span><div class="metric-label">Chapters</div></div>
+        <div class="metric-box"><span class="metric-val">12+</span><div class="metric-label">Topics Covered</div></div>
+        <div class="metric-box"><span class="metric-val">200+</span><div class="metric-label">Keyboard Shortcuts</div></div>
+        <div class="metric-box"><span class="metric-val">104</span><div class="metric-label">Keys Explained</div></div>
+        <div class="metric-box"><span class="metric-val">40+</span><div class="metric-label">Practice Exercises</div></div>
+      </div>
+
+      <h2 class="section-title">About This Guide</h2>
+      <p>This documentation serves as a complete reference for teaching keyboard literacy, WordPad usage, and professional typing technique. Whether you are an educator designing a curriculum, a student learning independently, or a professional looking to improve your productivity — this guide covers everything in precise detail.</p>
+      <p>The material is structured progressively — each chapter builds on the previous one. We begin with understanding the hardware (the keyboard), move to using software (WordPad), and finally develop the skill itself (typing).</p>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>How to Use This Guide</strong>
+          <p>Navigate using the sidebar on the left. Each section is self-contained but reading in order is recommended for beginners. Key terms are highlighted throughout and collected in the Glossary.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Prerequisites</h2>
+      <p>No prior experience is needed. This guide assumes only that the reader:</p>
+      <div class="card-grid">
+        <div class="info-card"><div class="card-icon">👁️</div><h4>Can Read</h4><p>Basic reading ability in your language of instruction is sufficient.</p></div>
+        <div class="info-card"><div class="card-icon">💻</div><h4>Has a Computer</h4><p>Access to any Windows PC with a physical keyboard is required for practice.</p></div>
+        <div class="info-card"><div class="card-icon">⏰</div><h4>Has Patience</h4><p>Typing is a physical skill — it develops through regular, consistent practice over weeks.</p></div>
+        <div class="info-card"><div class="card-icon">🎯</div><h4>Wants to Learn</h4><p>Motivation matters more than natural ability when developing keyboard skills.</p></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Teacher's Note</strong>
+          <p>This guide is print-friendly. Each section can be taught as a standalone lesson. Estimated time: 2–3 hours per chapter for classroom instruction, plus independent practice time.</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <div></div>
+        <a class="page-nav-btn next" onclick="showPage('overview')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Course Overview</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ OVERVIEW -->
+    <div class="doc-section" id="page-overview">
+      <div class="page-overline">Getting Started · Course Overview</div>
+      <h1 class="page-title">Course Overview & Learning Objectives</h1>
+      <p class="page-intro">A structured breakdown of what you will learn, the skills you will develop, and the sequence in which topics are introduced.</p>
+
+      <h2 class="section-title">Chapter 1 — The Keyboard</h2>
+      <span class="chip beginner">Beginner</span>
+      <p>Understanding the keyboard is the foundation of everything. Before learning to type, a student must know what each key does, how keys are organized into groups, and which fingers control which keys.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Keyboard Anatomy</h4><p>Identifying all 104 keys, understanding the physical layout, and learning the QWERTY design history.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Key Zones & Groups</h4><p>Alphanumeric zone, function key row, navigation keys, numeric keypad — how they divide into logical groups.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Special Keys</h4><p>Deep dive into modifier keys (Shift, Ctrl, Alt), the Enter key, Escape, Tab, Backspace, Delete, and more.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Keyboard Shortcuts</h4><p>The most important combinations that make computer use efficient — from Ctrl+C to Alt+Tab.</p></div></div>
+      </div>
+
+      <h2 class="section-title">Chapter 2 — WordPad</h2>
+      <span class="chip beginner">Beginner</span> <span class="chip intermediate">Intermediate</span>
+      <p>WordPad is the perfect first word processor — simpler than Microsoft Word but more capable than Notepad. It introduces students to all core document-creation concepts.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Introduction to WordPad</h4><p>What WordPad is, how to open it, and how it compares to Notepad and Microsoft Word.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Interface & Parts</h4><p>Title bar, ribbon toolbar, ruler, writing area, scroll bars, status bar — each element explained.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Text Formatting</h4><p>Bold, italic, underline, font families, sizes, colors, alignment, bullets, and indentation.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>File Management</h4><p>Creating new documents, saving (Save vs Save As), opening existing files, file formats (.rtf, .txt).</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Advanced Features</h4><p>Insert date/time, inserting objects, print preview, printing, find & replace.</p></div></div>
+      </div>
+
+      <h2 class="section-title">Chapter 3 — Typing Technique</h2>
+      <span class="chip intermediate">Intermediate</span>
+      <p>Typing is a motor skill that must be developed through deliberate practice. This chapter covers proper form, home row position, finger-to-key assignments, and strategies for building speed and accuracy.</p>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Important for Teachers</strong>
+          <p>Students who develop bad habits early (such as "hunt and peck" typing) are significantly harder to retrain. Emphasize correct technique from day one, even at the cost of speed.</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('intro')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Introduction</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('kb-anatomy')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Keyboard Anatomy</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ KB ANATOMY -->
+    <div class="doc-section" id="page-kb-anatomy">
+      <div class="page-overline">Chapter 1 · Keyboard</div>
+      <h1 class="page-title">Keyboard Anatomy</h1>
+      <p class="page-intro">A complete breakdown of the modern 104-key keyboard — its history, physical design, and every key group explained in detail.</p>
+
+      <h2 class="section-title">History & Design</h2>
+      <p>The modern keyboard layout is called <strong>QWERTY</strong> — named after the first six letters in the top-left row of the letter keys. It was designed by <strong>Christopher Latham Sholes</strong> in the 1870s for mechanical typewriters. The layout was designed to reduce mechanical jamming by separating commonly paired letters.</p>
+      <p>Despite being over 150 years old, QWERTY remains the global standard. A standard desktop keyboard has <strong>104 keys</strong> (US layout). Laptop keyboards may have fewer keys due to space constraints.</p>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body">
+          <strong>Fun Fact</strong>
+          <p>The word "TYPEWRITER" can be typed using only the top row of the QWERTY keyboard. This was reportedly intentional — to help early typewriter salespeople demonstrate the machine quickly.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">The Full Keyboard — Visual Layout</h2>
+      <p>Hover over any key to highlight it. The keyboard below shows the standard 104-key US layout.</p>
+
+      <div class="keyboard-visual">
+        <div class="kb-section-label">Function Row</div>
+        <div class="kb-row-group">
+          <div class="vis-key">Esc</div>
+          <div class="vis-key wide-15">F1</div><div class="vis-key wide-15">F2</div><div class="vis-key wide-15">F3</div><div class="vis-key wide-15">F4</div>
+          <div class="vis-key wide-15">F5</div><div class="vis-key wide-15">F6</div><div class="vis-key wide-15">F7</div><div class="vis-key wide-15">F8</div>
+          <div class="vis-key wide-15">F9</div><div class="vis-key wide-15">F10</div><div class="vis-key wide-15">F11</div><div class="vis-key wide-15">F12</div>
+          <div class="vis-key">PrtSc</div><div class="vis-key">ScrLk</div><div class="vis-key">Pause</div>
+        </div>
+        <div class="kb-section-label" style="margin-top:6px">Number Row</div>
+        <div class="kb-row-group">
+          <div class="vis-key">`</div><div class="vis-key">1</div><div class="vis-key">2</div><div class="vis-key">3</div>
+          <div class="vis-key">4</div><div class="vis-key">5</div><div class="vis-key">6</div><div class="vis-key">7</div>
+          <div class="vis-key">8</div><div class="vis-key">9</div><div class="vis-key">0</div>
+          <div class="vis-key">-</div><div class="vis-key">=</div><div class="vis-key wide-2">Bksp</div>
+          <div class="vis-key">Ins</div><div class="vis-key">Home</div><div class="vis-key">PgUp</div>
+        </div>
+        <div class="kb-section-label">QWERTY Row</div>
+        <div class="kb-row-group">
+          <div class="vis-key wide-15">Tab</div>
+          <div class="vis-key">Q</div><div class="vis-key">W</div><div class="vis-key">E</div><div class="vis-key">R</div>
+          <div class="vis-key">T</div><div class="vis-key">Y</div><div class="vis-key">U</div><div class="vis-key">I</div>
+          <div class="vis-key">O</div><div class="vis-key">P</div>
+          <div class="vis-key">[</div><div class="vis-key">]</div><div class="vis-key wide-15">\</div>
+          <div class="vis-key">Del</div><div class="vis-key">End</div><div class="vis-key">PgDn</div>
+        </div>
+        <div class="kb-section-label">Home Row (ASDF JKL;)</div>
+        <div class="kb-row-group">
+          <div class="vis-key wide-2">Caps</div>
+          <div class="vis-key zone-home">A</div><div class="vis-key zone-home">S</div><div class="vis-key zone-home">D</div><div class="vis-key zone-home">F</div>
+          <div class="vis-key">G</div><div class="vis-key">H</div>
+          <div class="vis-key zone-home">J</div><div class="vis-key zone-home">K</div><div class="vis-key zone-home">L</div><div class="vis-key zone-home">;</div><div class="vis-key zone-home">'</div>
+          <div class="vis-key wide-25">Enter</div>
+        </div>
+        <div class="kb-section-label">Bottom Row</div>
+        <div class="kb-row-group">
+          <div class="vis-key wide-25">Shift</div>
+          <div class="vis-key">Z</div><div class="vis-key">X</div><div class="vis-key">C</div><div class="vis-key">V</div>
+          <div class="vis-key">B</div><div class="vis-key">N</div><div class="vis-key">M</div>
+          <div class="vis-key">,</div><div class="vis-key">.</div><div class="vis-key">/</div>
+          <div class="vis-key wide-25">Shift</div>
+          <div class="vis-key" style="min-width:36px;"></div><div class="vis-key">↑</div><div class="vis-key" style="min-width:36px;"></div>
+        </div>
+        <div class="kb-row-group">
+          <div class="vis-key wide-15">Ctrl</div><div class="vis-key wide-15">Win</div><div class="vis-key wide-15">Alt</div>
+          <div class="vis-key space">Space Bar</div>
+          <div class="vis-key wide-15">Alt</div><div class="vis-key wide-15">Fn</div><div class="vis-key wide-15">Ctrl</div>
+          <div class="vis-key">←</div><div class="vis-key">↓</div><div class="vis-key">→</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; align-items: center; gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-muted);">
+          <span style="display:inline-flex;align-items:center;gap:4px;"><span class="vis-key zone-home" style="width:14px;height:14px;min-width:0;font-size:0.5rem;"></span> Home Row</span>
+        </div>
+      </div>
+
+      <h2 class="section-title">Key Groups Summary</h2>
+      <div class="doc-table-wrap">
+        <table class="doc-table">
+          <thead><tr><th>Group</th><th>Keys Included</th><th>Count</th><th>Primary Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Alphanumeric</td><td>A–Z, 0–9, punctuation symbols</td><td>~47</td><td>Typing letters, numbers, and symbols</td></tr>
+            <tr><td>Function Row</td><td>F1 through F12</td><td>12</td><td>Application-specific commands & shortcuts</td></tr>
+            <tr><td>Modifier Keys</td><td>Shift, Ctrl, Alt, Win</td><td>8</td><td>Modify behavior of other keys when held</td></tr>
+            <tr><td>Navigation Keys</td><td>Arrow keys, Home, End, PgUp, PgDn</td><td>10</td><td>Move cursor & scroll through documents</td></tr>
+            <tr><td>Editing Keys</td><td>Backspace, Delete, Insert</td><td>3</td><td>Edit and modify text</td></tr>
+            <tr><td>Lock Keys</td><td>Caps Lock, Scroll Lock, Num Lock</td><td>3</td><td>Toggle persistent keyboard states</td></tr>
+            <tr><td>Numeric Keypad</td><td>0–9, +, −, ×, /, Enter, decimal</td><td>17</td><td>Rapid numerical data entry</td></tr>
+            <tr><td>System Keys</td><td>PrtSc, Pause, Esc</td><td>3</td><td>System-level functions</td></tr>
+            <tr><td>Space Bar</td><td>Space</td><td>1</td><td>Insert space between words</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('overview')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Course Overview</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('kb-zones')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Key Zones & Groups</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ KB ZONES -->
+    <div class="doc-section" id="page-kb-zones">
+      <div class="page-overline">Chapter 1 · Keyboard</div>
+      <h1 class="page-title">Key Zones & Groups — Detailed</h1>
+      <p class="page-intro">A row-by-row and group-by-group breakdown of every section of the keyboard, explaining what each zone is designed for.</p>
+
+      <h2 class="section-title">Row 1 — The Function Key Row</h2>
+      <p>The topmost row contains <strong>F1 through F12</strong> — twelve programmable function keys. Their behavior varies by application, but many have universal meanings:</p>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Key</th><th>Universal Action</th><th>Common Application Use</th></tr></thead>
+        <tbody>
+          <tr><td><span class="key-badge">F1</span></td><td>Open Help</td><td>Opens help documentation in almost all programs</td></tr>
+          <tr><td><span class="key-badge">F2</span></td><td>Rename</td><td>Renames selected file/folder in File Explorer</td></tr>
+          <tr><td><span class="key-badge">F3</span></td><td>Find/Search</td><td>Opens find/search dialog in browsers and apps</td></tr>
+          <tr><td><span class="key-badge">F4</span></td><td>Address Bar</td><td>Focuses address bar in File Explorer & browsers</td></tr>
+          <tr><td><span class="key-badge">F5</span></td><td>Refresh</td><td>Refreshes/reloads the current page or view</td></tr>
+          <tr><td><span class="key-badge">F6</span></td><td>Navigate</td><td>Moves cursor to address/search bar</td></tr>
+          <tr><td><span class="key-badge">F7</span></td><td>Spell Check</td><td>Opens spell checker (Word, Outlook)</td></tr>
+          <tr><td><span class="key-badge">F8</span></td><td>Startup Menu</td><td>Used during Windows startup to access options</td></tr>
+          <tr><td><span class="key-badge">F11</span></td><td>Full Screen</td><td>Toggles full-screen in browsers</td></tr>
+          <tr><td><span class="key-badge">F12</span></td><td>Save As</td><td>Opens Save As dialog in Microsoft Office apps</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Row 2 — The Number Row</h2>
+      <p>Contains digits <strong>0–9</strong> plus symbols accessible via <span class="key-badge">Shift</span>. Every number key has a second character:</p>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Key</th><th>Normal</th><th>With Shift</th><th>Symbol Name</th></tr></thead>
+        <tbody>
+          <tr><td><span class="key-badge">1</span></td><td>1</td><td>!</td><td>Exclamation mark</td></tr>
+          <tr><td><span class="key-badge">2</span></td><td>2</td><td>@</td><td>At sign (used in email addresses)</td></tr>
+          <tr><td><span class="key-badge">3</span></td><td>3</td><td>#</td><td>Hash / Number sign / Hashtag</td></tr>
+          <tr><td><span class="key-badge">4</span></td><td>4</td><td>$</td><td>Dollar sign</td></tr>
+          <tr><td><span class="key-badge">5</span></td><td>5</td><td>%</td><td>Percent sign</td></tr>
+          <tr><td><span class="key-badge">6</span></td><td>6</td><td>^</td><td>Caret (used in math for exponents)</td></tr>
+          <tr><td><span class="key-badge">7</span></td><td>7</td><td>&amp;</td><td>Ampersand (means "and")</td></tr>
+          <tr><td><span class="key-badge">8</span></td><td>8</td><td>*</td><td>Asterisk / Star</td></tr>
+          <tr><td><span class="key-badge">9</span></td><td>9</td><td>(</td><td>Open parenthesis</td></tr>
+          <tr><td><span class="key-badge">0</span></td><td>0</td><td>)</td><td>Close parenthesis</td></tr>
+          <tr><td><span class="key-badge">-</span></td><td>-</td><td>_</td><td>Hyphen / Underscore</td></tr>
+          <tr><td><span class="key-badge">=</span></td><td>=</td><td>+</td><td>Equals / Plus</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Rows 3–5 — The Letter Rows</h2>
+      <p>The three letter rows are the heart of the keyboard:</p>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Top Row (QWERTY)</div><div class="def-desc">Q W E R T Y U I O P — The first row of letters. Note that Q, X, Z and other "rare" letters are on the outside edges where weaker fingers reach.</div></div>
+        <div class="def-item"><div class="def-term">Home Row (ASDF)</div><div class="def-desc">A S D F G H J K L ; — The <em>most important row</em>. Your fingers rest here in the neutral position. The F and J keys have small raised bumps or ridges so you can find them without looking.</div></div>
+        <div class="def-item"><div class="def-term">Bottom Row (ZXCV)</div><div class="def-desc">Z X C V B N M , . / — The bottom row. The keys Z, X, C, V happen to be the shortcut keys for Undo, Cut, Copy, and Paste when used with Ctrl.</div></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>The F and J Key Bumps</strong>
+          <p>Feel the tiny raised ridge or bump on the <span class="key-badge">F</span> and <span class="key-badge">J</span> keys. These are called <em>homing bumps</em>. They let you position your hands correctly without looking down at the keyboard. This is the foundation of touch typing.</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('kb-anatomy')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Keyboard Anatomy</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('kb-special')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Special Keys Explained</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ KB SPECIAL -->
+    <div class="doc-section" id="page-kb-special">
+      <div class="page-overline">Chapter 1 · Keyboard</div>
+      <h1 class="page-title">Special Keys — In-Depth Reference</h1>
+      <p class="page-intro">Every non-letter, non-number key explained in full detail. These keys are often the most confusing for beginners but are critical to efficient computer use.</p>
+
+      <h2 class="section-title">Modifier Keys</h2>
+      <p>Modifier keys <em>do nothing on their own</em> — they modify the action of another key when held simultaneously. They are the foundation of keyboard shortcuts.</p>
+
+      <div class="def-list">
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Shift</span></div>
+          <div class="def-desc"><strong>Shift</strong> — The most common modifier. When held with a letter, it produces the uppercase version. When held with a number/symbol key, it produces the upper symbol (e.g., Shift+2 = @). There are two Shift keys — left and right — and either works the same. Also used for text selection when combined with arrow keys.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Ctrl</span></div>
+          <div class="def-desc"><strong>Control</strong> — Used for application shortcuts (Ctrl+C, Ctrl+V, etc.). There are two Ctrl keys (left and right). The left Ctrl is more commonly used. In terminal/command-line environments, Ctrl has additional uses.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Alt</span></div>
+          <div class="def-desc"><strong>Alternate</strong> — Provides a third layer of key combinations. Alt+F4 closes the active window. Alt+Tab switches between open applications. Alt+Enter opens Properties. The right Alt key (called AltGr on some keyboards) is used for special international characters.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">⊞ Win</span></div>
+          <div class="def-desc"><strong>Windows Key</strong> — Opens the Start Menu when pressed alone. Combined with other keys, it controls Windows features: Win+D (show desktop), Win+E (open File Explorer), Win+L (lock computer), Win+R (run dialog).</div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Editing Keys</h2>
+      <div class="def-list">
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Backspace</span></div>
+          <div class="def-desc">Deletes the character immediately to the <em>left</em> of the cursor (the last character typed). This is the "undo last keystroke" key for typing. If text is selected, Backspace deletes the entire selection.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Delete</span></div>
+          <div class="def-desc">Deletes the character immediately to the <em>right</em> of the cursor (the next character). In File Explorer, Delete sends a selected file to the Recycle Bin. <strong>Shift+Delete</strong> permanently deletes without sending to the Recycle Bin.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Insert</span></div>
+          <div class="def-desc">Toggles between <em>Insert mode</em> (new characters push existing text right) and <em>Overtype mode</em> (new characters replace existing characters). In overtype mode, the cursor may change appearance. Most modern applications default to Insert mode.</div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Navigation Keys</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Key</th><th>Normal Action</th><th>With Ctrl</th><th>With Shift</th></tr></thead>
+        <tbody>
+          <tr><td><span class="key-badge">←</span> Left Arrow</td><td>Move cursor left 1 character</td><td>Jump left 1 word</td><td>Select 1 character left</td></tr>
+          <tr><td><span class="key-badge">→</span> Right Arrow</td><td>Move cursor right 1 character</td><td>Jump right 1 word</td><td>Select 1 character right</td></tr>
+          <tr><td><span class="key-badge">↑</span> Up Arrow</td><td>Move cursor up 1 line</td><td>Scroll up</td><td>Select 1 line up</td></tr>
+          <tr><td><span class="key-badge">↓</span> Down Arrow</td><td>Move cursor down 1 line</td><td>Scroll down</td><td>Select 1 line down</td></tr>
+          <tr><td><span class="key-badge">Home</span></td><td>Jump to start of current line</td><td>Jump to beginning of document</td><td>Select to start of line</td></tr>
+          <tr><td><span class="key-badge">End</span></td><td>Jump to end of current line</td><td>Jump to end of document</td><td>Select to end of line</td></tr>
+          <tr><td><span class="key-badge">Page Up</span></td><td>Scroll up one screen</td><td>Jump to top</td><td>Select one screen up</td></tr>
+          <tr><td><span class="key-badge">Page Down</span></td><td>Scroll down one screen</td><td>Jump to bottom</td><td>Select one screen down</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Lock Keys</h2>
+      <div class="def-list">
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Caps Lock</span></div>
+          <div class="def-desc"><strong>Capitals Lock</strong> — Toggles persistent uppercase for all letter keys. An indicator LED on the keyboard shows when Caps Lock is active. Unlike Shift, it does <em>not</em> affect number/symbol keys. Note: Pressing Shift while Caps Lock is active produces lowercase letters.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Num Lock</span></div>
+          <div class="def-desc"><strong>Number Lock</strong> — Controls the numeric keypad. When ON, keypad keys type numbers. When OFF, they function as navigation keys (arrows, Home, End, etc.). Usually on by default on desktops.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Scroll Lock</span></div>
+          <div class="def-desc"><strong>Scroll Lock</strong> — A legacy key that modifies arrow key behavior in some applications (notably spreadsheets). When on in Microsoft Excel, arrow keys scroll the sheet instead of moving the selected cell. Rarely used in modern computing.</div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Other Important Keys</h2>
+      <div class="def-list">
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Enter</span></div>
+          <div class="def-desc">The most important key after Space. In word processing: creates a new paragraph (hard return). In dialog boxes: confirms/accepts the current selection. In forms: submits. Has two functions: confirming commands and creating new lines in text.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Tab</span></div>
+          <div class="def-desc">In word processing: inserts a tab character (typically moves 0.5 inches). In dialog boxes and forms: moves focus to the next field/button. In terminals: auto-completes commands. Shift+Tab moves to the previous field.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Esc</span></div>
+          <div class="def-desc"><strong>Escape</strong> — The "cancel" key. Closes dialog boxes, cancels operations in progress, exits full-screen mode, closes pop-up menus. Think of it as "I changed my mind, go back."</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term"><span class="key-badge">Print Screen</span></div>
+          <div class="def-desc">Captures a screenshot. PrtSc alone copies the full screen to clipboard. Alt+PrtSc captures only the active window. Win+Shift+S opens the snipping tool for custom area capture.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term">Space Bar</div>
+          <div class="def-desc">The longest key and the most frequently pressed key after the letter keys. Inserts a space character. Pressed exclusively with the <em>thumbs</em> in touch typing — conventionally the right thumb, though either works.</div>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('kb-zones')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Key Zones & Groups</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('kb-shortcuts')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Keyboard Shortcuts</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ KB SHORTCUTS -->
+    <div class="doc-section" id="page-kb-shortcuts">
+      <div class="page-overline">Chapter 1 · Keyboard</div>
+      <h1 class="page-title">Essential Keyboard Shortcuts</h1>
+      <p class="page-intro">Keyboard shortcuts dramatically increase productivity. A skilled typist who knows shortcuts can work 2–3× faster than someone relying on mouse navigation alone.</p>
+
+      <h2 class="section-title">Universal Shortcuts (Work Everywhere)</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">C</span></span></td><td>Copy</td><td>Copies selected text or files to the clipboard</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">X</span></span></td><td>Cut</td><td>Removes selected text/files and places on clipboard</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">V</span></span></td><td>Paste</td><td>Inserts the clipboard content at cursor position</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">Z</span></span></td><td>Undo</td><td>Reverses the last action taken</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">Y</span></span></td><td>Redo</td><td>Re-applies the last undone action</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">A</span></span></td><td>Select All</td><td>Selects all text or all files in the current view</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">S</span></span></td><td>Save</td><td>Saves the current document to its existing file</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">P</span></span></td><td>Print</td><td>Opens the print dialog</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">F</span></span></td><td>Find</td><td>Opens the Find/Search dialog box</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">N</span></span></td><td>New</td><td>Creates a new document or window</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">O</span></span></td><td>Open</td><td>Opens the file-open dialog</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">W</span></span></td><td>Close Tab/Window</td><td>Closes the current tab or document</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Alt</span><span class="plus">+</span><span class="key-badge">F4</span></span></td><td>Close Application</td><td>Closes the active application entirely</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Alt</span><span class="plus">+</span><span class="key-badge">Tab</span></span></td><td>Switch Application</td><td>Cycles through open applications</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Text Formatting Shortcuts (WordPad & Word)</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Effect</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">B</span></span></td><td>Bold</td><td>Makes selected text <strong>bold</strong></td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">I</span></span></td><td>Italic</td><td>Makes selected text <em>italic</em></td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">U</span></span></td><td>Underline</td><td><u>Underlines</u> selected text</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">L</span></span></td><td>Align Left</td><td>Left-aligns the current paragraph</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">E</span></span></td><td>Center</td><td>Centers the current paragraph</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">R</span></span></td><td>Align Right</td><td>Right-aligns the current paragraph</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">J</span></span></td><td>Justify</td><td>Justifies text to both margins</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">H</span></span></td><td>Find & Replace</td><td>Opens Find & Replace dialog</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Windows System Shortcuts</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span></span></td><td>Open / Close Start Menu</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">D</span></span></td><td>Show / Hide Desktop (minimize all windows)</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">E</span></span></td><td>Open File Explorer</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">L</span></span></td><td>Lock the computer (shows login screen)</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">R</span></span></td><td>Open the Run dialog</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">←</span></span></td><td>Snap active window to left half of screen</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">→</span></span></td><td>Snap active window to right half of screen</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span><span class="plus">+</span><span class="key-badge">Shift</span><span class="plus">+</span><span class="key-badge">Esc</span></span></td><td>Open Task Manager directly</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Memory Trick for Copy/Cut/Paste</strong>
+          <p>The Z, X, C, V keys are adjacent on the bottom-left of the keyboard. Z=Undo (go back), X=Cut (remove), C=Copy (duplicate), V=Paste (insert). Learn these four in sequence and they become second nature within a week of practice.</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('kb-special')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Special Keys</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('wp-intro')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">What is WordPad?</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ WORDPAD INTRO -->
+    <div class="doc-section" id="page-wp-intro">
+      <div class="page-overline">Chapter 2 · WordPad</div>
+      <h1 class="page-title">What is WordPad?</h1>
+      <p class="page-intro">WordPad is a free word processing application bundled with Microsoft Windows since Windows 95. It sits between the simple Notepad and the full-featured Microsoft Word.</p>
+
+      <h2 class="section-title">Overview</h2>
+      <p>WordPad allows users to create, edit, and format text documents. It supports rich text formatting (fonts, colors, bold/italic/underline), embedded images, and multiple file formats. It is ideal for:</p>
+      <div class="card-grid">
+        <div class="info-card"><div class="card-icon">📝</div><h4>Simple Documents</h4><p>Letters, notes, basic reports, school assignments, and short essays.</p></div>
+        <div class="info-card"><div class="card-icon">🎓</div><h4>Learning</h4><p>The perfect introduction to word processing before moving to more complex software.</p></div>
+        <div class="info-card"><div class="card-icon">🔄</div><h4>Opening Files</h4><p>Can open .rtf, .txt, .docx, and other common document formats.</p></div>
+        <div class="info-card"><div class="card-icon">🆓</div><h4>Completely Free</h4><p>Pre-installed on all Windows computers. No additional cost or download required.</p></div>
+      </div>
+
+      <h2 class="section-title">WordPad vs. Notepad vs. Microsoft Word</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Feature</th><th>Notepad</th><th>WordPad</th><th>Microsoft Word</th></tr></thead>
+        <tbody>
+          <tr><td>Cost</td><td>Free (built-in)</td><td>Free (built-in)</td><td>Paid / Subscription</td></tr>
+          <tr><td>Text formatting</td><td>❌ None</td><td>✅ Basic</td><td>✅ Full</td></tr>
+          <tr><td>Font control</td><td>Limited</td><td>✅ Yes</td><td>✅ Full</td></tr>
+          <tr><td>Insert images</td><td>❌</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+          <tr><td>Tables</td><td>❌</td><td>❌</td><td>✅ Yes</td></tr>
+          <tr><td>Spell check</td><td>❌</td><td>Limited</td><td>✅ Advanced</td></tr>
+          <tr><td>File formats</td><td>.txt only</td><td>.rtf, .txt, .docx</td><td>Many formats</td></tr>
+          <tr><td>Ideal for</td><td>Code, logs</td><td>Basic documents</td><td>Professional docs</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">How to Open WordPad</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Method 1 — Search</h4><p>Click the Start button (or press the Windows key), type "WordPad" into the search bar, then press Enter or click the WordPad result.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Method 2 — Run Dialog</h4><p>Press <span class="key-badge">⊞</span><span class="plus">+</span><span class="key-badge">R</span> to open the Run dialog. Type <code style="font-family:'IBM Plex Mono',monospace;color:var(--text-code);">wordpad</code> and press Enter.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Method 3 — File Explorer</h4><p>Navigate to <code style="font-family:'IBM Plex Mono',monospace;color:var(--text-code);">C:\Program Files\Windows NT\Accessories\</code> and double-click <code style="font-family:'IBM Plex Mono',monospace;color:var(--text-code);">wordpad.exe</code>.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Method 4 — Open Existing File</h4><p>Double-click any <code style="font-family:'IBM Plex Mono',monospace;color:var(--text-code);">.rtf</code> or <code style="font-family:'IBM Plex Mono',monospace;color:var(--text-code);">.txt</code> file in File Explorer and WordPad may open it automatically.</p></div></div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('kb-shortcuts')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Keyboard Shortcuts</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('wp-interface')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Interface & Parts</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ WP INTERFACE -->
+    <div class="doc-section" id="page-wp-interface">
+      <div class="page-overline">Chapter 2 · WordPad</div>
+      <h1 class="page-title">WordPad Interface & Parts</h1>
+      <p class="page-intro">Understanding every element of the WordPad window is essential for efficient document creation. Each part serves a specific purpose.</p>
+
+      <h2 class="section-title">The WordPad Window</h2>
+
+      <div class="wp-diagram">
+        <div class="wp-diagram-titlebar">
+          <span style="font-size:1rem">📄</span>
+          <span class="wp-diagram-title">Document - WordPad</span>
+          <div class="wp-win-btns">
+            <div class="wp-win-btn" style="background:#f59e0b;"></div>
+            <div class="wp-win-btn" style="background:#10b981;"></div>
+            <div class="wp-win-btn" style="background:#ef4444;"></div>
+          </div>
+        </div>
+        <div style="background:#d4d4d4;padding:3px 10px;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#555;border-bottom:1px solid #bbb;">
+          File &nbsp;&nbsp; Home &nbsp;&nbsp; View
+        </div>
+        <div class="ribbon-bar">
+          <div class="rb-btn"><b>B</b></div>
+          <div class="rb-btn"><i>I</i></div>
+          <div class="rb-btn"><u>U</u></div>
+          <div class="rb-btn">S̶</div>
+          <div style="width:1px;height:18px;background:#ccc;margin:0 4px;"></div>
+          <select class="rb-select"><option>Times New Roman</option></select>
+          <select class="rb-select"><option>12</option></select>
+          <div style="width:1px;height:18px;background:#ccc;margin:0 4px;"></div>
+          <div class="rb-btn">🎨 A</div>
+          <div class="rb-btn">⬜ A</div>
+          <div style="width:1px;height:18px;background:#ccc;margin:0 4px;"></div>
+          <div class="rb-btn">≡</div>
+          <div class="rb-btn">≡</div>
+          <div class="rb-btn">≡</div>
+          <div class="rb-btn" style="display:flex;gap:2px">≡<span style="font-size:0.5rem">▼</span></div>
+          <div style="width:1px;height:18px;background:#ccc;margin:0 4px;"></div>
+          <div class="rb-btn">• List</div>
+          <div class="rb-btn">⊕ Insert</div>
+          <div class="rb-btn">📅 Date</div>
+        </div>
+        <div class="ruler-bar">
+          <div class="ruler-tick">│</div><div class="ruler-tick">│</div><div class="ruler-tick">│</div>
+          <div class="ruler-tick">│</div><div class="ruler-tick">│</div><div class="ruler-tick">│</div>
+          <div class="ruler-tick" style="font-size:0.45rem;color:#666">4"</div>
+          <div class="ruler-tick">│</div><div class="ruler-tick">│</div><div class="ruler-tick">│</div>
+        </div>
+        <div style="display:flex;">
+          <div class="text-area-sim" style="flex:1">
+            <p style="margin-bottom:8px">My First WordPad Document</p>
+            <p style="font-size:0.75rem;margin-bottom:6px">This is where you type your text. The cursor shows where the next letter will appear.</p>
+            <span class="cursor-blink"></span>
+          </div>
+          <div style="width:14px;background:#f0f0f0;border-left:1px solid #ccc;display:flex;flex-direction:column;align-items:center;padding:4px 0;gap:2px;">
+            <div style="width:8px;height:8px;background:#aaa;border-radius:1px;font-size:0.4rem;display:flex;align-items:center;justify-content:center;">▲</div>
+            <div style="flex:1;width:6px;background:#ccc;border-radius:2px;margin:2px 0;"></div>
+            <div style="width:8px;height:8px;background:#aaa;border-radius:1px;font-size:0.4rem;display:flex;align-items:center;justify-content:center;">▼</div>
+          </div>
+        </div>
+        <div class="statusbar">
+          <span>100%</span>
+          <span>Words: 24</span>
+          <span>Ln 3, Col 1</span>
+        </div>
+      </div>
+
+      <h2 class="section-title">Parts Explained</h2>
+      <div class="parts-annotation">
+        <div class="part-item"><div class="part-num">1</div><div><div class="part-title">Title Bar</div><div class="part-desc">Top bar showing document name + application name. Displays "Document - WordPad" for unsaved files.</div></div></div>
+        <div class="part-item"><div class="part-num">2</div><div><div class="part-title">Window Control Buttons</div><div class="part-desc">Minimize (−), Maximize (□), and Close (×) in the top-right corner. Control the window size and state.</div></div></div>
+        <div class="part-item"><div class="part-num">3</div><div><div class="part-title">Menu Bar</div><div class="part-desc">File, Home, View menus. File: save/open/print. Home: all formatting. View: zoom, ruler toggle.</div></div></div>
+        <div class="part-item"><div class="part-num">4</div><div><div class="part-title">Ribbon Toolbar</div><div class="part-desc">The visual toolbar with buttons for Bold, Italic, Underline, fonts, colors, alignment, and more.</div></div></div>
+        <div class="part-item"><div class="part-num">5</div><div><div class="part-title">Ruler</div><div class="part-desc">Shows document width in inches. Allows setting tab stops and paragraph margins by clicking.</div></div></div>
+        <div class="part-item"><div class="part-num">6</div><div><div class="part-title">Writing Area (Canvas)</div><div class="part-desc">The main white area where text is entered. Click anywhere to position the cursor and begin typing.</div></div></div>
+        <div class="part-item"><div class="part-num">7</div><div><div class="part-title">Text Cursor (Caret)</div><div class="part-desc">The blinking vertical line showing where your next character will appear when you type.</div></div></div>
+        <div class="part-item"><div class="part-num">8</div><div><div class="part-title">Scroll Bar</div><div class="part-desc">Vertical bar on the right edge. Drag or click to scroll through pages of a long document.</div></div></div>
+        <div class="part-item"><div class="part-num">9</div><div><div class="part-title">Status Bar</div><div class="part-desc">Bottom bar showing zoom level, word count, and cursor position (line and column numbers).</div></div></div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('wp-intro')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">What is WordPad?</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('wp-formatting')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Text Formatting</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ WP FORMATTING -->
+    <div class="doc-section" id="page-wp-formatting">
+      <div class="page-overline">Chapter 2 · WordPad</div>
+      <h1 class="page-title">Text Formatting in WordPad</h1>
+      <p class="page-intro">Formatting transforms plain text into structured, readable, and visually appealing documents. WordPad provides all the essential formatting tools.</p>
+
+      <h2 class="section-title">Selecting Text First</h2>
+      <p>To format text, you must <em>select</em> it first. Selected text appears highlighted in blue. There are multiple ways to select text:</p>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Method</th><th>How To</th><th>What It Selects</th></tr></thead>
+        <tbody>
+          <tr><td>Click & Drag</td><td>Hold left mouse button and drag over text</td><td>Exactly what you drag over</td></tr>
+          <tr><td>Double-Click</td><td>Double-click on any word</td><td>The entire word</td></tr>
+          <tr><td>Triple-Click</td><td>Click three times rapidly</td><td>The entire paragraph</td></tr>
+          <tr><td>Shift + Arrow</td><td>Hold Shift and press arrow keys</td><td>One character at a time</td></tr>
+          <tr><td>Shift + Ctrl + Arrow</td><td>Hold Shift+Ctrl and press arrow keys</td><td>One word at a time</td></tr>
+          <tr><td>Ctrl + A</td><td>Press Ctrl+A</td><td>The entire document</td></tr>
+          <tr><td>Click then Shift+Click</td><td>Click start, then Shift+click at end</td><td>Everything between the two clicks</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Character Formatting</h2>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term"><strong>Bold</strong></div><div class="def-desc">Makes text thicker/heavier. Used for headings, important terms, and emphasis. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">B</span>. Toggle on/off.</div></div>
+        <div class="def-item"><div class="def-term"><em>Italic</em></div><div class="def-desc">Makes text slant to the right. Used for titles of works, foreign words, subtle emphasis. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">I</span>. Toggle on/off.</div></div>
+        <div class="def-item"><div class="def-term"><u>Underline</u></div><div class="def-desc">Draws a line beneath text. Traditionally used for importance; in digital contexts, often indicates a hyperlink. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">U</span>.</div></div>
+        <div class="def-item"><div class="def-term"><s>Strikethrough</s></div><div class="def-desc">Draws a line through text. Used to show deleted or outdated content while keeping it visible. Available via the ribbon toolbar.</div></div>
+        <div class="def-item"><div class="def-term">Font Family</div><div class="def-desc">The typeface/style of the letters. WordPad provides access to all fonts installed on your computer. Common choices: Times New Roman (formal/serif), Arial (clean/sans-serif), Courier New (monospace), Comic Sans (casual).</div></div>
+        <div class="def-item"><div class="def-term">Font Size</div><div class="def-desc">Measured in points (pt). Standard body text is 11–12pt. Headings are typically 14–20pt+. One point = 1/72 of an inch when printed.</div></div>
+        <div class="def-item"><div class="def-term">Font Color</div><div class="def-desc">Changes the color of the text characters. Click the color swatch in the toolbar to open a color picker. Black on white is standard for printed documents.</div></div>
+        <div class="def-item"><div class="def-term">Highlight Color</div><div class="def-desc">Colors the background behind text (like a highlighter marker). Useful for marking important passages. Available in the toolbar.</div></div>
+      </div>
+
+      <h2 class="section-title">Paragraph Formatting</h2>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Align Left</div><div class="def-desc">Text starts from the left margin, ragged right edge. Default for most documents. Best for body text. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">L</span>.</div></div>
+        <div class="def-item"><div class="def-term">Center</div><div class="def-desc">Text is centered on the page with equal margins on both sides. Used for titles, headings, and decorative text. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">E</span>.</div></div>
+        <div class="def-item"><div class="def-term">Align Right</div><div class="def-desc">Text aligns to the right margin, ragged left edge. Used for dates, return addresses in letters. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">R</span>.</div></div>
+        <div class="def-item"><div class="def-term">Justify</div><div class="def-desc">Text aligns to both left and right margins, creating even edges on both sides. Used in newspapers, books. Shortcut: <span class="key-badge">Ctrl</span>+<span class="key-badge">J</span>.</div></div>
+        <div class="def-item"><div class="def-term">Bullet Points</div><div class="def-desc">Creates an unordered list with bullet symbols (•) before each item. Press Enter after each item to add a new bullet. Press Enter twice or click the button again to exit list mode.</div></div>
+        <div class="def-item"><div class="def-term">Line Spacing</div><div class="def-desc">Controls the vertical space between lines of text. Single, 1.5, or double spacing. Double-spacing is often required in academic work. Found in the Home tab.</div></div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>Formatting Best Practices</strong>
+          <p>Use formatting purposefully and consistently. Avoid using too many different fonts in one document (maximum 2 is a good rule). Use bold and italic sparingly — if everything is emphasized, nothing is. Consistent formatting makes documents look professional.</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('wp-interface')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Interface & Parts</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('wp-files')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Saving & Opening Files</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ WP FILES -->
+    <div class="doc-section" id="page-wp-files">
+      <div class="page-overline">Chapter 2 · WordPad</div>
+      <h1 class="page-title">Saving & Opening Files</h1>
+      <p class="page-intro">File management is one of the most critical skills in computing. Understanding the difference between Save and Save As, and knowing file formats, prevents lost work.</p>
+
+      <h2 class="section-title">File Formats</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Format</th><th>Extension</th><th>Description</th><th>When to Use</th></tr></thead>
+        <tbody>
+          <tr><td>Rich Text Format</td><td><span class="key-badge">.rtf</span></td><td>WordPad's native format. Preserves all formatting (fonts, colors, bold/italic, images).</td><td>Default choice for formatted WordPad documents</td></tr>
+          <tr><td>Plain Text</td><td><span class="key-badge">.txt</span></td><td>No formatting — only raw characters. Opens in any program on any device.</td><td>When formatting doesn't matter; maximum compatibility</td></tr>
+          <tr><td>Word Document</td><td><span class="key-badge">.docx</span></td><td>Microsoft Word format. WordPad can open but may not perfectly preserve all Word features.</td><td>Sharing with Microsoft Word users</td></tr>
+          <tr><td>OpenDocument Text</td><td><span class="key-badge">.odt</span></td><td>Open standard for word processing. Used by LibreOffice and other open-source apps.</td><td>Sharing with non-Microsoft office users</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Save vs. Save As</h2>
+      <div class="def-list">
+        <div class="def-item">
+          <div class="def-term">Save <span class="key-badge" style="font-size:0.65rem">Ctrl+S</span></div>
+          <div class="def-desc">Saves the current document to its existing file, overwriting the previous version. Use frequently while working (every 5–10 minutes). If the file has never been saved, "Save" behaves like "Save As" and opens a dialog to choose a name and location.</div>
+        </div>
+        <div class="def-item">
+          <div class="def-term">Save As <span class="key-badge" style="font-size:0.65rem">F12</span></div>
+          <div class="def-desc">Opens a dialog to save the document with a new name, in a new location, or in a different file format. Use this when: creating a copy of an existing document, changing the file format, saving to a different folder, or creating versioned backups (e.g., "Report_v1.rtf", "Report_v2.rtf").</div>
+        </div>
+      </div>
+
+      <h2 class="section-title">The Save As Dialog — Step by Step</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open the Dialog</h4><p>Click File → Save As, or press F12. A file dialog window appears.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Choose a Location</h4><p>Use the left panel to navigate to where you want to save. Common choices: Desktop (easy to find), Documents folder (organized), or a specific project folder.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Enter a File Name</h4><p>Click the "File name" field and type a descriptive name. Use clear, meaningful names: "English Homework Week3" not "Document1". Avoid special characters: / \ : * ? " &lt; &gt; |</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Choose File Type</h4><p>Click "Save as type" dropdown and select the format (.rtf for most cases). The file extension is added automatically.</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Click Save</h4><p>Click the "Save" button. The title bar now shows your file name. Press Ctrl+S regularly to keep saving as you work.</p></div></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Always Save Your Work!</strong>
+          <p>Computers can crash, lose power, or freeze. WordPad does NOT auto-save. Get into the habit of pressing Ctrl+S every few minutes. If you see the title bar say "Document - WordPad" (without a file name), your work is not yet saved!</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('wp-formatting')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Text Formatting</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('wp-advanced')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Advanced Features</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ WP ADVANCED -->
+    <div class="doc-section" id="page-wp-advanced">
+      <div class="page-overline">Chapter 2 · WordPad</div>
+      <h1 class="page-title">Advanced WordPad Features</h1>
+      <p class="page-intro">Beyond basic typing and formatting, WordPad offers several powerful features that make it a versatile tool for everyday document creation.</p>
+
+      <h2 class="section-title">Find & Replace</h2>
+      <p>Find & Replace (<span class="key-badge">Ctrl</span>+<span class="key-badge">H</span>) lets you locate specific text and optionally replace it with different text. This is invaluable for correcting repeated mistakes or updating recurring words throughout a document.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open Find & Replace</h4><p>Press Ctrl+H or click Home → Replace in the ribbon.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Enter the Search Term</h4><p>In the "Find what" field, type the word or phrase you want to find.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Enter the Replacement</h4><p>In the "Replace with" field, type the new text you want to substitute.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Replace</h4><p>Click "Replace" to change one at a time (safer), or "Replace All" to change every instance at once.</p></div></div>
+      </div>
+
+      <h2 class="section-title">Inserting Date and Time</h2>
+      <p>WordPad can automatically insert the current date and time. Click the position where you want the date, then go to <strong>Home → Date and Time</strong> in the ribbon. Choose from multiple date/time formats.</p>
+
+      <h2 class="section-title">Inserting Objects & Images</h2>
+      <p>WordPad allows embedding objects into documents using the <strong>Insert Object</strong> feature in the Home ribbon. You can insert:</p>
+      <div class="card-grid">
+        <div class="info-card"><div class="card-icon">🖼️</div><h4>Images</h4><p>Paste (Ctrl+V) images copied from other applications or the internet directly into the document.</p></div>
+        <div class="info-card"><div class="card-icon">📊</div><h4>OLE Objects</h4><p>Embed objects from other applications (Excel spreadsheets, Paint drawings, etc.) using Insert Object.</p></div>
+        <div class="info-card"><div class="card-icon">🎨</div><h4>Drawings</h4><p>Create a bitmap drawing in Microsoft Paint and insert it into your WordPad document.</p></div>
+      </div>
+
+      <h2 class="section-title">Printing Documents</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Print Preview</h4><p>File → Print Preview shows exactly how the document will look when printed. Check for layout issues before printing.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Page Setup</h4><p>File → Page Setup lets you set paper size (A4, Letter), orientation (portrait vs landscape), and margins.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Print</h4><p>Press Ctrl+P or File → Print. Select printer, set number of copies, and choose which pages to print.</p></div></div>
+      </div>
+
+      <h2 class="section-title">Undo & Redo History</h2>
+      <p>WordPad keeps a history of your recent actions. <span class="key-badge">Ctrl</span>+<span class="key-badge">Z</span> (Undo) moves backward through this history, reversing each change. <span class="key-badge">Ctrl</span>+<span class="key-badge">Y</span> (Redo) moves forward, re-applying undone changes. You can undo multiple steps in sequence. This history is lost when you close WordPad.</p>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('wp-files')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Saving & Opening Files</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('typing-posture')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Posture & Ergonomics</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ TYPING POSTURE -->
+    <div class="doc-section" id="page-typing-posture">
+      <div class="page-overline">Chapter 3 · Typing Technique</div>
+      <h1 class="page-title">Posture & Ergonomics</h1>
+      <p class="page-intro">Before learning to type, you must sit correctly. Poor posture leads to fatigue, pain, and long-term injury. Good ergonomics enables hours of comfortable, efficient typing.</p>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Health Warning</strong>
+          <p>Repetitive Strain Injury (RSI) and Carpal Tunnel Syndrome are real conditions caused by prolonged typing with poor posture. Teaching correct posture from the start protects students' long-term health.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">The Correct Typing Position</h2>
+      <div class="posture-grid">
+        <div class="posture-item"><div class="posture-icon">🪑</div><div><div class="posture-title">Chair Height</div><p style="font-size:0.85rem;margin:0;">Feet flat on the floor. Knees at approximately 90°. Thighs parallel to the ground or slightly downward.</p></div></div>
+        <div class="posture-item"><div class="posture-icon">💻</div><div><div class="posture-title">Screen Distance</div><p style="font-size:0.85rem;margin:0;">Monitor at arm's length (50–70 cm). Top of screen at or slightly below eye level. No tilting head up or down.</p></div></div>
+        <div class="posture-item"><div class="posture-icon">⌨️</div><div><div class="posture-title">Keyboard Position</div><p style="font-size:0.85rem;margin:0;">Keyboard flat or slightly tilted away. Elbows at 90°. Wrists neutral — not bent up or down. Forearms approximately parallel to the floor.</p></div></div>
+        <div class="posture-item"><div class="posture-icon">🤲</div><div><div class="posture-title">Wrist Position</div><p style="font-size:0.85rem;margin:0;">Wrists should float just above the keyboard when typing — not resting on the desk. Use a wrist rest only during pauses, not while actively typing.</p></div></div>
+        <div class="posture-item"><div class="posture-icon">🦴</div><div><div class="posture-title">Back & Shoulders</div><p style="font-size:0.85rem;margin:0;">Sit up straight with back supported. Shoulders relaxed and down — not hunched up or forward. Use lumbar support if available.</p></div></div>
+        <div class="posture-item"><div class="posture-icon">👁️</div><div><div class="posture-title">Eyes & Neck</div><p style="font-size:0.85rem;margin:0;">Look at the screen, not the keyboard. Neck in neutral position. Take eye breaks every 20 minutes (look 20 feet away for 20 seconds — the 20-20-20 rule).</p></div></div>
+      </div>
+
+      <h2 class="section-title">Hand & Finger Positioning</h2>
+      <p>The fingers should be gently curved, like holding a small ball. The fingertips (not the pads) contact the keys. The hands hover over the keyboard with wrists raised slightly. This allows free movement across all rows without rotating the wrists.</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>The "Relaxed Claw" Position</strong>
+          <p>Imagine you're holding a tennis ball in each hand. Your fingers naturally curve into this shape. Now lower your hands to the keyboard — that gentle curve is exactly the finger position you want. If your fingers are flat or over-extended, correct them immediately.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Break Schedule — Preventing Fatigue</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Interval</th><th>Recommended Break</th><th>What To Do</th></tr></thead>
+        <tbody>
+          <tr><td>Every 20 minutes</td><td>Eye break — 20 seconds</td><td>Look at something 20 feet away to relax eye muscles</td></tr>
+          <tr><td>Every 30–45 minutes</td><td>Micro-break — 2–3 minutes</td><td>Stand, stretch arms, shake out wrists, roll shoulders</td></tr>
+          <tr><td>Every 2 hours</td><td>Short break — 10–15 minutes</td><td>Walk around, step away from the screen entirely</td></tr>
+          <tr><td>Every session</td><td>Wrist stretches</td><td>Gentle wrist circles and finger stretches before and after typing sessions</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('wp-advanced')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Advanced WordPad</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('typing-homerow')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Home Row Method</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ HOME ROW -->
+    <div class="doc-section" id="page-typing-homerow">
+      <div class="page-overline">Chapter 3 · Typing Technique</div>
+      <h1 class="page-title">The Home Row Method</h1>
+      <p class="page-intro">The home row is the foundation of touch typing — the technique of typing without looking at the keyboard. Every finger has a home position it returns to after each keystroke.</p>
+
+      <h2 class="section-title">The Home Row Keys</h2>
+      <p>The <em>home row</em> is the middle row of letter keys: <strong>A S D F G H J K L ;</strong></p>
+
+      <div class="keyboard-visual">
+        <div class="kb-section-label">Home Row — Your Finger Resting Positions</div>
+        <div class="kb-row-group" style="justify-content:center;flex-wrap:nowrap;">
+          <div class="vis-key" style="min-width:80px;background:rgba(255,100,100,0.1);border-color:rgba(255,100,100,0.4);color:#f87171;">
+            <div><div>A</div><div style="font-size:0.45rem;margin-top:2px;color:#f87171;">L. Pinky</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.4);color:#fb923c;">
+            <div><div>S</div><div style="font-size:0.45rem;margin-top:2px;color:#fb923c;">L. Ring</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.4);color:#facc15;">
+            <div><div>D</div><div style="font-size:0.45rem;margin-top:2px;color:#facc15;">L. Middle</div></div>
+          </div>
+          <div class="vis-key zone-home" style="min-width:80px;">
+            <div><div>F ●</div><div style="font-size:0.45rem;margin-top:2px;">L. Index</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;">
+            <div><div>G</div><div style="font-size:0.45rem;margin-top:2px;color:var(--text-muted);">L. Index</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;">
+            <div><div>H</div><div style="font-size:0.45rem;margin-top:2px;color:var(--text-muted);">R. Index</div></div>
+          </div>
+          <div class="vis-key zone-home" style="min-width:80px;">
+            <div><div>J ●</div><div style="font-size:0.45rem;margin-top:2px;">R. Index</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.4);color:#facc15;">
+            <div><div>K</div><div style="font-size:0.45rem;margin-top:2px;color:#facc15;">R. Middle</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.4);color:#fb923c;">
+            <div><div>L</div><div style="font-size:0.45rem;margin-top:2px;color:#fb923c;">R. Ring</div></div>
+          </div>
+          <div class="vis-key" style="min-width:80px;background:rgba(255,100,100,0.1);border-color:rgba(255,100,100,0.4);color:#f87171;">
+            <div><div>;</div><div style="font-size:0.45rem;margin-top:2px;color:#f87171;">R. Pinky</div></div>
+          </div>
+        </div>
+        <p style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--text-muted);margin-top:10px;">● = Keys with homing bumps (tactile guides)</p>
+      </div>
+
+      <h2 class="section-title">The Golden Rule of Touch Typing</h2>
+      <div class="callout tip">
+        <span class="callout-icon">🏆</span>
+        <div class="callout-body">
+          <strong>Always Return to Home Row</strong>
+          <p>After pressing any key in any row, your fingers must immediately return to the home row position. This is the most important discipline in touch typing. Beginners who forget to return home must look down to reorient — breaking the touch typing pattern.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Finding Home Row Without Looking</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Close Your Eyes (or Look Away)</h4><p>Look at the screen or ceiling, not the keyboard. Place your hands near the keyboard without touching it.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Find the F Key</h4><p>Gently feel for the raised bump/ridge on one of the keys in the middle row. That's the F key — your left index finger home.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Find the J Key</h4><p>Similarly feel for the bump on the right side. That's J — your right index finger home.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Place All Fingers</h4><p>Left hand: pinky→A, ring→S, middle→D, index→F. Right hand: index→J, middle→K, ring→L, pinky→; Both thumbs hover over the space bar.</p></div></div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('typing-posture')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Posture & Ergonomics</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('typing-technique')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Finger Technique</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ FINGER TECHNIQUE -->
+    <div class="doc-section" id="page-typing-technique">
+      <div class="page-overline">Chapter 3 · Typing Technique</div>
+      <h1 class="page-title">Finger-to-Key Assignment</h1>
+      <p class="page-intro">Every key on the keyboard is assigned to a specific finger. This assignment is not arbitrary — it is optimized for efficiency and balance across both hands.</p>
+
+      <h2 class="section-title">Complete Finger Map</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Finger</th><th>Hand</th><th>Keys Responsible For</th></tr></thead>
+        <tbody>
+          <tr><td>Pinky (little finger)</td><td>Left</td><td>Q, A, Z, Tab, Caps Lock, Left Shift, Left Ctrl, 1, `</td></tr>
+          <tr><td>Ring finger</td><td>Left</td><td>W, S, X, 2</td></tr>
+          <tr><td>Middle finger</td><td>Left</td><td>E, D, C, 3</td></tr>
+          <tr><td>Index finger</td><td>Left</td><td>R, F, V, T, G, B, 4, 5</td></tr>
+          <tr><td>Thumb</td><td>Left</td><td>Space Bar (shared with right thumb)</td></tr>
+          <tr><td>Thumb</td><td>Right</td><td>Space Bar (shared with left thumb)</td></tr>
+          <tr><td>Index finger</td><td>Right</td><td>Y, H, N, U, J, M, 6, 7</td></tr>
+          <tr><td>Middle finger</td><td>Right</td><td>I, K, ,, 8</td></tr>
+          <tr><td>Ring finger</td><td>Right</td><td>O, L, ., 9</td></tr>
+          <tr><td>Pinky (little finger)</td><td>Right</td><td>P, ;, /, Enter, Right Shift, Backspace, 0, -, =, [, ]</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body">
+          <strong>Why the Index Finger Gets the Most Keys</strong>
+          <p>The index fingers are the strongest and most dexterous fingers. They are assigned 4 keys each (plus the number row) to maximize typing efficiency. The pinkies are weakest and get fewer, more peripheral keys — though they handle important modifiers like Shift, Ctrl, and Enter.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Shift Key Usage</h2>
+      <p>The Shift key is a modifier pressed with the <em>opposite hand</em> from the letter being capitalized. This is crucial for smooth, fast typing:</p>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Typing "A" (Capital)</div><div class="def-desc">Right pinky holds Right Shift → Left pinky presses A. Using the opposite hand keeps both hands in position and allows faster key release.</div></div>
+        <div class="def-item"><div class="def-term">Typing "L" (Capital)</div><div class="def-desc">Left pinky holds Left Shift → Right ring finger presses L. Never hold Shift with the same hand that types the letter.</div></div>
+      </div>
+
+      <h2 class="section-title">Keystroke Mechanics</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Press, Don't Pound</h4><p>Keys require very little pressure — just enough to register the input. Pounding keys causes fatigue and noise. Think "touch" not "press."</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Release Immediately</h4><p>After each keystroke, release the key immediately and return that finger to its home position. Don't hold or linger on keys.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Only Move the Finger</h4><p>When reaching for a key in a different row, only that finger should move — not the whole hand. The wrist and other fingers stay in position.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Rhythm Over Speed</h4><p>Consistent rhythm produces fewer errors than rushing. Beginners should aim for steady, even timing — like a metronome — before trying to go faster.</p></div></div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('typing-homerow')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Home Row Method</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('typing-speed')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Building Speed & Accuracy</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ TYPING SPEED -->
+    <div class="doc-section" id="page-typing-speed">
+      <div class="page-overline">Chapter 3 · Typing Technique</div>
+      <h1 class="page-title">Building Speed & Accuracy</h1>
+      <p class="page-intro">Speed and accuracy are developed over weeks and months of deliberate practice. Understanding how they develop — and how to train effectively — dramatically accelerates progress.</p>
+
+      <h2 class="section-title">Typing Speed Standards (WPM)</h2>
+      <p>Typing speed is measured in <em>Words Per Minute (WPM)</em>, where one "word" is standardized as 5 characters (including spaces).</p>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>WPM Range</th><th>Level</th><th>Description</th><th>Context</th></tr></thead>
+        <tbody>
+          <tr><td>0–20 WPM</td><td>Hunt & Peck</td><td>Looking at keyboard, one finger or few fingers</td><td>Complete beginner / no training</td></tr>
+          <tr><td>20–40 WPM</td><td>Beginner</td><td>Some touch typing, still making errors</td><td>Early learning stage (weeks 1–4)</td></tr>
+          <tr><td>40–60 WPM</td><td>Intermediate</td><td>Consistent touch typing, fewer errors</td><td>Average office typist</td></tr>
+          <tr><td>60–80 WPM</td><td>Proficient</td><td>Comfortable typing, minimal looking down</td><td>Above average, good for most jobs</td></tr>
+          <tr><td>80–100 WPM</td><td>Advanced</td><td>Fast, accurate, comfortable touch typing</td><td>Professionals, transcriptionists</td></tr>
+          <tr><td>100+ WPM</td><td>Expert</td><td>Exceptional speed with high accuracy</td><td>Professional typists, competitive typists</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">The Accuracy-First Principle</h2>
+      <div class="callout info">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-body">
+          <strong>Accuracy Before Speed — Always</strong>
+          <p>Many beginners try to type fast immediately, resulting in constant errors and bad habits. The correct approach: practice at the speed where you make <em>zero errors</em>. Speed follows accuracy naturally through repetition. A student typing 20 WPM with 100% accuracy will progress faster than one typing 40 WPM with 85% accuracy.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Effective Practice Strategies</h2>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Daily Consistency</div><div class="def-desc">15–20 minutes of daily practice beats 3 hours once a week. Typing is a motor skill — muscle memory develops through frequent, repeated activation, not marathon sessions.</div></div>
+        <div class="def-item"><div class="def-term">Focus on Weak Keys</div><div class="def-desc">Identify which keys you consistently mis-type and drill those specifically. Typing tutors like TypingClub, Keybr, and Monkeytype let you target problem areas.</div></div>
+        <div class="def-item"><div class="def-term">Never Look Down</div><td>The single most important discipline. Looking down at the keyboard resets your muscle memory development. Cover your hands or use a keyboard cover if necessary.</td></div>
+        <div class="def-item"><div class="def-term">Type Real Text</div><div class="def-desc">Practicing with real sentences and paragraphs (not just random characters) builds natural rhythm and familiarity with common word patterns and bigrams.</div></div>
+        <div class="def-item"><div class="def-term">Track Progress</div><div class="def-desc">Record your WPM and accuracy weekly. Progress is not always linear — plateaus are normal. Recognizing improvement maintains motivation.</div></div>
+      </div>
+
+      <h2 class="section-title">Common Mistakes & How to Fix Them</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Mistake</th><th>Problem</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Looking at keyboard</td><td>Never develops muscle memory</td><td>Place a cloth over your hands; force yourself to feel</td></tr>
+          <tr><td>Using wrong fingers</td><td>Creates inconsistent patterns</td><td>Practice very slowly, consciously using correct fingers</td></tr>
+          <tr><td>Wrists resting</td><td>Restricts movement, causes strain</td><td>Keep wrists floating above keyboard while typing</td></tr>
+          <tr><td>Typing too fast</td><td>Builds errors into muscle memory</td><td>Slow down until you're error-free, then gradually speed up</td></tr>
+          <tr><td>Uneven rhythm</td><td>Causes rushed mistakes</td><td>Practice with a metronome, aim for one keypress per beat</td></tr>
+          <tr><td>Not returning home</td><td>Disorientation after each keypress</td><td>Consciously return fingers to ASDF/JKL; after every stroke</td></tr>
+          <tr><td>Tense shoulders</td><td>Fatigue and RSI risk</td><td>Consciously relax shoulders before and during sessions</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Recommended Practice Schedule</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Week</th><th>Focus Area</th><th>Daily Goal</th><th>Target WPM</th></tr></thead>
+        <tbody>
+          <tr><td>Week 1–2</td><td>Home row keys only (ASDF / JKL;)</td><td>15 min — home row drills</td><td>15–20 WPM</td></tr>
+          <tr><td>Week 3–4</td><td>Top row (QWERTY / UIOP)</td><td>20 min — home + top rows</td><td>20–30 WPM</td></tr>
+          <tr><td>Week 5–6</td><td>Bottom row (ZXCV / NM,.)</td><td>20 min — all letter rows</td><td>25–35 WPM</td></tr>
+          <tr><td>Week 7–8</td><td>Number row, capitals, punctuation</td><td>25 min — full keyboard</td><td>30–45 WPM</td></tr>
+          <tr><td>Month 3+</td><td>Speed building with real text</td><td>20–30 min — passages & articles</td><td>45–60+ WPM</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('typing-technique')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Finger Technique</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('ref-shortcuts')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Full Shortcut Reference</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ REF SHORTCUTS -->
+    <div class="doc-section" id="page-ref-shortcuts">
+      <div class="page-overline">Reference</div>
+      <h1 class="page-title">Full Shortcut Reference</h1>
+      <p class="page-intro">A comprehensive, printable reference of all keyboard shortcuts organized by category. Suitable for posting at workstations.</p>
+
+      <h2 class="section-title">Universal — Works in All Applications</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">C</span></span></td><td>Copy selection to clipboard</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">X</span></span></td><td>Cut selection to clipboard</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">V</span></span></td><td>Paste from clipboard</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">Z</span></span></td><td>Undo last action</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">Y</span></span></td><td>Redo last undone action</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">A</span></span></td><td>Select all</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">S</span></span></td><td>Save</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">O</span></span></td><td>Open file</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">N</span></span></td><td>New document/window</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">P</span></span></td><td>Print</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">F</span></span></td><td>Find</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">H</span></span></td><td>Find & Replace</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">W</span></span></td><td>Close tab / document</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">F12</span></span></td><td>Save As</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Alt</span>+<span class="key-badge">F4</span></span></td><td>Close application</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Alt</span>+<span class="key-badge">Tab</span></span></td><td>Switch between open applications</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">F5</span></span></td><td>Refresh / Reload</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">F1</span></span></td><td>Open Help</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Text Formatting</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">B</span></span></td><td>Bold</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">I</span></span></td><td>Italic</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">U</span></span></td><td>Underline</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">L</span></span></td><td>Align left</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">E</span></span></td><td>Center</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">R</span></span></td><td>Align right</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">J</span></span></td><td>Justify</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 class="section-title">Windows Shortcuts</h2>
+      <div class="doc-table-wrap"><table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><span class="key-badge">⊞</span></td><td>Open/Close Start Menu</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">D</span></span></td><td>Show/hide desktop</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">E</span></span></td><td>Open File Explorer</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">L</span></span></td><td>Lock computer</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">R</span></span></td><td>Open Run dialog</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">I</span></span></td><td>Open Settings</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">↑</span></span></td><td>Maximize current window</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">↓</span></span></td><td>Minimize/restore current window</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">←</span></span></td><td>Snap window to left half</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">→</span></span></td><td>Snap window to right half</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">Ctrl</span>+<span class="key-badge">Shift</span>+<span class="key-badge">Esc</span></span></td><td>Open Task Manager</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">Shift</span>+<span class="key-badge">S</span></span></td><td>Screenshot snip tool</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">V</span></span></td><td>Clipboard history</td></tr>
+          <tr><td><span class="shortcut"><span class="key-badge">⊞</span>+<span class="key-badge">+</span></span></td><td>Zoom in (Magnifier)</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('typing-speed')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Speed & Accuracy</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('ref-glossary')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Glossary</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ GLOSSARY -->
+    <div class="doc-section" id="page-ref-glossary">
+      <div class="page-overline">Reference</div>
+      <h1 class="page-title">Glossary of Terms</h1>
+      <p class="page-intro">Definitions of all key terms used in this guide. Alphabetically ordered for quick reference.</p>
+
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Alphanumeric Keys</div><div class="def-desc">The keys that produce letters (A–Z) and numbers (0–9). The main section of the keyboard used for typing.</div></div>
+        <div class="def-item"><div class="def-term">Autocorrect</div><div class="def-desc">A feature that automatically corrects common spelling mistakes as you type. Found in Word and other word processors, not in WordPad.</div></div>
+        <div class="def-item"><div class="def-term">Caret</div><div class="def-desc">The blinking vertical line (|) that shows the current cursor position — where the next typed character will appear.</div></div>
+        <div class="def-item"><div class="def-term">Clipboard</div><div class="def-desc">Temporary memory area where cut or copied content is stored. Content stays on the clipboard until something new is copied or the computer restarts.</div></div>
+        <div class="def-item"><div class="def-term">Cursor</div><div class="def-desc">The symbol that shows where actions will occur. In text editing, it's the blinking caret (|). When using the mouse, it appears as a pointer (arrow) or text cursor (I-beam).</div></div>
+        <div class="def-item"><div class="def-term">Document</div><div class="def-desc">A file created in a word processing application. Contains text and optionally images, formatting, and other content.</div></div>
+        <div class="def-item"><div class="def-term">Ergonomics</div><div class="def-desc">The science of designing workplaces and equipment to maximize comfort, efficiency, and safety for the human body.</div></div>
+        <div class="def-item"><div class="def-term">File Extension</div><div class="def-desc">The part of a file name after the period that identifies the file type (e.g., .rtf, .txt, .docx). Used by the operating system to determine which program opens the file.</div></div>
+        <div class="def-item"><div class="def-term">Font</div><div class="def-desc">The visual design of the text characters. Includes typeface (Times New Roman, Arial) and style (size, weight, slant).</div></div>
+        <div class="def-item"><div class="def-term">Hard Return</div><div class="def-desc">A line break created by pressing the Enter key. Creates a new paragraph. Distinct from a soft return (Shift+Enter), which creates a new line within the same paragraph.</div></div>
+        <div class="def-item"><div class="def-term">Home Row</div><div class="def-desc">The middle row of letter keys (A S D F G H J K L ;) where fingers rest in the neutral touch typing position.</div></div>
+        <div class="def-item"><div class="def-term">Homing Bump</div><div class="def-desc">A small raised tactile mark on the F and J keys that allows typists to locate home row position by touch without looking.</div></div>
+        <div class="def-item"><div class="def-term">Keyboard Shortcut</div><div class="def-desc">A combination of keys pressed simultaneously to trigger a command, faster than using the mouse to navigate menus.</div></div>
+        <div class="def-item"><div class="def-term">Modifier Key</div><div class="def-desc">A key that changes the function of other keys when held. The main modifier keys are Shift, Ctrl, and Alt.</div></div>
+        <div class="def-item"><div class="def-term">Muscle Memory</div><div class="def-desc">The ability to perform a physical action automatically without conscious thought, developed through repetitive practice. The goal of touch typing training.</div></div>
+        <div class="def-item"><div class="def-term">QWERTY</div><div class="def-desc">The standard keyboard layout named after the first six letters in the top-left letter row. Invented in the 1870s by Christopher Latham Sholes.</div></div>
+        <div class="def-item"><div class="def-term">Rich Text Format (RTF)</div><div class="def-desc">A document format (.rtf) that preserves text formatting information while remaining compatible with many different programs. WordPad's native format.</div></div>
+        <div class="def-item"><div class="def-term">RSI</div><div class="def-desc">Repetitive Strain Injury — an umbrella term for pain and damage caused by repetitive movements. Carpal Tunnel Syndrome is a common RSI affecting typists with poor technique.</div></div>
+        <div class="def-item"><div class="def-term">Touch Typing</div><div class="def-desc">The skill of typing without looking at the keyboard, using all ten fingers in assigned positions. The professional standard for efficient typing.</div></div>
+        <div class="def-item"><div class="def-term">Toggle</div><div class="def-desc">A switch that turns a feature alternately on and off with each press. Caps Lock, Num Lock, and Scroll Lock are toggle keys.</div></div>
+        <div class="def-item"><div class="def-term">WPM</div><div class="def-desc">Words Per Minute — the standard unit for measuring typing speed. One "word" = 5 characters including spaces, regardless of actual word length.</div></div>
+        <div class="def-item"><div class="def-term">Word Processor</div><div class="def-desc">Software designed for creating and editing text documents, with formatting capabilities. WordPad is a simple word processor; Microsoft Word is a professional one.</div></div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('ref-shortcuts')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Shortcut Reference</span>
+        </a>
+        <a class="page-nav-btn next" onclick="showPage('ref-exercises')">
+          <span class="page-nav-label">Next →</span>
+          <span class="page-nav-title">Practice Exercises</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ================================================================ EXERCISES -->
+    <div class="doc-section" id="page-ref-exercises">
+      <div class="page-overline">Reference</div>
+      <h1 class="page-title">Practice Exercises</h1>
+      <p class="page-intro">Structured exercises for teachers and students. Progress from home row basics to full keyboard fluency. All exercises are designed for WordPad.</p>
+
+      <h2 class="section-title">Unit 1 — Home Row Drills</h2>
+      <span class="chip beginner">Beginner</span>
+      <p>Open WordPad and type the following sequences. Focus on correct finger placement. Do not look at the keyboard.</p>
+      <div class="code-block">
+        <span class="code-label">Exercise 1.1</span>
+        aaa sss ddd fff ggg hhh jjj kkk lll ;;;
+asd fgh jkl ;lk jhg fds a;
+asdf jkl; asdf jkl; asdf jkl;
+dad sad fad lad had add fall hall
+flask glass class flash salad
+      </div>
+      <div class="code-block">
+        <span class="code-label">Exercise 1.2 — Sentences</span>
+        a lad had a flask;
+all glass falls; dad shall add salt;
+a sad lad falls; has she a flag?
+shall a glass flask fall?
+      </div>
+
+      <h2 class="section-title">Unit 2 — Top Row Addition</h2>
+      <span class="chip beginner">Beginner</span>
+      <div class="code-block">
+        <span class="code-label">Exercise 2.1 — Top Row Keys</span>
+        qqq www eee rrr ttt yyy uuu iii ooo ppp
+qwer tyui op qwer tyui op
+wet set yet pet let net get
+root soot loot floor door poor
+      </div>
+      <div class="code-block">
+        <span class="code-label">Exercise 2.2 — Sentences</span>
+        write the letter to the people;
+your pretty flower grows well;
+type the word right the first time;
+we tried to spell every word well;
+      </div>
+
+      <h2 class="section-title">Unit 3 — Bottom Row Addition</h2>
+      <span class="chip intermediate">Intermediate</span>
+      <div class="code-block">
+        <span class="code-label">Exercise 3.1 — Bottom Row Keys</span>
+        zzz xxx ccc vvv bbb nnn mmm ,,, ... ///
+zxcv bnm, ./ zxcv bnm, ./
+zinc next come very band name
+mix box can van bin man
+      </div>
+      <div class="code-block">
+        <span class="code-label">Exercise 3.2 — Sentences</span>
+        can you mix the cement in the box?
+the brave men came next to the van;
+zinc and carbon combine in the zone;
+move the box, then come back;
+      </div>
+
+      <h2 class="section-title">Unit 4 — Capitals & Shift Key</h2>
+      <span class="chip intermediate">Intermediate</span>
+      <div class="code-block">
+        <span class="code-label">Exercise 4.1 — Shift Key Practice</span>
+        The Quick Brown Fox Jumps Over The Lazy Dog.
+She Said Hello To Her Friend.
+My Name Is Alex. I Live In London.
+Bangladesh. India. Pakistan. China. Japan.
+      </div>
+      <div class="code-block">
+        <span class="code-label">Exercise 4.2 — The Pangram</span>
+        The quick brown fox jumps over the lazy dog.
+Pack my box with five dozen liquor jugs.
+How vexingly quick daft zebras jump!
+      </div>
+
+      <h2 class="section-title">Unit 5 — Numbers & Symbols</h2>
+      <span class="chip intermediate">Intermediate</span>
+      <div class="code-block">
+        <span class="code-label">Exercise 5.1 — Numbers</span>
+        1 2 3 4 5 6 7 8 9 0
+12 34 56 78 90 100 200 365
+My phone number is 01234 567890.
+The year 2024 has 366 days.
+      </div>
+      <div class="code-block">
+        <span class="code-label">Exercise 5.2 — Symbols</span>
+        ! @ # $ % & * ( ) - + = ?
+user@email.com — www.example.com
+Price: $24.99 (discount: 15%)
+Note: This is a "test" document!
+      </div>
+
+      <h2 class="section-title">Unit 6 — Formatting Practice in WordPad</h2>
+      <span class="chip intermediate">Intermediate</span>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Create a Formatted Letter</h4><p>Open WordPad. Type your name at the top, then center it. Make it bold, font size 18. Then write a short 3-paragraph letter using normal size 12 text.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Practice Selections</h4><p>Select individual words (double-click) and change their color. Select full paragraphs (triple-click) and change alignment.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Save Your Work</h4><p>Save the document as "MyLetter.rtf" in the Documents folder using File → Save As (F12).</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Shortcut Practice</h4><p>Without using the mouse: select all (Ctrl+A), copy (Ctrl+C), open new document (Ctrl+N), paste (Ctrl+V), then undo (Ctrl+Z) three times.</p></div></div>
+      </div>
+
+      <h2 class="section-title">Unit 7 — Speed Building Passages</h2>
+      <span class="chip advanced">Advanced</span>
+      <p>Type the following paragraphs at comfortable speed in WordPad. Record your time and count errors.</p>
+      <div class="code-block">
+        <span class="code-label">Passage A — 100 words</span>
+Learning to type well is one of the most valuable skills you can
+develop in today's world. Nearly every job requires some form of
+computer use, and the ability to type quickly and accurately
+saves enormous amounts of time. A person who types at 60 words
+per minute completes tasks three times faster than someone typing
+at 20 words per minute. More importantly, fast typing allows your
+fingers to keep up with your thoughts, making writing feel natural
+and effortless. With daily practice and proper technique, most
+people can reach 50 words per minute within three to four months.
+      </div>
+      <div class="code-block">
+        <span class="code-label">Passage B — Technology Theme</span>
+The computer keyboard has not changed significantly in over fifty
+years. The QWERTY layout, designed for mechanical typewriters in
+the 1870s, remains the global standard despite being suboptimal
+for modern use. Alternative layouts like Dvorak and Colemak claim
+higher efficiency, but the cost of retraining makes switching
+difficult for established typists. Whatever layout you use, the
+fundamentals remain the same: correct posture, home row position,
+all ten fingers, and no looking down. These principles, practiced
+consistently, will make you a confident and capable typist.
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Assessment Criteria for Teachers</strong>
+          <p>Evaluate students on: (1) Posture — are they sitting correctly? (2) Technique — correct fingers, not looking down? (3) Accuracy — &lt;5% error rate before focusing on speed. (4) Speed — track WPM progress over weeks, not days. (5) Shortcut knowledge — can they save, copy, and format without using menus?</p>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a class="page-nav-btn" onclick="showPage('ref-glossary')">
+          <span class="page-nav-label">← Previous</span>
+          <span class="page-nav-title">Glossary</span>
+        </a>
+        <div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT TOC PANEL -->
+  <aside class="toc-panel">
+    <div class="toc-title">On This Page</div>
+    <div id="tocContent">
+      <a class="toc-link" href="#">Introduction</a>
+      <a class="toc-link" href="#">About This Guide</a>
+      <a class="toc-link" href="#">Prerequisites</a>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+// ============================================================
+// PAGE NAVIGATION
+// ============================================================
+const pageMap = {
+  'intro': { title: 'Introduction', toc: ['Introduction', 'About This Guide', 'Prerequisites', 'Metrics'] },
+  'overview': { title: 'Course Overview', toc: ['Overview', 'Chapter 1', 'Chapter 2', 'Chapter 3'] },
+  'kb-anatomy': { title: 'Keyboard Anatomy', toc: ['History & Design', 'Visual Layout', 'Key Groups Summary'] },
+  'kb-zones': { title: 'Key Zones & Groups', toc: ['Function Row', 'Number Row', 'Letter Rows'] },
+  'kb-special': { title: 'Special Keys', toc: ['Modifier Keys', 'Editing Keys', 'Navigation Keys', 'Lock Keys', 'Other Keys'] },
+  'kb-shortcuts': { title: 'Keyboard Shortcuts', toc: ['Universal Shortcuts', 'Formatting Shortcuts', 'Windows Shortcuts'] },
+  'wp-intro': { title: 'What is WordPad?', toc: ['Overview', 'Comparison Table', 'How to Open'] },
+  'wp-interface': { title: 'Interface & Parts', toc: ['The Window', 'Parts Explained'] },
+  'wp-formatting': { title: 'Text Formatting', toc: ['Selecting Text', 'Character Formatting', 'Paragraph Formatting'] },
+  'wp-files': { title: 'Saving & Opening Files', toc: ['File Formats', 'Save vs Save As', 'Step by Step', 'Warning'] },
+  'wp-advanced': { title: 'Advanced Features', toc: ['Find & Replace', 'Date & Time', 'Inserting Objects', 'Printing', 'Undo History'] },
+  'typing-posture': { title: 'Posture & Ergonomics', toc: ['Correct Position', 'Hand Position', 'Break Schedule'] },
+  'typing-homerow': { title: 'Home Row Method', toc: ['The Home Row', 'Golden Rule', 'Finding Home Row'] },
+  'typing-technique': { title: 'Finger Technique', toc: ['Finger Map', 'Shift Key Usage', 'Keystroke Mechanics'] },
+  'typing-speed': { title: 'Speed & Accuracy', toc: ['WPM Standards', 'Accuracy First', 'Practice Strategies', 'Common Mistakes', 'Practice Schedule'] },
+  'ref-shortcuts': { title: 'Shortcut Reference', toc: ['Universal', 'Formatting', 'Windows'] },
+  'ref-glossary': { title: 'Glossary', toc: ['All Terms A–Z'] },
+  'ref-exercises': { title: 'Practice Exercises', toc: ['Unit 1', 'Unit 2', 'Unit 3', 'Unit 4', 'Unit 5', 'Unit 6', 'Unit 7'] },
+};
+
+function showPage(id) {
+  // Hide all sections
+  document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // Show target
+  const target = document.getElementById('page-' + id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Activate nav
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) {
+      n.classList.add('active');
+    }
+  });
+
+  // Update header
+  const meta = pageMap[id];
+  if (meta) {
+    document.getElementById('currentPage').textContent = meta.title;
+
+    // Update TOC
+    const tocEl = document.getElementById('tocContent');
+    tocEl.innerHTML = meta.toc.map(t =>
+      `<a class="toc-link" href="#">${t}</a>`
+    ).join('');
+  }
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100;
+  document.getElementById('scrollFill').style.width = scrolled + '%';
+  document.getElementById('readProgress').textContent = Math.round(scrolled) + '% read';
+});
+
+// Initialize
+showPage('intro');
+</script>
+</body>
+</html>

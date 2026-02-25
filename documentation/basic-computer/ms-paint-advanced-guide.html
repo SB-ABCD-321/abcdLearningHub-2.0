@@ -1,0 +1,2674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS Paint — Complete Learning Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===================== DESIGN SYSTEM ===================== */
+:root {
+  --ink: #0f1117;
+  --ink2: #1e2230;
+  --page: #f5f0e8;
+  --page2: #ede8df;
+  --cream: #faf7f2;
+  --accent: #e84444;
+  --accent2: #3b6fd4;
+  --accent3: #2a9d6f;
+  --gold: #d4940a;
+  --border: rgba(15,17,23,0.12);
+  --shadow: 0 4px 24px rgba(15,17,23,0.10);
+  --shadow-lg: 0 12px 48px rgba(15,17,23,0.16);
+  --mono: 'DM Mono', monospace;
+  --serif: 'Playfair Display', serif;
+  --sans: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ---- Grain texture overlay ---- */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--page2); }
+::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 3px; }
+
+/* ===================== LAYOUT ===================== */
+.layout { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+/* ---- Sidebar ---- */
+.sidebar {
+  width: 280px; flex-shrink: 0;
+  background: var(--ink2);
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: #ffffff20; }
+
+.sb-brand {
+  padding: 32px 28px 24px;
+  border-bottom: 1px solid #ffffff12;
+}
+.sb-brand .logo-text {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: #fff;
+  line-height: 1.2;
+}
+.sb-brand .logo-text em {
+  color: var(--accent);
+  font-style: italic;
+}
+.sb-brand .logo-sub {
+  font-size: 11px;
+  color: #ffffff50;
+  font-family: var(--mono);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.sb-version {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent);
+  color: #fff; font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: 4px; margin-top: 10px;
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em;
+}
+
+.sb-nav { padding: 16px 0; flex: 1; }
+.sb-section {
+  padding: 16px 28px 6px;
+  font-size: 9px; text-transform: uppercase; letter-spacing: .14em;
+  color: #ffffff35; font-weight: 600;
+}
+.sb-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 28px;
+  color: #ffffff60; text-decoration: none;
+  font-size: 13px; font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: all .15s; position: relative;
+}
+.sb-link:hover { color: #fff; background: #ffffff08; }
+.sb-link.active { color: #fff; border-left-color: var(--accent); background: #ffffff0a; }
+.sb-link .sb-num {
+  font-family: var(--mono); font-size: 10px;
+  color: #ffffff25; margin-left: auto;
+}
+.sb-link .sb-badge {
+  font-size: 9px; background: var(--accent); color: #fff;
+  padding: 2px 6px; border-radius: 3px; font-family: var(--mono);
+  text-transform: uppercase;
+}
+
+.sb-progress {
+  padding: 20px 28px;
+  border-top: 1px solid #ffffff12;
+}
+.sb-progress p { font-size: 11px; color: #ffffff40; margin-bottom: 8px; }
+.sb-prog-bar {
+  height: 4px; background: #ffffff15; border-radius: 2px;
+}
+.sb-prog-fill {
+  height: 100%; background: var(--accent);
+  border-radius: 2px; width: 0%;
+  transition: width .6s ease;
+}
+
+/* ---- Main content ---- */
+main { flex: 1; min-width: 0; }
+
+/* ===================== HERO ===================== */
+.hero {
+  background: var(--ink);
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid-lines {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-header {
+  padding: 32px 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid #ffffff10;
+  position: relative; z-index: 1;
+}
+.hero-header .breadcrumb {
+  font-family: var(--mono); font-size: 12px; color: #ffffff40;
+}
+.hero-header .breadcrumb span { color: var(--accent); }
+.hero-header .hero-pills { display: flex; gap: 8px; }
+.hero-pill {
+  font-size: 11px; font-family: var(--mono);
+  padding: 4px 10px; border-radius: 4px;
+  border: 1px solid #ffffff20; color: #ffffff60;
+}
+.hero-pill.hot { border-color: var(--accent); color: var(--accent); }
+
+.hero-body {
+  display: flex; align-items: center;
+  padding: 64px;
+  position: relative; z-index: 1;
+}
+.hero-content { max-width: 640px; }
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 12px;
+  text-transform: uppercase; letter-spacing: .15em;
+  color: var(--accent); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::after {
+  content: ''; flex: 1; max-width: 60px;
+  height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(52px, 7vw, 88px);
+  color: #fff; line-height: 1.0;
+  margin-bottom: 24px;
+}
+.hero h1 em { color: var(--accent); font-style: italic; }
+.hero-desc {
+  font-size: 17px; color: #ffffff70;
+  line-height: 1.8; margin-bottom: 36px; max-width: 520px;
+}
+.hero-cta {
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff;
+  padding: 14px 28px; border-radius: 6px;
+  font-weight: 600; font-size: 14px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: all .2s;
+}
+.btn-primary:hover { background: #cc3333; transform: translateY(-1px); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: #fff;
+  padding: 13px 28px; border-radius: 6px;
+  font-weight: 600; font-size: 14px;
+  border: 1px solid #ffffff30; cursor: pointer;
+  transition: all .2s; text-decoration: none;
+}
+.btn-outline:hover { border-color: #ffffff60; background: #ffffff08; }
+
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: #ffffff10;
+  margin-top: 0; border-top: 1px solid #ffffff10;
+  position: relative; z-index: 1;
+}
+.hero-stat {
+  background: var(--ink);
+  padding: 24px 64px;
+}
+.hero-stat .stat-num {
+  font-family: var(--serif); font-size: 36px; color: #fff;
+  line-height: 1;
+}
+.hero-stat .stat-num span { color: var(--accent); }
+.hero-stat .stat-label {
+  font-size: 12px; color: #ffffff40;
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: .1em;
+  margin-top: 6px;
+}
+
+/* ===================== CONTENT SECTIONS ===================== */
+.content-area { padding: 0; }
+
+/* Chapter intro banner */
+.ch-banner {
+  background: var(--ink2);
+  padding: 64px;
+  position: relative; overflow: hidden;
+  border-bottom: 3px solid var(--accent);
+}
+.ch-banner::before {
+  content: attr(data-num);
+  position: absolute; right: 48px; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--serif); font-size: 160px;
+  color: #ffffff06; line-height: 1; pointer-events: none;
+  font-weight: 900;
+}
+.ch-banner .ch-tag {
+  font-family: var(--mono); font-size: 11px;
+  text-transform: uppercase; letter-spacing: .15em;
+  color: var(--accent); margin-bottom: 16px;
+}
+.ch-banner h2 {
+  font-family: var(--serif); font-size: clamp(36px, 5vw, 56px);
+  color: #fff; line-height: 1.1; margin-bottom: 16px;
+}
+.ch-banner p {
+  font-size: 16px; color: #ffffff65;
+  max-width: 580px; line-height: 1.8;
+}
+
+/* Section body */
+.sec-body { padding: 64px; }
+.sec-body + .sec-body { padding-top: 0; }
+
+/* Typography within content */
+h3 {
+  font-family: var(--serif); font-size: 28px;
+  margin-bottom: 16px; color: var(--ink);
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+h4 {
+  font-family: var(--sans); font-size: 14px;
+  font-weight: 600; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--accent);
+  margin-bottom: 10px; margin-top: 32px;
+}
+p { font-size: 15px; line-height: 1.8; color: #3a3a4a; margin-bottom: 14px; }
+
+/* ===================== NOTES SYSTEM ===================== */
+.note {
+  border-radius: 8px; padding: 20px 24px;
+  margin: 24px 0; display: flex; gap: 16px;
+  position: relative; overflow: hidden;
+}
+.note::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+}
+.note-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.note-body h5 {
+  font-weight: 700; font-size: 14px; margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.note-body p { font-size: 13.5px; margin: 0; line-height: 1.7; }
+.note-body code {
+  font-family: var(--mono); background: rgba(0,0,0,0.08);
+  padding: 1px 5px; border-radius: 3px; font-size: 12px;
+}
+
+.note.info { background: #e8f0fe; }
+.note.info::before { background: var(--accent2); }
+.note.info h5 { color: var(--accent2); }
+.note.info p { color: #1a3a7a; }
+
+.note.tip { background: #e8f7f0; }
+.note.tip::before { background: var(--accent3); }
+.note.tip h5 { color: var(--accent3); }
+.note.tip p { color: #1a4a35; }
+
+.note.warn { background: #fef8e8; }
+.note.warn::before { background: var(--gold); }
+.note.warn h5 { color: var(--gold); }
+.note.warn p { color: #5a3e00; }
+
+.note.danger { background: #fee8e8; }
+.note.danger::before { background: var(--accent); }
+.note.danger h5 { color: var(--accent); }
+.note.danger p { color: #6a1a1a; }
+
+.note.pro { background: #1e2230; }
+.note.pro::before { background: var(--gold); }
+.note.pro h5 { color: var(--gold); }
+.note.pro p { color: #a0a8c0; }
+.note.pro code { background: rgba(255,255,255,0.1); color: #e0e0e0; }
+
+/* ===================== TECHNIQUE CARDS ===================== */
+.technique-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px; margin: 32px 0;
+}
+.technique-card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 24px;
+  transition: all .2s; cursor: default;
+  position: relative; overflow: hidden;
+}
+.technique-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.technique-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.tc-level {
+  font-family: var(--mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.tc-level .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.technique-card h4 {
+  font-family: var(--serif); font-size: 20px;
+  color: var(--ink); text-transform: none; letter-spacing: 0;
+  margin-top: 4px; margin-bottom: 10px;
+}
+.technique-card p { font-size: 13.5px; color: #5a5a6a; margin: 0; line-height: 1.7; }
+.technique-card .tc-shortcut {
+  margin-top: 14px; display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #888;
+}
+
+/* ===================== KEYBOARD KEYS ===================== */
+kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fff; border: 1.5px solid #ccc;
+  border-bottom: 3px solid #bbb;
+  border-radius: 5px; padding: 3px 9px;
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  color: var(--ink); box-shadow: inset 0 -1px 0 #ddd;
+  white-space: nowrap;
+}
+kbd.combo { background: var(--ink); color: #fff; border-color: var(--ink2); border-bottom-color: #000; }
+
+/* ===================== SHORTCUT TABLE ===================== */
+.shortcut-table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0; font-size: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+}
+.shortcut-table thead tr {
+  background: var(--ink); color: #fff;
+}
+.shortcut-table thead th {
+  padding: 14px 20px; text-align: left;
+  font-family: var(--mono); font-size: 11px;
+  text-transform: uppercase; letter-spacing: .1em;
+  font-weight: 500;
+}
+.shortcut-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.shortcut-table tbody tr:hover { background: var(--page2); }
+.shortcut-table tbody tr:last-child { border-bottom: none; }
+.shortcut-table td { padding: 13px 20px; vertical-align: middle; }
+.shortcut-table td:first-child { font-family: var(--mono); font-size: 12px; }
+.shortcut-table td:nth-child(2) { font-weight: 600; color: var(--ink); }
+.shortcut-table td:last-child { color: #6a6a7a; font-size: 13px; }
+.shortcut-table .cat-row td {
+  background: var(--page2);
+  font-family: var(--mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: #888; padding: 8px 20px;
+}
+.diff-badge {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-family: var(--mono);
+  padding: 2px 7px; border-radius: 3px; font-weight: 600;
+}
+.diff-easy { background: #e8f7f0; color: var(--accent3); }
+.diff-med { background: #fef8e8; color: var(--gold); }
+.diff-adv { background: #fee8e8; color: var(--accent); }
+
+/* ===================== TOOL REFERENCE ===================== */
+.tool-ref-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px; margin: 24px 0;
+  background: var(--border);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.tool-ref {
+  background: var(--cream);
+  padding: 22px 24px; transition: background .15s;
+}
+.tool-ref:hover { background: #fff; }
+.tool-ref-header {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 12px;
+}
+.tool-ref-icon {
+  width: 44px; height: 44px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.tool-ref-meta h4 {
+  font-family: var(--serif); font-size: 18px;
+  color: var(--ink); text-transform: none; letter-spacing: 0;
+  margin: 0 0 3px;
+}
+.tool-ref-meta .tool-hotkey {
+  font-family: var(--mono); font-size: 11px; color: #888;
+}
+.tool-ref p { font-size: 13px; color: #5a5a6a; margin: 0; }
+.tool-ref .tool-note {
+  margin-top: 10px; padding: 8px 12px;
+  background: rgba(0,0,0,0.04); border-radius: 5px;
+  font-size: 12px; color: #6a6a7a; font-style: italic;
+}
+.tool-ref .tool-steps {
+  margin-top: 10px; padding-left: 0; list-style: none;
+}
+.tool-ref .tool-steps li {
+  font-size: 12.5px; color: #5a5a6a; padding: 4px 0;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.tool-ref .tool-steps li::before {
+  content: counter(step-counter);
+  counter-increment: step-counter;
+  background: var(--accent); color: #fff;
+  width: 18px; height: 18px; border-radius: 50%;
+  font-size: 10px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px; font-weight: 700;
+}
+.tool-ref .tool-steps { counter-reset: step-counter; }
+
+/* ===================== INTERACTIVE CANVAS ===================== */
+.canvas-studio {
+  background: var(--ink);
+  border-radius: 12px;
+  overflow: hidden; margin: 32px 0;
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid #ffffff10;
+}
+.cs-titlebar {
+  background: #2a2f3f;
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid #ffffff10;
+}
+.cs-dot { width: 12px; height: 12px; border-radius: 50%; }
+.cs-title {
+  font-family: var(--mono); font-size: 12px; color: #ffffff50;
+  margin-left: 8px; flex: 1;
+}
+.cs-title span { color: #fff; }
+.cs-body { display: flex; }
+
+.cs-toolpanel {
+  width: 56px; background: #1e2230;
+  border-right: 1px solid #ffffff10;
+  padding: 10px 8px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.cs-tool-btn {
+  width: 40px; height: 40px; border-radius: 6px;
+  background: transparent; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: all .15s; position: relative;
+  color: #ffffff70;
+}
+.cs-tool-btn:hover { background: #ffffff15; color: #fff; }
+.cs-tool-btn.active { background: var(--accent); color: #fff; }
+.cs-tool-btn .tooltip {
+  position: absolute; left: calc(100% + 8px);
+  background: var(--ink); color: #fff;
+  font-size: 11px; white-space: nowrap;
+  padding: 4px 8px; border-radius: 4px;
+  font-family: var(--mono);
+  pointer-events: none; opacity: 0;
+  transition: opacity .15s; z-index: 10;
+}
+.cs-tool-btn:hover .tooltip { opacity: 1; }
+.cs-sep { height: 1px; background: #ffffff10; margin: 6px 0; }
+
+.cs-canvas-wrap {
+  flex: 1; position: relative; background: #2a2f3f; min-height: 360px;
+}
+canvas#mainCanvas {
+  display: block; cursor: crosshair;
+  width: 100%; height: 360px;
+  touch-action: none;
+}
+
+.cs-sidebar {
+  width: 200px; background: #1e2230;
+  border-left: 1px solid #ffffff10;
+  padding: 16px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.cs-panel h6 {
+  font-family: var(--mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: #ffffff40; margin-bottom: 10px;
+}
+.cs-color-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.cs-swatch {
+  width: 100%; aspect-ratio: 1; border-radius: 4px;
+  cursor: pointer; border: 2px solid transparent;
+  transition: transform .15s;
+}
+.cs-swatch:hover { transform: scale(1.1); }
+.cs-swatch.selected { border-color: #fff; }
+.cs-current {
+  width: 100%; height: 32px; border-radius: 5px;
+  border: 2px solid #ffffff20; margin-bottom: 10px;
+}
+.cs-size-row { display: flex; gap: 6px; align-items: center; }
+.cs-size-btn {
+  border: none; background: #2a2f3f; border-radius: 4px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex: 1; height: 32px; color: #fff; font-size: 10px;
+  transition: background .15s;
+}
+.cs-size-btn:hover, .cs-size-btn.active { background: var(--accent); }
+.cs-opacity {
+  width: 100%; accent-color: var(--accent);
+  margin-top: 6px;
+}
+.cs-action-btn {
+  width: 100%; padding: 8px;
+  background: #2a2f3f; border: 1px solid #ffffff15;
+  border-radius: 5px; color: #fff; cursor: pointer;
+  font-family: var(--mono); font-size: 11px;
+  transition: all .15s; text-align: left;
+}
+.cs-action-btn:hover { background: var(--accent); border-color: var(--accent); }
+.cs-action-btn span { margin-right: 6px; }
+
+.cs-statusbar {
+  background: #2a2f3f;
+  padding: 6px 20px;
+  display: flex; align-items: center; gap: 24px;
+  border-top: 1px solid #ffffff10;
+  font-family: var(--mono); font-size: 11px; color: #ffffff40;
+}
+.cs-statusbar span.val { color: #ffffff80; }
+
+/* ===================== CHAPTER NOTES / ASIDE ===================== */
+.chapter-notes {
+  background: var(--ink2);
+  padding: 40px 48px;
+  margin: 0;
+  border-top: 3px solid var(--gold);
+}
+.chapter-notes .cn-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.chapter-notes .cn-header h3 {
+  font-family: var(--mono); font-size: 13px;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: var(--gold); font-weight: 600;
+  border-bottom: none; padding-bottom: 0; margin: 0;
+}
+.cn-divider { flex: 1; height: 1px; background: var(--gold); opacity: .3; }
+.cn-note-item {
+  display: flex; gap: 16px; margin-bottom: 20px;
+  padding-bottom: 20px; border-bottom: 1px solid #ffffff10;
+}
+.cn-note-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.cn-num {
+  font-family: var(--serif); font-size: 28px;
+  color: var(--gold); opacity: .4; line-height: 1;
+  flex-shrink: 0; width: 28px;
+}
+.cn-text h5 {
+  font-weight: 700; font-size: 14px; color: #fff;
+  margin-bottom: 5px;
+}
+.cn-text p { font-size: 13px; color: #ffffff60; margin: 0; line-height: 1.7; }
+.cn-text code {
+  font-family: var(--mono); font-size: 11px;
+  background: #ffffff15; padding: 1px 5px; border-radius: 3px;
+  color: var(--gold);
+}
+
+/* ===================== STEP-BY-STEP ===================== */
+.steps-container { margin: 28px 0; }
+.step-row {
+  display: flex; gap: 20px; margin-bottom: 16px;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 20px;
+  transition: border-color .2s;
+}
+.step-row:hover { border-color: var(--accent); }
+.step-badge {
+  width: 36px; height: 36px; border-radius: 6px;
+  background: var(--accent); color: #fff;
+  font-family: var(--serif); font-size: 18px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.step-content h5 {
+  font-weight: 700; font-size: 15px; color: var(--ink);
+  margin-bottom: 5px;
+}
+.step-content p { font-size: 13.5px; color: #5a5a6a; margin: 0; line-height: 1.7; }
+.step-content .step-tip {
+  margin-top: 8px; font-size: 12px; color: var(--accent3);
+  font-style: italic; display: flex; align-items: center; gap: 6px;
+}
+
+/* ===================== TECHNIQUES DETAILED ===================== */
+.technique-demo {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  margin: 24px 0;
+}
+.td-header {
+  background: var(--ink2); color: #fff;
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.td-header h4 {
+  font-family: var(--serif); font-size: 18px;
+  color: #fff; text-transform: none; letter-spacing: 0; margin: 0;
+}
+.td-header .td-tag {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--accent); color: #fff;
+  padding: 3px 8px; border-radius: 3px;
+}
+.td-body { display: grid; grid-template-columns: 1fr 1fr; }
+.td-visual {
+  background: #fff; min-height: 180px;
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid var(--border); position: relative;
+  overflow: hidden; padding: 24px;
+}
+.td-instructions { padding: 24px; }
+.td-instructions ol {
+  padding-left: 18px; margin-top: 12px;
+}
+.td-instructions ol li {
+  font-size: 13px; color: #5a5a6a;
+  margin-bottom: 8px; line-height: 1.6;
+}
+.td-instructions ol li strong { color: var(--ink); }
+
+/* ===================== QUIZ ===================== */
+.quiz-wrap {
+  background: var(--ink); border-radius: 12px;
+  overflow: hidden; margin: 32px 0;
+  box-shadow: var(--shadow-lg);
+}
+.quiz-header {
+  background: var(--ink2);
+  padding: 28px 36px;
+  border-bottom: 3px solid var(--accent);
+}
+.quiz-header h3 {
+  font-family: var(--serif); font-size: 30px;
+  color: #fff; border: none; padding: 0; margin: 0;
+}
+.quiz-header p { color: #ffffff60; font-size: 14px; margin: 6px 0 0; }
+.quiz-body { padding: 32px 36px; display: flex; flex-direction: column; gap: 20px; }
+.quiz-q-block {
+  background: #2a2f3f;
+  border-radius: 8px; padding: 20px;
+  border: 1px solid #ffffff10;
+}
+.quiz-q-block .q-num {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--accent); margin-bottom: 8px;
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.quiz-q-block .q-text {
+  font-size: 16px; font-weight: 600; color: #fff;
+  margin-bottom: 14px; line-height: 1.5;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  background: #1e2230; border: 1px solid #ffffff15;
+  color: #ffffff80; padding: 10px 16px;
+  border-radius: 6px; cursor: pointer;
+  font-size: 14px; text-align: left;
+  transition: all .15s; display: flex; align-items: center; gap: 10px;
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--accent); color: #fff; background: #2a2f3f; }
+.quiz-opt.correct { background: #1a4a35; border-color: var(--accent3); color: #6BCB77; }
+.quiz-opt.wrong { background: #4a1a1a; border-color: var(--accent); color: #ff8080; }
+.quiz-opt .q-letter {
+  width: 22px; height: 22px; border-radius: 4px;
+  background: rgba(255,255,255,.08); color: #ffffff50;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; flex-shrink: 0;
+  font-weight: 700;
+}
+.quiz-result-panel {
+  background: #2a2f3f; border-radius: 8px; padding: 24px;
+  text-align: center; display: none;
+  border: 1px solid #ffffff10;
+}
+.quiz-result-panel.show { display: block; }
+.result-score {
+  font-family: var(--serif); font-size: 64px;
+  color: var(--gold); line-height: 1;
+}
+.result-label { font-size: 14px; color: #ffffff60; margin: 8px 0 16px; }
+.result-msg { font-size: 16px; font-weight: 600; color: #fff; }
+
+/* ===================== COLOR THEORY ===================== */
+.color-wheel-section {
+  background: var(--ink2); border-radius: 12px;
+  padding: 40px; margin: 24px 0;
+  display: flex; gap: 40px; align-items: flex-start;
+}
+.cw-canvas { flex-shrink: 0; }
+.cw-info { flex: 1; }
+.cw-info h4 { color: #fff !important; }
+.cw-info p { color: #ffffff65; }
+.color-harmony-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 16px;
+}
+.harmony-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.harmony-card h6 { color: var(--gold); font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.harmony-card p { font-size: 12px; color: #ffffff50; margin: 0; }
+.harmony-dots { display: flex; gap: 5px; margin-bottom: 8px; }
+.harmony-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); }
+
+/* ===================== GLOSSARY ===================== */
+.glossary-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px; margin: 24px 0;
+}
+.glossary-item {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 18px;
+}
+.glossary-item dt {
+  font-family: var(--serif); font-size: 18px;
+  color: var(--ink); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.glossary-item dt .g-tag {
+  font-family: var(--mono); font-size: 9px;
+  padding: 2px 6px; border-radius: 3px;
+  background: var(--accent); color: #fff;
+  text-transform: uppercase; font-weight: 600;
+}
+.glossary-item dd {
+  font-size: 13.5px; color: #5a5a6a; line-height: 1.7; margin: 0;
+}
+
+/* ===================== CHECKLIST / PRACTICE ===================== */
+.practice-checklist {
+  background: var(--cream); border: 1.5px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin: 24px 0;
+}
+.pc-header {
+  background: var(--accent); color: #fff;
+  padding: 16px 24px;
+  font-family: var(--serif); font-size: 20px;
+}
+.pc-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 24px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background .15s;
+}
+.pc-item:last-child { border-bottom: none; }
+.pc-item:hover { background: var(--page2); }
+.pc-checkbox {
+  width: 20px; height: 20px; border-radius: 4px;
+  border: 2px solid #ccc; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.pc-item.done .pc-checkbox {
+  background: var(--accent3); border-color: var(--accent3); color: #fff;
+}
+.pc-item.done .pc-text { text-decoration: line-through; color: #aaa; }
+.pc-text { font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.5; flex: 1; }
+.pc-diff { font-family: var(--mono); font-size: 10px; color: #aaa; margin-top: 3px; }
+
+/* ===================== SECTION DIVIDER ===================== */
+.sec-divider {
+  height: 1px; background: var(--border);
+  margin: 0; position: relative;
+}
+.sec-divider::before {
+  content: '§';
+  position: absolute; left: 64px; top: 50%;
+  transform: translateY(-50%);
+  background: var(--page); padding: 0 12px;
+  font-family: var(--serif); color: #ccc; font-size: 16px;
+}
+
+/* ===================== PAINT WINDOW DIAGRAM ===================== */
+.paint-diagram {
+  background: #f0efe8; border: 2px solid #b0a898;
+  border-radius: 6px; overflow: hidden;
+  margin: 24px 0; position: relative;
+  box-shadow: var(--shadow);
+}
+.pd-titlebar {
+  background: linear-gradient(180deg,#0078D7,#006CC1);
+  color:#fff; padding:7px 14px;
+  display:flex; align-items:center; gap:8px;
+  font-size: 13px; font-weight: 600;
+}
+.pd-ribbon {
+  background: linear-gradient(180deg,#f4f4f4,#e8e8e8);
+  border-bottom: 2px solid #c8c8c8;
+  padding: 6px 14px;
+  display: flex; gap: 4px; flex-wrap: wrap; align-items: center;
+}
+.pd-tab {
+  padding: 4px 12px; font-size: 12px; font-weight: 600;
+  border-radius: 3px 3px 0 0; color: #444; cursor: default;
+  background: transparent;
+}
+.pd-tab.active { background: #fff; border: 1px solid #c8c8c8; border-bottom: none; color: #000; }
+.pd-ribbon-body {
+  background: #fff; border-bottom: 1px solid #c8c8c8;
+  padding: 8px 14px; display: flex; gap: 20px;
+  flex-wrap: wrap; align-items: flex-start;
+}
+.pd-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pd-group-label { font-size: 10px; color: #888; text-align: center; }
+.pd-group-items { display: flex; gap: 3px; }
+.pd-btn {
+  background: linear-gradient(180deg, #fdfdfd, #ebebeb);
+  border: 1px solid #ccc; border-radius: 3px;
+  padding: 3px 8px; font-size: 11px; font-weight: 600;
+  color: #333; cursor: default;
+}
+.pd-btn.active { background: #cde6f7; border-color: #5b9bd5; }
+.pd-color-strip {
+  display: flex; gap: 3px; align-items: center;
+}
+.pd-cswatch { width: 18px; height: 18px; border: 1px solid rgba(0,0,0,0.2); border-radius: 2px; }
+.pd-body { display: flex; }
+.pd-tools {
+  background: linear-gradient(180deg,#f4f4f4,#e8e8e8);
+  border-right: 1px solid #c8c8c8;
+  padding: 6px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  min-width: 60px; align-content: start;
+}
+.pd-tool { width: 26px; height: 26px; border-radius: 3px; border: 1px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: default; }
+.pd-tool.active { background: #cde6f7; border-color: #5b9bd5; }
+.pd-canvas-area { flex: 1; background: #888; padding: 10px; min-height: 180px; }
+.pd-canvas { background: #fff; width: 100%; height: 100%; position: relative; overflow: hidden; min-height: 160px; }
+.pd-canvas-art { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.pd-statusbar {
+  background: linear-gradient(180deg,#f4f4f4,#e8e8e8);
+  border-top: 1px solid #c8c8c8;
+  padding: 4px 14px; font-size: 11px; color: #666;
+  display: flex; gap: 20px;
+}
+
+/* Labels on diagram */
+.pd-label {
+  position: absolute;
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 3px;
+  font-family: var(--mono);
+  white-space: nowrap;
+  z-index: 10;
+}
+.pd-label::after {
+  content: '';
+  position: absolute;
+  border: 5px solid transparent;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .sec-body { padding: 36px 28px; }
+  .ch-banner { padding: 40px 28px; }
+  .hero-body { padding: 40px 28px; }
+  .hero-header { padding: 20px 28px; }
+  .hero-stats .hero-stat { padding: 20px 28px; }
+  .td-body { grid-template-columns: 1fr; }
+  .color-wheel-section { flex-direction: column; }
+  .cs-sidebar { display: none; }
+  .quiz-body, .quiz-header { padding: 20px; }
+  .chapter-notes { padding: 32px 28px; }
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: 44px; }
+  .hero-stats { grid-template-columns: 1fr; }
+  .technique-grid, .tool-ref-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="logo-text">MS <em>Paint</em><br>Complete Guide</div>
+    <div class="logo-sub">Student Edition — 2025</div>
+    <div class="sb-version">Advanced Level</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Introduction</div>
+    <a class="sb-link active" href="#intro">Overview <span class="sb-num">00</span></a>
+
+    <div class="sb-section">Foundations</div>
+    <a class="sb-link" href="#ch1">Mouse & Interface <span class="sb-num">01</span></a>
+    <a class="sb-link" href="#ch2">Screen Anatomy <span class="sb-num">02</span></a>
+    <a class="sb-link" href="#ch3">All Tools Deep Dive <span class="sb-num">03</span></a>
+
+    <div class="sb-section">Core Skills</div>
+    <a class="sb-link" href="#ch4">Colors & Theory <span class="sb-num">04</span></a>
+    <a class="sb-link" href="#ch5">Drawing Techniques <span class="sb-num">05</span></a>
+    <a class="sb-link" href="#ch6">Selection & Editing <span class="sb-num">06</span></a>
+
+    <div class="sb-section">Advanced</div>
+    <a class="sb-link" href="#ch7">Keyboard Shortcuts <span class="sb-num">07</span></a>
+    <a class="sb-link" href="#ch8">Pro Techniques <span class="sb-num">08</span></a>
+    <a class="sb-link" href="#ch9">File Management <span class="sb-num">09</span></a>
+
+    <div class="sb-section">Practice</div>
+    <a class="sb-link" href="#canvas">Interactive Studio <span class="sb-badge">Live</span></a>
+    <a class="sb-link" href="#quiz">Chapter Quiz <span class="sb-num">10</span></a>
+    <a class="sb-link" href="#glossary">Glossary <span class="sb-num">11</span></a>
+  </nav>
+  <div class="sb-progress">
+    <p>Reading Progress</p>
+    <div class="sb-prog-bar"><div class="sb-prog-fill" id="progFill"></div></div>
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main>
+
+<!-- HERO -->
+<section class="hero" id="intro">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-header">
+    <div class="breadcrumb">Computer Studies / <span>Digital Art</span> / MS Paint</div>
+    <div class="hero-pills">
+      <div class="hero-pill hot">Advanced</div>
+      <div class="hero-pill">Windows 10 & 11</div>
+      <div class="hero-pill">Student Guide</div>
+    </div>
+  </div>
+  <div class="hero-body">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Complete Learning Guide</div>
+      <h1>Master<br><em>MS Paint</em><br>from Zero</h1>
+      <p class="hero-desc">A comprehensive, structured guide covering every tool, technique, and keyboard shortcut in Microsoft Paint — from the absolute basics to professional-level tricks. Includes chapter notes, practice exercises, and an interactive canvas.</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#ch1">Start Learning →</a>
+        <a class="btn-outline" href="#canvas">Open Studio</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="stat-num">11<span>+</span></div><div class="stat-label">Chapters</div></div>
+    <div class="hero-stat"><div class="stat-num">40<span>+</span></div><div class="stat-label">Techniques</div></div>
+    <div class="hero-stat"><div class="stat-num">60<span>+</span></div><div class="stat-label">Shortcuts</div></div>
+  </div>
+</section>
+
+<!-- ===== CHAPTER 1: MOUSE & INTERFACE ===== -->
+<div id="ch1"></div>
+<div class="ch-banner" data-num="01">
+  <div class="ch-tag">Chapter 01 — Foundations</div>
+  <h2>Mouse & Computer Interface</h2>
+  <p>Understanding how to precisely control your mouse is the single most important skill in digital art. This chapter covers every mouse action you'll use in Paint, and explains exactly what's happening when you do each one.</p>
+</div>
+
+<div class="sec-body">
+  <h3>Understanding Mouse Input</h3>
+  <p>Your mouse communicates with the computer using two main types of signals: <strong>position</strong> (where the cursor is on screen) and <strong>button state</strong> (which buttons are pressed). Paint constantly reads both to know what you're drawing.</p>
+
+  <div class="note info">
+    <div class="note-icon">📌</div>
+    <div class="note-body">
+      <h5>Note — How Paint Reads Your Mouse</h5>
+      <p>Paint samples your mouse position hundreds of times per second. When you move the mouse slowly, it records many points close together (smooth curves). When you move fast, points are farther apart (jagged lines). This is why drawing slowly gives better results!</p>
+    </div>
+  </div>
+
+  <div class="technique-grid">
+    <div class="technique-card" style="border-top-color:var(--accent2)">
+      <div style="height:3px;background:var(--accent2);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent3)"></div>Beginner</div>
+      <h4>Left Click</h4>
+      <p>Press and release the left button quickly. Used to select tools, pick colors, and place single dots on the canvas.</p>
+      <div class="tc-shortcut">🖱️ Primary drawing button</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent3);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent3)"></div>Beginner</div>
+      <h4>Right Click</h4>
+      <p>Opens a context menu OR draws using Color 2. In Paint, right-clicking while drawing uses your background color instead of foreground.</p>
+      <div class="tc-shortcut">🖱️ Secondary / Context menu</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--gold);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Core Skill</div>
+      <h4>Click & Drag</h4>
+      <p>Hold the left button down while moving the mouse. This is how you draw freehand lines, resize shapes, and move selections. The most-used technique in Paint.</p>
+      <div class="tc-shortcut">🖱️ Hold + Move simultaneously</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Intermediate</div>
+      <h4>Shift + Drag</h4>
+      <p>Hold <kbd>Shift</kbd> while dragging with the Rectangle or Ellipse tool. This constrains the shape to a perfect square or circle. Also constrains lines to 45° angles.</p>
+      <div class="tc-shortcut"><kbd>Shift</kbd> + click & drag</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent2);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Intermediate</div>
+      <h4>Scroll Wheel</h4>
+      <p>Roll the scroll wheel to move the canvas view up and down. Hold <kbd>Ctrl</kbd> while scrolling to zoom in and out of the canvas.</p>
+      <div class="tc-shortcut"><kbd>Ctrl</kbd> + scroll = zoom</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Precise Positioning</h4>
+      <p>Watch the status bar at the bottom of Paint — it shows your exact cursor coordinates (X, Y pixels). Use this to place shapes and elements with pixel-perfect accuracy.</p>
+      <div class="tc-shortcut">📐 Check status bar always</div>
+    </div>
+  </div>
+
+  <div class="note tip">
+    <div class="note-icon">💡</div>
+    <div class="note-body">
+      <h5>Pro Tip — Steady Hand Technique</h5>
+      <p>Rest your wrist lightly on the desk and move from your elbow, not your wrist. This gives you much smoother, more controlled lines — the same technique professional digital artists use! For very fine details, zoom in using <code>Ctrl + scroll up</code> first.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Chapter 1 Notes -->
+<div class="chapter-notes">
+  <div class="cn-header">
+    <h3>📓 Chapter Notes</h3>
+    <div class="cn-divider"></div>
+  </div>
+  <div class="cn-note-item">
+    <div class="cn-num">1</div>
+    <div class="cn-text">
+      <h5>Color 1 vs Color 2</h5>
+      <p>Paint always tracks two colors simultaneously. Color 1 (foreground) is used when you <strong>left-click</strong>. Color 2 (background) is used when you <strong>right-click</strong> with most tools, and by the Eraser. This means you can switch between two colors instantly without clicking the palette!</p>
+    </div>
+  </div>
+  <div class="cn-note-item">
+    <div class="cn-num">2</div>
+    <div class="cn-text">
+      <h5>Mouse Sensitivity Matters</h5>
+      <p>If your lines feel shaky, try lowering mouse speed in Windows Settings → Bluetooth & devices → Mouse → Additional mouse settings. A DPI setting of 800–1200 is ideal for drawing in Paint.</p>
+    </div>
+  </div>
+  <div class="cn-note-item">
+    <div class="cn-num">3</div>
+    <div class="cn-text">
+      <h5>The Escape Key is Your Friend</h5>
+      <p>Press <code>Esc</code> at any time to cancel a shape you're drawing before you release the mouse. For text, <code>Esc</code> cancels the text entry. Much faster than using Undo!</p>
+    </div>
+  </div>
+</div>
+
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 2: SCREEN ANATOMY ===== -->
+<div id="ch2"></div>
+<div class="ch-banner" data-num="02">
+  <div class="ch-tag">Chapter 02 — Foundations</div>
+  <h2>Screen Anatomy & Navigation</h2>
+  <p>Every part of the Paint window has a name and a purpose. Learning these terms will help you understand instructions in any tutorial, book, or class.</p>
+</div>
+
+<div class="sec-body">
+  <h3>The Paint Window — Labeled</h3>
+
+  <div class="paint-diagram" style="position:relative">
+    <div class="pd-titlebar">
+      <span>🎨</span> Untitled — Paint
+      <span style="margin-left:auto;font-size:12px;opacity:.6">— □ ✕</span>
+    </div>
+    <div class="pd-ribbon">
+      <div class="pd-tab active">File</div>
+      <div class="pd-tab" style="background:linear-gradient(180deg,#f4f4f4,#e8e8e8)">Home</div>
+      <div class="pd-tab">View</div>
+    </div>
+    <div class="pd-ribbon-body">
+      <div class="pd-group">
+        <div class="pd-group-items">
+          <div class="pd-btn">Cut</div>
+          <div class="pd-btn">Copy</div>
+          <div class="pd-btn">Paste</div>
+        </div>
+        <div class="pd-group-label">Clipboard</div>
+      </div>
+      <div style="width:1px;background:#ccc;margin:0 6px;align-self:stretch"></div>
+      <div class="pd-group">
+        <div class="pd-group-items">
+          <div class="pd-btn active">✏️</div>
+          <div class="pd-btn">🖌️</div>
+          <div class="pd-btn">⬜</div>
+          <div class="pd-btn">⭕</div>
+          <div class="pd-btn">🪣</div>
+        </div>
+        <div class="pd-group-label">Tools</div>
+      </div>
+      <div style="width:1px;background:#ccc;margin:0 6px;align-self:stretch"></div>
+      <div class="pd-group">
+        <div class="pd-color-strip">
+          <div class="pd-cswatch" style="background:#000"></div>
+          <div class="pd-cswatch" style="background:#fff;border:1px solid #ccc"></div>
+          <div style="width:6px"></div>
+          <div class="pd-cswatch" style="background:#FF0000"></div>
+          <div class="pd-cswatch" style="background:#FF8C00"></div>
+          <div class="pd-cswatch" style="background:#FFD700"></div>
+          <div class="pd-cswatch" style="background:#00C000"></div>
+          <div class="pd-cswatch" style="background:#0078D4"></div>
+          <div class="pd-cswatch" style="background:#8B00FF"></div>
+          <div class="pd-cswatch" style="background:#FF69B4"></div>
+          <div class="pd-cswatch" style="background:#00CED1"></div>
+          <div class="pd-cswatch" style="background:#8B4513"></div>
+          <div class="pd-cswatch" style="background:#C0C0C0"></div>
+        </div>
+        <div class="pd-group-label">Colors</div>
+      </div>
+    </div>
+    <div class="pd-body">
+      <div class="pd-tools">
+        <div class="pd-tool active">✏️</div><div class="pd-tool">🖌️</div>
+        <div class="pd-tool">⬜</div><div class="pd-tool">⭕</div>
+        <div class="pd-tool">📏</div><div class="pd-tool">🪣</div>
+        <div class="pd-tool">⬛</div><div class="pd-tool">🔤</div>
+        <div class="pd-tool">💉</div><div class="pd-tool">🔲</div>
+      </div>
+      <div class="pd-canvas-area">
+        <div class="pd-canvas">
+          <div class="pd-canvas-art">
+            <svg width="200" height="140" viewBox="0 0 200 140">
+              <path d="M20,110 Q60,20 100,70 Q140,120 180,30" stroke="#4D96FF" stroke-width="4" fill="none" stroke-linecap="round"/>
+              <rect x="40" y="40" width="50" height="40" rx="4" fill="none" stroke="#FF4757" stroke-width="3"/>
+              <circle cx="150" cy="90" r="25" fill="#FFD93D" opacity=".6" stroke="#FF8C00" stroke-width="2"/>
+              <path d="M80,120 L100,90 L120,120Z" fill="#6BCB77" opacity=".7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pd-statusbar">
+      <span>🖱️ 245, 138 px</span>
+      <span>📐 800 × 600 px</span>
+      <span>🔍 100%</span>
+    </div>
+  </div>
+
+  <div class="note info">
+    <div class="note-icon">📌</div>
+    <div class="note-body">
+      <h5>Note — Reading the Status Bar</h5>
+      <p>The status bar at the bottom constantly updates. It shows: (1) your mouse cursor's current X,Y position in pixels, (2) the size of whatever you're drawing, (3) the canvas size, and (4) the current zoom level. Professional artists watch this constantly to be precise.</p>
+    </div>
+  </div>
+
+  <h3>Navigating the Canvas</h3>
+  <div class="steps-container">
+    <div class="step-row">
+      <div class="step-badge">1</div>
+      <div class="step-content">
+        <h5>Zoom In for Detail</h5>
+        <p>Use <kbd>Ctrl</kbd> + <kbd>+</kbd> or hold <kbd>Ctrl</kbd> and scroll up to zoom in. You can also use the slider in the bottom-right corner of Paint. Zoom in when drawing fine details like text or thin lines.</p>
+        <div class="step-tip">✨ Working at 400–800% zoom lets you edit individual pixels!</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">2</div>
+      <div class="step-content">
+        <h5>Pan the Canvas</h5>
+        <p>When zoomed in, you can't see the whole drawing. Use the scrollbars on the right and bottom edges of the canvas to pan around. Or hold the scroll wheel button and drag.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">3</div>
+      <div class="step-content">
+        <h5>Full-Screen View</h5>
+        <p>Go to <strong>View tab → Full screen</strong> to see your drawing without any toolbars. Press <kbd>Esc</kbd> to return to normal view. Great for checking your overall composition.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">4</div>
+      <div class="step-content">
+        <h5>Resize the Canvas</h5>
+        <p>Go to <strong>Home tab → Resize</strong> (or press <kbd>Ctrl</kbd> + <kbd>W</kbd>) to change the canvas size. You can resize by percentage or by exact pixels. Always set the canvas size BEFORE you start drawing!</p>
+        <div class="step-tip">✨ Standard canvas sizes: 800×600 (screen), 1920×1080 (HD), 595×842 (A4 print)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-notes">
+  <div class="cn-header">
+    <h3>📓 Chapter Notes</h3>
+    <div class="cn-divider"></div>
+  </div>
+  <div class="cn-note-item">
+    <div class="cn-num">1</div>
+    <div class="cn-text">
+      <h5>Canvas Size & Resolution</h5>
+      <p>The canvas size in Paint is measured in pixels. If you plan to print, use at least <code>2480 × 3508</code> pixels for A4 paper at 300 DPI (high quality). If it's just for screen, <code>1920 × 1080</code> is plenty. A bigger canvas = a bigger file size!</p>
+    </div>
+  </div>
+  <div class="cn-note-item">
+    <div class="cn-num">2</div>
+    <div class="cn-text">
+      <h5>The Ribbon Can Be Hidden</h5>
+      <p>If you want more canvas space, you can minimize the Ribbon by double-clicking any tab. Click a tab again to temporarily see it. Use <code>Ctrl + F1</code> to toggle it permanently.</p>
+    </div>
+  </div>
+  <div class="cn-note-item">
+    <div class="cn-num">3</div>
+    <div class="cn-text">
+      <h5>Multiple Windows</h5>
+      <p>You can open two Paint windows at the same time (run Paint twice). This lets you reference one drawing while working on another — a common technique for copying designs!</p>
+    </div>
+  </div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 3: ALL TOOLS ===== -->
+<div id="ch3"></div>
+<div class="ch-banner" data-num="03">
+  <div class="ch-tag">Chapter 03 — Foundations</div>
+  <h2>Complete Tool Reference</h2>
+  <p>An in-depth look at every tool in MS Paint — not just what it does, but exactly how to use it with step-by-step instructions and professional tips for each one.</p>
+</div>
+
+<div class="sec-body">
+  <div class="tool-ref-grid">
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f0f0ff">✏️</div>
+        <div class="tool-ref-meta">
+          <h4>Pencil</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>P</kbd></div>
+        </div>
+      </div>
+      <p>Draws 1-pixel wide freehand lines. The classic drawing tool — what you use most for sketching.</p>
+      <ol class="tool-steps">
+        <li>Select Pencil from the toolbar or press P</li>
+        <li>Click Color 1 to choose your drawing color</li>
+        <li>Click and drag on the canvas to draw</li>
+        <li>Right-click and drag to draw with Color 2</li>
+      </ol>
+      <div class="tool-note">⚡ Pencil ignores brush size settings — it's always 1 pixel. Use Brush for thicker lines.</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f0fff0">🖌️</div>
+        <div class="tool-ref-meta">
+          <h4>Brush (Paintbrush)</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>B</kbd></div>
+        </div>
+      </div>
+      <p>Draws smooth, soft lines in various shapes and sizes. Choose from 9 different brush tip styles in the Ribbon.</p>
+      <ol class="tool-steps">
+        <li>Select Brush or press B</li>
+        <li>In the Ribbon, click a brush shape (round, calligraphy, oil, etc.)</li>
+        <li>Choose a size (small, medium, large, extra-large)</li>
+        <li>Click and drag to paint</li>
+      </ol>
+      <div class="tool-note">⚡ Try the "Oil" or "Marker" brush styles for different artistic effects!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#fff0f0">🪣</div>
+        <div class="tool-ref-meta">
+          <h4>Fill with Color</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>F</kbd></div>
+        </div>
+      </div>
+      <p>Fills a closed area with your chosen color instantly. Think of pouring paint into a container.</p>
+      <ol class="tool-steps">
+        <li>Select Fill or press F</li>
+        <li>Choose a color from the palette</li>
+        <li>Click anywhere inside a closed shape</li>
+        <li>The entire enclosed area fills with color</li>
+      </ol>
+      <div class="tool-note">⚠️ If there's even a 1-pixel gap in the outline, fill will "leak" outside. Zoom in to check for gaps!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f0f8ff">💉</div>
+        <div class="tool-ref-meta">
+          <h4>Color Picker (Eyedropper)</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>I</kbd></div>
+        </div>
+      </div>
+      <p>Picks up the exact color from any pixel on your canvas and sets it as your active drawing color.</p>
+      <ol class="tool-steps">
+        <li>Select Color Picker or press I</li>
+        <li>Left-click any pixel to set it as Color 1</li>
+        <li>Right-click any pixel to set it as Color 2</li>
+        <li>Your previous tool is restored automatically</li>
+      </ol>
+      <div class="tool-note">⚡ Quick tip: Hold <kbd>Ctrl</kbd> while any tool is active to temporarily switch to the Color Picker!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#fffff0">⬛</div>
+        <div class="tool-ref-meta">
+          <h4>Eraser</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>E</kbd></div>
+        </div>
+      </div>
+      <p>Erases pixels and replaces them with Color 2 (usually white). Can also be used as a "painting with Color 2" tool.</p>
+      <ol class="tool-steps">
+        <li>Select Eraser or press E</li>
+        <li>Choose a size in the Ribbon (small to extra-large)</li>
+        <li>Left-click and drag to erase (fills with Color 2)</li>
+        <li>Right-click and drag to erase ONLY Color 1, leaving everything else</li>
+      </ol>
+      <div class="tool-note">⚡ Right-click erasing is a powerful technique — it selectively removes one specific color from complex drawings!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f8f0ff">📏</div>
+        <div class="tool-ref-meta">
+          <h4>Line Tool</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>L</kbd></div>
+        </div>
+      </div>
+      <p>Draws perfectly straight lines between two points. Essential for technical drawings and geometric art.</p>
+      <ol class="tool-steps">
+        <li>Select Line or press L</li>
+        <li>Choose line thickness in the Ribbon (1px to 8px)</li>
+        <li>Click where the line should start</li>
+        <li>Drag to the endpoint and release</li>
+      </ol>
+      <div class="tool-note">⚡ Hold <kbd>Shift</kbd> while dragging to snap to exactly 0°, 45°, or 90° angles!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#fff8f0">📐</div>
+        <div class="tool-ref-meta">
+          <h4>Curve Tool</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>U</kbd></div>
+        </div>
+      </div>
+      <p>Draws smooth Bezier curves. Unlike freehand, these curves are mathematically perfect and adjustable.</p>
+      <ol class="tool-steps">
+        <li>Select Curve or press U</li>
+        <li>Click and drag to draw the base line</li>
+        <li>Click once and drag to set the first curve point</li>
+        <li>Click again and drag to set the second curve point</li>
+      </ol>
+      <div class="tool-note">⚠️ Curve tool requires exactly 3 clicks to complete. Practice until it feels natural — it's very powerful once mastered!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f0fff8">⬜</div>
+        <div class="tool-ref-meta">
+          <h4>Rectangle</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>R</kbd></div>
+        </div>
+      </div>
+      <p>Draws rectangles. In the Ribbon choose: outline only, filled with outline, or filled without outline.</p>
+      <ol class="tool-steps">
+        <li>Select Rectangle or press R</li>
+        <li>Choose fill style in the Ribbon</li>
+        <li>Click one corner and drag to the opposite corner</li>
+        <li>Release to place the shape</li>
+      </ol>
+      <div class="tool-note">⚡ Hold <kbd>Shift</kbd> to draw a perfect square. The shape outline uses Color 1, fill uses Color 2!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#fff0f8">⭕</div>
+        <div class="tool-ref-meta">
+          <h4>Ellipse (Oval/Circle)</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>O</kbd></div>
+        </div>
+      </div>
+      <p>Draws ellipses and circles. Works the same as Rectangle but draws an oval within the bounding box.</p>
+      <ol class="tool-steps">
+        <li>Select Ellipse or press O</li>
+        <li>Choose fill style in the Ribbon</li>
+        <li>Click and drag to define the bounding box</li>
+        <li>Hold <kbd>Shift</kbd> for a perfect circle</li>
+      </ol>
+      <div class="tool-note">⚡ To draw a circle from its center, start dragging from the middle of where you want the circle to be.</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f8f8f0">📐</div>
+        <div class="tool-ref-meta">
+          <h4>Triangle / Polygon</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>G</kbd></div>
+        </div>
+      </div>
+      <p>Draws triangles and multi-sided polygons by clicking each corner point. Supports 3 to any number of sides.</p>
+      <ol class="tool-steps">
+        <li>Select Polygon or press G</li>
+        <li>Click the first corner</li>
+        <li>Click each subsequent corner</li>
+        <li>Double-click to close the shape automatically</li>
+      </ol>
+      <div class="tool-note">⚡ Hold <kbd>Shift</kbd> between clicks to keep sides at perfect 45° or 90° angles!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#f0f8ff">🔤</div>
+        <div class="tool-ref-meta">
+          <h4>Text Tool</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>T</kbd></div>
+        </div>
+      </div>
+      <p>Adds text to your drawing. Once confirmed, text is permanently part of the image and cannot be edited separately.</p>
+      <ol class="tool-steps">
+        <li>Select Text or press T</li>
+        <li>Click and drag to create a text box</li>
+        <li>Choose font, size, and bold/italic in the Ribbon</li>
+        <li>Type your text, then click outside the box to confirm</li>
+      </ol>
+      <div class="tool-note">⚠️ IMPORTANT: Text becomes "burned in" as pixels once you click away or switch tools. If you need to edit it, use Ctrl+Z immediately!</div>
+    </div>
+
+    <div class="tool-ref">
+      <div class="tool-ref-header">
+        <div class="tool-ref-icon" style="background:#fff8f0">🔲</div>
+        <div class="tool-ref-meta">
+          <h4>Select (Rectangle)</h4>
+          <div class="tool-hotkey">Shortcut: <kbd>S</kbd></div>
+        </div>
+      </div>
+      <p>Selects a rectangular area of the canvas. Once selected, you can move, copy, cut, resize, or delete the selection.</p>
+      <ol class="tool-steps">
+        <li>Select the Rectangle Select tool or press S</li>
+        <li>Drag to draw a selection box around what you want</li>
+        <li>Drag the selection to move it</li>
+        <li>Use <kbd>Ctrl+C</kbd> to copy or <kbd>Delete</kbd> to erase</li>
+      </ol>
+      <div class="tool-note">⚡ Enable "Transparent selection" in the Ribbon to make the white background of your pasted object transparent!</div>
+    </div>
+
+  </div><!-- tool-ref-grid -->
+
+  <div class="note pro">
+    <div class="note-icon">⭐</div>
+    <div class="note-body">
+      <h5>Pro Note — Shape Fill Modes Explained</h5>
+      <p>For Rectangle, Ellipse, and Polygon tools, the Ribbon shows 3 fill options: (1) <strong>Outline only</strong> — draws just the border in Color 1. (2) <strong>Outline + Fill</strong> — border in Color 1, filled with Color 2. (3) <strong>Fill only</strong> — solid shape in Color 1, no border. Understanding this lets you combine colors creatively without needing to fill separately.</p>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-notes">
+  <div class="cn-header"><h3>📓 Chapter Notes</h3><div class="cn-divider"></div></div>
+  <div class="cn-note-item"><div class="cn-num">1</div><div class="cn-text">
+    <h5>Why Tools Matter More Than You Think</h5>
+    <p>Using the right tool saves enormous time. Drawing a circle freehand with the Pencil vs. using the Ellipse tool (holding Shift) is the difference between 2 minutes of struggling and 2 seconds of perfection. Always ask: "Is there a tool that does this automatically?"</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">2</div><div class="cn-text">
+    <h5>The Curve Tool — Most Underused</h5>
+    <p>Most beginners ignore the Curve tool, but it's one of the most powerful. It creates smooth <code>Bezier curves</code> — the same math used in professional vector software. Practice it by drawing wave shapes and S-curves.</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">3</div><div class="cn-text">
+    <h5>Tool Memory</h5>
+    <p>Paint remembers the last settings for each tool. If you switch from Brush back to Eraser, it remembers the eraser size you last used. Use this to your advantage — configure each tool optimally once and it stays that way!</p>
+  </div></div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 4: COLORS ===== -->
+<div id="ch4"></div>
+<div class="ch-banner" data-num="04">
+  <div class="ch-tag">Chapter 04 — Core Skills</div>
+  <h2>Colors & Color Theory</h2>
+  <p>Color is the most powerful element in any artwork. This chapter teaches both how to use Paint's color tools and the fundamental principles of color theory that make drawings look professional.</p>
+</div>
+
+<div class="sec-body">
+  <h3>The Color Palette in Paint</h3>
+  <p>Paint comes with 20 preset colors displayed in the palette. You can customize any of the 10 bottom-row colors by double-clicking them to open the custom color picker.</p>
+
+  <div class="color-wheel-section">
+    <div class="cw-canvas">
+      <canvas id="colorWheel" width="200" height="200"></canvas>
+    </div>
+    <div class="cw-info">
+      <h4>Understanding Color Relationships</h4>
+      <p>Colors that work well together follow mathematical rules. Here are the four main harmony types:</p>
+      <div class="color-harmony-grid">
+        <div class="harmony-card">
+          <div class="harmony-dots">
+            <div class="harmony-dot" style="background:#e84444"></div>
+            <div class="harmony-dot" style="background:#44b8e8"></div>
+          </div>
+          <h6>Complementary</h6>
+          <p>Colors opposite on the wheel. High contrast, very vibrant together. (Red + Cyan)</p>
+        </div>
+        <div class="harmony-card">
+          <div class="harmony-dots">
+            <div class="harmony-dot" style="background:#e84444"></div>
+            <div class="harmony-dot" style="background:#e8a044"></div>
+            <div class="harmony-dot" style="background:#e8e044"></div>
+          </div>
+          <h6>Analogous</h6>
+          <p>Colors next to each other. Natural, harmonious, pleasing. (Red, Orange, Yellow)</p>
+        </div>
+        <div class="harmony-card">
+          <div class="harmony-dots">
+            <div class="harmony-dot" style="background:#e84444"></div>
+            <div class="harmony-dot" style="background:#44e888"></div>
+            <div class="harmony-dot" style="background:#4444e8"></div>
+          </div>
+          <h6>Triadic</h6>
+          <p>Three colors evenly spaced. Colorful and balanced. (Red, Green, Blue)</p>
+        </div>
+        <div class="harmony-card">
+          <div class="harmony-dots">
+            <div class="harmony-dot" style="background:#333"></div>
+            <div class="harmony-dot" style="background:#777"></div>
+            <div class="harmony-dot" style="background:#ccc"></div>
+          </div>
+          <h6>Monochromatic</h6>
+          <p>One color in different shades. Elegant and sophisticated. (Dark gray → White)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Custom Colors — The Color Picker</h3>
+  <p>Double-click any color swatch in the palette to open the "Edit Colors" dialog. This is one of Paint's most powerful features.</p>
+
+  <div class="note info">
+    <div class="note-icon">📌</div>
+    <div class="note-body">
+      <h5>Note — RGB vs HSL</h5>
+      <p>In the Edit Colors dialog, you can enter colors two ways. <strong>RGB</strong> (Red, Green, Blue) — each goes from 0–255. <code>RGB(255,0,0)</code> = pure red. <code>RGB(0,0,0)</code> = black. <code>RGB(255,255,255)</code> = white. <strong>Hue/Sat/Lum</strong> — more intuitive: Hue = which color (0–239), Saturation = how vivid (0–240), Luminance = how bright (0–240).</p>
+    </div>
+  </div>
+
+  <div class="technique-grid">
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Technique</div>
+      <h4>Skin Tone Mixing</h4>
+      <p>Skin tones are NOT just "pink" or "brown". Mix: high Red, medium Green, low Blue. Try RGB(255, 210, 170) for light skin, RGB(180, 120, 80) for medium, RGB(100, 60, 30) for dark.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent2);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Technique</div>
+      <h4>Shading Without Gray</h4>
+      <p>Instead of adding black to shade, add the color's complement. Shadow on blue → add a hint of dark orange. This gives richer, more vibrant shadows than plain gray mixing.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent3);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Saving Custom Colors</h4>
+      <p>The bottom 10 squares in Paint's palette are "custom colors" — double-click one, mix your perfect color, click "Add to Custom Colors". It stays saved as long as Paint is open.</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <div class="note-icon">⚠️</div>
+    <div class="note-body">
+      <h5>Warning — Transparent Background</h5>
+      <p>MS Paint does not natively support transparency (alpha channel). When you erase, you get white — not transparency. To work with transparent PNGs, save as PNG and note that the "white" background will not be transparent. Use the transparent selection mode when pasting to work around this limitation.</p>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-notes">
+  <div class="cn-header"><h3>📓 Chapter Notes</h3><div class="cn-divider"></div></div>
+  <div class="cn-note-item"><div class="cn-num">1</div><div class="cn-text">
+    <h5>Hex Color Codes</h5>
+    <p>Every color has a <strong>hex code</strong> — a 6-digit code starting with #. Example: <code>#FF0000</code> = red, <code>#0078D4</code> = Microsoft blue. Paint doesn't show hex codes directly, but if you know an RGB value, you can convert: each pair of hex digits = one RGB number. R=255 = FF, G=120 = 78, B=212 = D4.</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">2</div><div class="cn-text">
+    <h5>The 60-30-10 Rule</h5>
+    <p>Professional designers use this rule: 60% of your artwork uses a dominant color, 30% uses a secondary color, and 10% uses an accent color. Try applying this to any drawing and notice how much more balanced it looks!</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">3</div><div class="cn-text">
+    <h5>White is NOT the Background Default</h5>
+    <p>You can change Paint's default canvas color! Before drawing, press <code>Ctrl+A</code> to select all (gets you the white canvas), then use Fill to flood it with any color. Now you're drawing on a colored background — great for night scenes or stylized art.</p>
+  </div></div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 5: TECHNIQUES ===== -->
+<div id="ch5"></div>
+<div class="ch-banner" data-num="05">
+  <div class="ch-tag">Chapter 05 — Core Skills</div>
+  <h2>Drawing Techniques</h2>
+  <p>Tools alone don't make art — technique does. This chapter covers the systematic approaches professional artists use to create clean, detailed, expressive drawings in MS Paint.</p>
+</div>
+
+<div class="sec-body">
+  <h3>Fundamental Techniques</h3>
+
+  <div class="technique-demo">
+    <div class="td-header">
+      <h4>Technique: Pixel Art</h4>
+      <div class="td-tag">Advanced</div>
+    </div>
+    <div class="td-body">
+      <div class="td-visual">
+        <svg width="120" height="120" viewBox="0 0 120 120" style="image-rendering:pixelated">
+          <rect x="40" y="10" width="40" height="10" fill="#ffcc00"/>
+          <rect x="30" y="20" width="60" height="10" fill="#ffcc00"/>
+          <rect x="20" y="30" width="80" height="30" fill="#ffcc00"/>
+          <rect x="30" y="30" width="20" height="15" fill="#4444ff" opacity=".7"/>
+          <rect x="70" y="30" width="20" height="15" fill="#4444ff" opacity=".7"/>
+          <rect x="40" y="60" width="10" height="10" fill="#cc0000"/>
+          <rect x="70" y="60" width="10" height="10" fill="#cc0000"/>
+          <rect x="50" y="65" width="20" height="5" fill="#cc0000"/>
+          <rect x="20" y="60" width="80" height="30" fill="#ffcc00"/>
+          <rect x="10" y="90" width="100" height="20" fill="#cc7700"/>
+          <rect x="30" y="110" width="20" height="10" fill="#884400"/>
+          <rect x="70" y="110" width="20" height="10" fill="#884400"/>
+          <text x="60" y="95" text-anchor="middle" font-size="7" fill="white" font-family="monospace" font-weight="bold">PIXEL ART</text>
+        </svg>
+        <div style="position:absolute;bottom:8px;right:8px;font-size:10px;color:#aaa">Zoom: 800%</div>
+      </div>
+      <div class="td-instructions">
+        <p style="font-size:13px;color:#5a5a6a">Pixel art is drawing where every individual pixel is deliberately placed. Paint is perfect for this — it was originally designed for this exact purpose!</p>
+        <ol>
+          <li>Zoom to <strong>800% or more</strong> using Ctrl + scroll wheel</li>
+          <li>Use only the <strong>Pencil tool</strong> (1px width)</li>
+          <li>Work on a small canvas: <strong>32×32 or 64×64 pixels</strong></li>
+          <li>Use <strong>Fill tool</strong> for solid color areas</li>
+          <li>Zoom out with Ctrl+0 to see the final result</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-demo">
+    <div class="td-header">
+      <h4>Technique: Layering with Shapes</h4>
+      <div class="td-tag">Intermediate</div>
+    </div>
+    <div class="td-body">
+      <div class="td-visual">
+        <svg width="160" height="130" viewBox="0 0 160 130">
+          <circle cx="80" cy="70" r="55" fill="#87CEEB"/>
+          <rect x="20" y="90" width="120" height="40" fill="#228B22"/>
+          <circle cx="80" cy="50" r="30" fill="#FFD700"/>
+          <ellipse cx="40" cy="45" rx="25" ry="15" fill="white" opacity=".85"/>
+          <ellipse cx="65" cy="38" rx="30" ry="18" fill="white" opacity=".85"/>
+          <ellipse cx="90" cy="42" rx="22" ry="13" fill="white" opacity=".85"/>
+          <rect x="72" y="80" width="16" height="30" fill="#8B4513"/>
+          <ellipse cx="80" cy="75" rx="22" ry="20" fill="#228B22"/>
+        </svg>
+      </div>
+      <div class="td-instructions">
+        <p style="font-size:13px;color:#5a5a6a">Complex scenes are built by stacking simple shapes on top of each other — background first, foreground last.</p>
+        <ol>
+          <li>Draw the <strong>sky background</strong> first using a filled rectangle</li>
+          <li>Add the <strong>ground</strong> with another filled rectangle on top</li>
+          <li>Draw <strong>far objects</strong> (mountains, buildings) next</li>
+          <li>Add <strong>closer objects</strong> (trees, people) last</li>
+          <li>Use <strong>Fill tool</strong> to quickly color large areas</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="technique-demo">
+    <div class="td-header">
+      <h4>Technique: Creating Gradients</h4>
+      <div class="td-tag">Advanced</div>
+    </div>
+    <div class="td-body">
+      <div class="td-visual">
+        <svg width="160" height="120" viewBox="0 0 160 120">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a0a2e"/>
+              <stop offset="50%" stop-color="#e84444"/>
+              <stop offset="100%" stop-color="#FFD93D"/>
+            </linearGradient>
+          </defs>
+          <rect width="160" height="120" fill="url(#skyGrad)"/>
+          <text x="80" y="65" text-anchor="middle" font-size="11" fill="white" opacity=".9" font-family="sans-serif">Painted manually</text>
+          <text x="80" y="80" text-anchor="middle" font-size="11" fill="white" opacity=".9" font-family="sans-serif">line by line</text>
+        </svg>
+      </div>
+      <div class="td-instructions">
+        <p style="font-size:13px;color:#5a5a6a">Paint has no gradient tool, but you can fake gradients by painting horizontal lines with gradually changing colors.</p>
+        <ol>
+          <li>Pick your <strong>starting color</strong> from the palette</li>
+          <li>Draw a <strong>horizontal line</strong> across the top of the area</li>
+          <li>Pick a <strong>slightly different color</strong> (adjust RGB by ~10)</li>
+          <li>Draw the next line just below, repeat</li>
+          <li>Use <strong>Ctrl+Z</strong> if a color jump looks too sharp</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h3>Advanced Shading Technique</h3>
+  <div class="note pro">
+    <div class="note-icon">⭐</div>
+    <div class="note-body">
+      <h5>Pro Technique — Dithering</h5>
+      <p>Dithering creates the illusion of a third color using only two. Example: alternating red and white pixels creates a "pink" that doesn't actually exist in your palette. Zoom to 800% and use the Pencil to place pixels in a checkerboard pattern between two colors. This was the technique used in 8-bit video games and creates beautiful, retro-style gradients.</p>
+    </div>
+  </div>
+
+  <div class="steps-container">
+    <div class="step-row">
+      <div class="step-badge">1</div>
+      <div class="step-content">
+        <h5>Rule of Thirds — Composition</h5>
+        <p>Imagine your canvas divided into a 3×3 grid. Place the most important elements where the grid lines intersect. This is the single most powerful rule in visual art and photography, and it works in Paint too.</p>
+        <div class="step-tip">✨ Enable the grid in Paint: View tab → Show → Grid lines</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">2</div>
+      <div class="step-content">
+        <h5>Sketch First, Refine Later</h5>
+        <p>Use the Pencil with a light gray color to rough out your composition first. Then trace over your sketch with clean colors and shapes. This prevents you from getting "stuck" on details before the overall layout is right.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">3</div>
+      <div class="step-content">
+        <h5>Use Shapes as Guides</h5>
+        <p>Draw a lightly colored ellipse or rectangle where a complex object will go, then draw on top of it and delete the guide shape with the Eraser or Undo. Guides are a professional technique for placing proportional objects.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-notes">
+  <div class="cn-header"><h3>📓 Chapter Notes</h3><div class="cn-divider"></div></div>
+  <div class="cn-note-item"><div class="cn-num">1</div><div class="cn-text">
+    <h5>The Grid is Your Best Friend</h5>
+    <p>Turn on the grid in Paint's View tab when doing pixel art or technical drawings. You can also zoom to exactly 100% and use the grid to count pixels precisely. The grid disappears when you zoom out below 400%.</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">2</div><div class="cn-text">
+    <h5>Symmetry Trick</h5>
+    <p>To draw a perfectly symmetrical face or object: draw one half, select it with the Rectangle Select tool, <code>Ctrl+C</code> to copy, <code>Ctrl+V</code> to paste, then go to <strong>Home → Image → Flip horizontal</strong>. Position the flipped copy next to the original. Perfect symmetry every time!</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">3</div><div class="cn-text">
+    <h5>Canvas Size vs Drawing Size</h5>
+    <p>The canvas size and what you draw on it are independent. You can draw a tiny 50×50 pixel character on a 1920×1080 canvas. When done, use <strong>Home → Image → Crop</strong> to trim the canvas exactly to your drawing boundaries.</p>
+  </div></div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 6: SELECTION & EDITING ===== -->
+<div id="ch6"></div>
+<div class="ch-banner" data-num="06">
+  <div class="ch-tag">Chapter 06 — Core Skills</div>
+  <h2>Selection & Editing</h2>
+  <p>The ability to select, move, copy, and transform parts of your drawing is what separates a beginner from an intermediate artist. Master these techniques to work non-destructively.</p>
+</div>
+<div class="sec-body">
+  <h3>Selection Tools</h3>
+  <div class="technique-grid">
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent2);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent3)"></div>Beginner</div>
+      <h4>Rectangle Select</h4>
+      <p>Drag to select any rectangular region. The marching ants (dashed border) show your selection. Use Ctrl+A to select everything.</p>
+      <div class="tc-shortcut"><kbd>S</kbd> or <kbd>Ctrl</kbd>+<kbd>A</kbd> for all</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--gold);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Intermediate</div>
+      <h4>Free-Form Select</h4>
+      <p>Draw any irregular shape around what you want to select. Paint automatically closes the selection shape when you release the mouse. Great for selecting non-rectangular objects.</p>
+      <div class="tc-shortcut">Found in the selection dropdown</div>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Transparent Selection</h4>
+      <p>Enable this in the Selection dropdown before pasting. White pixels in the pasted image become transparent, letting the background show through. Essential for compositing multiple drawings.</p>
+      <div class="tc-shortcut">Selection → Transparent selection</div>
+    </div>
+  </div>
+
+  <h3>Transformations</h3>
+  <div class="steps-container">
+    <div class="step-row">
+      <div class="step-badge">→</div>
+      <div class="step-content">
+        <h5>Move a Selection</h5>
+        <p>After selecting, hover over the selection until the cursor shows a 4-arrow move icon, then drag. The area left behind becomes white (filled with background color).</p>
+        <div class="step-tip">✨ Hold Shift while moving to snap to 45° angles</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">⤢</div>
+      <div class="step-content">
+        <h5>Resize a Selection</h5>
+        <p>After selecting, drag any of the 8 handles (corners and edges) to resize. The selection content stretches to fit. This is how you scale elements up or down.</p>
+        <div class="step-tip">⚠️ Scaling up makes pixels visible and blurry — always work at the largest size and scale down</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">↔</div>
+      <div class="step-content">
+        <h5>Flip & Rotate</h5>
+        <p>Go to Home → Image group → Rotate or Flip. Options: Rotate 90° (clockwise/counter-clockwise), Rotate 180°, Flip horizontal, Flip vertical. This applies to the whole canvas OR just the selection.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">✂</div>
+      <div class="step-content">
+        <h5>Crop to Selection</h5>
+        <p>Make a selection, then go to Home → Crop. Paint trims the entire canvas down to exactly the size of your selection. Perfect for removing unwanted white borders.</p>
+        <div class="step-tip">✨ Use this to export just part of a larger drawing</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <div class="note-icon">⚠️</div>
+    <div class="note-body">
+      <h5>Warning — Destructive Editing</h5>
+      <p>MS Paint is 100% destructive — every action permanently changes the pixels. There are no "layers" or "history panel" beyond Undo. This is why frequent <code>Ctrl+S</code> saves with different filenames (Save As) is essential. Many artists save versions: <code>drawing_v1.png</code>, <code>drawing_v2.png</code>, etc. so they can go back.</p>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-notes">
+  <div class="cn-header"><h3>📓 Chapter Notes</h3><div class="cn-divider"></div></div>
+  <div class="cn-note-item"><div class="cn-num">1</div><div class="cn-text">
+    <h5>The Copy-Paste Workflow</h5>
+    <p>A powerful technique: select a portion of your drawing, <code>Ctrl+C</code>, then <code>Ctrl+V</code>. The pasted copy appears as a floating selection you can position freely. This lets you duplicate elements like windows in a building, petals in a flower, or tiles in a pattern very rapidly.</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">2</div><div class="cn-text">
+    <h5>Paste From File</h5>
+    <p>You can paste an image file directly from your computer into Paint: Home tab → Clipboard → Paste → Paste from. This lets you combine multiple photos or drawings into one composition — a simple form of photo collaging!</p>
+  </div></div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 7: SHORTCUTS ===== -->
+<div id="ch7"></div>
+<div class="ch-banner" data-num="07">
+  <div class="ch-tag">Chapter 07 — Advanced</div>
+  <h2>Complete Keyboard Shortcut Reference</h2>
+  <p>Memorizing shortcuts transforms your workflow. Every second you save clicking through menus adds up — professionals use shortcuts for almost every action.</p>
+</div>
+<div class="sec-body">
+  <h3>All Shortcuts — Organized by Category</h3>
+  <table class="shortcut-table">
+    <thead>
+      <tr><th>Shortcut</th><th>Action</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr class="cat-row"><td colspan="3">File Operations</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>N</kbd></td><td>New drawing</td><td><span class="diff-badge diff-easy">Easy</span> Opens a blank canvas</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>O</kbd></td><td>Open file</td><td><span class="diff-badge diff-easy">Easy</span> Opens an existing image</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>Save</td><td><span class="diff-badge diff-easy">Easy</span> Save current file — do this constantly!</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td>Save As</td><td><span class="diff-badge diff-easy">Easy</span> Save with new name / format</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Print</td><td><span class="diff-badge diff-easy">Easy</span> Open print dialog</td></tr>
+      <tr class="cat-row"><td colspan="3">Edit Operations</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Undo</td><td><span class="diff-badge diff-easy">Easy</span> Up to ~30 steps. Most important shortcut!</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Y</kbd></td><td>Redo</td><td><span class="diff-badge diff-easy">Easy</span> Re-applies undone actions</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Select All</td><td><span class="diff-badge diff-easy">Easy</span> Selects the entire canvas</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>X</kbd></td><td>Cut</td><td><span class="diff-badge diff-easy">Easy</span> Cut selection to clipboard</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>Copy</td><td><span class="diff-badge diff-easy">Easy</span> Copy selection to clipboard</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>Paste</td><td><span class="diff-badge diff-easy">Easy</span> Paste from clipboard</td></tr>
+      <tr><td><kbd>Del</kbd></td><td>Delete selection</td><td><span class="diff-badge diff-easy">Easy</span> Fills selection with Color 2</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Cancel / Deselect</td><td><span class="diff-badge diff-easy">Easy</span> Cancel drawing or selection</td></tr>
+      <tr class="cat-row"><td colspan="3">View Operations</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>+</kbd></td><td>Zoom in</td><td><span class="diff-badge diff-easy">Easy</span> Or Ctrl + scroll wheel up</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>-</kbd></td><td>Zoom out</td><td><span class="diff-badge diff-easy">Easy</span> Or Ctrl + scroll wheel down</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>0</kbd></td><td>Fit to window</td><td><span class="diff-badge diff-med">Medium</span> Shows full image at once</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>Toggle grid</td><td><span class="diff-badge diff-med">Medium</span> Show/hide pixel grid</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>F</kbd></td><td>Toggle rulers</td><td><span class="diff-badge diff-med">Medium</span> Show pixel rulers</td></tr>
+      <tr class="cat-row"><td colspan="3">Image Operations</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>W</kbd></td><td>Resize / Skew</td><td><span class="diff-badge diff-med">Medium</span> Change canvas or image size</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>R</kbd></td><td>Rotate canvas</td><td><span class="diff-badge diff-med">Medium</span> Rotate entire image</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>Image Properties</td><td><span class="diff-badge diff-med">Medium</span> Set canvas dimensions precisely</td></tr>
+      <tr class="cat-row"><td colspan="3">Tool Shortcuts</td></tr>
+      <tr><td><kbd>P</kbd></td><td>Pencil</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>B</kbd></td><td>Brush / Paintbrush</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>F</kbd></td><td>Fill with Color</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>I</kbd></td><td>Color Picker</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>E</kbd></td><td>Eraser</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>T</kbd></td><td>Text</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>R</kbd></td><td>Rectangle</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>O</kbd></td><td>Ellipse</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>L</kbd></td><td>Line</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>U</kbd></td><td>Curve</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>G</kbd></td><td>Polygon</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr><td><kbd>S</kbd></td><td>Select (Rectangle)</td><td><span class="diff-badge diff-adv">Tool Key</span></td></tr>
+      <tr class="cat-row"><td colspan="3">Modifier Keys (Hold While Drawing)</td></tr>
+      <tr><td><kbd>Shift</kbd> + drag</td><td>Constrain shape</td><td><span class="diff-badge diff-med">Medium</span> Perfect circle, square, or 45° line</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + scroll</td><td>Zoom</td><td><span class="diff-badge diff-med">Medium</span> Most intuitive zoom method</td></tr>
+      <tr><td>Right-click + draw</td><td>Use Color 2</td><td><span class="diff-badge diff-med">Medium</span> Draw with background color</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note pro">
+    <div class="note-icon">⭐</div>
+    <div class="note-body">
+      <h5>Pro Learning Strategy — The "3 Per Day" Rule</h5>
+      <p>Don't try to memorize all shortcuts at once. Learn 3 new shortcuts per day and use them deliberately. By the end of 2 weeks, you'll have all the important ones memorized through muscle memory — which is much more reliable than memorizing a list. Start with: <code>Ctrl+Z</code>, <code>Ctrl+S</code>, <code>Ctrl+C/V</code>.</p>
+    </div>
+  </div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 8: PRO TECHNIQUES ===== -->
+<div id="ch8"></div>
+<div class="ch-banner" data-num="08">
+  <div class="ch-tag">Chapter 08 — Advanced</div>
+  <h2>Pro-Level Techniques</h2>
+  <p>These advanced workflows go beyond basic drawing. These are the techniques that make the difference between a beginner's drawing and one that looks polished and intentional.</p>
+</div>
+<div class="sec-body">
+  <h3>Advanced Workflows</h3>
+  <div class="technique-grid">
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Version Control System</h4>
+      <p>Save your work every 10–15 minutes with a new filename: <code>myart_v01.png</code>, <code>myart_v02.png</code>. Never overwrite. This "manual versioning" protects against mistakes and lets you see your progress over time.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>The Zoom-In Workflow</h4>
+      <p>Work at 200–400% for most drawing. Zoom to 800%+ for fine details and corrections. Zoom to 50% or Ctrl+0 to check the overall composition. Professional artists constantly switch zoom levels.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--gold);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--gold)"></div>Intermediate</div>
+      <h4>Stamp & Repeat</h4>
+      <p>Draw one element (like a leaf or star), select it with Ctrl+A if it's the whole canvas (or use Rectangle Select), copy it, paste it, then reposition. Paste as many times as needed. All copies stay consistent.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent2);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Color Replacement</h4>
+      <p>Use the Eraser tool with <strong>right-click dragging</strong>. Set Color 1 to the color you want to REMOVE, and Color 2 to the new color. The eraser will only erase pixels that match Color 1, leaving everything else intact.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent3);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Tracing from a Photo</h4>
+      <p>Open a photo in Paint (Ctrl+O), then draw directly on top of it — tracing the outlines with the Pencil or Brush. When done, use Fill tool to add flat colors. Delete photo sections by painting over with white or your background color.</p>
+    </div>
+    <div class="technique-card">
+      <div style="height:3px;background:var(--accent);position:absolute;top:0;left:0;right:0;border-radius:8px 8px 0 0"></div>
+      <div class="tc-level"><div class="dot" style="background:var(--accent)"></div>Advanced</div>
+      <h4>Tile Pattern Creation</h4>
+      <p>Design a small pattern (e.g., 64×64 pixels) that tiles seamlessly. Then paste it repeatedly side by side to fill a large canvas. Useful for backgrounds, textures, wrapping paper designs.</p>
+    </div>
+  </div>
+
+  <div class="note info">
+    <div class="note-icon">📌</div>
+    <div class="note-body">
+      <h5>Note — Paint's Limitations (and Workarounds)</h5>
+      <p>MS Paint lacks: layers, transparency, vector shapes, and filters. Workarounds: (1) Simulate layers by compositing images using Paste From. (2) Use PNG format for transparency support in other apps. (3) Use the Curve tool for smooth vector-like shapes. (4) Open the result in Paint 3D (built into Windows) for 3D effects.</p>
+    </div>
+  </div>
+</div>
+<div class="chapter-notes">
+  <div class="cn-header"><h3>📓 Chapter Notes</h3><div class="cn-divider"></div></div>
+  <div class="cn-note-item"><div class="cn-num">1</div><div class="cn-text">
+    <h5>Paint vs. Professional Software</h5>
+    <p>Paint teaches you the same fundamentals used in Photoshop, GIMP, and Krita — just without the advanced features. Every concept you learn here (selection, fill, color theory, layers as manual compositing) translates directly to professional software. Think of MS Paint as "training wheels" that build real, transferable skills.</p>
+  </div></div>
+  <div class="cn-note-item"><div class="cn-num">2</div><div class="cn-text">
+    <h5>Screenshot Editing</h5>
+    <p>Press <code>Print Screen</code> (PrtScn) on your keyboard, open Paint, press <code>Ctrl+V</code> — the screenshot pastes directly as your canvas! This is how many people use Paint to annotate screenshots for school projects or presentations. Add text with the T tool, draw arrows with the Line tool, highlight with a semi-transparent colored rectangle.</p>
+  </div></div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== CHAPTER 9: FILES ===== -->
+<div id="ch9"></div>
+<div class="ch-banner" data-num="09">
+  <div class="ch-tag">Chapter 09 — Advanced</div>
+  <h2>File Formats & Management</h2>
+  <p>Choosing the right file format affects image quality, file size, and compatibility. This is a critical but often overlooked skill.</p>
+</div>
+<div class="sec-body">
+  <h3>File Format Comparison</h3>
+  <table class="shortcut-table">
+    <thead><tr><th>Format</th><th>Best For</th><th>Supports Transparency</th><th>File Size</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>.PNG</kbd></td><td>Digital art, pixel art, anything with text</td><td>✅ Yes</td><td>Medium — lossless compression</td></tr>
+      <tr><td><kbd>.JPEG</kbd></td><td>Photographs, complex gradients</td><td>❌ No</td><td>Small — lossy compression</td></tr>
+      <tr><td><kbd>.BMP</kbd></td><td>No compression needed, technical use</td><td>❌ No</td><td>Very large — uncompressed</td></tr>
+      <tr><td><kbd>.GIF</kbd></td><td>Simple images, limited colors (256 max)</td><td>✅ Partial</td><td>Small</td></tr>
+      <tr><td><kbd>.TIFF</kbd></td><td>Print-ready, professional archiving</td><td>✅ Yes</td><td>Large</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note tip">
+    <div class="note-icon">💡</div>
+    <div class="note-body">
+      <h5>Always Save as PNG for Digital Art</h5>
+      <p>JPEG compression introduces artifacts — blurry pixels and color smearing around sharp edges. This is catastrophic for pixel art and text. PNG is lossless: what you drew is EXACTLY what you get. Only use JPEG for photographs where the artifacts are invisible.</p>
+    </div>
+  </div>
+
+  <h3>Print Settings</h3>
+  <div class="steps-container">
+    <div class="step-row">
+      <div class="step-badge">1</div>
+      <div class="step-content">
+        <h5>Set Canvas to Print Size First</h5>
+        <p>Use Ctrl+E (Image Properties) to set width/height in inches or centimeters instead of pixels. For A4: 8.27 × 11.69 inches. For US Letter: 8.5 × 11 inches. This ensures your print matches your screen design.</p>
+        <div class="step-tip">✨ For crisp printing, set resolution to 300 DPI in properties</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-badge">2</div>
+      <div class="step-content">
+        <h5>Print Preview</h5>
+        <p>Press Ctrl+P and click "Preview" (or use the Page Setup option) to see how your drawing will look on paper before printing. Check that nothing is cut off at the edges.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== INTERACTIVE CANVAS ===== -->
+<div id="canvas"></div>
+<div class="ch-banner" data-num="★" style="background:linear-gradient(135deg,#1e2230,#2a1a3e)">
+  <div class="ch-tag" style="color:#C77DFF">Live Practice Studio</div>
+  <h2>Interactive Drawing Canvas</h2>
+  <p>Put everything you've learned into practice. This is a full-featured mini drawing studio with multiple tools, colors, and brush sizes — right in your browser.</p>
+</div>
+
+<div class="sec-body">
+  <div class="canvas-studio">
+    <div class="cs-titlebar">
+      <div class="cs-dot" style="background:#FF5F57"></div>
+      <div class="cs-dot" style="background:#FFBD2E"></div>
+      <div class="cs-dot" style="background:#28CA41"></div>
+      <div class="cs-title">Practice Studio — <span id="cs-tool-name">Pencil</span> &nbsp;|&nbsp; Color: <span id="cs-color-name">#000000</span> &nbsp;|&nbsp; Size: <span id="cs-size-name">4px</span></div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-toolpanel">
+        <button class="cs-tool-btn active" onclick="setTool('pencil',this)" title="Pencil">✏️<span class="tooltip">Pencil (P)</span></button>
+        <button class="cs-tool-btn" onclick="setTool('brush',this)" title="Brush">🖌️<span class="tooltip">Brush (B)</span></button>
+        <button class="cs-tool-btn" onclick="setTool('eraser',this)" title="Eraser">⬜<span class="tooltip">Eraser (E)</span></button>
+        <button class="cs-tool-btn" onclick="setTool('line',this)" title="Line">╱<span class="tooltip">Line (L)</span></button>
+        <button class="cs-tool-btn" onclick="setTool('rect',this)" title="Rectangle">▭<span class="tooltip">Rectangle (R)</span></button>
+        <button class="cs-tool-btn" onclick="setTool('circle',this)" title="Ellipse">◯<span class="tooltip">Ellipse (O)</span></button>
+        <button class="cs-tool-btn" onclick="setTool('fill',this)" title="Fill">🪣<span class="tooltip">Fill (F)</span></button>
+        <div class="cs-sep"></div>
+        <button class="cs-tool-btn" onclick="undoCanvas()" title="Undo">↩<span class="tooltip">Undo (Ctrl+Z)</span></button>
+        <button class="cs-tool-btn" onclick="clearMainCanvas()" title="Clear">🗑️<span class="tooltip">Clear</span></button>
+      </div>
+      <div class="cs-canvas-wrap">
+        <canvas id="mainCanvas"></canvas>
+        <div id="cs-info" style="position:absolute;bottom:8px;left:10px;font-family:'DM Mono',monospace;font-size:11px;color:#ffffff30;pointer-events:none" id="csInfo">x: 0, y: 0</div>
+      </div>
+      <div class="cs-sidebar">
+        <div class="cs-panel">
+          <h6>Active Color</h6>
+          <div class="cs-current" id="csCurrentColor" style="background:#000000"></div>
+          <h6>Palette</h6>
+          <div class="cs-color-grid" id="csPalette">
+            <div class="cs-swatch selected" style="background:#000000" onclick="csPickColor('#000000',this)"></div>
+            <div class="cs-swatch" style="background:#ffffff;border:2px solid #444" onclick="csPickColor('#ffffff',this)"></div>
+            <div class="cs-swatch" style="background:#e84444" onclick="csPickColor('#e84444',this)"></div>
+            <div class="cs-swatch" style="background:#ff8c00" onclick="csPickColor('#ff8c00',this)"></div>
+            <div class="cs-swatch" style="background:#ffd700" onclick="csPickColor('#ffd700',this)"></div>
+            <div class="cs-swatch" style="background:#6bcb77" onclick="csPickColor('#6bcb77',this)"></div>
+            <div class="cs-swatch" style="background:#4d96ff" onclick="csPickColor('#4d96ff',this)"></div>
+            <div class="cs-swatch" style="background:#c77dff" onclick="csPickColor('#c77dff',this)"></div>
+            <div class="cs-swatch" style="background:#ff69b4" onclick="csPickColor('#ff69b4',this)"></div>
+            <div class="cs-swatch" style="background:#4cc9f0" onclick="csPickColor('#4cc9f0',this)"></div>
+            <div class="cs-swatch" style="background:#8b4513" onclick="csPickColor('#8b4513',this)"></div>
+            <div class="cs-swatch" style="background:#c0c0c0" onclick="csPickColor('#c0c0c0',this)"></div>
+          </div>
+          <input type="color" id="customColor" style="margin-top:8px;width:100%;height:28px;border-radius:4px;border:1px solid #ffffff20;background:transparent;cursor:pointer" onchange="csPickColor(this.value,null)" title="Custom color">
+        </div>
+        <div class="cs-panel">
+          <h6>Brush Size</h6>
+          <div class="cs-size-row">
+            <button class="cs-size-btn active" onclick="csSetSize(2,this)">S</button>
+            <button class="cs-size-btn" onclick="csSetSize(6,this)">M</button>
+            <button class="cs-size-btn" onclick="csSetSize(14,this)">L</button>
+            <button class="cs-size-btn" onclick="csSetSize(28,this)">XL</button>
+          </div>
+        </div>
+        <div class="cs-panel">
+          <h6>Opacity</h6>
+          <input type="range" class="cs-opacity" id="csOpacity" min="10" max="100" value="100">
+        </div>
+        <div class="cs-panel">
+          <h6>Actions</h6>
+          <button class="cs-action-btn" onclick="downloadCanvas()"><span>💾</span> Save Image</button>
+          <button class="cs-action-btn" style="margin-top:6px" onclick="undoCanvas()"><span>↩</span> Undo</button>
+          <button class="cs-action-btn" style="margin-top:6px;border-color:#e84444;color:#ff8080" onclick="clearMainCanvas()"><span>🗑️</span> Clear All</button>
+        </div>
+      </div>
+    </div>
+    <div class="cs-statusbar">
+      <span>Tool: <span class="val" id="sb-tool">Pencil</span></span>
+      <span>Position: <span class="val" id="sb-pos">0, 0</span></span>
+      <span>Size: <span class="val" id="sb-size">800 × 360</span></span>
+      <span>Zoom: <span class="val">100%</span></span>
+    </div>
+  </div>
+
+  <div class="note tip">
+    <div class="note-icon">💡</div>
+    <div class="note-body">
+      <h5>Studio Keyboard Shortcuts</h5>
+      <p>This studio supports: <code>Ctrl+Z</code> to undo, <code>P</code> pencil, <code>B</code> brush, <code>E</code> eraser, <code>L</code> line, <code>R</code> rectangle, <code>O</code> ellipse, <code>F</code> fill. Hold <code>Shift</code> while drawing line/rect/ellipse to constrain to 45° / perfect square / circle. Click "Save Image" to download your drawing!</p>
+    </div>
+  </div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== QUIZ ===== -->
+<div id="quiz"></div>
+<div class="ch-banner" data-num="10">
+  <div class="ch-tag">Chapter 10 — Assessment</div>
+  <h2>Chapter Assessment Quiz</h2>
+  <p>Test your understanding of everything covered in this guide. 10 questions across all difficulty levels.</p>
+</div>
+<div class="sec-body">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <h3>MS Paint Knowledge Assessment</h3>
+      <p>10 questions · Beginner to Advanced · Click an answer to proceed</p>
+    </div>
+    <div class="quiz-body" id="quizBody">
+      <!-- Questions rendered by JS -->
+    </div>
+    <div class="quiz-result-panel" id="quizResultPanel">
+      <div class="result-score" id="rScore">—</div>
+      <div class="result-label">out of 10 questions correct</div>
+      <div class="result-msg" id="rMsg">—</div>
+    </div>
+  </div>
+</div>
+<div class="sec-divider"></div>
+
+<!-- ===== GLOSSARY ===== -->
+<div id="glossary"></div>
+<div class="ch-banner" data-num="11">
+  <div class="ch-tag">Chapter 11 — Reference</div>
+  <h2>Glossary of Terms</h2>
+  <p>Key vocabulary every computer art student should know. These terms appear in Paint documentation, tutorials, and are used across all digital art software.</p>
+</div>
+<div class="sec-body">
+  <h3>Essential Digital Art Vocabulary</h3>
+  <dl class="glossary-grid">
+    <div class="glossary-item"><dt>Pixel <span class="g-tag">Core</span></dt><dd>The smallest unit of a digital image. "Pixel" = "Picture Element". At 100% zoom, each square dot you see is one pixel.</dd></div>
+    <div class="glossary-item"><dt>Resolution <span class="g-tag">Core</span></dt><dd>How many pixels are in an image, expressed as Width × Height (e.g. 1920×1080). More pixels = more detail = larger file size.</dd></div>
+    <div class="glossary-item"><dt>Canvas <span class="g-tag">Core</span></dt><dd>The drawing area in Paint — the white space where your artwork lives. Named after the fabric artists paint on in real life.</dd></div>
+    <div class="glossary-item"><dt>Raster <span class="g-tag">Technical</span></dt><dd>Image type made of pixels (like Paint). Zooming in makes it blurry/pixelated. Opposite of vector. Most photos are raster.</dd></div>
+    <div class="glossary-item"><dt>Vector <span class="g-tag">Technical</span></dt><dd>Image type made of mathematical paths, not pixels. Scales to any size without blurring. Paint is NOT vector. Illustrator, Inkscape are vector tools.</dd></div>
+    <div class="glossary-item"><dt>DPI <span class="g-tag">Print</span></dt><dd>Dots Per Inch — how densely packed pixels are when printed. Screen: 72–96 DPI. Print: 300 DPI. Higher DPI = sharper printed image.</dd></div>
+    <div class="glossary-item"><dt>RGB <span class="g-tag">Color</span></dt><dd>Red, Green, Blue — the three primary colors of light used by screens. Every color is a mix of these three values (0–255 each).</dd></div>
+    <div class="glossary-item"><dt>Hex Code <span class="g-tag">Color</span></dt><dd>A 6-digit code for a color, starting with #. Example: #FF0000 = red. Used in web design and digital art universally.</dd></div>
+    <div class="glossary-item"><dt>Transparency <span class="g-tag">Editing</span></dt><dd>How "see-through" a pixel is. 0% = invisible, 100% = fully solid. Paint doesn't fully support this — use PNG format for partial support.</dd></div>
+    <div class="glossary-item"><dt>Layer <span class="g-tag">Editing</span></dt><dd>A separate drawing surface stacked above/below others, like sheets of transparent film. Paint doesn't have layers — this is its biggest limitation.</dd></div>
+    <div class="glossary-item"><dt>Lossless <span class="g-tag">Format</span></dt><dd>File format that preserves every pixel exactly (PNG, BMP). Use for digital art. No quality loss when saving/reopening.</dd></div>
+    <div class="glossary-item"><dt>Lossy <span class="g-tag">Format</span></dt><dd>File format that discards some data to reduce size (JPEG). Causes compression artifacts. Fine for photos, bad for art.</dd></div>
+    <div class="glossary-item"><dt>Bezier Curve <span class="g-tag">Technical</span></dt><dd>A mathematically perfect smooth curve, controlled by "anchor points". Paint's Curve tool draws Bezier curves used in all professional design software.</dd></div>
+    <div class="glossary-item"><dt>Dithering <span class="g-tag">Advanced</span></dt><dd>Simulating a color by alternating two other colors in a pattern. Used in pixel art to create smooth gradients with a limited color palette.</dd></div>
+    <div class="glossary-item"><dt>Crop <span class="g-tag">Editing</span></dt><dd>Cutting away the edges of an image to focus on a specific part or change its dimensions. Paint's crop function removes canvas area outside the selection.</dd></div>
+    <div class="glossary-item"><dt>Clipboard <span class="g-tag">Core</span></dt><dd>Temporary computer memory that stores your copied/cut data. Ctrl+C copies to clipboard, Ctrl+V pastes from it. Only holds one item at a time.</dd></div>
+  </dl>
+
+  <!-- PRACTICE CHECKLIST -->
+  <h3 style="margin-top:48px">Practice Checklist</h3>
+  <p>Work through these exercises in order. Check each one when you've completed it.</p>
+  <div class="practice-checklist">
+    <div class="pc-header">✅ Practice Exercises — Complete All to Master MS Paint</div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Draw a house using only Rectangle and Triangle (Polygon) tools</div><div class="pc-diff">Beginner · Est. 5 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Create a sunset scene using only horizontal lines with gradually changing colors (gradient simulation)</div><div class="pc-diff">Beginner · Est. 10 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Draw a perfect 5-pointed star using the Polygon tool and fill it with a custom mixed color</div><div class="pc-diff">Beginner → Intermediate · Est. 8 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Create a symmetrical butterfly using the Flip Horizontal technique (draw one wing, copy, flip, join)</div><div class="pc-diff">Intermediate · Est. 15 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Design a simple 32×32 pixel icon (a face, logo, or symbol) at 800% zoom using only the Pencil tool</div><div class="pc-diff">Intermediate · Est. 20 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Practice the Curve tool by drawing a realistic wave, an S-curve, and a heart shape</div><div class="pc-diff">Intermediate · Est. 15 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Take a screenshot (PrtScn), paste into Paint, annotate it with arrows and text labels</div><div class="pc-diff">Intermediate · Est. 10 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Create a repeating tile pattern (64×64 px) and paste it 16 times to fill a large canvas</div><div class="pc-diff">Advanced · Est. 25 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Draw a scene using the "layering" technique (background → midground → foreground in order)</div><div class="pc-diff">Advanced · Est. 30 min</div></div>
+    </div>
+    <div class="pc-item" onclick="toggleCheck(this)">
+      <div class="pc-checkbox">✓</div>
+      <div><div class="pc-text">Complete a full portrait (face) at 400×400 px using pixel art technique. Save as PNG.</div><div class="pc-diff">Expert · Est. 45 min</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="background:var(--ink);color:#fff;padding:60px 64px;text-align:left">
+  <div style="display:flex;gap:48px;flex-wrap:wrap;max-width:860px">
+    <div style="flex:1;min-width:200px">
+      <div style="font-family:'Playfair Display',serif;font-size:24px;margin-bottom:8px">MS <em style="color:#e84444">Paint</em> Guide</div>
+      <p style="font-size:13px;color:#ffffff50;line-height:1.8">A comprehensive learning resource for students learning computer graphics and digital art fundamentals through Microsoft Paint.</p>
+    </div>
+    <div style="flex:1;min-width:160px">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#ffffff40;margin-bottom:12px">Chapters</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#ffffff60">
+        <span>01 — Mouse & Interface</span><span>02 — Screen Anatomy</span>
+        <span>03 — Tool Reference</span><span>04 — Color Theory</span>
+        <span>05 — Techniques</span><span>06 — Selection & Editing</span>
+      </div>
+    </div>
+    <div style="flex:1;min-width:160px">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#ffffff40;margin-bottom:12px">Advanced</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#ffffff60">
+        <span>07 — Shortcuts (60+)</span><span>08 — Pro Techniques</span>
+        <span>09 — File Formats</span><span>10 — Quiz</span>
+        <span>11 — Glossary (16 terms)</span>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid #ffffff10;margin-top:40px;padding-top:24px;font-size:12px;color:#ffffff30;font-family:'DM Mono',monospace">
+    MS Paint Complete Student Guide · Advanced Edition · 2025 · Made for students, teachers, and curious learners everywhere
+  </div>
+</div>
+
+</main>
+</div><!-- layout -->
+
+<script>
+/* ===================================================
+   PROGRESS BAR
+=================================================== */
+window.addEventListener('scroll', () => {
+  const el = document.documentElement;
+  const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+  document.getElementById('progFill').style.width = pct + '%';
+});
+
+/* ===================================================
+   SIDEBAR ACTIVE STATE
+=================================================== */
+const sidebarLinks = document.querySelectorAll('.sb-link');
+const anchors = ['intro','ch1','ch2','ch3','ch4','ch5','ch6','ch7','ch8','ch9','canvas','quiz','glossary'];
+const anchorEls = anchors.map(id => document.getElementById(id)).filter(Boolean);
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      sidebarLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + id) a.classList.add('active');
+      });
+    }
+  });
+}, { threshold: 0.2 });
+anchorEls.forEach(el => io.observe(el));
+
+/* ===================================================
+   COLOR WHEEL
+=================================================== */
+const cwCanvas = document.getElementById('colorWheel');
+if (cwCanvas) {
+  const cwCtx = cwCanvas.getContext('2d');
+  const cx = 100, cy = 100, r = 90;
+  for (let angle = 0; angle < 360; angle++) {
+    const startAngle = (angle - 1) * Math.PI / 180;
+    const endAngle = (angle + 1) * Math.PI / 180;
+    cwCtx.beginPath();
+    cwCtx.moveTo(cx, cy);
+    cwCtx.arc(cx, cy, r, startAngle, endAngle);
+    cwCtx.closePath();
+    const grad = cwCtx.createRadialGradient(cx, cy, 0, cx, cy, r);
+    grad.addColorStop(0, 'white');
+    grad.addColorStop(1, `hsl(${angle}, 100%, 50%)`);
+    cwCtx.fillStyle = grad;
+    cwCtx.fill();
+  }
+}
+
+/* ===================================================
+   QUIZ
+=================================================== */
+const quizData = [
+  { q: "What keyboard shortcut undoes the last action in Paint?", opts: ["Ctrl+Y","Ctrl+Z","Ctrl+X","Ctrl+U"], ans: 1, diff: "Easy" },
+  { q: "Which file format is best for saving pixel art and digital drawings with no quality loss?", opts: ["JPEG","BMP","PNG","GIF"], ans: 2, diff: "Medium" },
+  { q: "What happens when you right-click and drag with the Eraser tool?", opts: ["It deletes everything","It erases only pixels that match Color 1","It undo's your last stroke","It opens a context menu"], ans: 1, diff: "Advanced" },
+  { q: "How many 'clicks' does the Curve tool require to complete a curve?", opts: ["1","2","3","4"], ans: 2, diff: "Medium" },
+  { q: "Which modifier key constrains Rectangle/Ellipse tools to a perfect square or circle?", opts: ["Ctrl","Alt","Shift","Tab"], ans: 2, diff: "Easy" },
+  { q: "What does DPI stand for in the context of printing?", opts: ["Digital Pixel Interface","Dots Per Inch","Drawing Pixel Index","Display Print Information"], ans: 1, diff: "Medium" },
+  { q: "In color theory, what are colors directly opposite each other on the color wheel called?", opts: ["Analogous","Triadic","Complementary","Monochromatic"], ans: 2, diff: "Medium" },
+  { q: "What shortcut key opens the 'Resize and Skew' dialog in Paint?", opts: ["Ctrl+R","Ctrl+W","Ctrl+E","Ctrl+S"], ans: 1, diff: "Advanced" },
+  { q: "Which drawing technique uses alternating pixels of two colors to simulate a third color?", opts: ["Dithering","Rasterizing","Anti-aliasing","Vectorizing"], ans: 0, diff: "Advanced" },
+  { q: "If you want Color 2 to be transparent when using the Selection tool to paste, you should:", opts: ["Press Delete after pasting","Enable 'Transparent selection' before pasting","Change Color 2 to white","Save as PNG first"], ans: 1, diff: "Advanced" },
+];
+let qAnswers = {};
+function buildQuiz() {
+  const body = document.getElementById('quizBody');
+  body.innerHTML = '';
+  quizData.forEach((q, i) => {
+    const block = document.createElement('div');
+    block.className = 'quiz-q-block';
+    block.id = 'qq' + i;
+    const letters = ['A','B','C','D'];
+    block.innerHTML = `
+      <div class="q-num">Question ${i+1} of ${quizData.length} · <span style="color:${q.diff==='Easy'?'#6bcb77':q.diff==='Medium'?'#ffd700':'#e84444'}">${q.diff}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,j) => `<button class="quiz-opt" onclick="qAnswer(${i},${j},this)">${letters[j] !== undefined ? `<span class="q-letter">${letters[j]}</span>` : ''}${o}</button>`).join('')}
+      </div>
+      <div id="qfb${i}" style="margin-top:10px;font-size:13px;display:none"></div>
+    `;
+    body.appendChild(block);
+  });
+}
+function qAnswer(qi, oi, btn) {
+  if (qAnswers[qi] !== undefined) return;
+  qAnswers[qi] = oi;
+  const q = quizData[qi];
+  const block = document.getElementById('qq' + qi);
+  const btns = block.querySelectorAll('.quiz-opt');
+  btns.forEach(b => b.disabled = true);
+  if (oi === q.ans) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+  }
+  const fb = document.getElementById('qfb' + qi);
+  fb.style.display = 'block';
+  fb.style.color = oi === q.ans ? '#6bcb77' : '#ff8080';
+  fb.textContent = oi === q.ans ? '✓ Correct!' : '✗ Incorrect — the right answer is highlighted above.';
+
+  if (Object.keys(qAnswers).length === quizData.length) {
+    const score = Object.values(qAnswers).filter((a, i) => a === quizData[i].ans).length;
+    const panel = document.getElementById('quizResultPanel');
+    panel.classList.add('show');
+    document.getElementById('rScore').textContent = score + '/10';
+    const msgs = ['Keep studying — review the chapters and try again! 💪','Good effort! Review the Advanced chapters. 📖','Getting there! You know the basics well. ⭐','Strong performance! A few advanced topics to review. 🎯','Excellent! You\'ve mastered MS Paint. 🏆','Perfect score! You\'re an MS Paint expert! 👑'];
+    document.getElementById('rMsg').textContent = msgs[Math.floor(score/2)];
+    setTimeout(() => panel.scrollIntoView({behavior:'smooth', block:'center'}), 300);
+  }
+}
+buildQuiz();
+
+/* ===================================================
+   CHECKLIST
+=================================================== */
+function toggleCheck(item) {
+  item.classList.toggle('done');
+}
+
+/* ===================================================
+   MAIN CANVAS STUDIO
+=================================================== */
+const mc = document.getElementById('mainCanvas');
+const mctx = mc.getContext('2d');
+let mcTool = 'pencil';
+let mcColor = '#000000';
+let mcSize = 2;
+let mcDrawing = false;
+let mcStart = {x:0,y:0};
+let mcHistory = [];
+let mcSnapshot = null;
+
+function resizeMC() {
+  const wrap = mc.parentElement;
+  const dpr = window.devicePixelRatio || 1;
+  const w = wrap.offsetWidth;
+  const h = 360;
+  // Save current content
+  const tmp = document.createElement('canvas');
+  tmp.width = mc.width; tmp.height = mc.height;
+  tmp.getContext('2d').drawImage(mc, 0, 0);
+  mc.width = w * dpr; mc.height = h * dpr;
+  mc.style.width = w + 'px'; mc.style.height = h + 'px';
+  mctx.scale(dpr, dpr);
+  mctx.fillStyle = '#ffffff';
+  mctx.fillRect(0, 0, w, h);
+  mctx.drawImage(tmp, 0, 0, w, h);
+  document.getElementById('sb-size').textContent = w + ' × ' + h;
+}
+window.addEventListener('resize', resizeMC);
+setTimeout(resizeMC, 100);
+
+function getMCPos(e) {
+  const r = mc.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const scaleX = (mc.width / dpr) / r.width;
+  const scaleY = (mc.height / dpr) / r.height;
+  if (e.touches) {
+    return { x: (e.touches[0].clientX - r.left) * scaleX, y: (e.touches[0].clientY - r.top) * scaleY };
+  }
+  return { x: (e.clientX - r.left) * scaleX, y: (e.clientY - r.top) * scaleY };
+}
+
+function saveHistory() {
+  const dpr = window.devicePixelRatio || 1;
+  mcHistory.push(mctx.getImageData(0, 0, mc.width, mc.height));
+  if (mcHistory.length > 30) mcHistory.shift();
+}
+
+mc.addEventListener('mousedown', e => {
+  mcDrawing = true;
+  const p = getMCPos(e);
+  mcStart = p;
+  saveHistory();
+  if (mcTool === 'pencil' || mcTool === 'brush' || mcTool === 'eraser') {
+    mctx.beginPath();
+    mctx.moveTo(p.x, p.y);
+    mcDrawDot(p);
+  } else if (mcTool === 'fill') {
+    floodFill(Math.floor(p.x), Math.floor(p.y), hexToRgb(mcColor));
+    mcDrawing = false;
+  }
+  mcSnapshot = mctx.getImageData(0, 0, mc.width, mc.height);
+});
+
+mc.addEventListener('mousemove', e => {
+  const p = getMCPos(e);
+  document.getElementById('sb-pos').textContent = `${Math.floor(p.x)}, ${Math.floor(p.y)}`;
+  if (!mcDrawing) return;
+  const opacity = parseInt(document.getElementById('csOpacity').value) / 100;
+  mctx.globalAlpha = opacity;
+  if (mcTool === 'pencil' || mcTool === 'brush' || mcTool === 'eraser') {
+    mctx.lineTo(p.x, p.y);
+    mctx.strokeStyle = mcTool === 'eraser' ? '#ffffff' : mcColor;
+    mctx.lineWidth = mcTool === 'pencil' ? Math.max(1, mcSize * 0.5) : mcSize;
+    mctx.lineCap = 'round'; mctx.lineJoin = 'round';
+    mctx.stroke();
+    mctx.beginPath(); mctx.moveTo(p.x, p.y);
+  } else if (['line','rect','circle'].includes(mcTool) && mcSnapshot) {
+    mctx.putImageData(mcSnapshot, 0, 0);
+    mctx.globalAlpha = opacity;
+    mctx.strokeStyle = mcColor;
+    mctx.fillStyle = mcColor;
+    mctx.lineWidth = mcSize * 0.5 + 1;
+    mctx.lineCap = 'square';
+    if (mcTool === 'line') {
+      let ex = p.x, ey = p.y;
+      if (e.shiftKey) {
+        const dx = p.x - mcStart.x, dy = p.y - mcStart.y;
+        const angle = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4);
+        const len = Math.sqrt(dx*dx+dy*dy);
+        ex = mcStart.x + Math.cos(angle)*len; ey = mcStart.y + Math.sin(angle)*len;
+      }
+      mctx.beginPath(); mctx.moveTo(mcStart.x, mcStart.y); mctx.lineTo(ex, ey); mctx.stroke();
+    } else if (mcTool === 'rect') {
+      let w = p.x - mcStart.x, h = p.y - mcStart.y;
+      if (e.shiftKey) { const s = Math.max(Math.abs(w),Math.abs(h)); w = Math.sign(w)*s; h = Math.sign(h)*s; }
+      mctx.beginPath(); mctx.rect(mcStart.x, mcStart.y, w, h); mctx.stroke();
+    } else if (mcTool === 'circle') {
+      let rx = Math.abs(p.x - mcStart.x)/2, ry = Math.abs(p.y - mcStart.y)/2;
+      if (e.shiftKey) { rx = ry = Math.max(rx,ry); }
+      const cx2 = mcStart.x + Math.sign(p.x - mcStart.x)*rx;
+      const cy2 = mcStart.y + Math.sign(p.y - mcStart.y)*ry;
+      mctx.beginPath(); mctx.ellipse(cx2, cy2, rx, ry, 0, 0, Math.PI*2); mctx.stroke();
+    }
+  }
+  mctx.globalAlpha = 1;
+});
+
+mc.addEventListener('mouseup', () => { mcDrawing = false; mctx.globalAlpha = 1; });
+mc.addEventListener('mouseleave', () => { mcDrawing = false; mctx.globalAlpha = 1; });
+mc.addEventListener('touchstart', e => { e.preventDefault(); mc.dispatchEvent(new MouseEvent('mousedown', {clientX:e.touches[0].clientX,clientY:e.touches[0].clientY})); },{passive:false});
+mc.addEventListener('touchmove', e => { e.preventDefault(); mc.dispatchEvent(new MouseEvent('mousemove', {clientX:e.touches[0].clientX,clientY:e.touches[0].clientY})); },{passive:false});
+mc.addEventListener('touchend', e => { e.preventDefault(); mc.dispatchEvent(new MouseEvent('mouseup')); },{passive:false});
+
+function mcDrawDot(p) {
+  const opacity = parseInt(document.getElementById('csOpacity').value) / 100;
+  mctx.globalAlpha = opacity;
+  mctx.fillStyle = mcTool === 'eraser' ? '#ffffff' : mcColor;
+  const r = mcTool === 'pencil' ? Math.max(0.5, mcSize * 0.25) : mcSize/2;
+  mctx.beginPath();
+  mctx.arc(p.x, p.y, r, 0, Math.PI*2);
+  mctx.fill();
+  mctx.globalAlpha = 1;
+}
+
+function setTool(tool, btn) {
+  mcTool = tool;
+  document.querySelectorAll('.cs-tool-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const names = {pencil:'Pencil',brush:'Brush',eraser:'Eraser',line:'Line',rect:'Rectangle',circle:'Ellipse',fill:'Fill'};
+  document.getElementById('cs-tool-name').textContent = names[tool] || tool;
+  document.getElementById('sb-tool').textContent = names[tool] || tool;
+  mc.style.cursor = tool === 'fill' ? 'crosshair' : (tool === 'eraser' ? 'cell' : 'crosshair');
+}
+
+function csPickColor(hex, el) {
+  mcColor = hex;
+  document.querySelectorAll('.cs-swatch').forEach(s => s.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+  document.getElementById('csCurrentColor').style.background = hex;
+  document.getElementById('cs-color-name').textContent = hex;
+}
+
+function csSetSize(s, btn) {
+  mcSize = s;
+  document.querySelectorAll('.cs-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cs-size-name').textContent = s + 'px';
+}
+
+function undoCanvas() {
+  if (mcHistory.length) {
+    mctx.putImageData(mcHistory.pop(), 0, 0);
+  }
+}
+
+function clearMainCanvas() {
+  saveHistory();
+  mctx.fillStyle = '#ffffff';
+  mctx.fillRect(0, 0, mc.width/window.devicePixelRatio||1, mc.height/window.devicePixelRatio||1);
+  mctx.fillRect(0, 0, mc.width, mc.height);
+}
+
+function downloadCanvas() {
+  const link = document.createElement('a');
+  link.download = 'my-paint-drawing.png';
+  link.href = mc.toDataURL('image/png');
+  link.click();
+}
+
+// Keyboard shortcuts for canvas
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undoCanvas(); return; }
+  const tool = document.getElementById('mainCanvas');
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  const toolMap = { p:'pencil', b:'brush', e:'eraser', l:'line', r:'rect', o:'circle', f:'fill' };
+  if (toolMap[e.key]) {
+    const btn = [...document.querySelectorAll('.cs-tool-btn')].find(b => b.getAttribute('title')?.toLowerCase() === toolMap[e.key].replace('rect','rectangle').replace('circle','ellipse').replace('pencil','pencil'));
+    if (btn) setTool(toolMap[e.key], btn);
+  }
+});
+
+// Flood fill algorithm
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return [r,g,b,255];
+}
+function floodFill(sx, sy, fillColor) {
+  const dpr = window.devicePixelRatio || 1;
+  const w = mc.width, h = mc.height;
+  const imgData = mctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+  const idx = (y, x) => (y * w + x) * 4;
+  const target = data.slice(idx(sy, sx), idx(sy, sx) + 4);
+  if (fillColor.every((v, i) => v === target[i])) return;
+  const stack = [[sx, sy]];
+  const visited = new Uint8Array(w * h);
+  while (stack.length) {
+    const [x, y] = stack.pop();
+    if (x < 0 || x >= w || y < 0 || y >= h) continue;
+    const i = idx(y, x);
+    if (visited[y * w + x]) continue;
+    if (!data.slice(i, i+4).every((v, j) => Math.abs(v - target[j]) < 32)) continue;
+    visited[y * w + x] = 1;
+    data[i] = fillColor[0]; data[i+1] = fillColor[1]; data[i+2] = fillColor[2]; data[i+3] = 255;
+    stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+  }
+  mctx.putImageData(imgData, 0, 0);
+}
+</script>
+</body>
+</html>

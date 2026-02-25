@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordPad & Keyboard Adventure! 🎮</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow:#FFD93D; --orange:#FF6B35; --pink:#FF4DC4;
+  --purple:#7C3AED; --blue:#2563EB; --cyan:#0891B2;
+  --green:#16A34A; --red:#DC2626; --lime:#65A30D;
+  --bg:#FFF8E7; --white:#FFFFFF; --text:#1E1B4B; --muted:#6366F1;
+  --h:'Baloo 2',cursive; --b:'Baloo 2',sans-serif; --bn:'Hind Siliguri',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--b);font-size:15px;line-height:1.7;overflow-x:hidden;cursor:default}
+
+/* STARS BG */
+.starbg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;animation:twinkle ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+
+/* LANG TOGGLE */
+.lang-btn{position:fixed;top:60px;right:2px;z-index:1000;background:var(--white);border:3px solid var(--purple);border-radius:50px;padding:9px 20px;font-family:var(--b);font-weight:800;font-size:14px;color:var(--purple);cursor:pointer;box-shadow:0 4px 0 #5B21B6;transition:all .2s;display:flex;align-items:center;gap:8px}
+.lang-btn:hover{background:var(--purple);color:#fff;transform:translateY(-2px);box-shadow:0 6px 0 #4C1D95}
+.lang-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #4C1D95}
+
+/* NAV */
+.top-nav{position:sticky;top:0;z-index:500;background:rgba(255,248,231,.95);backdrop-filter:blur(12px);border-bottom:3px solid var(--yellow);display:flex;gap:4px;padding:8px 20px;overflow-x:auto;flex-wrap:nowrap}
+.top-nav::-webkit-scrollbar{display:none}
+.nav-pill{background:var(--white);border:2px solid transparent;border-radius:50px;padding:7px 18px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;transition:all .2s;text-decoration:none;color:var(--text)}
+.nav-pill:hover,.nav-pill.active{background:var(--purple);color:#fff;border-color:var(--purple);transform:translateY(-2px)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 40%,#EC4899 75%,#F97316 100%);padding:80px 40px 100px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:60px;background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-float{font-size:80px;display:block;animation:superhero 3s ease-in-out infinite;filter:drop-shadow(0 10px 30px rgba(0,0,0,.3));margin-bottom:12px}
+@keyframes superhero{0%,100%{transform:translateY(0) rotate(-5deg) scale(1)}25%{transform:translateY(-20px) rotate(3deg) scale(1.1)}75%{transform:translateY(-10px) rotate(-3deg) scale(1.05)}}
+.hero h1{font-family:var(--h);font-size:clamp(38px,7vw,80px);font-weight:800;color:#fff;text-shadow:4px 4px 0 rgba(0,0,0,.15);letter-spacing:1px;line-height:1.1;margin-bottom:14px}
+.hero p{font-size:18px;color:rgba(255,255,255,.92);font-weight:600;max-width:560px;margin:0 auto 28px}
+.hero-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);color:#fff;padding:8px 18px;border-radius:50px;font-weight:800;font-size:13px}
+
+/* LAYOUT */
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 100px;position:relative;z-index:10}
+
+/* SECTION */
+.section{padding-top:72px}
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:30px;padding-bottom:14px;border-bottom:3px dashed rgba(0,0,0,.08)}
+.sec-icon{font-size:44px;animation:bop 2.5s ease-in-out infinite}
+@keyframes bop{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.sec-head h2{font-family:var(--h);font-size:clamp(26px,4vw,38px);font-weight:800;line-height:1.1}
+.sec-bar{flex:1;height:5px;border-radius:5px}
+
+/* CARDS */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.g4{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+
+.card{background:var(--white);border-radius:22px;padding:26px 22px;border:3px solid;box-shadow:0 4px 0 rgba(0,0,0,.08);transition:all .25s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;border-radius:50%;opacity:.08}
+.card:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 12px 0 rgba(0,0,0,.1)}
+.card .ci{font-size:46px;display:block;margin-bottom:12px}
+.card h3{font-family:var(--h);font-size:18px;font-weight:800;margin-bottom:8px}
+.card p{font-size:13.5px;color:#374151;line-height:1.65}
+.card.y{border-color:var(--yellow);background:#FFFBEB}.card.y::before{background:var(--yellow)}
+.card.o{border-color:var(--orange);background:#FFF7ED}.card.o::before{background:var(--orange)}
+.card.pk{border-color:var(--pink);background:#FDF4FF}.card.pk::before{background:var(--pink)}
+.card.pu{border-color:var(--purple);background:#F5F3FF}.card.pu::before{background:var(--purple)}
+.card.bl{border-color:var(--blue);background:#EFF6FF}.card.bl::before{background:var(--blue)}
+.card.cy{border-color:var(--cyan);background:#ECFEFF}.card.cy::before{background:var(--cyan)}
+.card.gn{border-color:var(--green);background:#F0FDF4}.card.gn::before{background:var(--green)}
+.card.re{border-color:var(--red);background:#FEF2F2}.card.re::before{background:var(--red)}
+.card.li{border-color:var(--lime);background:#F7FEE7}.card.li::before{background:var(--lime)}
+
+/* TIP BOX */
+.tip{border-radius:20px;padding:20px 24px;margin:18px 0;display:flex;gap:14px;align-items:flex-start;border:3px solid;font-size:14.5px;font-weight:600}
+.tip-ico{font-size:32px;flex-shrink:0;margin-top:2px}
+.tip p{color:#374151;margin:0}.tip strong{color:var(--text)}
+.tip.y{background:#FFFBEB;border-color:var(--yellow)}
+.tip.o{background:#FFF7ED;border-color:var(--orange)}
+.tip.pk{background:#FDF4FF;border-color:var(--pink)}
+.tip.gn{background:#F0FDF4;border-color:var(--green)}
+.tip.bl{background:#EFF6FF;border-color:var(--blue)}
+.tip.pu{background:#F5F3FF;border-color:var(--purple)}
+.tip.cy{background:#ECFEFF;border-color:var(--cyan)}
+
+/* STEP BOXES */
+.steps{display:flex;flex-direction:column;gap:14px;margin:20px 0}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--white);border-radius:18px;padding:18px 20px;border:3px solid var(--yellow);box-shadow:0 3px 0 rgba(0,0,0,.07)}
+.step-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--h);font-size:18px;font-weight:800;color:#fff;flex-shrink:0}
+.step h4{font-family:var(--h);font-size:16px;font-weight:800;margin-bottom:4px}
+.step p{font-size:13.5px;color:#374151}
+
+/* WORDPAD MOCKUP */
+.wp-mockup{background:#fff;border-radius:20px;overflow:hidden;border:4px solid var(--blue);box-shadow:0 8px 0 rgba(0,0,0,.1);margin:24px 0}
+.wp-titlebar{background:linear-gradient(135deg,#2563EB,#4F46E5);padding:10px 18px;display:flex;align-items:center;gap:12px}
+.wp-tb-dot{width:13px;height:13px;border-radius:50%;display:inline-block}
+.wp-title-text{font-family:var(--h);color:#fff;font-size:14px;font-weight:700;flex:1;text-align:center}
+.wp-ribbon{background:#F0F9FF;border-bottom:2px solid #BFDBFE;padding:8px 16px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.wp-tab{padding:6px 18px;border-radius:8px 8px 0 0;font-weight:800;font-size:13px;cursor:pointer}
+.wp-tab.active{background:var(--white);border:2px solid #BFDBFE;border-bottom:none;color:var(--blue)}
+.wp-tools{background:#fff;border-bottom:2px solid #BFDBFE;padding:10px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wp-tool{background:#F3F4F6;border:2px solid #E5E7EB;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.wp-tool:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.wp-tool.bold{font-weight:900}
+.wp-tool.italic{font-style:italic}
+.wp-tool.underline{text-decoration:underline}
+.wp-ruler{background:#F9FAFB;height:24px;border-bottom:1px solid #E5E7EB;padding:0 20px;display:flex;align-items:center}
+.wp-ruler-inner{width:100%;height:2px;background:linear-gradient(to right,#CBD5E1 1px,transparent 1px) 0 0/40px 100%,#E5E7EB}
+.wp-body{padding:30px 40px;min-height:160px;font-size:15px;color:#374151;line-height:2;background:white}
+.wp-body .cursor-blink{display:inline-block;width:2px;height:18px;background:var(--blue);animation:blink .9s infinite;vertical-align:middle;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.wp-statusbar{background:#F0F9FF;border-top:2px solid #BFDBFE;padding:6px 16px;font-size:12px;color:var(--cyan);font-weight:700;display:flex;gap:20px}
+
+/* KEYBOARD */
+.kb-wrap{background:var(--white);border-radius:24px;padding:28px;border:4px solid var(--yellow);box-shadow:0 8px 0 rgba(0,0,0,.1);margin:20px 0;text-align:center;overflow-x:auto}
+.kb-label{font-family:var(--h);font-size:17px;font-weight:800;color:var(--orange);margin-bottom:18px}
+.kb-row{display:flex;justify-content:center;gap:4px;margin-bottom:5px}
+.k{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#F3F4F6,#E5E7EB);border:2px solid #D1D5DB;border-bottom:4px solid #9CA3AF;border-radius:7px;font-size:11px;font-weight:800;color:var(--text);min-width:34px;height:38px;padding:0 5px;cursor:pointer;transition:all .12s;user-select:none;flex-direction:column;line-height:1.2}
+.k:hover,.k.lit{background:linear-gradient(145deg,#FFD93D,#FFBE00);border-color:#F59E0B;border-bottom-color:#D97706;transform:translateY(2px);border-bottom-width:2px}
+.k.home{background:linear-gradient(145deg,#7C3AED,#6D28D9);border-color:#5B21B6;border-bottom-color:#4C1D95;color:#fff}
+.k.home:hover{background:linear-gradient(145deg,#FFD93D,#FFBE00);color:#333;border-color:#F59E0B}
+.k.wide{min-width:58px;font-size:10px}
+.k.wider{min-width:76px;font-size:10px}
+.k.sp{min-width:200px;background:linear-gradient(145deg,#2563EB,#1D4ED8);color:#fff;border-color:#1D4ED8;border-bottom-color:#1E40AF}
+.k.sp:hover{background:linear-gradient(145deg,#FFD93D,#FFBE00);color:#333;border-color:#F59E0B}
+.k-top{font-size:8px;color:inherit;opacity:.7}
+.key-display{margin-top:14px;background:#F5F3FF;border-radius:14px;padding:10px 16px;border:3px dashed var(--purple);font-family:var(--h);font-size:22px;font-weight:800;color:var(--purple);min-height:48px}
+
+/* SHORTCUT TABLE */
+.sc-wrap{background:var(--white);border-radius:20px;overflow:hidden;border:3px solid var(--blue);box-shadow:0 4px 0 rgba(0,0,0,.08);margin:18px 0;overflow-x:auto}
+.sc-table{width:100%;border-collapse:collapse;font-size:14px;min-width:500px}
+.sc-table thead{background:linear-gradient(135deg,var(--blue),var(--purple))}
+.sc-table th{color:#fff;padding:13px 18px;text-align:left;font-family:var(--h);font-size:15px;font-weight:800}
+.sc-table td{padding:11px 18px;border-bottom:2px solid #F3F4F6;vertical-align:middle}
+.sc-table tr:last-child td{border-bottom:none}
+.sc-table tr:hover td{background:#F5F3FF}
+.kbd{font-size:11px;font-weight:800;background:linear-gradient(145deg,var(--purple),#6D28D9);color:#fff;padding:3px 10px;border-radius:7px;border-bottom:3px solid #4C1D95;white-space:nowrap;display:inline-block;font-family:var(--b)}
+
+/* SAVE STEPS */
+.save-flow{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin:20px 0}
+.save-step{background:var(--white);border-radius:18px;padding:20px 16px;text-align:center;border:3px solid;box-shadow:0 4px 0 rgba(0,0,0,.08);transition:transform .2s;position:relative}
+.save-step:hover{transform:scale(1.04) rotate(-1deg)}
+.save-step .ss-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--h);font-size:14px;font-weight:800;color:#fff;margin:0 auto 10px}
+.save-step .ss-ico{font-size:38px;margin-bottom:10px;display:block}
+.save-step h4{font-family:var(--h);font-size:14px;font-weight:800;margin-bottom:4px}
+.save-step p{font-size:12px;color:#6B7280}
+.save-arrow{display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--yellow)}
+
+/* FINGER GRID */
+.finger-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:20px 0}
+.fcard{border-radius:16px;padding:16px 12px;text-align:center;border:3px solid;transition:transform .2s}
+.fcard:hover{transform:scale(1.05)}
+.fcard .fhand{font-size:36px;margin-bottom:8px;display:block}
+.fcard h4{font-family:var(--h);font-size:14px;font-weight:800;margin-bottom:8px}
+.fkey-pills{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.fkp{font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;font-family:var(--b)}
+
+/* WPM TRACK */
+.wpm-track{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:24px 0}
+.wpm-card{background:var(--white);border-radius:18px;padding:20px 16px;text-align:center;border:3px solid;min-width:130px;flex:1;box-shadow:0 4px 0 rgba(0,0,0,.08);transition:transform .2s}
+.wpm-card:hover{transform:scale(1.06) rotate(-2deg)}
+.wpm-ani{font-size:34px;margin-bottom:6px;display:block}
+.wpm-num{font-family:var(--h);font-size:30px;font-weight:800;line-height:1}
+.wpm-lbl{font-size:10px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.wpm-title{font-size:13px;font-weight:800;margin-top:8px}
+.progress{background:#F3F4F6;border-radius:20px;height:10px;overflow:hidden;margin-top:10px;border:1px solid #E5E7EB}
+.progress-fill{height:100%;border-radius:20px;transition:width 1.5s ease}
+
+/* TYPING GAME */
+.game-box{background:var(--white);border-radius:24px;padding:28px;border:4px solid var(--pink);box-shadow:0 6px 0 rgba(0,0,0,.1);margin:20px 0}
+.game-title{font-family:var(--h);font-size:22px;font-weight:800;color:var(--pink);text-align:center;margin-bottom:18px}
+.game-prompt{background:#FDF4FF;border-radius:14px;padding:18px 22px;font-size:18px;font-weight:700;line-height:1.9;margin-bottom:14px;border:3px dashed var(--pink);letter-spacing:.5px}
+.ch-neutral{color:#D1D5DB}
+.ch-correct{color:var(--green)}
+.ch-wrong{color:var(--red);background:#FEE2E2;border-radius:3px}
+.ch-cursor{border-left:3px solid var(--pink);animation:blink .8s infinite}
+.game-input{width:100%;border:3px solid var(--pink);border-radius:12px;padding:13px 18px;font-size:17px;font-family:var(--b);font-weight:700;color:transparent;caret-color:var(--pink);background:#FDF4FF;outline:none}
+.game-input:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(124,58,237,.12)}
+.game-stats{display:flex;gap:14px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.gstat{background:#F5F3FF;border-radius:12px;padding:12px 20px;text-align:center;border:2px solid var(--purple);min-width:90px}
+.gstat-val{font-family:var(--h);font-size:28px;font-weight:800;color:var(--purple);line-height:1}
+.gstat-lbl{font-size:10px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.reset-btn{display:block;margin:16px auto 0;background:linear-gradient(135deg,var(--pink),var(--purple));border:none;border-radius:50px;color:#fff;padding:13px 34px;font-family:var(--h);font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #9333EA;transition:all .2s}
+.reset-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #9333EA}
+.reset-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #9333EA}
+
+/* MASCOT */
+.mascot-bar{background:linear-gradient(135deg,#FFF8E7,#FFF0FA);border-radius:24px;border:4px solid var(--yellow);padding:28px 32px;display:flex;align-items:center;gap:24px;margin:40px 0;box-shadow:0 6px 0 rgba(0,0,0,.08)}
+.mascot-ico{font-size:72px;animation:mascot 2s ease-in-out infinite;flex-shrink:0}
+@keyframes mascot{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.08)}}
+.mascot-text{font-family:var(--h);font-size:22px;font-weight:800;color:var(--orange);margin-bottom:6px}
+.mascot-sub{font-size:14.5px;color:#374151;font-weight:600}
+
+/* PROS CONS */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.pros,.cons{background:var(--white);border-radius:18px;padding:22px;border:3px solid}
+.pros{border-top:5px solid var(--green)}.cons{border-top:5px solid var(--red)}
+.pros h4{font-family:var(--h);font-size:16px;font-weight:800;color:var(--green);margin-bottom:14px}
+.cons h4{font-family:var(--h);font-size:16px;font-weight:800;color:var(--red);margin-bottom:14px}
+.pros li,.cons li{font-size:13.5px;color:#374151;margin-bottom:7px;padding-left:22px;position:relative;list-style:none}
+.pros li::before{content:'✓';color:var(--green);position:absolute;left:0;font-weight:900}
+.cons li::before{content:'✗';color:var(--red);position:absolute;left:0;font-weight:900}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:10px;height:10px;border-radius:50%;pointer-events:none;z-index:9999;animation:cffall 1.5s linear forwards}
+@keyframes cffall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(600px) rotate(720deg);opacity:0}}
+
+/* FLOATERS */
+.floaters{position:fixed;inset:0;pointer-events:none;z-index:0}
+.floater{position:absolute;animation:floatup linear infinite;opacity:.12}
+@keyframes floatup{0%{transform:translateY(110vh) rotate(0);opacity:0}10%{opacity:.12}90%{opacity:.12}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+
+/* FOOTER */
+footer{background:linear-gradient(135deg,#4F46E5,#7C3AED,#EC4899);color:#fff;text-align:center;padding:50px 24px;position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;top:-30px;left:0;width:100%;height:60px;background:var(--bg);clip-path:ellipse(55% 100% at 50% 0)}
+.footer-ico{font-size:56px;display:block;margin-bottom:12px;animation:superhero 3s ease-in-out infinite}
+footer h3{font-family:var(--h);font-size:28px;font-weight:800;margin-bottom:8px}
+footer p{font-size:15px;opacity:.88;font-weight:600}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .5s,transform .5s}
+.reveal.visible{opacity:1;transform:none}
+
+/* BN MODE */
+body.bn *:not(.lang-btn):not(.lang-btn *){font-family:var(--bn)!important}
+body.bn .card h3,body.bn .sec-head h2,body.bn .game-title,body.bn .mascot-text,body.bn .hero h1,body.bn footer h3{font-family:var(--bn)!important;font-weight:700!important}
+
+@media(max-width:700px){
+  .hero{padding:50px 20px 90px}
+  .two{grid-template-columns:1fr}
+  .wrap{padding:0 14px 80px}
+  .mascot-bar{flex-direction:column;text-align:center;padding:22px 18px}
+  .wp-body{padding:20px}
+  .top-nav{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATERS -->
+<div class="floaters" id="floaters"></div>
+
+<!-- LANG TOGGLE -->
+<button class="lang-btn" onclick="toggleLang()" id="langBtn">
+  <span id="langFlag">🇧🇩</span>
+  <span id="langLabel">বাংলা</span>
+</button>
+
+<!-- NAV -->
+<nav class="top-nav" id="topnav">
+  <a class="nav-pill" href="#wordpad-intro" data-en="📄 WordPad" data-bn="📄 ওয়ার্ডপ্যাড">📄 WordPad</a>
+  <a class="nav-pill" href="#wp-open" data-en="🚀 How to Open" data-bn="🚀 কীভাবে খুলবে">🚀 How to Open</a>
+  <a class="nav-pill" href="#wp-interface" data-en="🖥️ Interface" data-bn="🖥️ ইন্টারফেস">🖥️ Interface</a>
+  <a class="nav-pill" href="#wp-tools" data-en="🔧 Tools" data-bn="🔧 টুলস">🔧 Tools</a>
+  <a class="nav-pill" href="#wp-format" data-en="🎨 Formatting" data-bn="🎨 ফরম্যাটিং">🎨 Formatting</a>
+  <a class="nav-pill" href="#wp-save" data-en="💾 Save & Open" data-bn="💾 সেভ ও খোলা">💾 Save & Open</a>
+  <a class="nav-pill" href="#wp-uses" data-en="✨ Uses" data-bn="✨ ব্যবহার">✨ Uses</a>
+  <a class="nav-pill" href="#kb-intro" data-en="⌨️ Keyboard" data-bn="⌨️ কীবোর্ড">⌨️ Keyboard</a>
+  <a class="nav-pill" href="#kb-keys" data-en="🔑 Key Types" data-bn="🔑 কী-এর ধরন">🔑 Key Types</a>
+  <a class="nav-pill" href="#kb-shortcuts" data-en="⚡ Shortcuts" data-bn="⚡ শর্টকাট">⚡ Shortcuts</a>
+  <a class="nav-pill" href="#kb-fingers" data-en="🤲 Fingers" data-bn="🤲 আঙুল">🤲 Fingers</a>
+  <a class="nav-pill" href="#typing" data-en="🏆 Typing Tips" data-bn="🏆 টাইপিং টিপস">🏆 Typing Tips</a>
+  <a class="nav-pill" href="#game" data-en="🎮 Play!" data-bn="🎮 খেলো!">🎮 Play!</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-float">🦸</span>
+  <h1 data-en="WordPad & Keyboard<br>Adventure!" data-bn="ওয়ার্ডপ্যাড ও কীবোর্ড<br>অ্যাডভেঞ্চার!">WordPad & Keyboard<br>Adventure!</h1>
+  <p data-en="Your complete fun guide to WordPad tools, saving files, keyboard keys & becoming a super typist! 🌟" data-bn="ওয়ার্ডপ্যাড টুলস, ফাইল সেভ করা, কীবোর্ড ও সুপার টাইপিস্ট হওয়ার সম্পূর্ণ মজার গাইড! 🌟">Your complete fun guide to WordPad tools, saving files, keyboard keys & becoming a super typist! 🌟</p>
+  <div class="hero-pills">
+    <span class="hero-pill" data-en="📄 Full WordPad Guide" data-bn="📄 সম্পূর্ণ ওয়ার্ডপ্যাড গাইড">📄 Full WordPad Guide</span>
+    <span class="hero-pill" data-en="⌨️ Every Key Explained" data-bn="⌨️ প্রতিটি কী ব্যাখ্যা">⌨️ Every Key Explained</span>
+    <span class="hero-pill" data-en="💾 Save Like a Pro" data-bn="💾 প্রোর মতো সেভ করো">💾 Save Like a Pro</span>
+    <span class="hero-pill" data-en="🎮 Typing Game Inside!" data-bn="🎮 টাইপিং গেম আছে!">🎮 Typing Game Inside!</span>
+    <span class="hero-pill" data-en="🇧🇩 বাংলায় পড়ো" data-bn="🇬🇧 Read in English">🇧🇩 বাংলায় পড়ো</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- MASCOT -->
+<div class="mascot-bar reveal">
+  <span class="mascot-ico">🤖</span>
+  <div>
+    <div class="mascot-text" data-en="Hey there! I'm KeyBot! 👋" data-bn="হ্যালো! আমি কীবট! 👋">Hey there! I'm KeyBot! 👋</div>
+    <p class="mascot-sub" data-en="I'll teach you everything about WordPad AND the keyboard! This page has TWO big adventures — WordPad (the writing program) and the Keyboard (your typing tool). Ready? Scroll down! 🚀" data-bn="আমি তোমাকে ওয়ার্ডপ্যাড এবং কীবোর্ড সম্পর্কে সব শেখাব! এই পৃষ্ঠায় দুটো বড় অ্যাডভেঞ্চার আছে। প্রস্তুত? নিচে স্ক্রোল করো! 🚀">I'll teach you everything about WordPad AND the keyboard! This page has TWO big adventures — WordPad (the writing program) and the Keyboard (your typing tool). Ready? Scroll down! 🚀</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ WORDPAD PART ═══════════════════════════════════ -->
+<div style="background:linear-gradient(135deg,#EFF6FF,#F0FDF4);border-radius:28px;padding:32px 28px;border:4px solid var(--blue);margin:48px 0 0;box-shadow:0 6px 0 rgba(0,0,0,.09)" class="reveal">
+  <div style="font-family:var(--h);font-size:32px;font-weight:800;color:var(--blue);text-align:center;margin-bottom:6px" data-en="📄 PART 1: WordPad" data-bn="📄 পর্ব ১: ওয়ার্ডপ্যাড">📄 PART 1: WordPad</div>
+  <p style="text-align:center;color:#374151;font-weight:600;font-size:15px" data-en="Everything about the WordPad writing program! 🖊️" data-bn="ওয়ার্ডপ্যাড লেখার প্রোগ্রাম সম্পর্কে সব কিছু! 🖊️">Everything about the WordPad writing program! 🖊️</p>
+</div>
+
+<!-- 1. WHAT IS WORDPAD -->
+<section class="section reveal" id="wordpad-intro">
+  <div class="sec-head">
+    <span class="sec-icon">📄</span>
+    <div>
+      <h2 data-en="What is WordPad?" data-bn="ওয়ার্ডপ্যাড কী?">What is WordPad?</h2>
+    </div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--blue),transparent)"></div>
+  </div>
+
+  <div class="tip bl">
+    <span class="tip-ico">💡</span>
+    <p data-en="<strong>WordPad</strong> is a FREE writing program that comes already installed on Windows computers! You don't have to buy it or download it — it's just there waiting for you! It lets you type, format, and save documents just like a real writer. Think of it like a super-powered digital notebook!" data-bn="<strong>ওয়ার্ডপ্যাড</strong> হলো একটি বিনামূল্যের লেখার প্রোগ্রাম যা Windows কম্পিউটারে আগে থেকেই ইনস্টল করা থাকে! তোমাকে কিনতে বা ডাউনলোড করতে হবে না — এটি সেখানেই তোমার জন্য অপেক্ষা করছে!"><strong>WordPad</strong> is a FREE writing program that comes already installed on Windows computers! You don't have to buy it or download it — it's just there waiting for you! It lets you type, format, and save documents just like a real writer. Think of it like a super-powered digital notebook!</p>
+  </div>
+
+  <!-- Mockup -->
+  <div class="wp-mockup">
+    <div class="wp-titlebar">
+      <span class="wp-tb-dot" style="background:#FF5F57"></span>
+      <span class="wp-tb-dot" style="background:#FEBC2E;margin-left:6px"></span>
+      <span class="wp-tb-dot" style="background:#28C840;margin-left:6px"></span>
+      <span class="wp-title-text" data-en="📄 My First Story.rtf — WordPad" data-bn="📄 আমার প্রথম গল্প.rtf — WordPad">📄 My First Story.rtf — WordPad</span>
+    </div>
+    <div class="wp-ribbon">
+      <span class="wp-tab active" data-en="Home" data-bn="হোম">Home</span>
+      <span class="wp-tab" data-en="View" data-bn="ভিউ">View</span>
+    </div>
+    <div class="wp-tools">
+      <span class="wp-tool bold" data-en="B Bold" data-bn="B বোল্ড">B Bold</span>
+      <span class="wp-tool italic" data-en="I Italic" data-bn="I ইটালিক">I Italic</span>
+      <span class="wp-tool underline" data-en="U Underline" data-bn="U আন্ডারলাইন">U Underline</span>
+      <span class="wp-tool" data-en="🎨 Color" data-bn="🎨 রঙ">🎨 Color</span>
+      <span class="wp-tool" data-en="≡ Align Left" data-bn="≡ বাম">≡ Align Left</span>
+      <span class="wp-tool" data-en="☰ Center" data-bn="☰ মাঝে">☰ Center</span>
+      <span class="wp-tool" data-en="• List" data-bn="• তালিকা">• List</span>
+      <span class="wp-tool" data-en="🖼️ Picture" data-bn="🖼️ ছবি">🖼️ Picture</span>
+    </div>
+    <div class="wp-ruler"><div class="wp-ruler-inner"></div></div>
+    <div class="wp-body">
+      <span data-en="Once upon a time, there was a curious child who learned to type..." data-bn="একদিন এক কৌতূহলী শিশু ছিল যে টাইপ করতে শিখেছিল...">Once upon a time, there was a curious child who learned to type...</span><span class="cursor-blink"></span>
+    </div>
+    <div class="wp-statusbar">
+      <span data-en="📄 1 Page" data-bn="📄 ১ পৃষ্ঠা">📄 1 Page</span>
+      <span data-en="✏️ 12 Words" data-bn="✏️ ১২ শব্দ">✏️ 12 Words</span>
+      <span data-en="🔤 RTF Format" data-bn="🔤 RTF ফরম্যাট">🔤 RTF Format</span>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:20px">
+    <div class="card bl">
+      <span class="ci">🏠</span>
+      <h3 data-en="Comes Free with Windows" data-bn="Windows এর সাথে বিনামূল্যে আসে">Comes Free with Windows</h3>
+      <p data-en="No need to buy or install anything extra! WordPad is already in your computer from the start. It's been part of Windows since 1995!" data-bn="অতিরিক্ত কিছু কিনতে বা ইনস্টল করতে হবে না! ওয়ার্ডপ্যাড শুরু থেকেই তোমার কম্পিউটারে আছে। ১৯৯৫ সাল থেকে Windows এর অংশ!">No need to buy or install anything extra! WordPad is already in your computer from the start. It's been part of Windows since 1995!</p>
+    </div>
+    <div class="card gn">
+      <span class="ci">⚡</span>
+      <h3 data-en="Opens Super Fast" data-bn="অতি দ্রুত খোলে">Opens Super Fast</h3>
+      <p data-en="WordPad starts in seconds! It's much lighter than Word or Google Docs. Perfect for quick writing tasks without waiting." data-bn="ওয়ার্ডপ্যাড মুহূর্তের মধ্যে শুরু হয়! Word বা Google Docs এর চেয়ে অনেক হালকা। দ্রুত লেখার কাজের জন্য নিখুঁত।">WordPad starts in seconds! It's much lighter than Word or Google Docs. Perfect for quick writing tasks without waiting.</p>
+    </div>
+    <div class="card y">
+      <span class="ci">🎨</span>
+      <h3 data-en="Supports Formatting" data-bn="ফরম্যাটিং সমর্থন করে">Supports Formatting</h3>
+      <p data-en="Unlike boring Notepad, WordPad lets you make text bold, italic, colored, and different sizes. Your writing can look really cool!" data-bn="বোরিং নোটপ্যাডের বিপরীতে, ওয়ার্ডপ্যাড তোমাকে লেখা মোটা, কাত, রঙিন এবং বিভিন্ন আকারে করতে দেয়।">Unlike boring Notepad, WordPad lets you make text bold, italic, colored, and different sizes. Your writing can look really cool!</p>
+    </div>
+    <div class="card pk">
+      <span class="ci">🖼️</span>
+      <h3 data-en="Add Pictures Too!" data-bn="ছবিও যোগ করো!">Add Pictures Too!</h3>
+      <p data-en="You can insert photos and images into your document! Make your stories come alive with pictures. Just go to Insert → Picture!" data-bn="তুমি তোমার ডকুমেন্টে ছবি ও ইমেজ ঢোকাতে পারো! ছবি দিয়ে তোমার গল্পকে জীবন্ত করো। শুধু Insert → Picture যাও!">You can insert photos and images into your document! Make your stories come alive with pictures. Just go to Insert → Picture!</p>
+    </div>
+  </div>
+
+  <div class="two" style="margin-top:18px">
+    <div class="pros">
+      <h4>✓ <span data-en="WordPad is Great for..." data-bn="ওয়ার্ডপ্যাড দুর্দান্ত...">WordPad is Great for...</span></h4>
+      <ul>
+        <li data-en="Writing stories and homework" data-bn="গল্প ও হোমওয়ার্ক লেখা">Writing stories and homework</li>
+        <li data-en="Quick notes and letters" data-bn="দ্রুত নোট ও চিঠি">Quick notes and letters</li>
+        <li data-en="Practicing typing skills" data-bn="টাইপিং দক্ষতা অনুশীলন">Practicing typing skills</li>
+        <li data-en="Opening Word (.docx) files" data-bn=".docx ফাইল খোলা">Opening Word (.docx) files</li>
+        <li data-en="Basic text formatting" data-bn="মৌলিক টেক্সট ফরম্যাটিং">Basic text formatting</li>
+        <li data-en="Kids learning to type!" data-bn="শিশুদের টাইপ শেখা!">Kids learning to type!</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>✗ <span data-en="WordPad Cannot Do..." data-bn="ওয়ার্ডপ্যাড পারে না...">WordPad Cannot Do...</span></h4>
+      <ul>
+        <li data-en="Spell check (no red squiggles!)" data-bn="বানান চেক (লাল আঁকাবাঁকা রেখা নেই!)">Spell check (no red squiggles!)</li>
+        <li data-en="Grammar checking" data-bn="ব্যাকরণ পরীক্ষা">Grammar checking</li>
+        <li data-en="Tables or charts" data-bn="টেবিল বা চার্ট">Tables or charts</li>
+        <li data-en="Multiple open files at once" data-bn="একসাথে একাধিক ফাইল">Multiple open files at once</li>
+        <li data-en="Work with others online" data-bn="অনলাইনে অন্যদের সাথে কাজ">Work with others online</li>
+        <li data-en="Advanced page layouts" data-bn="উন্নত পেজ লেআউট">Advanced page layouts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 2. HOW TO OPEN -->
+<section class="section reveal" id="wp-open">
+  <div class="sec-head">
+    <span class="sec-icon">🚀</span>
+    <div><h2 data-en="How to Open WordPad" data-bn="ওয়ার্ডপ্যাড কীভাবে খুলবে">How to Open WordPad</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--orange),transparent)"></div>
+  </div>
+
+  <p style="color:#374151;font-weight:600;font-size:15px;margin-bottom:20px" data-en="There are 3 super easy ways to open WordPad! Pick your favourite!" data-bn="ওয়ার্ডপ্যাড খোলার ৩টি সহজ উপায় আছে! তোমার পছন্দেরটা বেছে নাও!">There are 3 super easy ways to open WordPad! Pick your favourite!</p>
+
+  <div class="grid g3">
+    <div class="card o">
+      <span class="ci">🔍</span>
+      <h3 data-en="Method 1: Search" data-bn="পদ্ধতি ১: সার্চ">Method 1: Search</h3>
+      <p data-en="Click the Start button (Windows logo), type <strong>wordpad</strong>, then press Enter. Done! Super fast!" data-bn="Start বোতাম (Windows লোগো) ক্লিক করো, <strong>wordpad</strong> টাইপ করো, তারপর Enter চাপো। শেষ!">Click the Start button (Windows logo), type <strong>wordpad</strong>, then press Enter. Done! Super fast!</p>
+    </div>
+    <div class="card pu">
+      <span class="ci">⌨️</span>
+      <h3 data-en="Method 2: Run Box" data-bn="পদ্ধতি ২: রান বক্স">Method 2: Run Box</h3>
+      <p data-en="Press <strong>Windows Key + R</strong> at the same time, type <strong>wordpad</strong>, click OK. Like a secret cheat code!" data-bn="একসাথে <strong>Windows Key + R</strong> চাপো, <strong>wordpad</strong> টাইপ করো, OK ক্লিক করো।">Press <strong>Windows Key + R</strong> at the same time, type <strong>wordpad</strong>, click OK. Like a secret cheat code!</p>
+    </div>
+    <div class="card gn">
+      <span class="ci">📁</span>
+      <h3 data-en="Method 3: File Explorer" data-bn="পদ্ধতি ৩: ফাইল এক্সপ্লোরার">Method 3: File Explorer</h3>
+      <p data-en="Go to <strong>C:\Program Files\Windows NT\Accessories\wordpad.exe</strong> and double-click it." data-bn="<strong>C:\Program Files\Windows NT\Accessories\wordpad.exe</strong> তে যাও এবং ডাবল ক্লিক করো।">Go to <strong>C:\Program Files\Windows NT\Accessories\wordpad.exe</strong> and double-click it.</p>
+    </div>
+  </div>
+
+  <div class="tip y" style="margin-top:20px">
+    <span class="tip-ico">⭐</span>
+    <p data-en="<strong>Pro Shortcut:</strong> Right-click on the WordPad app and choose 'Pin to Taskbar' so it's always one click away at the bottom of your screen!" data-bn="<strong>প্রো শর্টকাট:</strong> ওয়ার্ডপ্যাড অ্যাপে ডান ক্লিক করো এবং 'Pin to Taskbar' বেছে নাও যাতে এটি সবসময় এক ক্লিকে পাওয়া যায়!"><strong>Pro Shortcut:</strong> Right-click on the WordPad app and choose 'Pin to Taskbar' so it's always one click away at the bottom of your screen!</p>
+  </div>
+</section>
+
+<!-- 3. INTERFACE -->
+<section class="section reveal" id="wp-interface">
+  <div class="sec-head">
+    <span class="sec-icon">🖥️</span>
+    <div><h2 data-en="WordPad Interface — What's What?" data-bn="ওয়ার্ডপ্যাড ইন্টারফেস — কোনটা কী?">WordPad Interface — What's What?</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--cyan),transparent)"></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card cy">
+      <span class="ci">🏷️</span>
+      <h3 data-en="Title Bar (Top Bar)" data-bn="টাইটেল বার (উপরের বার)">Title Bar (Top Bar)</h3>
+      <p data-en="The very top bar shows your document's name. New unsaved files show 'Untitled'. Has the minimize ➖, maximize ⬜, and close ✖ buttons. Blue colored bar!" data-bn="একদম উপরের বারে ডকুমেন্টের নাম দেখায়। নতুন সেভ না হওয়া ফাইলে 'Untitled' দেখায়। মিনিমাইজ ➖, ম্যাক্সিমাইজ ⬜ এবং ক্লোজ ✖ বোতাম আছে।">The very top bar shows your document's name. New unsaved files show 'Untitled'. Has the minimize ➖, maximize ⬜, and close ✖ buttons. Blue colored bar!</p>
+    </div>
+    <div class="card y">
+      <span class="ci">🔧</span>
+      <h3 data-en="Quick Access Toolbar" data-bn="কুইক অ্যাক্সেস টুলবার">Quick Access Toolbar</h3>
+      <p data-en="Tiny toolbar in the top-left corner with Save 💾, Undo ↩️, and Redo ↪️ buttons. You can customize it by clicking the little arrow dropdown!" data-bn="উপরের বাম কোণে ছোট্ট টুলবার যেখানে Save 💾, Undo ↩️ এবং Redo ↪️ বোতাম আছে। ছোট তীরচিহ্নে ক্লিক করে কাস্টমাইজ করা যায়।">Tiny toolbar in the top-left corner with Save 💾, Undo ↩️, and Redo ↪️ buttons. You can customize it by clicking the little arrow dropdown!</p>
+    </div>
+    <div class="card bl">
+      <span class="ci">🎀</span>
+      <h3 data-en="The Ribbon" data-bn="রিবন">The Ribbon</h3>
+      <p data-en="The big toolbar area with all the formatting buttons! Has two tabs — <strong>Home</strong> (for formatting) and <strong>View</strong> (for zoom and layout). Click tabs to switch!" data-bn="সমস্ত ফরম্যাটিং বোতাম সহ বড় টুলবার এলাকা! দুটো ট্যাব আছে — <strong>Home</strong> (ফরম্যাটিংয়ের জন্য) এবং <strong>View</strong> (জুম এবং লেআউটের জন্য)।">The big toolbar area with all the formatting buttons! Has two tabs — <strong>Home</strong> (for formatting) and <strong>View</strong> (for zoom and layout). Click tabs to switch!</p>
+    </div>
+    <div class="card pu">
+      <span class="ci">📏</span>
+      <h3 data-en="The Ruler" data-bn="রুলার">The Ruler</h3>
+      <p data-en="A measuring bar just above the typing area. Used to set margins (page edges), tab stops, and indents. You can drag the little markers to move margins!" data-bn="টাইপিং এলাকার ঠিক উপরে একটি পরিমাপের বার। মার্জিন, ট্যাব স্টপ এবং ইন্ডেন্ট সেট করতে ব্যবহৃত হয়।">A measuring bar just above the typing area. Used to set margins (page edges), tab stops, and indents. You can drag the little markers to move margins!</p>
+    </div>
+    <div class="card gn">
+      <span class="ci">✏️</span>
+      <h3 data-en="Typing Area (Document Area)" data-bn="টাইপিং এলাকা (ডকুমেন্ট এলাকা)">Typing Area (Document Area)</h3>
+      <p data-en="The BIG white space where all your magic writing happens! The blinking cursor line shows exactly where your next letter will appear. Click anywhere to move your cursor!" data-bn="বড় সাদা জায়গা যেখানে সব জাদুর লেখা হয়! ব্লিংকিং কার্সার লাইন দেখায় তোমার পরবর্তী অক্ষর কোথায় আসবে।">The BIG white space where all your magic writing happens! The blinking cursor line shows exactly where your next letter will appear. Click anywhere to move your cursor!</p>
+    </div>
+    <div class="card o">
+      <span class="ci">📜</span>
+      <h3 data-en="Scroll Bar" data-bn="স্ক্রোল বার">Scroll Bar</h3>
+      <p data-en="Long thin bar on the right side. Drag it up or down to scroll through your document when it gets longer than the screen. Also use your mouse wheel!" data-bn="ডান পাশে লম্বা পাতলা বার। ডকুমেন্ট স্ক্রোল করতে উপরে বা নিচে টেনে ধরো। মাউস হুইলও ব্যবহার করতে পারো!">Long thin bar on the right side. Drag it up or down to scroll through your document when it gets longer than the screen. Also use your mouse wheel!</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. TOOLS -->
+<section class="section reveal" id="wp-tools">
+  <div class="sec-head">
+    <span class="sec-icon">🔧</span>
+    <div><h2 data-en="WordPad Tools & Buttons" data-bn="ওয়ার্ডপ্যাড টুলস ও বোতাম">WordPad Tools & Buttons</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--green),transparent)"></div>
+  </div>
+
+  <div class="tip gn">
+    <span class="tip-ico">🎯</span>
+    <p data-en="The Ribbon at the top is full of amazing tools! Here's what every button does — once you know them, you'll feel like a computer wizard! 🧙" data-bn="উপরের রিবন দুর্দান্ত টুলস দিয়ে পূর্ণ! প্রতিটি বোতাম কী করে তা এখানে — একবার জানলে তুমি কম্পিউটার জাদুকরের মতো অনুভব করবে! 🧙">The Ribbon at the top is full of amazing tools! Here's what every button does — once you know them, you'll feel like a computer wizard! 🧙</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="card y">
+      <span class="ci">🔤</span>
+      <h3 data-en="Font Name Box" data-bn="ফন্ট নাম বক্স">Font Name Box</h3>
+      <p data-en="Click the dropdown to choose different letter styles! 'Arial' looks plain, 'Times New Roman' looks fancy, 'Comic Sans' looks fun! Try different ones!" data-bn="ড্রপডাউনে ক্লিক করো ভিন্ন অক্ষরের শৈলী বেছে নিতে! 'Arial' সাদামাটা, 'Times New Roman' আড়ম্বরপূর্ণ, 'Comic Sans' মজাদার!">Click the dropdown to choose different letter styles! 'Arial' looks plain, 'Times New Roman' looks fancy, 'Comic Sans' looks fun! Try different ones!</p>
+    </div>
+    <div class="card o">
+      <span class="ci">🔢</span>
+      <h3 data-en="Font Size Box" data-bn="ফন্ট সাইজ বক্স">Font Size Box</h3>
+      <p data-en="Type a number to make text bigger or smaller! Size 12 is normal. Size 24 is for headings. Size 72 fills the whole page! Highlight text first!" data-bn="সংখ্যা টাইপ করে লেখা বড় বা ছোট করো! সাইজ ১২ স্বাভাবিক। ২৪ শিরোনামের জন্য। ৭২ পুরো পৃষ্ঠা ভরিয়ে দেয়!">Type a number to make text bigger or smaller! Size 12 is normal. Size 24 is for headings. Size 72 fills the whole page! Highlight text first!</p>
+    </div>
+    <div class="card pk">
+      <span class="ci">🖌️</span>
+      <h3 data-en="Text Color Button" data-bn="টেক্সট রঙ বোতাম">Text Color Button</h3>
+      <p data-en="Click the A with a colored bar to change your text color! You can write in RED, BLUE, GREEN — any color! Great for making important words pop!" data-bn="রঙিন বার সহ A-তে ক্লিক করো তোমার টেক্সটের রঙ পরিবর্তন করতে! লাল, নীল, সবুজে লিখতে পারো!">Click the A with a colored bar to change your text color! You can write in RED, BLUE, GREEN — any color! Great for making important words pop!</p>
+    </div>
+    <div class="card gn">
+      <span class="ci">🖍️</span>
+      <h3 data-en="Text Highlight Color" data-bn="টেক্সট হাইলাইট রঙ">Text Highlight Color</h3>
+      <p data-en="Like a real highlighter pen! Select text and click to paint a colored background behind words. Yellow highlight = super important! Great for studying!" data-bn="একটি আসল হাইলাইটার কলমের মতো! টেক্সট সিলেক্ট করো এবং শব্দের পিছনে রঙিন পটভূমি আঁকো।">Like a real highlighter pen! Select text and click to paint a colored background behind words. Yellow highlight = super important! Great for studying!</p>
+    </div>
+    <div class="card bl">
+      <span class="ci">≡</span>
+      <h3 data-en="Alignment Buttons" data-bn="অ্যালাইনমেন্ট বোতাম">Alignment Buttons</h3>
+      <p data-en="<strong>Align Left</strong> — text starts from left (normal). <strong>Center</strong> — text in middle (for titles!). <strong>Align Right</strong> — text goes to right (for dates!). <strong>Justify</strong> — spreads to fill!" data-bn="<strong>বাম</strong> — স্বাভাবিক। <strong>মাঝে</strong> — শিরোনামের জন্য। <strong>ডান</strong> — তারিখের জন্য। <strong>জাস্টিফাই</strong> — দুই পাশ পূর্ণ করে!"><strong>Align Left</strong> — text starts from left (normal). <strong>Center</strong> — text in middle (for titles!). <strong>Align Right</strong> — text goes to right (for dates!). <strong>Justify</strong> — spreads to fill!</p>
+    </div>
+    <div class="card pu">
+      <span class="ci">•</span>
+      <h3 data-en="Bullet List Button" data-bn="বুলেট লিস্ট বোতাম">Bullet List Button</h3>
+      <p data-en="Creates a list with dots (•) before each item! Great for shopping lists, task lists, or listing your favourite things. Press Enter for new bullet!" data-bn="প্রতিটি আইটেমের আগে বিন্দু (•) দিয়ে তালিকা তৈরি করে! কেনাকাটার তালিকা, কাজের তালিকার জন্য দুর্দান্ত।">Creates a list with dots (•) before each item! Great for shopping lists, task lists, or listing your favourite things. Press Enter for new bullet!</p>
+    </div>
+    <div class="card cy">
+      <span class="ci">🖼️</span>
+      <h3 data-en="Insert Picture" data-bn="ছবি ঢোকাও">Insert Picture</h3>
+      <p data-en="Go to Home → Insert → Picture to add an image file from your computer into your document! Your documents can have drawings and photos!" data-bn="Home → Insert → Picture তে গিয়ে কম্পিউটার থেকে ইমেজ ফাইল যোগ করো! তোমার ডকুমেন্টে ছবি থাকতে পারে!">Go to Home → Insert → Picture to add an image file from your computer into your document! Your documents can have drawings and photos!</p>
+    </div>
+    <div class="card re">
+      <span class="ci">🔍</span>
+      <h3 data-en="Find & Replace" data-bn="খোঁজো ও প্রতিস্থাপন">Find & Replace</h3>
+      <p data-en="Press <strong>Ctrl+F</strong> to search for any word in your document. Press <strong>Ctrl+H</strong> to find AND change a word to a different word everywhere at once!" data-bn="<strong>Ctrl+F</strong> চেপে যেকোনো শব্দ খোঁজো। <strong>Ctrl+H</strong> চাপলে একসাথে সব জায়গায় শব্দ পরিবর্তন করতে পারবে!">Press <strong>Ctrl+F</strong> to search for any word in your document. Press <strong>Ctrl+H</strong> to find AND change a word to a different word everywhere at once!</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. FORMATTING -->
+<section class="section reveal" id="wp-format">
+  <div class="sec-head">
+    <span class="sec-icon">🎨</span>
+    <div><h2 data-en="Text Formatting Magic!" data-bn="টেক্সট ফরম্যাটিং জাদু!">Text Formatting Magic!</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--pink),transparent)"></div>
+  </div>
+
+  <p style="color:#374151;font-weight:600;font-size:15px;margin-bottom:20px" data-en="Formatting makes your writing look amazing! Here's how to use each one. First, SELECT your text by clicking and dragging, then click the button!" data-bn="ফরম্যাটিং তোমার লেখাকে অসাধারণ দেখায়! প্রথমে ক্লিক করে টেনে টেক্সট সিলেক্ট করো, তারপর বোতাম ক্লিক করো!">Formatting makes your writing look amazing! Here's how to use each one. First, SELECT your text by clicking and dragging, then click the button!</p>
+
+  <div class="sc-wrap">
+    <table class="sc-table">
+      <thead>
+        <tr>
+          <th data-en="Format" data-bn="ফরম্যাট">Format</th>
+          <th data-en="Button / Shortcut" data-bn="বোতাম / শর্টকাট">Button / Shortcut</th>
+          <th data-en="What it looks like" data-bn="কেমন দেখায়">What it looks like</th>
+          <th data-en="When to use it!" data-bn="কখন ব্যবহার করবে!">When to use it!</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong data-en="Bold" data-bn="বোল্ড">Bold</strong></td>
+          <td><span class="kbd">Ctrl+B</span></td>
+          <td><strong data-en="This is Bold text" data-bn="এটি বোল্ড লেখা">This is Bold text</strong></td>
+          <td data-en="For headings and important words! 💪" data-bn="শিরোনাম ও গুরুত্বপূর্ণ শব্দের জন্য! 💪">For headings and important words! 💪</td>
+        </tr>
+        <tr>
+          <td><em data-en="Italic" data-bn="ইটালিক">Italic</em></td>
+          <td><span class="kbd">Ctrl+I</span></td>
+          <td><em data-en="This is Italic text" data-bn="এটি ইটালিক লেখা">This is Italic text</em></td>
+          <td data-en="For book titles, foreign words, quotes! 📖" data-bn="বইয়ের নাম, বিদেশী শব্দ, উদ্ধৃতির জন্য! 📖">For book titles, foreign words, quotes! 📖</td>
+        </tr>
+        <tr>
+          <td><u data-en="Underline" data-bn="আন্ডারলাইন">Underline</u></td>
+          <td><span class="kbd">Ctrl+U</span></td>
+          <td><u data-en="This is Underlined" data-bn="এটি আন্ডারলাইন">This is Underlined</u></td>
+          <td data-en="For links and key vocabulary! 🔗" data-bn="লিংক এবং মূল শব্দভান্ডারের জন্য! 🔗">For links and key vocabulary! 🔗</td>
+        </tr>
+        <tr>
+          <td data-en="Strikethrough" data-bn="স্ট্রাইকথ্রু">Strikethrough</td>
+          <td><span class="kbd">Toolbar</span></td>
+          <td><s data-en="Crossed out text" data-bn="কাটা লেখা">Crossed out text</s></td>
+          <td data-en="For completed tasks, corrections! ✅" data-bn="সম্পন্ন কাজ, সংশোধনের জন্য! ✅">For completed tasks, corrections! ✅</td>
+        </tr>
+        <tr>
+          <td data-en="Subscript" data-bn="সাবস্ক্রিপ্ট">Subscript</td>
+          <td><span class="kbd">Ctrl+=</span></td>
+          <td>H<sub>2</sub>O <span data-en="(water!)" data-bn="(পানি!)">(water!)</span></td>
+          <td data-en="For chemistry formulas! 🧪" data-bn="রসায়নের সূত্রের জন্য! 🧪">For chemistry formulas! 🧪</td>
+        </tr>
+        <tr>
+          <td data-en="Superscript" data-bn="সুপারস্ক্রিপ্ট">Superscript</td>
+          <td><span class="kbd">Ctrl+Shift+=</span></td>
+          <td>E=mc<sup>2</sup></td>
+          <td data-en="For math exponents! 📐" data-bn="গণিতের ঘাতের জন্য! 📐">For math exponents! 📐</td>
+        </tr>
+        <tr>
+          <td data-en="Font Size" data-bn="ফন্ট সাইজ">Font Size</td>
+          <td><span class="kbd">Size Box</span></td>
+          <td><span style="font-size:11px">Small</span> → <span style="font-size:18px">Big!</span></td>
+          <td data-en="Make titles huge, notes tiny! 📏" data-bn="শিরোনাম বড়, নোট ছোট করো! 📏">Make titles huge, notes tiny! 📏</td>
+        </tr>
+        <tr>
+          <td data-en="Line Spacing" data-bn="লাইন স্পেসিং">Line Spacing</td>
+          <td><span class="kbd">Ctrl+1/2/5</span></td>
+          <td data-en="Single / Double / 1.5x" data-bn="একক / দ্বিগুণ / ১.৫x">Single / Double / 1.5x</td>
+          <td data-en="Double spacing for school essays! 📝" data-bn="স্কুলের রচনার জন্য ডাবল স্পেসিং! 📝">Double spacing for school essays! 📝</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tip pk">
+    <span class="tip-ico">🎯</span>
+    <p data-en="<strong>Combine them!</strong> You can apply multiple formats at once! Select text, press Ctrl+B for bold, then Ctrl+I for italic — now it's <strong><em>Bold AND Italic!</em></strong> Cool right?" data-bn="<strong>একসাথে ব্যবহার করো!</strong> তুমি একসাথে একাধিক ফরম্যাট প্রয়োগ করতে পারো! Ctrl+B তারপর Ctrl+I চাপলে <strong><em>বোল্ড এবং ইটালিক!</em></strong>"><strong>Combine them!</strong> You can apply multiple formats at once! Select text, press Ctrl+B for bold, then Ctrl+I for italic — now it's <strong><em>Bold AND Italic!</em></strong> Cool right?</p>
+  </div>
+</section>
+
+<!-- 6. SAVE & OPEN -->
+<section class="section reveal" id="wp-save">
+  <div class="sec-head">
+    <span class="sec-icon">💾</span>
+    <div><h2 data-en="Saving & Opening Files" data-bn="ফাইল সেভ করা ও খোলা">Saving & Opening Files</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--purple),transparent)"></div>
+  </div>
+
+  <div class="tip re">
+    <span class="tip-ico">⚠️</span>
+    <p data-en="<strong>ALWAYS save your work!</strong> If the power goes off or the computer crashes without saving — POOF! 💨 Everything you typed is GONE forever! Save every few minutes with Ctrl+S!" data-bn="<strong>সবসময় তোমার কাজ সেভ করো!</strong> যদি বিদ্যুৎ চলে যায় বা কম্পিউটার ক্র্যাশ করে সেভ না করে — সব হারিয়ে যাবে! প্রতি কয়েক মিনিটে Ctrl+S চাপো!"><strong>ALWAYS save your work!</strong> If the power goes off or the computer crashes without saving — POOF! 💨 Everything you typed is GONE forever! Save every few minutes with Ctrl+S!</p>
+  </div>
+
+  <div style="font-family:var(--h);font-size:20px;font-weight:800;color:var(--purple);margin:24px 0 14px" data-en="💾 How to Save — Step by Step:" data-bn="💾 কীভাবে সেভ করবে — ধাপে ধাপে:">💾 How to Save — Step by Step:</div>
+
+  <div class="save-flow">
+    <div class="save-step" style="border-color:var(--blue)">
+      <div class="ss-num" style="background:var(--blue)">1</div>
+      <span class="ss-ico">⌨️</span>
+      <h4 data-en="Press Ctrl+S" data-bn="Ctrl+S চাপো">Press Ctrl+S</h4>
+      <p data-en="Or click File → Save" data-bn="অথবা File → Save ক্লিক করো">Or click File → Save</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;font-size:28px">➜</div>
+    <div class="save-step" style="border-color:var(--purple)">
+      <div class="ss-num" style="background:var(--purple)">2</div>
+      <span class="ss-ico">📁</span>
+      <h4 data-en="Choose Folder" data-bn="ফোল্ডার বেছে নাও">Choose Folder</h4>
+      <p data-en="Pick where to save it" data-bn="কোথায় সেভ করবে বেছে নাও">Pick where to save it</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;font-size:28px">➜</div>
+    <div class="save-step" style="border-color:var(--orange)">
+      <div class="ss-num" style="background:var(--orange)">3</div>
+      <span class="ss-ico">✏️</span>
+      <h4 data-en="Type File Name" data-bn="ফাইলের নাম টাইপ করো">Type File Name</h4>
+      <p data-en="Give it a good name!" data-bn="একটি ভালো নাম দাও!">Give it a good name!</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;font-size:28px">➜</div>
+    <div class="save-step" style="border-color:var(--green)">
+      <div class="ss-num" style="background:var(--green)">4</div>
+      <span class="ss-ico">✅</span>
+      <h4 data-en="Click Save!" data-bn="Save ক্লিক করো!">Click Save!</h4>
+      <p data-en="Done! File is saved!" data-bn="শেষ! ফাইল সেভ হয়েছে!">Done! File is saved!</p>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:20px">
+    <div class="card pu">
+      <span class="ci">📋</span>
+      <h3 data-en="File Types You Can Save" data-bn="যে ফাইল টাইপ সেভ করা যায়">File Types You Can Save</h3>
+      <p data-en="• <strong>.RTF</strong> — Rich Text Format (default, keeps formatting!)<br>• <strong>.DOCX</strong> — Microsoft Word format<br>• <strong>.TXT</strong> — Plain text (no formatting)<br>• <strong>.ODT</strong> — Open Document format" data-bn="• <strong>.RTF</strong> — রিচ টেক্সট ফরম্যাট (ডিফল্ট, ফরম্যাটিং রাখে!)<br>• <strong>.DOCX</strong> — Microsoft Word ফরম্যাট<br>• <strong>.TXT</strong> — সাদা টেক্সট<br>• <strong>.ODT</strong> — ওপেন ডকুমেন্ট">• <strong>.RTF</strong> — Rich Text Format (default, keeps formatting!)<br>• <strong>.DOCX</strong> — Microsoft Word format<br>• <strong>.TXT</strong> — Plain text (no formatting)<br>• <strong>.ODT</strong> — Open Document format</p>
+    </div>
+    <div class="card gn">
+      <span class="ci">📂</span>
+      <h3 data-en="How to Open a File" data-bn="কীভাবে ফাইল খুলবে">How to Open a File</h3>
+      <p data-en="<strong>Method 1:</strong> Press Ctrl+O, browse to your file, click Open!<br><strong>Method 2:</strong> Find your .rtf file in File Explorer and double-click it!<br><strong>Method 3:</strong> Drag the file and drop it onto the WordPad window!" data-bn="<strong>পদ্ধতি ১:</strong> Ctrl+O চাপো, ফাইল খোঁজো, Open ক্লিক করো!<br><strong>পদ্ধতি ২:</strong> File Explorer এ .rtf ফাইল খুঁজে ডাবল ক্লিক করো!<br><strong>পদ্ধতি ৩:</strong> ফাইল টেনে ওয়ার্ডপ্যাড উইন্ডোতে ছেড়ে দাও!"><strong>Method 1:</strong> Press Ctrl+O, browse to your file, click Open!<br><strong>Method 2:</strong> Find your .rtf file in File Explorer and double-click it!<br><strong>Method 3:</strong> Drag the file and drop it onto the WordPad window!</p>
+    </div>
+  </div>
+
+  <div style="font-family:var(--h);font-size:20px;font-weight:800;color:var(--blue);margin:28px 0 14px" data-en="🖨️ How to Print Your Document:" data-bn="🖨️ কীভাবে ডকুমেন্ট প্রিন্ট করবে:">🖨️ How to Print Your Document:</div>
+  <div class="steps">
+    <div class="step" style="border-color:var(--blue)">
+      <div class="step-num" style="background:var(--blue)">1</div>
+      <div>
+        <h4 data-en="Connect your printer" data-bn="প্রিন্টার সংযুক্ত করো">Connect your printer</h4>
+        <p data-en="Make sure a printer is plugged in and turned on before printing." data-bn="প্রিন্ট করার আগে প্রিন্টার সংযুক্ত এবং চালু আছে কিনা নিশ্চিত করো।">Make sure a printer is plugged in and turned on before printing.</p>
+      </div>
+    </div>
+    <div class="step" style="border-color:var(--purple)">
+      <div class="step-num" style="background:var(--purple)">2</div>
+      <div>
+        <h4 data-en="Press Ctrl+P to Print" data-bn="Ctrl+P চাপো প্রিন্ট করতে">Press Ctrl+P to Print</h4>
+        <p data-en="A print dialog box will pop up showing your printer options." data-bn="একটি প্রিন্ট ডায়ালগ বক্স খুলবে যেখানে প্রিন্টার অপশন দেখা যাবে।">A print dialog box will pop up showing your printer options.</p>
+      </div>
+    </div>
+    <div class="step" style="border-color:var(--orange)">
+      <div class="step-num" style="background:var(--orange)">3</div>
+      <div>
+        <h4 data-en="Check Print Preview first!" data-bn="আগে প্রিন্ট প্রিভিউ দেখো!">Check Print Preview first!</h4>
+        <p data-en="Click 'Print Preview' to see exactly what your printed page will look like. Save paper by checking first!" data-bn="'Print Preview' ক্লিক করো মুদ্রিত পৃষ্ঠা ঠিক কেমন দেখাবে তা দেখতে। কাগজ বাঁচাতে আগে চেক করো!">Click 'Print Preview' to see exactly what your printed page will look like. Save paper by checking first!</p>
+      </div>
+    </div>
+    <div class="step" style="border-color:var(--green)">
+      <div class="step-num" style="background:var(--green)">4</div>
+      <div>
+        <h4 data-en="Click Print!" data-bn="Print ক্লিক করো!">Click Print!</h4>
+        <p data-en="Choose how many copies you want and click the Print button. Watch your document come out! 🎉" data-bn="কতটি কপি চাও বেছে নাও এবং Print বোতাম ক্লিক করো। ডকুমেন্ট বেরিয়ে আসতে দেখো! 🎉">Choose how many copies you want and click the Print button. Watch your document come out! 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. USES -->
+<section class="section reveal" id="wp-uses">
+  <div class="sec-head">
+    <span class="sec-icon">✨</span>
+    <div><h2 data-en="Amazing Things You Can Do!" data-bn="তুমি যে অসাধারণ কাজ করতে পারো!">Amazing Things You Can Do!</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--yellow),transparent)"></div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card y"><span class="ci">📖</span><h3 data-en="Write Stories!" data-bn="গল্প লেখো!">Write Stories!</h3><p data-en="Create your own adventures, fairy tales, and comic book scripts! WordPad is your storytelling tool." data-bn="নিজের অ্যাডভেঞ্চার, রূপকথা এবং কমিক বুক স্ক্রিপ্ট তৈরি করো!">Create your own adventures, fairy tales, and comic book scripts! WordPad is your storytelling tool.</p></div>
+    <div class="card bl"><span class="ci">📚</span><h3 data-en="Do Homework" data-bn="হোমওয়ার্ক করো">Do Homework</h3><p data-en="Type essays, book reports, and assignments! Your teacher will be amazed at how neat your work looks!" data-bn="প্রবন্ধ, বই রিপোর্ট এবং অ্যাসাইনমেন্ট টাইপ করো!">Type essays, book reports, and assignments! Your teacher will be amazed at how neat your work looks!</p></div>
+    <div class="card gn"><span class="ci">💌</span><h3 data-en="Write Letters" data-bn="চিঠি লেখো">Write Letters</h3><p data-en="Write letters to friends and family! Make them colorful and fun with different fonts and colors." data-bn="বন্ধু ও পরিবারকে চিঠি লেখো! বিভিন্ন ফন্ট ও রঙ দিয়ে রঙিন ও মজাদার করো।">Write letters to friends and family! Make them colorful and fun with different fonts and colors.</p></div>
+    <div class="card pk"><span class="ci">🎮</span><h3 data-en="Practice Typing" data-bn="টাইপিং অনুশীলন">Practice Typing</h3><p data-en="Type out your favourite songs, poems, or books! The more you type in WordPad, the faster and better you get!" data-bn="প্রিয় গান, কবিতা বা বই টাইপ করো! যত বেশি টাইপ করবে, তত দ্রুত ও ভালো হবে!">Type out your favourite songs, poems, or books! The more you type in WordPad, the faster and better you get!</p></div>
+    <div class="card o"><span class="ci">📋</span><h3 data-en="Make To-Do Lists" data-bn="টু-ডু তালিকা">Make To-Do Lists</h3><p data-en="Use the bullet list button to make lists of tasks, chores, or goals. Check things off when done!" data-bn="বুলেট লিস্ট বোতাম দিয়ে কাজ, গৃহকর্ম বা লক্ষ্যের তালিকা তৈরি করো।">Use the bullet list button to make lists of tasks, chores, or goals. Check things off when done!</p></div>
+    <div class="card pu"><span class="ci">🗒️</span><h3 data-en="Keep a Diary" data-bn="ডায়েরি রাখো">Keep a Diary</h3><p data-en="Write about your day! Use Ctrl+D to insert today's date automatically. Your own digital diary!" data-bn="তোমার দিন সম্পর্কে লেখো! আজকের তারিখ স্বয়ংক্রিয়ভাবে ঢোকাতে Ctrl+D চাপো।">Write about your day! Use Ctrl+D to insert today's date automatically. Your own digital diary!</p></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ KEYBOARD PART ═══════════════════════════════════ -->
+<div style="background:linear-gradient(135deg,#F0FDF4,#ECFEFF);border-radius:28px;padding:32px 28px;border:4px solid var(--green);margin:64px 0 0;box-shadow:0 6px 0 rgba(0,0,0,.09)" class="reveal">
+  <div style="font-family:var(--h);font-size:32px;font-weight:800;color:var(--green);text-align:center;margin-bottom:6px" data-en="⌨️ PART 2: The Keyboard" data-bn="⌨️ পর্ব ২: কীবোর্ড">⌨️ PART 2: The Keyboard</div>
+  <p style="text-align:center;color:#374151;font-weight:600;font-size:15px" data-en="Every key explained, finger placement, and all shortcuts! 🔑" data-bn="প্রতিটি কী ব্যাখ্যা, আঙুলের অবস্থান এবং সব শর্টকাট! 🔑">Every key explained, finger placement, and all shortcuts! 🔑</p>
+</div>
+
+<!-- 8. KEYBOARD INTRO -->
+<section class="section reveal" id="kb-intro">
+  <div class="sec-head">
+    <span class="sec-icon">⌨️</span>
+    <div><h2 data-en="The Magical Keyboard!" data-bn="জাদুর কীবোর্ড!">The Magical Keyboard!</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--green),transparent)"></div>
+  </div>
+
+  <div class="tip gn">
+    <span class="tip-ico">⭐</span>
+    <p data-en="The keyboard is your most powerful computer tool! A standard keyboard has <strong>101–104 keys</strong>! Each key has a special job. The layout we use is called <strong>QWERTY</strong> — named after the first 6 letters on the top left row. Click any key below to see what it does!" data-bn="কীবোর্ড হলো তোমার সবচেয়ে শক্তিশালী কম্পিউটার টুল! একটি স্ট্যান্ডার্ড কীবোর্ডে <strong>১০১-১০৪টি কী</strong> আছে! লেআউটকে <strong>QWERTY</strong> বলা হয়। নিচের যেকোনো কী ক্লিক করো!">The keyboard is your most powerful computer tool! A standard keyboard has <strong>101–104 keys</strong>! Each key has a special job. The layout we use is called <strong>QWERTY</strong> — named after the first 6 letters on the top left row. Click any key below to see what it does!</p>
+  </div>
+
+  <div class="kb-wrap">
+    <div class="kb-label" data-en="🎹 Click any key — watch it glow! Purple = Home Row! 🎹" data-bn="🎹 যেকোনো কী ক্লিক করো — জ্বলতে দেখো! বেগুনি = হোম রো! 🎹">🎹 Click any key — watch it glow! Purple = Home Row! 🎹</div>
+    <!-- Function row -->
+    <div class="kb-row">
+      <div class="k wide" onclick="pressKey('Esc — Escape / Cancel!')">Esc</div>
+      <div style="width:20px"></div>
+      <div class="k wide" onclick="pressKey('F1 — Help & Support!')">F1</div>
+      <div class="k wide" onclick="pressKey('F2 — Rename selected file!')">F2</div>
+      <div class="k wide" onclick="pressKey('F3 — Search / Find next!')">F3</div>
+      <div class="k wide" onclick="pressKey('F4 — Address bar / Close window!')">F4</div>
+      <div style="width:10px"></div>
+      <div class="k wide" onclick="pressKey('F5 — Refresh / Reload!')">F5</div>
+      <div class="k wide" onclick="pressKey('F6 — Move between screen areas!')">F6</div>
+      <div class="k wide" onclick="pressKey('F7 — Spell check (in some apps)!')">F7</div>
+      <div class="k wide" onclick="pressKey('F8 — Extend selection!')">F8</div>
+      <div style="width:10px"></div>
+      <div class="k wide" onclick="pressKey('F9 — Refresh (MS Office)!')">F9</div>
+      <div class="k wide" onclick="pressKey('F10 — Menu bar focus!')">F10</div>
+      <div class="k wide" onclick="pressKey('F11 — Full Screen toggle!')">F11</div>
+      <div class="k wide" onclick="pressKey('F12 — Save As (in Word)!')">F12</div>
+    </div>
+    <div style="height:8px"></div>
+    <!-- Number row -->
+    <div class="kb-row">
+      <div class="k" onclick="pressKey('` ~ — Backtick/Tilde!')"><span class="k-top">~</span>`</div>
+      <div class="k" onclick="pressKey('1 ! — One / Exclamation mark!')"><span class="k-top">!</span>1</div>
+      <div class="k" onclick="pressKey('2 @ — Two / At sign!')"><span class="k-top">@</span>2</div>
+      <div class="k" onclick="pressKey('3 # — Three / Hash/Hashtag!')"><span class="k-top">#</span>3</div>
+      <div class="k" onclick="pressKey('4 $ — Four / Dollar sign!')"><span class="k-top">$</span>4</div>
+      <div class="k" onclick="pressKey('5 % — Five / Percent!')"><span class="k-top">%</span>5</div>
+      <div class="k" onclick="pressKey('6 ^ — Six / Caret!')"><span class="k-top">^</span>6</div>
+      <div class="k" onclick="pressKey('7 & — Seven / Ampersand!')"><span class="k-top">&</span>7</div>
+      <div class="k" onclick="pressKey('8 * — Eight / Asterisk!')"><span class="k-top">*</span>8</div>
+      <div class="k" onclick="pressKey('9 ( — Nine / Open parenthesis!')"><span class="k-top">(</span>9</div>
+      <div class="k" onclick="pressKey('0 ) — Zero / Close parenthesis!')"><span class="k-top">)</span>0</div>
+      <div class="k" onclick="pressKey('- _ — Hyphen / Underscore!')"><span class="k-top">_</span>-</div>
+      <div class="k" onclick="pressKey('= + — Equals / Plus!')"><span class="k-top">+</span>=</div>
+      <div class="k wider" onclick="pressKey('⌫ Backspace — Erase left!')">⌫ Back</div>
+    </div>
+    <!-- QWERTY row -->
+    <div class="kb-row">
+      <div class="k wide" onclick="pressKey('Tab → — Indent / move forward!')">Tab</div>
+      <div class="k" onclick="pressKey('Q — Letter Q!')">Q</div>
+      <div class="k" onclick="pressKey('W — Letter W!')">W</div>
+      <div class="k" onclick="pressKey('E — Letter E! (most used letter!)')">E</div>
+      <div class="k" onclick="pressKey('R — Letter R!')">R</div>
+      <div class="k" onclick="pressKey('T — Letter T!')">T</div>
+      <div class="k" onclick="pressKey('Y — Letter Y!')">Y</div>
+      <div class="k" onclick="pressKey('U — Letter U!')">U</div>
+      <div class="k" onclick="pressKey('I — Letter I!')">I</div>
+      <div class="k" onclick="pressKey('O — Letter O!')">O</div>
+      <div class="k" onclick="pressKey('P — Letter P!')">P</div>
+      <div class="k" onclick="pressKey('[ { — Open bracket!')"><span class="k-top">{</span>[</div>
+      <div class="k" onclick="pressKey('] } — Close bracket!')"><span class="k-top">}</span>]</div>
+      <div class="k wide" onclick="pressKey('\\ | — Backslash / Pipe!')"><span class="k-top">|</span>\</div>
+    </div>
+    <!-- Home row -->
+    <div class="kb-row">
+      <div class="k wider" onclick="pressKey('Caps Lock — ALL CAPITALS toggle! 🔒')">Caps</div>
+      <div class="k home" onclick="pressKey('A — Home row! Left Pinky! 👈')">A</div>
+      <div class="k home" onclick="pressKey('S — Home row! Left Ring finger! 💍')">S</div>
+      <div class="k home" onclick="pressKey('D — Home row! Left Middle finger! 🖕')">D</div>
+      <div class="k home" onclick="pressKey('F — Home row! Left Index — FEEL THE BUMP! ☝️')">F</div>
+      <div class="k" onclick="pressKey('G — Left Index stretches right!')">G</div>
+      <div class="k" onclick="pressKey('H — Right Index stretches left!')">H</div>
+      <div class="k home" onclick="pressKey('J — Home row! Right Index — FEEL THE BUMP! ☝️')">J</div>
+      <div class="k home" onclick="pressKey('K — Home row! Right Middle finger! 🖕')">K</div>
+      <div class="k home" onclick="pressKey('L — Home row! Right Ring finger! 💍')">L</div>
+      <div class="k home" onclick="pressKey('; : — Home row! Right Pinky! 👉')"><span class="k-top">:</span>;</div>
+      <div class="k" onclick="pressKey('&quot; &quot; — Apostrophe / Quote!')"><span class="k-top">"</span>'</div>
+      <div class="k wider" onclick="pressKey('Enter ↵ — New line / Confirm!')">Enter</div>
+    </div>
+    <!-- ZXCVB row -->
+    <div class="kb-row">
+      <div class="k wider" onclick="pressKey('⇧ Shift — UPPERCASE while held!')">⇧ Shift</div>
+      <div class="k" onclick="pressKey('Z — Letter Z!')">Z</div>
+      <div class="k" onclick="pressKey('X — Letter X!')">X</div>
+      <div class="k" onclick="pressKey('C — Letter C!')">C</div>
+      <div class="k" onclick="pressKey('V — Letter V!')">V</div>
+      <div class="k" onclick="pressKey('B — Letter B!')">B</div>
+      <div class="k" onclick="pressKey('N — Letter N!')">N</div>
+      <div class="k" onclick="pressKey('M — Letter M!')">M</div>
+      <div class="k" onclick="pressKey(', < — Comma / Less than!')"><span class="k-top">&lt;</span>,</div>
+      <div class="k" onclick="pressKey('. > — Period / Greater than!')"><span class="k-top">&gt;</span>.</div>
+      <div class="k" onclick="pressKey('/ ? — Slash / Question mark!')"><span class="k-top">?</span>/</div>
+      <div class="k wider" onclick="pressKey('⇧ Shift — UPPERCASE while held!')">⇧ Shift</div>
+    </div>
+    <!-- Bottom row -->
+    <div class="kb-row">
+      <div class="k wide" onclick="pressKey('Ctrl — Modifier key for shortcuts!')">Ctrl</div>
+      <div class="k" onclick="pressKey('❖ Win — Opens Start Menu!')">❖</div>
+      <div class="k" onclick="pressKey('Alt — Alternate modifier key!')">Alt</div>
+      <div class="k sp" onclick="pressKey('SPACE BAR — Add a space between words! 🚀')">SPACE BAR</div>
+      <div class="k" onclick="pressKey('Alt — Alternate modifier key!')">Alt</div>
+      <div class="k" onclick="pressKey('≣ Menu — Right-click menu key!')">≣</div>
+      <div class="k wide" onclick="pressKey('Ctrl — Modifier key for shortcuts!')">Ctrl</div>
+    </div>
+    <div class="key-display" id="keyDisplay" data-en="👆 Click any key to learn about it!" data-bn="👆 যেকোনো কী ক্লিক করে জানো!">👆 Click any key to learn about it!</div>
+  </div>
+</section>
+
+<!-- 9. KEY TYPES -->
+<section class="section reveal" id="kb-keys">
+  <div class="sec-head">
+    <span class="sec-icon">🔑</span>
+    <div><h2 data-en="Types of Keys Explained" data-bn="কী-এর ধরন ব্যাখ্যা">Types of Keys Explained</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--orange),transparent)"></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card bl"><span class="ci">🔤</span><h3 data-en="Letter Keys (A–Z)" data-bn="অক্ষর কী (A–Z)">Letter Keys (A–Z)</h3><p data-en="26 keys for all alphabet letters. Press alone = lowercase (small). Hold Shift = UPPERCASE (capital). Used for all writing!" data-bn="বর্ণমালার ২৬টি কী। একা চাপলে = ছোট হাতের। Shift ধরলে = বড় হাতের। সব লেখায় ব্যবহৃত!">26 keys for all alphabet letters. Press alone = lowercase (small). Hold Shift = UPPERCASE (capital). Used for all writing!</p></div>
+    <div class="card y"><span class="ci">🔢</span><h3 data-en="Number Keys (0–9)" data-bn="সংখ্যা কী (০–৯)">Number Keys (0–9)</h3><p data-en="10 keys at the top row. Hold Shift to get the symbol on top: 1=!, 2=@, 3=#, 4=$, 5=%, 6=^, 7=&, 8=*, 9=(, 0=)" data-bn="উপরের সারিতে ১০টি কী। Shift ধরলে চিহ্ন পাওয়া যায়: 1=!, 2=@, 3=#, 4=$, 5=%">10 keys at the top row. Hold Shift to get the symbol on top: 1=!, 2=@, 3=#, 4=$, 5=%, 6=^, 7=&amp;, 8=*, 9=(, 0=)</p></div>
+    <div class="card pk"><span class="ci">🎮</span><h3 data-en="Function Keys (F1–F12)" data-bn="ফাংশন কী (F1–F12)">Function Keys (F1–F12)</h3><p data-en="12 keys at the very top. Each does something different in each program! F1=Help, F2=Rename, F5=Refresh, F11=Full Screen." data-bn="একদম উপরে ১২টি কী। প্রতিটি প্রোগ্রামে আলাদা কাজ করে! F1=সাহায্য, F2=নাম পরিবর্তন, F5=রিফ্রেশ।">12 keys at the very top. Each does something different in each program! F1=Help, F2=Rename, F5=Refresh, F11=Full Screen.</p></div>
+    <div class="card pu"><span class="ci">⚡</span><h3 data-en="Modifier Keys" data-bn="মডিফায়ার কী">Modifier Keys</h3><p data-en="Ctrl, Shift, Alt — COMBO keys! They don't do anything alone but CHANGE what happens when you press them WITH another key. Like superpowers!" data-bn="Ctrl, Shift, Alt — কম্বো কী! একা কিছু করে না কিন্তু অন্য কী-এর সাথে চাপলে পরিবর্তন আনে।">Ctrl, Shift, Alt — COMBO keys! They don't do anything alone but CHANGE what happens when you press them WITH another key. Like superpowers!</p></div>
+    <div class="card gn"><span class="ci">🧭</span><h3 data-en="Arrow / Navigation Keys" data-bn="অ্যারো / নেভিগেশন কী">Arrow / Navigation Keys</h3><p data-en="↑↓←→ arrows move your cursor. Home=line start, End=line end, Page Up/Down=scroll pages. Move without using the mouse!" data-bn="↑↓←→ তীর কার্সার সরায়। Home=লাইনের শুরু, End=লাইনের শেষ, Page Up/Down=পৃষ্ঠা স্ক্রোল।">↑↓←→ arrows move your cursor. Home=line start, End=line end, Page Up/Down=scroll pages. Move without using the mouse!</p></div>
+    <div class="card o"><span class="ci">✏️</span><h3 data-en="Editing Keys" data-bn="এডিটিং কী">Editing Keys</h3><p data-en="Backspace erases the character to the LEFT of cursor. Delete erases the character to the RIGHT. Insert toggles overtype mode." data-bn="Backspace কার্সারের বাম দিকের অক্ষর মোছে। Delete ডান দিকের অক্ষর মোছে।">Backspace erases the character to the LEFT of cursor. Delete erases the character to the RIGHT. Insert toggles overtype mode.</p></div>
+    <div class="card cy"><span class="ci">🔒</span><h3 data-en="Lock Keys" data-bn="লক কী">Lock Keys</h3><p data-en="Caps Lock = all capitals on/off (check the light!). Num Lock = numpad numbers on/off. Scroll Lock = rarely used today. All have indicator lights!" data-bn="Caps Lock = সব বড় হাতের চালু/বন্ধ (আলো দেখো!)। Num Lock = নাম্পড চালু/বন্ধ।">Caps Lock = all capitals on/off (check the light!). Num Lock = numpad numbers on/off. Scroll Lock = rarely used today. All have indicator lights!</p></div>
+    <div class="card re"><span class="ci">🔣</span><h3 data-en="Special / Symbol Keys" data-bn="বিশেষ / চিহ্ন কী">Special / Symbol Keys</h3><p data-en="., ; : ' &quot; / \ [ ] { } and more! These create punctuation marks and symbols. Many have TWO symbols — press Shift for the top one!" data-bn="., ; : ' / \ [ ] এবং আরও! এগুলো বিরাম চিহ্ন ও প্রতীক তৈরি করে। অনেকের দুটো চিহ্ন আছে — উপরেরটার জন্য Shift চাপো!">., ; : ' " / \ [ ] { } and more! These create punctuation marks and symbols. Many have TWO symbols — press Shift for the top one!</p></div>
+    <div class="card li"><span class="ci">🔢</span><h3 data-en="Numeric Keypad" data-bn="নিউমেরিক কীপ্যাড">Numeric Keypad</h3><p data-en="The separate number block on the right (full-size keyboards). Great for typing lots of numbers fast! Toggle between numbers and arrows with Num Lock." data-bn="ডান পাশে আলাদা নম্বর ব্লক (পূর্ণ আকারের কীবোর্ডে)। দ্রুত অনেক সংখ্যা টাইপ করতে দুর্দান্ত!">The separate number block on the right (full-size keyboards). Great for typing lots of numbers fast! Toggle between numbers and arrows with Num Lock.</p></div>
+  </div>
+</section>
+
+<!-- 10. SHORTCUTS -->
+<section class="section reveal" id="kb-shortcuts">
+  <div class="sec-head">
+    <span class="sec-icon">⚡</span>
+    <div><h2 data-en="All the Super Shortcuts!" data-bn="সব সুপার শর্টকাট!">All the Super Shortcuts!</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--cyan),transparent)"></div>
+  </div>
+
+  <div class="tip cy">
+    <span class="tip-ico">🦸</span>
+    <p data-en="Shortcuts are like cheat codes! Learn these and you'll be 10x faster than anyone using only a mouse. Professionals memorise ALL of these! 🏆" data-bn="শর্টকাট চিট কোডের মতো! এগুলো শিখলে শুধু মাউস ব্যবহারকারীর চেয়ে ১০ গুণ দ্রুত হবে!">Shortcuts are like cheat codes! Learn these and you'll be 10x faster than anyone using only a mouse. Professionals memorise ALL of these! 🏆</p>
+  </div>
+
+  <div class="sc-wrap">
+    <table class="sc-table">
+      <thead><tr>
+        <th data-en="⚡ Shortcut" data-bn="⚡ শর্টকাট">⚡ Shortcut</th>
+        <th data-en="💥 What It Does" data-bn="💥 কী করে">💥 What It Does</th>
+        <th data-en="🧠 How to Remember" data-bn="🧠 মনে রাখার উপায়">🧠 How to Remember</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="kbd">Ctrl+C</span></td><td data-en="📋 Copy — Clone your text!" data-bn="📋 কপি — টেক্সট ক্লোন করো!">📋 Copy!</td><td data-en="C = Copy! Easy! 😊" data-bn="C = কপি! সহজ! 😊">C = Copy!</td></tr>
+        <tr><td><span class="kbd">Ctrl+X</span></td><td data-en="✂️ Cut — Move your text!" data-bn="✂️ কাট — টেক্সট সরাও!">✂️ Cut!</td><td data-en="X looks like scissors ✂️" data-bn="X দেখতে কাঁচির মতো ✂️">X = scissors ✂️</td></tr>
+        <tr><td><span class="kbd">Ctrl+V</span></td><td data-en="📌 Paste — Stick it down!" data-bn="📌 পেস্ট — আটকে দাও!">📌 Paste!</td><td data-en="V = pointing finger 👇" data-bn="V = নির্দেশক আঙুল 👇">V = pointing 👇</td></tr>
+        <tr><td><span class="kbd">Ctrl+Z</span></td><td data-en="↩️ Undo — Go back in time! Fix mistakes!" data-bn="↩️ আনডু — ভুল ঠিক করো!">↩️ Undo!</td><td data-en="Z = Zap the mistake away! 💥" data-bn="Z = ভুল উড়িয়ে দাও! 💥">Z = Zap! 💥</td></tr>
+        <tr><td><span class="kbd">Ctrl+Y</span></td><td data-en="↪️ Redo — Undo the undo!" data-bn="↪️ রিডু — আনডু বাতিল করো!">↪️ Redo!</td><td data-en="Y = Yes, do it again!" data-bn="Y = হ্যাঁ, আবার করো!">Y = Yes again!</td></tr>
+        <tr><td><span class="kbd">Ctrl+A</span></td><td data-en="🔵 Select ALL — grab everything at once!" data-bn="🔵 সব সিলেক্ট করো!">🔵 Select All!</td><td data-en="A = All! Select ALL things!" data-bn="A = সব! সব নির্বাচন করো!">A = All!</td></tr>
+        <tr><td><span class="kbd">Ctrl+S</span></td><td data-en="💾 Save — Don't lose your work!" data-bn="💾 সেভ — কাজ রক্ষা করো!">💾 Save!</td><td data-en="S = Save! Press this ALL the time!" data-bn="S = সেভ! সবসময় চাপো!">S = Save!</td></tr>
+        <tr><td><span class="kbd">Ctrl+N</span></td><td data-en="🆕 New — Fresh blank document!" data-bn="🆕 নতুন — ফাঁকা ডকুমেন্ট!">🆕 New!</td><td data-en="N = New! Fresh start!" data-bn="N = নতুন! নতুন শুরু!">N = New!</td></tr>
+        <tr><td><span class="kbd">Ctrl+O</span></td><td data-en="📂 Open — Open a saved file!" data-bn="📂 খোলো — সেভ করা ফাইল খোলো!">📂 Open!</td><td data-en="O = Open! Easy!" data-bn="O = খোলো! সহজ!">O = Open!</td></tr>
+        <tr><td><span class="kbd">Ctrl+P</span></td><td data-en="🖨️ Print — Make a paper copy!" data-bn="🖨️ প্রিন্ট — কাগজে ছাপাও!">🖨️ Print!</td><td data-en="P = Print! Paper comes out!" data-bn="P = প্রিন্ট! কাগজ বের হয়!">P = Print!</td></tr>
+        <tr><td><span class="kbd">Ctrl+F</span></td><td data-en="🔍 Find — Search for any word!" data-bn="🔍 খোঁজো — যেকোনো শব্দ খোঁজো!">🔍 Find!</td><td data-en="F = Find! Like a detective! 🕵️" data-bn="F = খোঁজো! গোয়েন্দার মতো! 🕵️">F = Find! 🕵️</td></tr>
+        <tr><td><span class="kbd">Ctrl+H</span></td><td data-en="🔄 Replace — Change all instances of a word!" data-bn="🔄 প্রতিস্থাপন — সব জায়গায় শব্দ পরিবর্তন!">🔄 Replace!</td><td data-en="H = Hunt and replace!" data-bn="H = শিকার করে বদলাও!">H = Hunt!</td></tr>
+        <tr><td><span class="kbd">Ctrl+B</span></td><td data-en="<strong>Bold</strong> — Make text thick and strong!" data-bn="<strong>বোল্ড</strong> — লেখা মোটা করো!"><strong>Bold!</strong></td><td data-en="B = Bold! Bodybuilder letters! 💪" data-bn="B = বোল্ড! বডিবিল্ডার অক্ষর! 💪">B = Bold! 💪</td></tr>
+        <tr><td><span class="kbd">Ctrl+I</span></td><td data-en="<em>Italic</em> — Tilted sideways!" data-bn="<em>ইটালিক</em> — কাত করো!"><em>Italic!</em></td><td data-en="I = Italic! It leans! 🏄" data-bn="I = ইটালিক! হেলে পড়ে! 🏄">I = Italic! 🏄</td></tr>
+        <tr><td><span class="kbd">Ctrl+U</span></td><td data-en="<u>Underline</u> — Line goes under text!" data-bn="<u>আন্ডারলাইন</u> — নিচে দাগ!"><u>Underline!</u></td><td data-en="U = Underline! Goes Under! ⬇️" data-bn="U = আন্ডারলাইন! নিচে যায়! ⬇️">U = Under! ⬇️</td></tr>
+        <tr><td><span class="kbd">Ctrl+E</span></td><td data-en="☰ Center align text!" data-bn="☰ মাঝে অ্যালাইন!">☰ Center!</td><td data-en="E = Even / cEnter!" data-bn="E = সমান / কেন্দ্র!">E = cEnter!</td></tr>
+        <tr><td><span class="kbd">Ctrl+L</span></td><td data-en="≡ Align text to the Left!" data-bn="≡ বামে অ্যালাইন!">≡ Left!</td><td data-en="L = Left align!" data-bn="L = বাম!">L = Left!</td></tr>
+        <tr><td><span class="kbd">Ctrl+D</span></td><td data-en="📅 Insert today's date!" data-bn="📅 আজকের তারিখ ঢোকাও!">📅 Date!</td><td data-en="D = Date! Diary entry!" data-bn="D = তারিখ! ডায়েরি এন্ট্রি!">D = Date!</td></tr>
+        <tr><td><span class="kbd">Alt+F4</span></td><td data-en="❌ Close the window!" data-bn="❌ উইন্ডো বন্ধ করো!">❌ Close!</td><td data-en="The 'bye bye' shortcut! 👋" data-bn="'বিদায়' শর্টকাট! 👋">Bye bye! 👋</td></tr>
+        <tr><td><span class="kbd">Win+D</span></td><td data-en="🏠 Show the Desktop!" data-bn="🏠 ডেস্কটপ দেখাও!">🏠 Desktop!</td><td data-en="D = Desktop! Go home!" data-bn="D = ডেস্কটপ! বাড়ি যাও!">D = Desktop!</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 11. FINGER PLACEMENT -->
+<section class="section reveal" id="kb-fingers">
+  <div class="sec-head">
+    <span class="sec-icon">🤲</span>
+    <div><h2 data-en="Finger Placement Guide" data-bn="আঙুলের অবস্থান গাইড">Finger Placement Guide</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--pink),transparent)"></div>
+  </div>
+
+  <div class="tip o">
+    <span class="tip-ico">🏠</span>
+    <p data-en="The <strong>Home Row</strong> is the most important row on the keyboard! Always start with your fingers on <strong>ASDF JKL;</strong>. The <strong>F</strong> and <strong>J</strong> keys have tiny bumps you can feel — find them with your eyes closed!" data-bn="<strong>হোম রো</strong> কীবোর্ডের সবচেয়ে গুরুত্বপূর্ণ সারি! সবসময় <strong>ASDF JKL;</strong> এ আঙুল রাখো। <strong>F</strong> এবং <strong>J</strong> কী-তে ছোট বাম্প আছে — চোখ বন্ধ রেখে অনুভব করো!">The <strong>Home Row</strong> is the most important row on the keyboard! Always start with your fingers on <strong>ASDF JKL;</strong>. The <strong>F</strong> and <strong>J</strong> keys have tiny bumps you can feel — find them with your eyes closed!</p>
+  </div>
+
+  <div class="finger-grid">
+    <div class="fcard" style="border-color:#EF4444;background:#FEF2F2">
+      <span class="fhand">🤙</span>
+      <h4 style="color:#EF4444" data-en="Left Pinky" data-bn="বাম কনিষ্ঠ">Left Pinky</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">A</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">Q</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">Z</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">1</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">Shift</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">Ctrl</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">Tab</span>
+        <span class="fkp" style="background:#FEE2E2;color:#EF4444">Caps</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#F97316;background:#FFF7ED">
+      <span class="fhand">💍</span>
+      <h4 style="color:#F97316" data-en="Left Ring" data-bn="বাম অনামিকা">Left Ring</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#FFEDD5;color:#F97316">S</span>
+        <span class="fkp" style="background:#FFEDD5;color:#F97316">W</span>
+        <span class="fkp" style="background:#FFEDD5;color:#F97316">X</span>
+        <span class="fkp" style="background:#FFEDD5;color:#F97316">2</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#EAB308;background:#FEFCE8">
+      <span class="fhand">🖕</span>
+      <h4 style="color:#CA8A04" data-en="Left Middle" data-bn="বাম মধ্যমা">Left Middle</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#FEF9C3;color:#CA8A04">D</span>
+        <span class="fkp" style="background:#FEF9C3;color:#CA8A04">E</span>
+        <span class="fkp" style="background:#FEF9C3;color:#CA8A04">C</span>
+        <span class="fkp" style="background:#FEF9C3;color:#CA8A04">3</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#22C55E;background:#F0FDF4">
+      <span class="fhand">☝️</span>
+      <h4 style="color:#16A34A" data-en="Left Index" data-bn="বাম তর্জনী">Left Index</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">F</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">G</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">R</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">T</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">V</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">B</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">4</span>
+        <span class="fkp" style="background:#DCFCE7;color:#16A34A">5</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#A855F7;background:#FAF5FF;border-width:4px">
+      <span class="fhand">👍</span>
+      <h4 style="color:#9333EA" data-en="Both Thumbs!" data-bn="উভয় বুড়ো আঙুল!">Both Thumbs!</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#EDE9FE;color:#9333EA;padding:4px 16px;font-size:13px" data-en="SPACE BAR" data-bn="স্পেস বার">SPACE BAR</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#3B82F6;background:#EFF6FF">
+      <span class="fhand">☝️</span>
+      <h4 style="color:#2563EB" data-en="Right Index" data-bn="ডান তর্জনী">Right Index</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">J</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">H</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">Y</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">U</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">N</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">M</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">6</span>
+        <span class="fkp" style="background:#DBEAFE;color:#2563EB">7</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#8B5CF6;background:#F5F3FF">
+      <span class="fhand">🖕</span>
+      <h4 style="color:#7C3AED" data-en="Right Middle" data-bn="ডান মধ্যমা">Right Middle</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#EDE9FE;color:#7C3AED">K</span>
+        <span class="fkp" style="background:#EDE9FE;color:#7C3AED">I</span>
+        <span class="fkp" style="background:#EDE9FE;color:#7C3AED">,</span>
+        <span class="fkp" style="background:#EDE9FE;color:#7C3AED">8</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#EC4899;background:#FDF2F8">
+      <span class="fhand">💍</span>
+      <h4 style="color:#DB2777" data-en="Right Ring" data-bn="ডান অনামিকা">Right Ring</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#FCE7F3;color:#DB2777">L</span>
+        <span class="fkp" style="background:#FCE7F3;color:#DB2777">O</span>
+        <span class="fkp" style="background:#FCE7F3;color:#DB2777">.</span>
+        <span class="fkp" style="background:#FCE7F3;color:#DB2777">9</span>
+      </div>
+    </div>
+    <div class="fcard" style="border-color:#06B6D4;background:#ECFEFF">
+      <span class="fhand">🤙</span>
+      <h4 style="color:#0891B2" data-en="Right Pinky" data-bn="ডান কনিষ্ঠ">Right Pinky</h4>
+      <div class="fkey-pills">
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">;</span>
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">P</span>
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">/</span>
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">0</span>
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">Enter</span>
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">Shift</span>
+        <span class="fkp" style="background:#CFFAFE;color:#0891B2">Back</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip pk">
+    <span class="tip-ico">🎯</span>
+    <p data-en="<strong>The Golden Rule:</strong> After pressing ANY key, SNAP your finger back to its home row position! This is the #1 secret of fast typists. Your hands should look like relaxed spiders sitting on the keyboard!" data-bn="<strong>সোনার নিয়ম:</strong> যেকোনো কী চাপার পর, তোমার আঙুল হোম রো পজিশনে ফিরিয়ে আনো! এটাই দ্রুত টাইপিস্টদের #১ রহস্য।"><strong>The Golden Rule:</strong> After pressing ANY key, SNAP your finger back to its home row position! This is the #1 secret of fast typists. Your hands should look like relaxed spiders sitting on the keyboard!</p>
+  </div>
+</section>
+
+<!-- 12. TYPING TIPS -->
+<section class="section reveal" id="typing">
+  <div class="sec-head">
+    <span class="sec-icon">🏆</span>
+    <div><h2 data-en="How to Type Faster!" data-bn="কীভাবে দ্রুত টাইপ করবে!">How to Type Faster!</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--yellow),transparent)"></div>
+  </div>
+
+  <div class="tip gn">
+    <span class="tip-ico">🚫</span>
+    <p data-en="<strong>Stop. Looking. At. The. Keyboard.</strong> 🙈 This is the single biggest thing holding you back. It feels scary at first but trust your fingers — they WILL remember!" data-bn="<strong>কীবোর্ডের দিকে তাকানো বন্ধ করো।</strong> 🙈 এটাই তোমাকে সবচেয়ে বেশি পিছিয়ে রাখছে। প্রথমে ভয় লাগবে কিন্তু আঙুলকে বিশ্বাস করো!"><strong>Stop. Looking. At. The. Keyboard.</strong> 🙈 This is the single biggest thing holding you back. It feels scary at first but trust your fingers — they WILL remember!</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="card y"><span class="ci">🎯</span><h3 data-en="Accuracy > Speed" data-bn="নির্ভুলতা > গতি">Accuracy > Speed</h3><p data-en="SLOW DOWN and get it RIGHT. Every mistake you make slows you down. A 98% accurate slow typist improves faster than a 70% accurate fast typist!" data-bn="ধীরে যাও এবং সঠিক করো। প্রতিটি ভুল তোমাকে ধীর করে। ৯৮% নির্ভুল ধীর টাইপিস্ট দ্রুত উন্নতি করে!">SLOW DOWN and get it RIGHT. Every mistake you make slows you down. A 98% accurate slow typist improves faster than a 70% accurate fast typist!</p></div>
+    <div class="card bl"><span class="ci">📅</span><h3 data-en="15 Min Every Day!" data-bn="প্রতিদিন ১৫ মিনিট!">15 Min Every Day!</h3><p data-en="15 minutes daily > 3 hours once a week! Consistent daily practice builds muscle memory in your fingers much faster than occasional marathon sessions." data-bn="প্রতিদিন ১৫ মিনিট > সপ্তাহে একবার ৩ ঘণ্টা! ধারাবাহিক দৈনিক অনুশীলন আঙুলের পেশী স্মৃতি তৈরি করে।">15 minutes daily > 3 hours once a week! Consistent daily practice builds muscle memory in your fingers much faster than occasional marathon sessions.</p></div>
+    <div class="card gn"><span class="ci">🏠</span><h3 data-en="Home Row Always!" data-bn="সবসময় হোম রো!">Home Row Always!</h3><p data-en="Fingers on ASDF JKL; always! Return there after every keystroke. Think of the home row as your fingers' home base — they always come back!" data-bn="আঙুল সবসময় ASDF JKL; তে! প্রতিটি কীস্ট্রোকের পর সেখানে ফিরে এসো।">Fingers on ASDF JKL; always! Return there after every keystroke. Think of the home row as your fingers' home base — they always come back!</p></div>
+    <div class="card pk"><span class="ci">🎵</span><h3 data-en="Find Your Rhythm!" data-bn="তোমার ছন্দ খোঁজো!">Find Your Rhythm!</h3><p data-en="Type like music — steady and even! Don't type fast then pause. A smooth, steady pace of 30 WPM feels better than jerky 50 WPM with stops." data-bn="সঙ্গীতের মতো টাইপ করো — স্থির ও সমান! দ্রুত টাইপ তারপর থামা নয়। মসৃণ, স্থির গতি ভালো।">Type like music — steady and even! Don't type fast then pause. A smooth, steady pace of 30 WPM feels better than jerky 50 WPM with stops.</p></div>
+    <div class="card pu"><span class="ci">👀</span><h3 data-en="Read Ahead!" data-bn="আগে পড়ো!">Read Ahead!</h3><p data-en="While typing one word, your eyes should already be reading the NEXT word. This gives your brain time to plan the movements before your fingers get there!" data-bn="একটি শব্দ টাইপ করার সময়, চোখ পরবর্তী শব্দ পড়ছে। এটি মস্তিষ্ককে আঙুলের আগে পরিকল্পনা করার সময় দেয়!">While typing one word, your eyes should already be reading the NEXT word. This gives your brain time to plan the movements before your fingers get there!</p></div>
+    <div class="card o"><span class="ci">🔥</span><h3 data-en="Drill Weak Spots!" data-bn="দুর্বল জায়গা ড্রিল করো!">Drill Weak Spots!</h3><p data-en="Notice which keys you always mistype — maybe you always miss the 'P' or mix up 'B' and 'N'. Do focused drills on those specific keys every day!" data-bn="লক্ষ্য করো কোন কী সবসময় ভুল টাইপ করো — হয়তো 'P' সবসময় মিস করো। প্রতিদিন সেই নির্দিষ্ট কীতে ফোকাস করো!">Notice which keys you always mistype — maybe you always miss the 'P' or mix up 'B' and 'N'. Do focused drills on those specific keys every day!</p></div>
+    <div class="card cy"><span class="ci">🧘</span><h3 data-en="Sit Properly!" data-bn="সঠিকভাবে বোসো!">Sit Properly!</h3><p data-en="Back straight, feet flat, elbows at 90°, wrists hover above keyboard. Good posture lets you type longer without getting tired or hurting!" data-bn="পিঠ সোজা, পা সমান, কনুই ৯০°, কব্জি কীবোর্ডের উপরে ভাসমান। ভালো ভঙ্গিমায় ক্লান্তি ছাড়া বেশিক্ষণ টাইপ করা যায়।">Back straight, feet flat, elbows at 90°, wrists hover above keyboard. Good posture lets you type longer without getting tired or hurting!</p></div>
+    <div class="card li"><span class="ci">🎮</span><h3 data-en="Use Typing Games!" data-bn="টাইপিং গেম ব্যবহার করো!">Use Typing Games!</h3><p data-en="TypeRacer.com, Monkeytype.com, and Keybr.com make practice FUN! Race other players online, set personal records, and track your WPM progress!" data-bn="TypeRacer.com, Monkeytype.com এবং Keybr.com অনুশীলন মজাদার করে! অনলাইনে অন্য খেলোয়াড়দের সাথে রেস করো!">TypeRacer.com, Monkeytype.com, and Keybr.com make practice FUN! Race other players online, set personal records, and track your WPM progress!</p></div>
+  </div>
+
+  <!-- WPM Track -->
+  <div style="font-family:var(--h);font-size:22px;font-weight:800;margin:32px 0 14px;color:var(--text)" data-en="📊 Typing Speed Levels — Where Are You?" data-bn="📊 টাইপিং গতির স্তর — তুমি কোথায়?">📊 Typing Speed Levels — Where Are You?</div>
+  <div class="wpm-track">
+    <div class="wpm-card" style="border-color:#9CA3AF">
+      <span class="wpm-ani">🐣</span>
+      <div class="wpm-num" style="color:#9CA3AF">1–20</div>
+      <div class="wpm-lbl">WPM</div>
+      <div class="wpm-title" data-en="Just Hatching!" data-bn="সবে শুরু!">Just Hatching!</div>
+      <div class="progress"><div class="progress-fill" style="width:10%;background:#9CA3AF"></div></div>
+    </div>
+    <div class="wpm-card" style="border-color:var(--green)">
+      <span class="wpm-ani">🐢</span>
+      <div class="wpm-num" style="color:var(--green)">20–40</div>
+      <div class="wpm-lbl">WPM</div>
+      <div class="wpm-title" data-en="Slow & Steady!" data-bn="ধীর ও স্থির!">Slow & Steady!</div>
+      <div class="progress"><div class="progress-fill" style="width:30%;background:var(--green)"></div></div>
+    </div>
+    <div class="wpm-card" style="border-color:var(--blue)">
+      <span class="wpm-ani">🐇</span>
+      <div class="wpm-num" style="color:var(--blue)">40–60</div>
+      <div class="wpm-lbl">WPM</div>
+      <div class="wpm-title" data-en="Getting Good!" data-bn="ভালো হচ্ছে!">Getting Good!</div>
+      <div class="progress"><div class="progress-fill" style="width:55%;background:var(--blue)"></div></div>
+    </div>
+    <div class="wpm-card" style="border-color:var(--orange)">
+      <span class="wpm-ani">🦅</span>
+      <div class="wpm-num" style="color:var(--orange)">60–80</div>
+      <div class="wpm-lbl">WPM</div>
+      <div class="wpm-title" data-en="Pro Typist! 🔥" data-bn="প্রো টাইপিস্ট! 🔥">Pro Typist! 🔥</div>
+      <div class="progress"><div class="progress-fill" style="width:75%;background:var(--orange)"></div></div>
+    </div>
+    <div class="wpm-card" style="border-color:var(--pink)">
+      <span class="wpm-ani">🦸</span>
+      <div class="wpm-num" style="color:var(--pink)">80+</div>
+      <div class="wpm-lbl">WPM</div>
+      <div class="wpm-title" data-en="Keyboard Hero! 🏆" data-bn="কীবোর্ড হিরো! 🏆">Keyboard Hero! 🏆</div>
+      <div class="progress"><div class="progress-fill" style="width:100%;background:linear-gradient(to right,var(--pink),var(--yellow))"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. GAME -->
+<section class="section reveal" id="game">
+  <div class="sec-head">
+    <span class="sec-icon">🎮</span>
+    <div><h2 data-en="Live Typing Game!" data-bn="লাইভ টাইপিং গেম!">Live Typing Game!</h2></div>
+    <div class="sec-bar" style="background:linear-gradient(to right,var(--pink),transparent)"></div>
+  </div>
+
+  <div class="game-box">
+    <div class="game-title" data-en="🏆 Type the sentence below as fast as you can! 🏆" data-bn="🏆 নিচের বাক্যটি যত দ্রুত পারো টাইপ করো! 🏆">🏆 Type the sentence below as fast as you can! 🏆</div>
+    <div class="game-prompt" id="gamePrompt"></div>
+    <input class="game-input" type="text" id="gameInput" placeholder="👉 Click here and start typing!" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div class="game-stats">
+      <div class="gstat"><div class="gstat-val" id="gWpm">0</div><div class="gstat-lbl" data-en="WPM 🚀" data-bn="WPM 🚀">WPM 🚀</div></div>
+      <div class="gstat"><div class="gstat-val" id="gAcc">100</div><div class="gstat-lbl" data-en="Accuracy% 🎯" data-bn="নির্ভুলতা% 🎯">Accuracy% 🎯</div></div>
+      <div class="gstat"><div class="gstat-val" id="gTime">0</div><div class="gstat-lbl" data-en="Seconds ⏱️" data-bn="সেকেন্ড ⏱️">Seconds ⏱️</div></div>
+      <div class="gstat" id="gResult" style="display:none;background:#F0FDF4;border-color:var(--green)"><div class="gstat-val" id="gEmoji" style="color:var(--green)">🎉</div><div class="gstat-lbl" data-en="Done!" data-bn="শেষ!">Done!</div></div>
+    </div>
+    <button class="reset-btn" onclick="resetGame()" data-en="🔄 New Sentence!" data-bn="🔄 নতুন বাক্য!">🔄 New Sentence!</button>
+  </div>
+</section>
+
+</div><!-- end wrap -->
+
+<footer>
+  <span class="footer-ico">🦸</span>
+  <h3 data-en="You're Going to be AMAZING! Keep Going! 🚀" data-bn="তুমি অসাধারণ হবে! এগিয়ে যাও! 🚀">You're Going to be AMAZING! Keep Going! 🚀</h3>
+  <p data-en="WordPad + Keyboard mastery = Computer Superpower! Practice every day! 🌟" data-bn="ওয়ার্ডপ্যাড + কীবোর্ড দক্ষতা = কম্পিউটার সুপারপাওয়ার! প্রতিদিন অনুশীলন করো! 🌟">WordPad + Keyboard mastery = Computer Superpower! Practice every day! 🌟</p>
+</footer>
+
+<script>
+// ===== FLOATING EMOJIS =====
+const emojis=['⭐','🎮','⌨️','📄','🚀','💾','🔑','✨','🏆','💡','🎯','🌟','🦸','💻','🎨','📝'];
+const fc=document.getElementById('floaters');
+for(let i=0;i<20;i++){
+  const el=document.createElement('div');
+  el.className='floater';
+  el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  el.style.left=Math.random()*100+'vw';
+  el.style.fontSize=(18+Math.random()*18)+'px';
+  el.style.animationDuration=(10+Math.random()*14)+'s';
+  el.style.animationDelay=(-Math.random()*12)+'s';
+  fc.appendChild(el);
+}
+
+// ===== SCROLL REVEAL =====
+const revEls=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.08});
+revEls.forEach(el=>ro.observe(el));
+
+// ===== ACTIVE NAV =====
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-pill');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(s.getBoundingClientRect().top<140)cur=s.id});
+  navLinks.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')});
+});
+
+// ===== KEYBOARD =====
+function pressKey(info){
+  const d=document.getElementById('keyDisplay');
+  d.textContent='✨ '+info+' ✨';
+  d.style.animation='none';
+  void d.offsetWidth;
+  d.style.animation='';
+  confetti();
+}
+document.addEventListener('keydown',e=>{
+  if(document.activeElement.id==='gameInput') return;
+  const info=`${e.key.length===1?e.key.toUpperCase():e.key} — pressed!`;
+  pressKey(info);
+});
+
+// ===== CONFETTI =====
+function confetti(){
+  const colors=['#FFD93D','#FF6B35','#FF4DC4','#7C3AED','#2563EB','#22C55E','#06B6D4'];
+  for(let i=0;i<10;i++){
+    const d=document.createElement('div');
+    d.className='confetti-piece';
+    d.style.cssText=`background:${colors[Math.floor(Math.random()*colors.length)]};left:${20+Math.random()*60}vw;top:40vh;animation-delay:${Math.random()*.4}s;border-radius:${Math.random()>.5?'50%':'3px'};width:${8+Math.random()*8}px;height:${8+Math.random()*8}px`;
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),2000);
+  }
+}
+
+// ===== TYPING GAME =====
+const sentences=[
+  "wordpad is a free writing program for windows",
+  "the quick brown fox jumps over the lazy dog",
+  "always save your work with ctrl and s",
+  "keep your fingers on the home row always",
+  "practice typing every day to get faster",
+  "keyboards have more than one hundred keys",
+  "bold italic underline are formatting options",
+  "ctrl c copies and ctrl v pastes your text"
+];
+let sentence='',startT=null,timerI=null,done=false;
+
+function buildPrompt(){
+  const el=document.getElementById('gamePrompt');
+  el.innerHTML='';
+  sentence=sentences[Math.floor(Math.random()*sentences.length)];
+  for(let i=0;i<sentence.length;i++){
+    const s=document.createElement('span');
+    s.id='c'+i; s.className='ch-neutral';
+    s.textContent=sentence[i];
+    if(i===0)s.classList.add('ch-cursor');
+    el.appendChild(s);
+  }
+}
+buildPrompt();
+
+document.getElementById('gameInput').addEventListener('input',function(){
+  if(done)return;
+  const val=this.value;
+  if(!startT&&val.length>0){startT=Date.now();timerI=setInterval(tick,100)}
+  for(let i=0;i<sentence.length;i++){
+    const s=document.getElementById('c'+i);
+    s.className='ch-neutral';
+    if(i<val.length)s.classList.add(val[i]===sentence[i]?'ch-correct':'ch-wrong');
+    else if(i===val.length)s.classList.add('ch-cursor');
+  }
+  let ok=0;
+  for(let i=0;i<val.length;i++)if(val[i]===sentence[i])ok++;
+  document.getElementById('gAcc').textContent=val.length?Math.round(ok/val.length*100):100;
+  const ws=val.trim().split(/\s+/).filter(w=>w).length;
+  const el=(Date.now()-startT)/1000||1;
+  document.getElementById('gWpm').textContent=Math.round(ws/el*60);
+  if(val.length>=sentence.length){
+    clearInterval(timerI);done=true;
+    const r=document.getElementById('gResult');r.style.display='block';
+    const wpm=parseInt(document.getElementById('gWpm').textContent);
+    document.getElementById('gEmoji').textContent=wpm>60?'🏆':wpm>40?'🦅':wpm>20?'🐇':'🐢';
+    confetti();setTimeout(confetti,300);setTimeout(confetti,600);
+  }
+});
+
+function tick(){document.getElementById('gTime').textContent=((Date.now()-startT)/1000).toFixed(1)}
+
+function resetGame(){
+  document.getElementById('gameInput').value='';
+  ['gWpm','gAcc','gTime'].forEach(id=>document.getElementById(id).textContent=id==='gAcc'?'100':'0');
+  document.getElementById('gResult').style.display='none';
+  startT=null;done=false;clearInterval(timerI);
+  buildPrompt();
+  document.getElementById('gameInput').focus();
+}
+
+// ===== LANGUAGE TOGGLE =====
+let isBn=false;
+function toggleLang(){
+  isBn=!isBn;
+  document.body.classList.toggle('bn',isBn);
+  document.getElementById('langFlag').textContent=isBn?'🇬🇧':'🇧🇩';
+  document.getElementById('langLabel').textContent=isBn?'English':'বাংলা';
+  document.documentElement.lang=isBn?'bn':'en';
+
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    const en=el.getAttribute('data-en');
+    const bn=el.getAttribute('data-bn');
+    if(!bn) return;
+    el.innerHTML=isBn?bn:en;
+  });
+
+  // Update dynamic text
+  document.getElementById('keyDisplay').textContent=isBn?'👆 যেকোনো কী ক্লিক করে জানো!':'👆 Click any key to learn about it!';
+  document.getElementById('gameInput').placeholder=isBn?'👉 এখানে ক্লিক করো এবং টাইপ শুরু করো!':'👉 Click here and start typing!';
+  confetti();
+}
+</script>
+</body>
+</html>

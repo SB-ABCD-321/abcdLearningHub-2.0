@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Degree & Vocational Courses — ABCD Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN SYSTEM — Forest Green × Gold × Ivory
+       Authoritative · Academic · Trustworthy
+    ═══════════════════════════════════════ */
+    :root {
+      --forest:       #17432e;
+      --forest2:      #1c5237;
+      --forest3:      #22603f;
+      --forest-lt:    #2c7d52;
+      --forest-pale:  #edf6f1;
+      --gold:         #c8911f;
+      --gold-lt:      #e3a830;
+      --gold-pale:    #fdf5e6;
+      --gold-border:  rgba(200,145,31,0.3);
+      --ivory:        #faf8f3;
+      --ivory2:       #f3ede2;
+      --ivory3:       #e9e1cf;
+      --ink:          #191919;
+      --ink2:         #2b2b2b;
+      --ink3:         #484848;
+      --muted:        #7a7a6a;
+      --bdr:          #d8ceba;
+      --bdr-dk:       #bfb49c;
+      /* field colours */
+      --health:       #b91c1c;
+      --health-pale:  #fef2f2;
+      --tech:         #1d4ed8;
+      --tech-pale:    #eff6ff;
+      --voc:          #7c3aed;
+      --voc-pale:     #f5f3ff;
+      --comm:         #0369a1;
+      --comm-pale:    #f0f9ff;
+      --agri:         #15803d;
+      --agri-pale:    #f0fdf4;
+      --sd:           0 4px 24px rgba(23,67,46,.12);
+      --sdlg:         0 12px 48px rgba(23,67,46,.16);
+      --ease:         cubic-bezier(.4,0,.2,1);
+      --r:            10px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Mulish',sans-serif;
+      background:var(--ivory);
+      color:var(--ink);
+      overflow-x:hidden;
+    }
+    /* linen weave texture */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(23,67,46,.012) 3px,rgba(23,67,46,.012) 4px),
+        repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(200,145,31,.012) 3px,rgba(200,145,31,.012) 4px);
+    }
+
+    /* PROGRESS */
+    #bar{position:fixed;top:0;left:0;z-index:700;height:3px;width:0%;
+      background:linear-gradient(90deg,var(--forest),var(--gold));transition:width .1s linear}
+
+    /* ═══════ ANNOUNCEMENT BAR ═══════ */
+    .announce{
+      background:var(--forest);
+      padding:9px 48px;
+      display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;
+      font-size:.75rem;font-weight:700;color:rgba(255,255,255,.75);
+      letter-spacing:.03em;position:relative;z-index:1;
+    }
+    .ann-item{display:flex;align-items:center;gap:7px}
+    .ann-dot{width:5px;height:5px;border-radius:50%;background:var(--gold-lt);flex-shrink:0}
+    .ann-item strong{color:var(--gold-lt)}
+
+    /* ═══════ HEADER ═══════ */
+    header{
+      position:sticky;top:0;z-index:400;
+      background:rgba(250,248,243,.97);
+      backdrop-filter:blur(20px);
+      border-bottom:2px solid var(--bdr);
+      padding:0 48px;height:68px;
+      display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 2px 12px rgba(0,0,0,.05);
+    }
+    .logo-wrap{display:flex;align-items:center;gap:13px;text-decoration:none}
+    .logo-seal{
+      width:46px;height:46px;border-radius:50%;
+      background:var(--forest);border:2.5px solid var(--gold);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+      box-shadow:0 0 0 3px var(--forest),0 0 0 5px rgba(200,145,31,.25),var(--sd);
+    }
+    .seal-text{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.46rem;color:var(--gold-lt);letter-spacing:.06em;line-height:1}
+    .logo-name{font-family:'Bitter',serif;font-weight:700;font-size:1.02rem;color:var(--forest);line-height:1.1}
+    .logo-sub{font-size:.65rem;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+    .breadcrumb{display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--muted);font-weight:600}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--forest)}
+    .breadcrumb i{font-size:.5rem}
+    .breadcrumb .active{color:var(--forest);font-weight:700}
+    .nav-cta{
+      display:flex;align-items:center;gap:8px;
+      background:var(--forest);color:var(--ivory);
+      padding:10px 22px;border-radius:6px;font-weight:700;font-size:.82rem;
+      text-decoration:none;box-shadow:0 3px 10px rgba(23,67,46,.3);
+      transition:all .25s var(--ease);
+    }
+    .nav-cta:hover{background:var(--forest2);transform:translateY(-1px);box-shadow:var(--sd)}
+
+    /* ═══════ HERO ═══════ */
+    .hero{
+      position:relative;z-index:1;
+      background:var(--forest);
+      min-height:580px;overflow:hidden;
+      display:flex;align-items:center;
+    }
+    /* diagonal ivory panel right */
+    .hero-ivory{
+      position:absolute;top:0;right:0;bottom:0;width:40%;
+      background:var(--ivory);
+      clip-path:polygon(18% 0%,100% 0%,100% 100%,0% 100%);
+      z-index:1;
+    }
+    /* subtle dot grid on green */
+    .hero::before{
+      content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+      background-image:radial-gradient(circle,rgba(200,145,31,.05) 1px,transparent 1px);
+      background-size:30px 30px;
+    }
+    /* gold accent left stripe */
+    .hero-stripe{
+      position:absolute;left:0;top:0;bottom:0;width:5px;z-index:3;
+      background:linear-gradient(180deg,var(--gold),var(--gold-lt),var(--gold));
+    }
+    .hero-inner{
+      position:relative;z-index:2;
+      display:grid;grid-template-columns:1fr 40%;
+      align-items:center;width:100%;padding:64px 48px;gap:0;
+    }
+    /* LEFT */
+    .hero-left{padding-right:48px}
+    .hero-eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      background:rgba(200,145,31,.15);border:1px solid rgba(200,145,31,.3);
+      border-radius:4px;padding:7px 18px;margin-bottom:22px;
+      font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;
+      color:var(--gold-lt);letter-spacing:.12em;text-transform:uppercase;
+    }
+    .hero h1{
+      font-family:'Bitter',serif;font-weight:900;line-height:.95;
+      font-size:clamp(2.5rem,5.5vw,4.6rem);letter-spacing:-.02em;
+      color:var(--ivory);margin-bottom:20px;
+    }
+    .hero h1 em{font-style:italic;color:var(--gold-lt)}
+    .hero-desc{
+      font-size:.97rem;color:rgba(255,255,255,.65);
+      max-width:490px;line-height:1.82;margin-bottom:30px;
+    }
+    .hero-desc strong{color:rgba(255,255,255,.9)}
+    /* field pills */
+    .hero-fields{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:34px}
+    .hf{
+      display:inline-flex;align-items:center;gap:7px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+      border-radius:100px;padding:7px 16px;
+      font-size:.77rem;font-weight:700;color:rgba(255,255,255,.8);
+      transition:background .25s;
+    }
+    .hf:hover{background:rgba(255,255,255,.14)}
+    .hf i{font-size:.72rem}
+    .hf.hl i{color:#fca5a5}.hf.tl i{color:#93c5fd}.hf.vl i{color:#c4b5fd}.hf.cl i{color:#7dd3fc}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-gold{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--gold);color:var(--ink);
+      padding:13px 28px;border-radius:7px;font-weight:700;font-size:.88rem;
+      text-decoration:none;border:none;cursor:pointer;
+      box-shadow:0 4px 18px rgba(200,145,31,.45);transition:all .25s var(--ease);
+    }
+    .btn-gold:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,145,31,.5)}
+    .btn-ghost-iv{
+      display:inline-flex;align-items:center;gap:8px;
+      background:transparent;color:rgba(255,255,255,.8);
+      padding:13px 28px;border-radius:7px;font-weight:700;font-size:.88rem;
+      border:1.5px solid rgba(255,255,255,.28);text-decoration:none;cursor:pointer;
+      transition:all .25s var(--ease);
+    }
+    .btn-ghost-iv:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.55);transform:translateY(-2px)}
+
+    /* RIGHT — credentials card sitting on ivory panel */
+    .hero-right{
+      position:relative;z-index:2;
+      display:flex;align-items:center;justify-content:center;
+      padding-left:32px;
+    }
+    .cred-card{
+      background:var(--ivory);border:1px solid var(--bdr);
+      border-radius:16px;padding:32px 28px;width:100%;max-width:310px;
+      box-shadow:var(--sdlg);
+    }
+    /* Institutional crest */
+    .crest{
+      width:82px;height:82px;border-radius:50%;
+      background:var(--forest);border:3px solid var(--gold);
+      margin:0 auto 18px;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 0 5px rgba(200,145,31,.18),var(--sd);
+      position:relative;
+    }
+    .crest::before{
+      content:'★ ★ ★';
+      position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+      color:var(--gold);font-size:.45rem;background:var(--ivory);
+      padding:1px 8px;letter-spacing:3px;white-space:nowrap;
+    }
+    .crest-em{font-size:2.2rem}
+    .cred-name{font-family:'Bitter',serif;font-weight:700;font-size:.98rem;color:var(--forest);text-align:center;margin-bottom:4px;margin-top:10px}
+    .cred-sub{font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:20px}
+    .cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+    .cg-item{background:var(--ivory2);border:1px solid var(--bdr);border-radius:8px;padding:12px 8px;text-align:center}
+    .cg-val{font-family:'Bitter',serif;font-weight:900;font-size:1.55rem;color:var(--forest);line-height:1}
+    .cg-val.gd{color:var(--gold)}
+    .cg-lbl{font-size:.6rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+    .cred-tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+    .ctag{
+      display:inline-flex;align-items:center;gap:5px;
+      font-size:.68rem;font-weight:700;padding:5px 12px;border-radius:100px;
+    }
+    .ctag-gov{background:var(--gold-pale);color:var(--gold);border:1px solid var(--gold-border)}
+    .ctag-cer{background:var(--forest-pale);color:var(--forest);border:1px solid rgba(23,67,46,.2)}
+    .ctag-plc{background:var(--tech-pale);color:var(--tech);border:1px solid rgba(29,78,216,.2)}
+
+    /* ═══════ STATS RIBBON ═══════ */
+    .stats-ribbon{
+      position:relative;z-index:1;
+      background:var(--gold-pale);
+      border-top:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border);
+      padding:20px 48px;
+      display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:24px;
+    }
+    .sr-item{display:flex;align-items:center;gap:14px}
+    .sr-icon{font-size:1.5rem}
+    .sr-val{font-family:'Bitter',serif;font-weight:900;font-size:1.9rem;color:var(--forest);line-height:1}
+    .sr-lbl{font-size:.7rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+    .sr-sep{width:1px;height:38px;background:var(--gold-border)}
+
+    /* ═══════ MAIN ═══════ */
+    .main{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:64px 48px 80px}
+
+    .sec-ey{
+      display:inline-flex;align-items:center;gap:9px;
+      font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;
+      color:var(--forest);letter-spacing:.15em;text-transform:uppercase;margin-bottom:9px;
+    }
+    .sec-ey::before{content:'';width:18px;height:2px;background:var(--gold);display:inline-block;flex-shrink:0}
+    .sec-ttl{font-family:'Bitter',serif;font-weight:900;font-size:2.2rem;line-height:1.08;letter-spacing:-.01em;margin-bottom:8px}
+    .sec-ttl em{font-style:italic;color:var(--forest)}
+    .sec-sub{font-size:.9rem;color:var(--ink3);line-height:1.65;max-width:600px}
+
+    /* ═══════ CATEGORY FILTER ═══════ */
+    .cat-filter{
+      display:flex;gap:0;border:1px solid var(--bdr);border-radius:10px;
+      overflow:hidden;width:fit-content;box-shadow:var(--sd);margin-bottom:36px;
+    }
+    .cat-btn{
+      display:flex;align-items:center;gap:8px;padding:11px 20px;
+      font-weight:700;font-size:.78rem;cursor:pointer;border:none;
+      background:var(--ivory2);color:var(--ink3);
+      border-right:1px solid var(--bdr);transition:all .25s var(--ease);white-space:nowrap;
+    }
+    .cat-btn:last-child{border-right:none}
+    .cat-btn i{font-size:.75rem}
+    .cat-btn:hover,.cat-btn.active{color:#fff}
+    .cat-btn.all.active,.cat-btn.all:hover     {background:var(--forest)}
+    .cat-btn.health.active,.cat-btn.health:hover{background:var(--health)}
+    .cat-btn.tech.active,.cat-btn.tech:hover   {background:var(--tech)}
+    .cat-btn.voc.active,.cat-btn.voc:hover     {background:var(--voc)}
+    .cat-btn.comm.active,.cat-btn.comm:hover   {background:var(--comm)}
+    .cat-btn.agri.active,.cat-btn.agri:hover   {background:var(--agri)}
+
+    /* ═══════ COURSE GRID ═══════ */
+    .course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px}
+
+    .deg-card{
+      background:var(--ivory);border:1px solid var(--bdr);
+      border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;
+      box-shadow:var(--sd);position:relative;
+      transition:transform .35s var(--ease),box-shadow .35s,border-color .3s;
+      opacity:0;transform:translateY(22px);
+    }
+    .deg-card.vis{animation:cUp .55s var(--ease) forwards}
+    @keyframes cUp{to{opacity:1;transform:translateY(0)}}
+    .deg-card:hover{transform:translateY(-6px);box-shadow:var(--sdlg);border-color:var(--bdr-dk)}
+
+    /* coloured left-edge by category */
+    .deg-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;z-index:2}
+    .dc-health::before{background:var(--health)}
+    .dc-tech::before  {background:var(--tech)}
+    .dc-voc::before   {background:var(--voc)}
+    .dc-comm::before  {background:var(--comm)}
+    .dc-agri::before  {background:var(--agri)}
+
+    /* image */
+    .dc-img{height:195px;position:relative;overflow:hidden;background:var(--ivory2)}
+    .dc-img img{width:100%;height:100%;object-fit:cover;
+      filter:brightness(.65) saturate(.6);transition:transform .6s var(--ease),filter .4s}
+    .deg-card:hover .dc-img img{transform:scale(1.07);filter:brightness(.55) saturate(.5)}
+    .dc-img::after{content:'';position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 38%,var(--ivory) 100%)}
+
+    /* category badge */
+    .dc-cat{
+      position:absolute;top:14px;right:14px;z-index:3;
+      display:inline-flex;align-items:center;gap:5px;
+      font-weight:700;font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;
+      padding:5px 13px;border-radius:100px;border:1.5px solid;backdrop-filter:blur(6px);
+    }
+    .dc-cat.health{background:rgba(185,28,28,.15);color:#ef4444;border-color:rgba(185,28,28,.3)}
+    .dc-cat.tech  {background:rgba(29,78,216,.15); color:#3b82f6;border-color:rgba(29,78,216,.3)}
+    .dc-cat.voc   {background:rgba(124,58,237,.15);color:#8b5cf6;border-color:rgba(124,58,237,.3)}
+    .dc-cat.comm  {background:rgba(3,105,161,.15); color:#0284c7;border-color:rgba(3,105,161,.3)}
+    .dc-cat.agri  {background:rgba(21,128,61,.15); color:#16a34a;border-color:rgba(21,128,61,.3)}
+
+    .dc-dur{
+      position:absolute;bottom:14px;left:18px;z-index:3;
+      display:inline-flex;align-items:center;gap:5px;
+      background:rgba(23,67,46,.88);backdrop-filter:blur(6px);
+      border:1px solid rgba(200,145,31,.3);border-radius:4px;
+      padding:4px 12px;font-size:.67rem;font-weight:700;
+      color:var(--gold-lt);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;
+    }
+    .dc-elig{
+      position:absolute;bottom:14px;right:14px;z-index:3;
+      background:rgba(250,248,243,.9);backdrop-filter:blur(6px);
+      border:1px solid var(--bdr);border-radius:4px;
+      padding:4px 10px;font-size:.64rem;font-weight:700;color:var(--ink3);
+    }
+
+    /* body */
+    .dc-body{padding:20px 22px 0;flex:1;display:flex;flex-direction:column}
+    .dc-code{
+      font-family:'IBM Plex Mono',monospace;font-size:.63rem;font-weight:600;
+      letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px;
+    }
+    .dc-health .dc-code{color:var(--health)}
+    .dc-tech   .dc-code{color:var(--tech)}
+    .dc-voc    .dc-code{color:var(--voc)}
+    .dc-comm   .dc-code{color:var(--comm)}
+    .dc-agri   .dc-code{color:var(--agri)}
+
+    .dc-name{font-family:'Bitter',serif;font-weight:700;font-size:1.08rem;
+      line-height:1.28;color:var(--ink);margin-bottom:10px}
+    .dc-desc{font-size:.82rem;color:var(--ink3);line-height:1.65;flex:1;margin-bottom:14px}
+
+    /* detail strip */
+    .dc-strip{
+      display:flex;gap:0;border:1px solid var(--bdr);border-radius:7px;
+      overflow:hidden;margin-bottom:14px;
+    }
+    .ds-item{flex:1;padding:8px 10px;border-right:1px solid var(--bdr);
+      background:var(--ivory2);text-align:center}
+    .ds-item:last-child{border-right:none}
+    .ds-lbl{font-size:.58rem;color:var(--muted);font-weight:700;
+      text-transform:uppercase;letter-spacing:.06em}
+    .ds-val{font-family:'Bitter',serif;font-weight:700;font-size:.84rem;
+      color:var(--ink2);margin-top:2px}
+
+    /* highlights */
+    .dc-hl{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+    .dh{display:flex;align-items:flex-start;gap:9px;font-size:.81rem;color:var(--ink3);font-weight:500}
+    .dh-ic{
+      width:17px;height:17px;border-radius:50%;flex-shrink:0;margin-top:1px;
+      display:flex;align-items:center;justify-content:center;font-size:.48rem;color:#fff;
+    }
+    .dc-health .dh-ic{background:var(--health)}
+    .dc-tech   .dh-ic{background:var(--tech)}
+    .dc-voc    .dh-ic{background:var(--voc)}
+    .dc-comm   .dh-ic{background:var(--comm)}
+    .dc-agri   .dh-ic{background:var(--agri)}
+
+    /* footer */
+    .dc-foot{
+      padding:14px 22px 16px;border-top:1px solid var(--bdr);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      background:var(--ivory2);
+    }
+    .dc-fee{font-family:'Bitter',serif;font-weight:700;font-size:1.1rem;color:var(--forest)}
+    .dc-fee small{font-family:'Mulish',sans-serif;font-size:.63rem;color:var(--muted);font-weight:400;display:block}
+    .btn-enr{
+      display:inline-flex;align-items:center;gap:6px;
+      background:var(--forest);color:var(--ivory);
+      padding:9px 18px;border-radius:6px;
+      font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;border:none;
+      box-shadow:0 2px 8px rgba(23,67,46,.25);transition:all .25s var(--ease);
+    }
+    .btn-enr:hover{background:var(--forest2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(23,67,46,.35)}
+
+    /* expand */
+    .dc-exp{max-height:0;overflow:hidden;transition:max-height .42s var(--ease);
+      background:var(--ivory2);border-top:1px solid transparent}
+    .dc-exp.open{max-height:340px;border-top-color:var(--bdr)}
+    .dc-exp-in{padding:16px 22px;font-size:.83rem;color:var(--ink3);line-height:1.75}
+    .dex-ttl{font-family:'Bitter',serif;font-weight:700;font-size:.88rem;color:var(--forest);margin-bottom:7px}
+    .dex-gov{font-size:.74rem;color:var(--muted);margin-top:10px;display:flex;align-items:center;gap:6px}
+    .dex-gov i{color:var(--gold)}
+    .dex-best{font-size:.74rem;color:var(--muted);margin-top:5px}
+    .dex-best strong{color:var(--ink2)}
+    .dex-btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+    .dwa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;
+      padding:9px 18px;border-radius:6px;font-size:.77rem;font-weight:700;
+      text-decoration:none;box-shadow:0 2px 8px rgba(37,211,102,.3);transition:all .2s}
+    .dwa:hover{background:#1db954;transform:translateY(-1px)}
+    .dml{display:inline-flex;align-items:center;gap:6px;background:transparent;
+      color:var(--forest);border:1.5px solid var(--forest);
+      padding:9px 18px;border-radius:6px;font-size:.77rem;font-weight:700;
+      text-decoration:none;transition:all .2s}
+    .dml:hover{background:var(--forest-pale)}
+    .dc-tog{
+      width:100%;padding:10px;background:transparent;border:none;
+      border-top:1px solid var(--bdr);font-size:.73rem;font-weight:700;
+      color:var(--muted);cursor:pointer;display:flex;align-items:center;
+      justify-content:center;gap:7px;letter-spacing:.04em;
+      transition:background .2s,color .2s;
+    }
+    .dc-tog:hover{background:var(--forest-pale);color:var(--forest)}
+    .dc-tog i{transition:transform .3s}
+    .dc-tog.open i{transform:rotate(180deg)}
+
+    /* ═══════ ELIGIBILITY BLOCK ═══════ */
+    .elig-block{
+      margin-top:64px;background:var(--forest);
+      border-radius:16px;padding:52px;position:relative;overflow:hidden;
+    }
+    .elig-block::before{
+      content:'';position:absolute;top:-90px;right:-90px;
+      width:380px;height:380px;border-radius:50%;
+      background:radial-gradient(circle,rgba(200,145,31,.09) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    .elig-block::after{
+      content:'🎓';position:absolute;right:44px;bottom:14px;
+      font-size:10rem;opacity:.07;pointer-events:none;line-height:1;
+    }
+    .elig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:36px}
+    .elig-card{
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;padding:22px 18px;transition:all .3s var(--ease);
+    }
+    .elig-card:hover{background:rgba(255,255,255,.12);border-color:rgba(200,145,31,.4);transform:translateY(-4px)}
+    .elig-icon{font-size:1.9rem;margin-bottom:12px}
+    .elig-lbl{font-family:'Bitter',serif;font-weight:700;font-size:.92rem;color:#fff;margin-bottom:6px}
+    .elig-desc{font-size:.77rem;color:rgba(255,255,255,.52);line-height:1.65}
+    .elig-tag{
+      display:inline-block;margin-top:9px;font-size:.63rem;font-weight:600;
+      color:var(--gold-lt);background:rgba(200,145,31,.15);
+      border:1px solid rgba(200,145,31,.3);padding:2px 10px;border-radius:100px;
+      font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;
+    }
+
+    /* ═══════ GOVT RECOGNITION ═══════ */
+    .gov-block{
+      margin-top:52px;background:var(--gold-pale);
+      border:1px solid var(--gold-border);border-radius:12px;padding:36px 44px;
+      display:flex;align-items:flex-start;gap:36px;flex-wrap:wrap;
+    }
+    .gov-icon{font-size:3.2rem;flex-shrink:0;margin-top:4px}
+    .gov-txt{}
+    .gov-ttl{font-family:'Bitter',serif;font-weight:700;font-size:1.18rem;color:var(--forest);margin-bottom:8px}
+    .gov-desc{font-size:.85rem;color:var(--ink3);line-height:1.68;margin-bottom:16px}
+    .gov-badges{display:flex;gap:10px;flex-wrap:wrap}
+    .gb{display:flex;align-items:center;gap:6px;background:var(--ivory);
+      border:1px solid var(--bdr);border-radius:6px;padding:7px 14px;
+      font-size:.74rem;font-weight:700;color:var(--forest)}
+    .gb i{color:var(--gold)}
+
+    /* ═══════ TABLE ═══════ */
+    .tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--bdr);background:var(--ivory);box-shadow:var(--sd)}
+    table{width:100%;border-collapse:collapse;min-width:740px;font-size:.83rem}
+    thead{background:var(--forest)}
+    thead th{padding:14px 18px;text-align:left;font-family:'IBM Plex Mono',monospace;
+      font-size:.63rem;font-weight:600;color:rgba(255,255,255,.75);
+      text-transform:uppercase;letter-spacing:.1em;border-right:1px solid rgba(255,255,255,.07)}
+    tbody tr{border-bottom:1px solid var(--bdr);transition:background .2s}
+    tbody tr:last-child{border-bottom:none}
+    tbody tr:hover{background:var(--forest-pale)}
+    tbody td{padding:13px 18px;color:var(--ink3);border-right:1px solid var(--ivory3);vertical-align:middle}
+    .td-name{font-family:'Bitter',serif;font-weight:700;color:var(--ink);font-size:.88rem}
+    .td-code{font-family:'IBM Plex Mono',monospace;font-size:.63rem;font-weight:600;letter-spacing:.08em}
+    .td-fee{font-family:'Bitter',serif;font-weight:700;color:var(--forest);font-size:.9rem}
+    .td-cat{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;
+      border-radius:100px;font-size:.63rem;font-weight:700;letter-spacing:.04em}
+    .tdc-health{background:var(--health-pale);color:var(--health)}
+    .tdc-tech  {background:var(--tech-pale);  color:var(--tech)}
+    .tdc-voc   {background:var(--voc-pale);   color:var(--voc)}
+    .tdc-comm  {background:var(--comm-pale);  color:var(--comm)}
+    .tdc-agri  {background:var(--agri-pale);  color:var(--agri)}
+
+    /* ═══════ CTA ═══════ */
+    .cta-sec{
+      margin-top:52px;border-radius:16px;background:var(--forest);
+      padding:60px 52px;display:flex;align-items:center;justify-content:space-between;
+      gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;box-shadow:var(--sdlg);
+    }
+    .cta-sec::before{
+      content:'';position:absolute;top:-60px;right:-60px;
+      width:360px;height:360px;border-radius:50%;
+      background:radial-gradient(circle,rgba(200,145,31,.1) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    .cta-kicker{font-family:'IBM Plex Mono',monospace;font-size:.67rem;font-weight:600;
+      color:var(--gold-lt);letter-spacing:.18em;text-transform:uppercase;margin-bottom:11px}
+    .cta-h2{font-family:'Bitter',serif;font-weight:900;font-size:2.1rem;
+      color:#fff;line-height:1.1;margin-bottom:12px}
+    .cta-h2 em{font-style:italic;color:var(--gold-lt)}
+    .cta-p{font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.72;max-width:460px}
+    .cta-btns{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+    .cta-wa{display:inline-flex;align-items:center;gap:10px;background:#25d366;color:#fff;
+      padding:15px 32px;border-radius:8px;font-weight:700;font-size:.9rem;
+      text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:all .25s var(--ease)}
+    .cta-wa:hover{background:#1db954;transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,211,102,.5)}
+    .cta-call{display:inline-flex;align-items:center;gap:10px;background:var(--gold);
+      color:var(--ink);padding:15px 32px;border-radius:8px;font-weight:700;font-size:.9rem;
+      text-decoration:none;box-shadow:0 4px 16px rgba(200,145,31,.4);transition:all .25s var(--ease)}
+    .cta-call:hover{background:var(--gold-lt);transform:translateY(-2px)}
+
+    /* FOOTER */
+    footer{background:var(--forest);border-top:1px solid rgba(255,255,255,.1);
+      padding:32px 48px;display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+    .fb{font-family:'Bitter',serif;font-size:.9rem;color:rgba(255,255,255,.32)}
+    .fb strong{color:#fff}.fb .g{color:var(--gold-lt)}
+    .fl{display:flex;gap:20px;flex-wrap:wrap}
+    .fl a{font-size:.75rem;color:rgba(255,255,255,.3);text-decoration:none;font-weight:600;transition:color .2s}
+    .fl a:hover{color:var(--gold-lt)}
+
+    /* FLOAT WA */
+    .float-wa{position:fixed;bottom:28px;right:28px;z-index:500;
+      display:flex;align-items:center;gap:9px;
+      background:#25d366;color:#fff;padding:13px 24px;border-radius:8px;
+      text-decoration:none;font-weight:700;font-size:.82rem;
+      box-shadow:0 6px 28px rgba(37,211,102,.5);transition:transform .25s var(--ease),box-shadow .25s}
+    .float-wa:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(37,211,102,.6)}
+
+    /* ═══════ RESPONSIVE ═══════ */
+    @media(max-width:1024px){
+      .announce{padding:8px 20px}
+      header{padding:0 20px}
+      .hero-inner{grid-template-columns:1fr;padding:48px 20px}
+      .hero-ivory{display:none}
+      .hero-left{padding-right:0}
+      .hero-right{margin-top:36px;padding-left:0}
+      .cred-card{max-width:100%}
+      .stats-ribbon{padding:18px 20px}
+      .main{padding:44px 20px 72px}
+      .elig-block{padding:32px 20px}
+      .gov-block{padding:28px 20px}
+      .cta-sec{padding:44px 28px}
+      footer{padding:24px 20px}
+    }
+    @media(max-width:640px){
+      .hero h1{font-size:2.6rem}
+      .breadcrumb{display:none}
+      .cat-filter{flex-wrap:wrap;width:100%;border-radius:var(--r)}
+      .cat-btn{flex:1 1 auto;justify-content:center}
+      .course-grid{grid-template-columns:1fr}
+      .elig-grid{grid-template-columns:1fr 1fr}
+      .float-wa span{display:none}
+      .float-wa{padding:14px;border-radius:8px}
+    }
+  </style>
+</head>
+<body>
+<div id="bar"></div>
+
+<!-- ANNOUNCE BAR -->
+<div class="announce">
+  <div class="ann-item"><div class="ann-dot"></div><span><strong>Admissions Open</strong></span></div>
+  <div class="ann-item"><div class="ann-dot"></div><span>Government-Recognised Certificates Issued</span></div>
+  <div class="ann-item"><div class="ann-dot"></div><span>Free Career Counselling Available</span></div>
+  <div class="ann-item"><div class="ann-dot"></div><span>Placement Assistance for All Graduates</span></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="../index.html" class="logo-wrap">
+    <!-- <div class="logo-seal">
+      <span class="seal-text">ABCD</span>
+      <span class="seal-text" style="color:var(--gold-lt);font-size:.38rem">★★★★★</span>
+      <span class="seal-text">EST.2019</span>
+    </div> -->
+    <div>
+      <div class="logo-name">ABCD Learning Hub</div>
+      <!-- <div class="logo-sub">West Bengal · Est. 2019</div> -->
+    </div>
+  </a>
+  <nav class="breadcrumb">
+    <a href="../index.html">Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="index.html">Courses</a>
+    <i class="fas fa-chevron-right"></i>
+    <span class="active">Degree & Vocational</span>
+  </nav>
+  <a href="https://wa.me/918944899747" target="_blank" class="nav-cta">
+    <i class="fab fa-whatsapp"></i> Enquire Now
+  </a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ivory"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">★ Government-Recognised · Degree & Vocational Programmes</div>
+      <h1>Real Careers in<br/><em>Healthcare,</em><br/>Trades & Beyond</h1>
+      <p class="hero-desc">
+        ITI, Nursing, Pharmacy, Cosmetology, Agriculture & more — <strong>13 government-aligned vocational and degree programmes</strong>, all with industry-recognised certificates and placement support, right here in West Bengal.
+      </p>
+      <div class="hero-fields">
+        <span class="hf hl"><i class="fas fa-heartbeat"></i> Healthcare & Nursing</span>
+        <span class="hf tl"><i class="fas fa-tools"></i> ITI & Technical Trades</span>
+        <span class="hf vl"><i class="fas fa-cut"></i> Vocational Skills</span>
+      </div>
+      <div class="hero-btns">
+        <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20Degree%20and%20Vocational%20courses%20at%20ABCD%20Learning%20Hub.%20Please%20guide%20me." target="_blank" class="btn-gold"><i class="fab fa-whatsapp"></i> Free Counselling</a>
+        <a href="#courses" class="btn-ghost-iv"><i class="fas fa-graduation-cap"></i> Browse All Courses</a>
+      </div>
+    </div>
+    <!-- CREDENTIAL CARD (sits on ivory panel via z-index) -->
+    <div class="hero-right">
+      <div class="cred-card">
+        <div class="crest"><span class="crest-em">🎓</span></div>
+        <div class="cred-name">ABCD Learning Hub</div>
+        <div class="cred-sub">India's trusted vocational education partner. </div>
+        <div class="cred-grid">
+          <div class="cg-item"><div class="cg-val">13</div><div class="cg-lbl">Programmes</div></div>
+          <div class="cg-item"><div class="cg-val gd">500+</div><div class="cg-lbl">Graduates</div></div>
+          <div class="cg-item"><div class="cg-val">4.9★</div><div class="cg-lbl">Rating</div></div>
+          <div class="cg-item"><div class="cg-val gd">6m–4y</div><div class="cg-lbl">Duration Range</div></div>
+        </div>
+        <div class="cred-tags">
+          <span class="ctag ctag-gov"><i class="fas fa-landmark"></i> Govt Aligned</span>
+          <span class="ctag ctag-cer"><i class="fas fa-certificate"></i> Certified</span>
+          <span class="ctag ctag-plc"><i class="fas fa-briefcase"></i> Placement</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS RIBBON -->
+<div class="stats-ribbon">
+  <div class="sr-item"><div class="sr-icon">📚</div><div><div class="sr-val">13</div><div class="sr-lbl">Programmes</div></div></div>
+  <div class="sr-sep"></div>
+  <div class="sr-item"><div class="sr-icon">🏥</div><div><div class="sr-val">5</div><div class="sr-lbl">Healthcare Courses</div></div></div>
+  <div class="sr-sep"></div>
+  <div class="sr-item"><div class="sr-icon">⚙️</div><div><div class="sr-val">3</div><div class="sr-lbl">ITI Trades</div></div></div>
+  <div class="sr-sep"></div>
+  <div class="sr-item"><div class="sr-icon">🎓</div><div><div class="sr-val">500+</div><div class="sr-lbl">Alumni Placed</div></div></div>
+  <div class="sr-sep"></div>
+  <div class="sr-item"><div class="sr-icon">⭐</div><div><div class="sr-val">4.9</div><div class="sr-lbl">Student Rating</div></div></div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="courses">
+
+  <div style="margin-bottom:40px">
+    <div class="sec-ey">All Degree & Vocational Programmes</div>
+    <div class="sec-ttl">Choose Your <em>Career Path</em></div>
+    <div class="sec-sub">Government-aligned programmes across healthcare, ITI trades, vocational skills, commerce, and agriculture — all with recognised certificates and placement assistance.</div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="cat-filter" id="catFilter">
+    <button class="cat-btn all active"   data-cat="all"   ><i class="fas fa-th"></i> All Fields</button>
+    <button class="cat-btn health"       data-cat="health"><i class="fas fa-heartbeat"></i> Healthcare</button>
+    <button class="cat-btn tech"         data-cat="tech"  ><i class="fas fa-tools"></i> ITI & Technical</button>
+    <button class="cat-btn voc"          data-cat="voc"   ><i class="fas fa-cut"></i> Vocational</button>
+  </div>
+
+  <div class="course-grid" id="courseGrid"></div>
+
+  <!-- ELIGIBILITY -->
+  <div class="elig-block">
+    <div class="sec-ey" style="color:rgba(255,255,255,.45)">Admission Requirements</div>
+    <div class="sec-ttl" style="color:#fff;font-size:1.8rem">Eligibility <em style="color:var(--gold-lt)">at a Glance</em></div>
+    <div style="font-size:.88rem;color:rgba(255,255,255,.5);margin-top:4px">General criteria across our programmes — contact us for your specific case</div>
+    <div class="elig-grid">
+      <div class="elig-card">
+        <div class="elig-icon">🎓</div>
+        <div class="elig-lbl">Class 10 (Matriculation)</div>
+        <div class="elig-desc">Most ITI trades, basic vocational, and entry-level certificate programmes. Science stream preferred for technical trades.</div>
+        <span class="elig-tag">ITI · Basic Vocational</span>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">📖</div>
+        <div class="elig-lbl">Class 12 (Higher Secondary)</div>
+        <div class="elig-desc">Nursing, Pharmacy, and advanced diplomas. PCB (Physics, Chemistry, Biology) mandatory for all healthcare courses.</div>
+        <span class="elig-tag">Nursing · Pharmacy · ANM</span>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">🏥</div>
+        <div class="elig-lbl">Healthcare — Age Limit</div>
+        <div class="elig-desc">ANM and GNM programmes require candidates to be 17–35 years. Physical fitness certificate required at admission.</div>
+        <span class="elig-tag">ANM · GNM · BSc Nursing</span>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">💼</div>
+        <div class="elig-lbl">Commerce & Finance</div>
+        <div class="elig-desc">Banking, GST, and Tally courses welcome all streams — science, commerce, or arts. Class 10 or 12 accepted.</div>
+        <span class="elig-tag">Banking · GST · Tally</span>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">🌾</div>
+        <div class="elig-lbl">Agriculture Courses</div>
+        <div class="elig-desc">Agriculture diploma requires Class 10. Class 12 with Agriculture or Biology preferred but not always mandatory.</div>
+        <span class="elig-tag">Agriculture Diploma</span>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">📞</div>
+        <div class="elig-lbl">Not Sure? We'll Guide You</div>
+        <div class="elig-desc">Every student's situation is unique. WhatsApp us for free personal counselling and programme recommendations.</div>
+        <span class="elig-tag">Free Counselling</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOVT RECOGNITION -->
+  <div class="gov-block">
+    <div class="gov-icon">🏛️</div>
+    <div class="gov-txt">
+      <div class="gov-ttl">Government-Aligned Certificates Recognised Across India</div>
+      <div class="gov-desc">All our degree and vocational programmes follow curriculum guidelines set by the West Bengal State Council of Vocational Training (WBSCVT), the National Council for Vocational Education and Training (NCVET), and the respective professional bodies for healthcare programmes — including the Nursing Council and Pharmacy Council of India. Your certificate is recognised by government departments, hospitals, pharmacies, factories, and employers nationwide.</div>
+      <div class="gov-badges">
+        <div class="gb"><i class="fas fa-landmark"></i> WBSCVT Aligned</div>
+        <div class="gb"><i class="fas fa-certificate"></i> NCVET Recognised</div>
+        <div class="gb"><i class="fas fa-hospital"></i> Nursing Council</div>
+        <div class="gb"><i class="fas fa-pills"></i> Pharmacy Council</div>
+        <div class="gb"><i class="fas fa-industry"></i> Industry Accepted</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div style="margin-top:56px">
+    <div style="margin-bottom:28px">
+      <div class="sec-ey">Quick Comparison</div>
+      <div class="sec-ttl" style="font-size:1.8rem">All 13 Courses <em>at a Glance</em></div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Programme Name</th><th>Code</th><th>Field</th>
+            <th>Duration</th><th>Eligibility</th><th>Fee</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-sec">
+    <div>
+      <div class="cta-kicker">★ 2025–26 Admissions Now Open</div>
+      <div class="cta-h2">Your Professional Career<br/>Starts with the <em>Right Choice</em></div>
+      <div class="cta-p">Free counselling available — we personally help every student find the right programme based on their qualifications, interests, and career goals. New batches begin monthly with limited seats per course.</div>
+    </div>
+    <div class="cta-btns">
+      <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20Degree%20and%20Vocational%20courses%20at%20ABCD%20Learning%20Hub.%20Please%20help%20me%20choose%20the%20right%20programme%20based%20on%20my%20qualifications." target="_blank" class="cta-wa"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+      <a href="tel:+918944899747" class="cta-call"><i class="fas fa-phone"></i> Call +91 89448 99747</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="fb">
+    <strong>ABCD Learning Hub</strong> <span class="g">★</span> India's Premier Education Institute<br/>
+    <span style="font-size:.72rem"> +91 89448 99747 · sb.abcd321@gmail.com</span>
+  </div>
+  <div class="fl">
+    <a href="../index.html">Home</a>
+    <a href="index.html">All Courses</a>
+    <a href="diploma-course.html">Diploma</a>
+    <a href="ai-course.html">AI</a>
+    <a href="programming.html">Programming</a>
+    <a href="designing-course.html">Designing</a>
+    <a href="for-office-work.html">Office</a>
+    <a href="kids-computer.html">Kids</a>
+    <a href="mailto:sb.abcd321@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/918944899747" target="_blank" class="float-wa">
+  <i class="fab fa-whatsapp"></i><span>Chat with Us</span>
+</a>
+
+<script>
+const COURSES=[
+  /* ── HEALTHCARE ── */
+  {id:'anm',  code:'ANM',     cat:'health', num:'01',
+   name:'Auxiliary Nurse & Midwife (ANM)',
+   desc:'A government-regulated 2-year nursing diploma training women as frontline community health workers, midwives, and primary healthcare providers across rural and urban India.',
+   longDesc:'ANM is a 2-year programme for women focusing on maternal and child health, community nursing, first aid, basic midwifery, immunisation, family planning, and nutrition. Graduates are recruited by government hospitals, PHCs (Primary Health Centres), ASHA programmes, and NGOs across India. Affiliated with the West Bengal Nursing Council.',
+   duration:'2 Years', fee:'Contact Us', elig:'12th (PCB)',
+   image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+   hl:['Community health & maternal care','Midwifery, immunisation & nutrition','First aid & emergency procedures','Govt hospitals, PHC & ASHA recruitment'],
+   gov:'West Bengal Nursing Council affiliated',best:'Women aspiring to become community health workers and nurses'},
+
+  {id:'gnm',  code:'GNM',     cat:'health', num:'02',
+   name:'General Nursing & Midwifery (GNM)',
+   desc:'A comprehensive 3.5-year nursing diploma qualifying graduates for hospital nursing roles across medical, surgical, paediatric, psychiatric, and maternity departments.',
+   longDesc:'GNM covers anatomy & physiology, fundamental nursing, medical-surgical nursing, paediatric nursing, psychiatric nursing, community health nursing, and midwifery, plus a clinical internship. Graduates register with the Nursing Council and work in government and private hospitals, ICUs, OTs, and maternity wards across India.',
+   duration:'3.5 Years', fee:'Contact Us', elig:'12th (PCB)',
+   image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+   hl:['Medical-surgical & ICU nursing','Paediatric & psychiatric nursing','Maternity & community health nursing','Government & private hospital staff nurse roles'],
+   gov:'Indian Nursing Council & WB Nursing Council',best:'Students committed to a hospital nursing career'},
+
+  {id:'bscn', code:'BSc-N',   cat:'health', num:'03',
+   name:'B.Sc. Nursing — Guidance & Admission Support',
+   desc:'Complete guidance, entrance exam preparation, and college admission support for the 4-year B.Sc. Nursing degree — the highest nursing qualification in India.',
+   longDesc:'We provide entrance exam preparation support (NEET/State nursing entrances), college shortlisting across West Bengal and India, documentation guidance, and end-to-end admission assistance for B.Sc. Nursing — the 4-year Indian Nursing Council recognized degree. The highest nursing qualification that opens doors to teaching, specialisation, and leadership roles.',
+   duration:'4 Years (Degree)', fee:'Contact Us', elig:'12th (PCB)',
+   image:'https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg',
+   hl:['Nursing entrance exam preparation','College shortlisting & documentation','INC recognized 4-year degree','Teaching, specialisation & senior roles'],
+   gov:'Indian Nursing Council recognized degree',best:'Students targeting the highest nursing qualification and leadership roles'},
+
+  {id:'dpharm',code:'D.Pharm',cat:'health', num:'04',
+   name:'Diploma in Pharmacy (D.Pharm)',
+   desc:'A 2-year Pharmacy Council of India recognized diploma qualifying graduates to register and practice as pharmacists in hospitals, clinics, and retail pharmacies nationwide.',
+   longDesc:'D.Pharm covers pharmaceutics, pharmaceutical chemistry, pharmacognosy, biochemistry, clinical pathology & microbiology, and pharmacology & toxicology. Graduates register with the State Pharmacy Council and can work as pharmacists, drug inspectors, medical representatives, or in pharmaceutical manufacturing companies.',
+   duration:'2 Years', fee:'Contact Us', elig:'12th (PCB/PCM)',
+   image:'https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg',
+   hl:['Pharmaceutics & pharmaceutical chemistry','Pharmacology & clinical pathology','Pharmacy Council of India registration','Hospitals, pharmacies & pharma companies'],
+   gov:'Pharmacy Council of India recognized',best:'Students wanting a regulated healthcare career in pharmacy'},
+
+  {id:'dmlt', code:'DMLT',    cat:'health', num:'05',
+   name:'Diploma in Medical Lab Technology (DMLT)',
+   desc:'Train as a medical laboratory technician — perform clinical tests, analyse samples, and support diagnoses in hospitals, diagnostic centres, and blood banks.',
+   longDesc:'A 2-year programme covering clinical biochemistry, haematology & blood banking, microbiology & parasitology, histopathology & cytology, and quality control in labs. High demand due to rapid expansion of diagnostic centres and pathology labs. Graduates work in government hospitals, private diagnostic chains, blood banks, and research labs.',
+   duration:'2 Years', fee:'Contact Us', elig:'12th (Science)',
+   image:'https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg',
+   hl:['Clinical biochemistry & haematology','Microbiology & blood banking','Histopathology & quality control','Government hospitals & diagnostic centres'],
+   gov:'WBSCVT / NCVT recognized',best:'Students interested in diagnostic science and laboratory medicine'},
+
+  /* ── ITI & TECHNICAL ── */
+  {id:'iti-ec',  code:'ITI-EC',  cat:'tech', num:'06',
+   name:'ITI — Electrician Trade',
+   desc:'A 2-year government ITI trade training students in domestic and industrial electrical systems, panel boards, motor winding, and electrical maintenance.',
+   longDesc:'ITI Electrician covers AC/DC circuit theory, domestic & industrial wiring, earthing & electrical safety, motor rewinding & maintenance, transformer repair, panel board installation, and measuring instruments. NCVT certificate recognized by government PSUs, railways, and private industries. Excellent for government department jobs and self-employment.',
+   duration:'2 Years', fee:'Contact Us', elig:'10th Pass (Science)',
+   image:'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg',
+   hl:['Domestic & industrial wiring','Motor rewinding & transformer repair','Electrical safety & panel boards','Govt PSUs, WBSEDCL, Railways, self-employment'],
+   gov:'NCVT / WBSCVT Government ITI Certificate',best:'Students targeting electrical jobs in government sectors and infrastructure'},
+
+  {id:'iti-ft',  code:'ITI-FT',  cat:'tech', num:'07',
+   name:'ITI — Fitter Trade',
+   desc:'Master fitting, machining, and mechanical assembly — one of India\'s most recruited ITI trades with strong demand in manufacturing, railways, and heavy industry.',
+   longDesc:'ITI Fitter covers hand tools & fitting operations, drilling & tapping, grinding & lapping, lathe machine operations, assembly & disassembly of machine parts, blueprint reading & measurement, and industrial machinery maintenance. Recruited by manufacturing plants, railway workshops, shipyards, steel plants, DRDO, ISRO ancillaries, and automotive companies.',
+   duration:'2 Years', fee:'Contact Us', elig:'10th Pass (Science/Math)',
+   image:'https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg',
+   hl:['Fitting, drilling, grinding & lathe ops','Blueprint reading & precision measurement','Industrial machinery assembly & maintenance','Railways, manufacturing, defence sector roles'],
+   gov:'NCVT / WBSCVT Government ITI Certificate',best:'Students targeting manufacturing, defence, or railway careers'},
+
+  {id:'iti-copa',code:'ITI-COPA',cat:'tech', num:'08',
+   name:'ITI — COPA (Computer Operator & Programming)',
+   desc:'A 1-year ITI trade combining computer operation, MS Office, internet applications, and basic programming — government-certified and widely accepted by employers.',
+   longDesc:'COPA covers MS Windows, MS Office (Word, Excel, PowerPoint, Access), internet & email, DTP with PageMaker, HTML basics, data entry, and introduction to Visual Basic programming. The NCVT certificate is recognised by government departments, banks, PSUs, and private companies. A popular entry point into IT-assisted government jobs.',
+   duration:'1 Year', fee:'Contact Us', elig:'10th Pass',
+   image:'https://cdn.pixabay.com/photo/2019/10/03/12/12/programmer-4523101_1280.jpg',
+   hl:['MS Office, DTP & internet skills','HTML & Visual Basic basics','Data entry & computer operation','NCVT cert — government & bank jobs'],
+   gov:'NCVT / WBSCVT Government ITI Certificate',best:'Students wanting computer skills with government-recognized certification'},
+
+  /* ── VOCATIONAL ── */
+  {id:'cosm',  code:'COSM',  cat:'voc', num:'09',
+   name:'Diploma in Beauty & Cosmetology',
+   desc:'Professional beauty therapy training covering skin care, hair, make-up, nails, and salon management — for careers in premium salons, films, weddings, and your own business.',
+   longDesc:'Covers skin analysis & facials, hair cutting, styling & colouring (loreal, wella), make-up artistry (day, bridal, editorial), nail art & nail extension, manicure & pedicure, waxing & threading, body treatments, and salon management & client handling. Graduates work in premium salon chains, spas, films, weddings, and TV production, or start their own parlour.',
+   duration:'6 Months', fee:'Contact Us', elig:'10th Pass',
+   image:'https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg',
+   hl:['Skin care, facials & body treatments','Hair cut, colour & styling techniques','Bridal & editorial make-up artistry','Salon management & freelance career'],
+   gov:'WBSCVT / NSDC Skill Certification',best:'Students wanting a creative, high-earning career in beauty and personal care'},
+
+  {id:'tailor',code:'TAIL',  cat:'voc', num:'10',
+   name:'Diploma in Tailoring & Garment Making',
+   desc:'Learn cutting, stitching, pattern making, embroidery, and boutique management — for careers in garment factories, fashion boutiques, or your own tailoring business.',
+   longDesc:'Covers fabric identification & selection, pattern drafting & cutting, hand & machine stitching, salwar-kameez, blouse & trouser tailoring, embroidery & embellishment, alteration & repair techniques, and boutique management basics. Graduates find employment in garment export factories, fashion boutiques, or run home-based tailoring businesses.',
+   duration:'6 Months', fee:'Contact Us', elig:'8th Pass',
+   image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+   hl:['Pattern drafting, cutting & stitching','Blouse, salwar & trouser tailoring','Embroidery & embellishment techniques','Factory, boutique or own business'],
+   gov:'WBSCVT / PMKVY Skill Certification',best:'Students wanting skilled trade in fashion, garments, or self-employment'},
+
+  ];
+
+const TABLE=[
+  {code:'ANM',     name:'Auxiliary Nurse & Midwife',               cat:'health',dur:'2 Years',    elig:'12th (PCB)',        fee:'Contact Us'},
+  {code:'GNM',     name:'General Nursing & Midwifery',             cat:'health',dur:'3.5 Years',  elig:'12th (PCB)',        fee:'Contact Us'},
+  {code:'BSc-N',   name:'B.Sc. Nursing (Guidance)',                cat:'health',dur:'4 Years',    elig:'12th (PCB)',        fee:'Contact Us'},
+  {code:'D.Pharm', name:'Diploma in Pharmacy',                     cat:'health',dur:'2 Years',    elig:'12th (PCB/PCM)',    fee:'Contact Us'},
+  {code:'DMLT',    name:'Diploma in Medical Lab Technology',        cat:'health',dur:'2 Years',    elig:'12th (Science)',    fee:'Contact Us'},
+  {code:'ITI-EC',  name:'ITI — Electrician Trade',                 cat:'tech',  dur:'2 Years',    elig:'10th (Science)',    fee:'Contact Us'},
+  {code:'ITI-FT',  name:'ITI — Fitter Trade',                      cat:'tech',  dur:'2 Years',    elig:'10th (Sci/Math)',   fee:'Contact Us'},
+  {code:'ITI-COPA',name:'ITI — COPA',                              cat:'tech',  dur:'1 Year',     elig:'10th Pass',         fee:'Contact Us'},
+  {code:'COSM',    name:'Diploma in Beauty & Cosmetology',         cat:'voc',   dur:'6 Months',   elig:'10th Pass',         fee:'Contact Us'},
+  {code:'TAIL',    name:'Diploma in Tailoring & Garment Making',   cat:'voc',   dur:'6 Months',   elig:'8th Pass',          fee:'Contact Us'},
+  {code:'BFSI',    name:'Certificate in Banking, Finance & Ins.',  cat:'comm',  dur:'6 Months',   elig:'12th (Any Stream)', fee:'Contact Us'},
+  {code:'TAX',     name:'Certificate in Tally & GST / Taxation',   cat:'comm',  dur:'6 Months',   elig:'10th or 12th',      fee:'Contact Us'},
+  {code:'DAG',     name:'Diploma in Agriculture & Rural Dev.',     cat:'agri',  dur:'1 Year',     elig:'10th Pass',         fee:'Contact Us'},
+];
+
+const CATMETA={
+  health:{cls:'dc-health',badge:'health',td:'tdc-health',lbl:'Healthcare'},
+  tech:  {cls:'dc-tech',  badge:'tech',  td:'tdc-tech',  lbl:'ITI & Technical'},
+  voc:   {cls:'dc-voc',   badge:'voc',   td:'tdc-voc',   lbl:'Vocational'},
+};
+
+/* BUILD CARDS */
+const grid=document.getElementById('courseGrid');
+
+function renderCards(filter){
+  grid.innerHTML='';
+  const list=filter==='all'?COURSES:COURSES.filter(c=>c.cat===filter);
+  list.forEach((c,i)=>{
+    const m=CATMETA[c.cat];
+    const hlH=c.hl.map(h=>`<div class="dh"><div class="dh-ic"><i class="fas fa-check" style="font-size:.42rem"></i></div>${h}</div>`).join('');
+    const card=document.createElement('div');
+    card.className=`deg-card ${m.cls}`;
+    card.dataset.cat=c.cat;
+    card.style.animationDelay=`${i*.08}s`;
+    card.innerHTML=`
+      <div class="dc-img">
+        <img src="${c.image}" alt="${c.name}" loading="lazy"/>
+        <span class="dc-cat ${m.badge}">● ${m.lbl}</span>
+        <div class="dc-dur"><i class="fas fa-clock"></i>${c.duration}</div>
+        <div class="dc-elig">Elig: ${c.elig}</div>
+      </div>
+      <div class="dc-body">
+        <div class="dc-code">${c.code}</div>
+        <div class="dc-name">${c.name}</div>
+        <div class="dc-desc">${c.desc}</div>
+        <div class="dc-strip">
+          <div class="ds-item"><div class="ds-lbl">Duration</div><div class="ds-val">${c.duration}</div></div>
+          <div class="ds-item"><div class="ds-lbl">Eligibility</div><div class="ds-val" style="font-size:.76rem">${c.elig}</div></div>
+          <div class="ds-item"><div class="ds-lbl">Fee</div><div class="ds-val" style="color:var(--forest)">${c.fee}</div></div>
+        </div>
+        <div class="dc-hl">${hlH}</div>
+      </div>
+      <div class="dc-foot">
+        <div class="dc-fee">${c.fee}<small>Contact us for fee details</small></div>
+        <button class="btn-enr" onclick="enrollWA('${encodeURIComponent(c.name)}')">Enquire <i class="fas fa-arrow-right"></i></button>
+      </div>
+      <div class="dc-exp" id="exp-${c.id}">
+        <div class="dc-exp-in">
+          <div class="dex-ttl">Programme Overview</div>
+          ${c.longDesc}
+          <div class="dex-gov"><i class="fas fa-landmark"></i> <strong>${c.gov}</strong></div>
+          <div class="dex-best">👥 <strong>Best For:</strong> ${c.best}</div>
+          <div class="dex-btns">
+            <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20${encodeURIComponent(c.name)}%20at%20ABCD%20Learning%20Hub.%20Please%20share%20eligibility,%20fees%20and%20batch%20details." target="_blank" class="dwa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: ${encodeURIComponent(c.name)}" class="dml"><i class="fas fa-envelope"></i> Email</a>
+          </div>
+        </div>
+      </div>
+      <button class="dc-tog" id="tog-${c.id}" onclick="toggleCard('${c.id}')">
+        <i class="fas fa-chevron-down"></i> View Full Details
+      </button>
+    `;
+    grid.appendChild(card);
+    setTimeout(()=>card.classList.add('vis'),i*80+80);
+  });
+}
+renderCards('all');
+
+/* FILTER */
+document.getElementById('catFilter').addEventListener('click',e=>{
+  const btn=e.target.closest('.cat-btn');
+  if(!btn)return;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(btn.dataset.cat);
+});
+
+/* TABLE */
+const tbody=document.getElementById('tableBody');
+TABLE.forEach(r=>{
+  const m=CATMETA[r.cat];
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><span class="td-name">${r.name}</span></td>
+    <td><span class="td-code ${m.td}" style="font-family:'IBM Plex Mono',monospace">${r.code}</span></td>
+    <td><span class="td-cat ${m.td}">${m.lbl}</span></td>
+    <td>${r.dur}</td>
+    <td style="font-size:.79rem">${r.elig}</td>
+    <td class="td-fee">${r.fee}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* TOGGLE */
+function toggleCard(id){
+  const exp=document.getElementById('exp-'+id);
+  const tog=document.getElementById('tog-'+id);
+  const open=exp.classList.contains('open');
+  document.querySelectorAll('.dc-exp.open').forEach(e=>e.classList.remove('open'));
+  document.querySelectorAll('.dc-tog.open').forEach(t=>{
+    t.classList.remove('open');
+    t.innerHTML='<i class="fas fa-chevron-down"></i> View Full Details';
+  });
+  if(!open){
+    exp.classList.add('open');
+    tog.classList.add('open');
+    tog.innerHTML='<i class="fas fa-chevron-up"></i> Hide Details';
+  }
+}
+
+/* WA */
+function enrollWA(enc){
+  const name=decodeURIComponent(enc);
+  window.open(`https://wa.me/918944899747?text=${encodeURIComponent(`Hello! I'm interested in "${name}" at ABCD Learning Hub. Please share eligibility requirements, fees, and next batch dates.`)}`, '_blank');
+}
+
+/* PROGRESS BAR */
+const bar=document.getElementById('bar');
+window.addEventListener('scroll',()=>{
+  bar.style.width=`${(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100}%`;
+},{passive:true});
+</script>
+</body>
+</html>

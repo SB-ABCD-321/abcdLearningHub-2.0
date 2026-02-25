@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Designing Courses — ABCD Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ══════════════════════════════════════
+       DESIGN SYSTEM — Bauhaus: Magenta × Yellow × White
+    ══════════════════════════════════════ */
+    :root {
+      --white:    #ffffff;
+      --off:      #f8f6f2;
+      --off2:     #f0ede7;
+      --ink:      #111111;
+      --ink2:     #222222;
+      --ink3:     #444444;
+      --muted:    #888888;
+      --mag:      #e8006a;
+      --mag-dk:   #b80055;
+      --mag-pale: #fff0f6;
+      --yel:      #f5d000;
+      --yel-dk:   #c9ab00;
+      --yel-pale: #fffce0;
+      --cyan:     #00b4d8;
+      --cyan-pale:#e0f7fb;
+      --blue:     #3b5bdb;
+      --blue-pale:#eef1ff;
+      --border:   #111111;
+      --r:        0px; /* Bauhaus uses NO rounded corners — angular */
+      --ease:     cubic-bezier(0.4,0,0.2,1);
+      --shadow:   6px 6px 0 #111111;
+      --shadow-sm:3px 3px 0 #111111;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* HALFTONE BG TEXTURE */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(232,0,106,0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* PROGRESS BAR */
+    #bar {
+      position: fixed; top: 0; left: 0; z-index: 700;
+      height: 4px; width: 0%;
+      background: linear-gradient(90deg, var(--mag), var(--yel));
+      transition: width .1s linear;
+    }
+
+    /* ══════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 400;
+      background: var(--white);
+      border-bottom: 3px solid var(--ink);
+      padding: 0 48px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-mark {
+      width: 38px; height: 38px;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-weight: 700;
+      font-size: .62rem; color: var(--yel); letter-spacing: .5px;
+    }
+    .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+    .logo-text em { font-style: italic; color: var(--mag); }
+
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: 'Space Mono', monospace; font-size: .68rem; color: var(--muted); }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb i { font-size: .5rem; }
+    .breadcrumb .active { color: var(--mag); font-weight: 700; }
+
+    .nav-cta {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--mag); color: var(--white);
+      padding: 10px 22px; border: 2px solid var(--ink);
+      box-shadow: var(--shadow-sm);
+      font-family: 'Space Mono', monospace; font-weight: 700;
+      font-size: .72rem; text-decoration: none; letter-spacing: .04em;
+      transition: all .2s var(--ease);
+    }
+    .nav-cta:hover { background: var(--mag-dk); transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+
+    /* ══════════════════════════════════════
+       HERO — Bauhaus Grid Layout
+    ══════════════════════════════════════ */
+    .hero {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      grid-template-rows: auto auto;
+      min-height: 580px;
+      border-bottom: 3px solid var(--ink);
+      overflow: hidden;
+    }
+
+    /* LEFT CONTENT BLOCK */
+    .hero-left {
+      padding: 64px 56px 64px 48px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 3px solid var(--ink);
+      position: relative;
+    }
+
+    /* BIG YELLOW STRIPE behind heading */
+    .hero-left::before {
+      content: '';
+      position: absolute; top: 0; left: 0; bottom: 0; width: 8px;
+      background: var(--yel);
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Space Mono', monospace; font-size: .68rem;
+      font-weight: 700; color: var(--white); background: var(--ink);
+      padding: 6px 16px; margin-bottom: 24px; width: fit-content;
+      letter-spacing: .08em;
+    }
+    .hero-tag-dot { width: 7px; height: 7px; background: var(--mag); }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5.5vw, 5.2rem);
+      font-weight: 900; line-height: .92;
+      letter-spacing: -.03em;
+      margin-bottom: 24px;
+    }
+    .h1-normal { display: block; color: var(--ink); }
+    .h1-italic { display: block; font-style: italic; color: var(--mag); }
+    .h1-outline {
+      display: block; color: transparent;
+      -webkit-text-stroke: 3px var(--ink);
+    }
+
+    .hero-desc {
+      font-size: 1rem; color: var(--ink3);
+      max-width: 460px; line-height: 1.75;
+      margin-bottom: 36px; font-weight: 400;
+    }
+
+    /* TOOL CHIPS */
+    .tool-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+    .tc {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border: 2px solid var(--ink);
+      font-family: 'Space Mono', monospace; font-size: .68rem; font-weight: 700;
+      background: var(--white); cursor: default;
+      box-shadow: var(--shadow-sm);
+      transition: all .2s var(--ease);
+    }
+    .tc:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+    .tc-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .tc-ps  .tc-dot { background: #31a8ff; }
+    .tc-ai  .tc-dot { background: #ff9a00; }
+    .tc-id  .tc-dot { background: #ff3366; }
+    .tc-cd  .tc-dot { background: #00c4cc; }
+    .tc-pm  .tc-dot { background: #f24e1e; }
+    .tc-vg  .tc-dot { background: #43e5f7; }
+    .tc-fl  .tc-dot { background: #00c4cc; }
+    .tc-ca  .tc-dot { background: #7c4dff; }
+
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-mag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--mag); color: var(--white);
+      padding: 14px 28px; border: 2px solid var(--ink);
+      box-shadow: var(--shadow); font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: .88rem; text-decoration: none; cursor: pointer;
+      transition: all .2s var(--ease);
+    }
+    .btn-mag:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--ink); }
+    .btn-yel {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--yel); color: var(--ink);
+      padding: 14px 28px; border: 2px solid var(--ink);
+      box-shadow: var(--shadow); font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: .88rem; text-decoration: none; cursor: pointer;
+      transition: all .2s var(--ease);
+    }
+    .btn-yel:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--ink); }
+
+    /* RIGHT — COLOR WHEEL + PALETTE */
+    .hero-right {
+      display: flex; flex-direction: column;
+      background: var(--ink);
+      position: relative; overflow: hidden;
+    }
+
+    /* Color blocks stacking */
+    .color-tower {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      height: 100%;
+    }
+    .ct-block {
+      display: flex; align-items: center; justify-content: center;
+      border-bottom: 2px solid rgba(255,255,255,.1);
+      position: relative; overflow: hidden;
+      transition: flex .4s var(--ease);
+    }
+    .ct-block:last-child { border-bottom: none; }
+    .ct-block-1 { background: var(--mag); }
+    .ct-block-2 { background: var(--yel); }
+    .ct-block-3 { background: var(--cyan); }
+
+    .ct-label {
+      font-family: 'Space Mono', monospace; font-weight: 700;
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      position: absolute; bottom: 14px; left: 18px;
+      opacity: .6;
+    }
+    .ct-block-1 .ct-label, .ct-block-3 .ct-label { color: rgba(255,255,255,.7); }
+    .ct-block-2 .ct-label { color: rgba(0,0,0,.5); }
+
+    .ct-num {
+      font-family: 'Playfair Display', serif; font-weight: 900;
+      font-size: 6rem; line-height: 1; opacity: .15;
+    }
+    .ct-block-1 .ct-num, .ct-block-3 .ct-num { color: white; }
+    .ct-block-2 .ct-num { color: var(--ink); }
+
+    /* ROTATING WHEEL */
+    .wheel-wrap {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .color-wheel {
+      width: 180px; height: 180px; border-radius: 50%;
+      background: conic-gradient(
+        #ff0000 0deg, #ff8000 40deg, #ffff00 80deg, #00ff00 120deg,
+        #00ffff 160deg, #0000ff 200deg, #8000ff 240deg, #ff00ff 280deg,
+        #ff0000 360deg
+      );
+      animation: wheelSpin 12s linear infinite;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.2), 0 8px 40px rgba(0,0,0,0.4);
+      filter: saturate(1.2) brightness(1.1);
+    }
+    .wheel-center {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--ink); border: 4px solid rgba(255,255,255,.3);
+    }
+    @keyframes wheelSpin { to { transform: rotate(360deg); } }
+
+    /* ══════════════════════════════════════
+       MARQUEE STRIP
+    ══════════════════════════════════════ */
+    .marquee-strip {
+      background: var(--mag); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink);
+      padding: 12px 0; overflow: hidden; position: relative; z-index: 1;
+    }
+    .marquee-inner {
+      display: flex; gap: 0;
+      animation: marqueeSroll 20s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes marqueeSroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 0 28px;
+      font-family: 'Space Mono', monospace; font-weight: 700;
+      font-size: .72rem; color: var(--white); letter-spacing: .1em; text-transform: uppercase;
+    }
+    .m-sep { color: var(--yel); }
+
+    /* ══════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════ */
+    .main { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 72px 48px 80px; }
+
+    /* SECTION HEADER */
+    .sec-head { margin-bottom: 40px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .sec-head-left {}
+    .sec-eyebrow { font-family: 'Space Mono', monospace; font-size: .68rem; color: var(--mag); font-weight: 700; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 6px; }
+    .sec-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.4rem; line-height: 1.05; letter-spacing: -.02em; }
+    .sec-title em { font-style: italic; color: var(--mag); }
+    .sec-sub { font-size: .9rem; color: var(--ink3); margin-top: 8px; line-height: 1.65; max-width: 540px; }
+    .sec-count { font-family: 'Space Mono', monospace; font-size: .72rem; color: var(--white); background: var(--ink); padding: 7px 16px; font-weight: 700; align-self: flex-start; }
+
+    /* ══════════════════════════════════════
+       FLAGSHIP CARD — AWDGS
+    ══════════════════════════════════════ */
+    .flagship {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 3px solid var(--ink);
+      box-shadow: var(--shadow);
+      margin-bottom: 64px;
+      position: relative;
+      background: var(--white);
+      transition: transform .3s var(--ease), box-shadow .3s;
+    }
+    .flagship:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--ink); }
+
+    .fl-img { position: relative; overflow: hidden; min-height: 380px; }
+    .fl-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.6) brightness(.7); transition: transform .7s var(--ease), filter .5s; }
+    .flagship:hover .fl-img img { transform: scale(1.05); filter: saturate(.5) brightness(.6); }
+    .fl-img-ov {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(232,0,106,0.3) 0%, transparent 50%, rgba(0,0,0,.6) 100%);
+    }
+
+    .fl-badge {
+      position: absolute; top: 0; left: 0; z-index: 2;
+      background: var(--yel); color: var(--ink);
+      font-family: 'Space Mono', monospace; font-weight: 700;
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      padding: 8px 18px; border-bottom: 2px solid var(--ink); border-right: 2px solid var(--ink);
+    }
+
+    /* Colour palette strip inside image */
+    .fl-palette {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      display: flex; height: 16px; border-top: 2px solid var(--ink);
+    }
+    .pal-swatch { flex: 1; }
+    .ps1 { background: #31a8ff; } /* PS blue */
+    .ps2 { background: #ff9a00; } /* AI orange */
+    .ps3 { background: #ff3366; } /* ID pink */
+    .ps4 { background: #00c4cc; } /* XD teal */
+    .ps5 { background: #43e5f7; } /* Figma */
+    .ps6 { background: #7c4dff; } /* Canva */
+    .ps7 { background: #f5d000; } /* CorelDraw */
+    .ps8 { background: #e83e8c; } /* Mag */
+
+    .fl-body {
+      padding: 44px 40px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-left: 3px solid var(--ink);
+    }
+
+    .fl-code { font-family: 'Space Mono', monospace; font-size: .66rem; color: var(--mag); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
+    .fl-name { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; line-height: 1.2; margin-bottom: 14px; }
+    .fl-desc { font-size: .88rem; color: var(--ink3); line-height: 1.7; margin-bottom: 22px; }
+    .fl-hl { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+    .fl-hl-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .84rem; color: var(--ink3); font-weight: 500;
+    }
+    .fl-hl-dot { width: 10px; height: 10px; background: var(--mag); flex-shrink: 0; }
+    .fl-meta { display: flex; gap: 0; margin-bottom: 26px; border: 2px solid var(--ink); width: fit-content; }
+    .fl-chip {
+      display: flex; flex-direction: column;
+      padding: 10px 16px; border-right: 2px solid var(--ink);
+    }
+    .fl-chip:last-child { border-right: none; }
+    .fc-l { font-family: 'Space Mono', monospace; font-size: .58rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; }
+    .fc-v { font-weight: 700; font-size: .95rem; }
+    .fc-v.mag { color: var(--mag); }
+    .fc-v.yel { color: var(--yel-dk); }
+    .fl-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* FLAGSHIP EXPAND */
+    .fl-expand { max-height: 0; overflow: hidden; transition: max-height .45s var(--ease); background: var(--off); border-top: 2px solid var(--ink); }
+    .fl-expand.open { max-height: 260px; }
+    .fl-exp-inner { padding: 24px 40px; font-size: .86rem; color: var(--ink3); line-height: 1.75; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .fei-title { font-family: 'Space Mono', monospace; font-size: .68rem; font-weight: 700; color: var(--mag); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px; }
+    .exp-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; grid-column: 1/-1; }
+    .exp-wa  { display: inline-flex; align-items: center; gap: 6px; background: #25d366; color: white; padding: 10px 20px; border: 2px solid var(--ink); font-weight: 700; font-size: .8rem; text-decoration: none; box-shadow: var(--shadow-sm); transition: all .2s; }
+    .exp-wa:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+    .exp-mail { display: inline-flex; align-items: center; gap: 6px; background: var(--white); color: var(--ink); padding: 10px 20px; border: 2px solid var(--ink); font-weight: 700; font-size: .8rem; text-decoration: none; box-shadow: var(--shadow-sm); transition: all .2s; }
+    .exp-mail:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+
+    /* ══════════════════════════════════════
+       COURSE GRID — Design Cards
+    ══════════════════════════════════════ */
+    .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0; border: 2px solid var(--ink); }
+
+    /* DESIGN CARD */
+    .d-card {
+      border: 1px solid var(--ink); /* internal borders */
+      border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+      display: flex; flex-direction: column;
+      background: var(--white); position: relative;
+      transition: transform .3s var(--ease), box-shadow .3s, z-index 0s;
+      opacity: 0; transform: translateY(20px);
+    }
+    .d-card:hover {
+      transform: translate(-3px,-3px);
+      box-shadow: 6px 6px 0 var(--ink);
+      z-index: 10;
+    }
+    .d-card.reveal { animation: dReveal .55s var(--ease) forwards; }
+    @keyframes dReveal { to { opacity:1; transform: translateY(0); } }
+
+    /* COLOUR ACCENT TOP BAR on each card */
+    .d-card-accent { height: 8px; }
+    .ac-mag  { background: var(--mag); }
+    .ac-yel  { background: var(--yel); }
+    .ac-cyan { background: var(--cyan); }
+    .ac-blue { background: var(--blue); }
+    .ac-org  { background: #ff7033; }
+    .ac-grn  { background: #00c853; }
+
+    /* Card image */
+    .d-card-img {
+      height: 190px; position: relative; overflow: hidden; background: var(--off2);
+      border-bottom: 2px solid var(--ink);
+    }
+    .d-card-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.65) brightness(.75); transition: transform .6s var(--ease), filter .4s; }
+    .d-card:hover .d-card-img img { transform: scale(1.06); filter: saturate(.5) brightness(.65); }
+
+    /* Diagonal colour overlay */
+    .d-card-img::before {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    }
+    .ac-mag  ~ .d-card-img::before,
+    .d-card.c-mag .d-card-img::before  { background: linear-gradient(135deg, rgba(232,0,106,0.25) 0%, transparent 60%); }
+    .d-card.c-yel  .d-card-img::before { background: linear-gradient(135deg, rgba(245,208,0,0.25) 0%, transparent 60%); }
+    .d-card.c-cyan .d-card-img::before { background: linear-gradient(135deg, rgba(0,180,216,0.25) 0%, transparent 60%); }
+    .d-card.c-blue .d-card-img::before { background: linear-gradient(135deg, rgba(59,91,219,0.25) 0%, transparent 60%); }
+    .d-card.c-org  .d-card-img::before { background: linear-gradient(135deg, rgba(255,112,51,0.25) 0%, transparent 60%); }
+    .d-card.c-grn  .d-card-img::before { background: linear-gradient(135deg, rgba(0,200,83,0.25) 0%, transparent 60%); }
+
+    .d-card-img::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, transparent 40%, var(--white) 100%); }
+
+    /* Card number top left */
+    .d-card-num {
+      position: absolute; top: 12px; left: 14px; z-index: 3;
+      font-family: 'Space Mono', monospace; font-size: .65rem;
+      color: rgba(255,255,255,.5); font-weight: 700;
+    }
+
+    /* Duration pill */
+    .d-card-dur {
+      position: absolute; bottom: 12px; right: 12px; z-index: 3;
+      background: var(--ink); color: var(--white);
+      font-family: 'Space Mono', monospace; font-size: .65rem; font-weight: 700;
+      padding: 4px 12px; letter-spacing: .06em;
+    }
+
+    /* Software badge */
+    .d-sw-badge {
+      position: absolute; top: 12px; right: 12px; z-index: 3;
+      font-family: 'Space Mono', monospace; font-size: .6rem; font-weight: 700;
+      padding: 4px 10px; border: 2px solid var(--ink); letter-spacing: .08em; text-transform: uppercase;
+    }
+
+    /* Card body */
+    .d-card-body { padding: 18px 20px 0; flex: 1; display: flex; flex-direction: column; }
+    .d-card-code { font-family: 'Space Mono', monospace; font-size: .63rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 7px; }
+    .d-card-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; line-height: 1.25; margin-bottom: 10px; }
+    .d-card-desc { font-size: .82rem; color: var(--ink3); line-height: 1.65; flex: 1; margin-bottom: 14px; }
+    .d-card-hl { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .d-hl { display: flex; align-items: flex-start; gap: 8px; font-size: .8rem; color: var(--ink3); font-weight: 500; }
+    .d-hl-sq { width: 10px; height: 10px; flex-shrink: 0; margin-top: 3px; }
+
+    /* Palette swatches at bottom of body */
+    .d-palette { display: flex; gap: 4px; margin-bottom: 14px; }
+    .dp-sw { width: 18px; height: 18px; border: 1.5px solid var(--ink); cursor: default; transition: transform .2s; }
+    .dp-sw:hover { transform: scale(1.3); }
+
+    /* Card footer */
+    .d-card-footer { padding: 14px 20px 16px; border-top: 2px solid var(--ink); display: flex; align-items: center; justify-content: space-between; }
+    .d-card-fee { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.15rem; }
+    .d-card-fee small { font-family: 'Plus Jakarta Sans', sans-serif; font-size: .66rem; color: var(--muted); font-weight: 400; display: block; }
+
+    .btn-enroll {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--ink); color: var(--white);
+      padding: 9px 16px; border: 2px solid var(--ink);
+      font-family: 'Space Mono', monospace; font-size: .66rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: all .2s var(--ease);
+    }
+    .btn-enroll:hover { background: var(--mag); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+
+    /* card expand */
+    .d-expand { max-height: 0; overflow: hidden; transition: max-height .4s var(--ease); background: var(--off); border-top: 2px solid var(--ink); }
+    .d-expand.open { max-height: 300px; }
+    .d-exp-inner { padding: 16px 20px; font-size: .82rem; color: var(--ink3); line-height: 1.75; }
+    .d-exp-title { font-family: 'Space Mono', monospace; font-size: .66rem; font-weight: 700; color: var(--mag); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 7px; }
+    .d-exp-best { font-size: .75rem; color: var(--muted); margin-top: 8px; }
+    .d-exp-best strong { color: var(--ink); }
+    .d-exp-btns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .dwa  { display: inline-flex; align-items: center; gap: 5px; background: #25d366; color: white; padding: 8px 16px; border: 2px solid var(--ink); font-weight: 700; font-size: .75rem; text-decoration: none; transition: all .2s; }
+    .dwa:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+    .dml  { display: inline-flex; align-items: center; gap: 5px; background: var(--white); color: var(--ink); padding: 8px 16px; border: 2px solid var(--ink); font-weight: 700; font-size: .75rem; text-decoration: none; transition: all .2s; }
+    .dml:hover { background: var(--off2); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+
+    /* d-toggle */
+    .d-toggle { width: 100%; padding: 10px; background: transparent; border: none; border-top: 2px solid var(--ink); font-family: 'Space Mono', monospace; font-size: .66rem; font-weight: 700; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: .08em; text-transform: uppercase; transition: background .2s, color .2s; }
+    .d-toggle:hover { background: var(--mag); color: var(--white); }
+    .d-toggle i { transition: transform .3s; }
+    .d-toggle.open i { transform: rotate(180deg); }
+
+    /* ══════════════════════════════════════
+       SOFTWARE SHOWCASE
+    ══════════════════════════════════════ */
+    .software-section {
+      margin-top: 72px;
+      border: 3px solid var(--ink);
+      padding: 48px;
+      position: relative; background: var(--off);
+    }
+    .software-section::before {
+      content: 'DESIGN';
+      position: absolute; right: -3px; top: 50%; transform: translateY(-50%) rotate(90deg) translateX(50%);
+      font-family: 'Playfair Display', serif; font-weight: 900; font-size: 4rem;
+      color: rgba(232,0,106,0.06); pointer-events: none; white-space: nowrap;
+    }
+
+    .sw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0; border: 2px solid var(--ink); margin-top: 32px; }
+    .sw-card {
+      padding: 22px 18px; text-align: center;
+      border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+      transition: all .25s var(--ease); cursor: default; position: relative; overflow: hidden;
+    }
+    .sw-card::after { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .3s; }
+    .sw-card:hover::after { opacity: 1; }
+    .sw-card:hover { color: var(--white); }
+
+    .sw-ps::after { background: #31a8ff; }
+    .sw-ai::after { background: #ff9a00; }
+    .sw-id::after { background: #ff3366; }
+    .sw-cd::after { background: #00c4cc; }
+    .sw-fg::after { background: #a259ff; }
+    .sw-cn::after { background: #7c4dff; }
+    .sw-pm::after { background: #f24e1e; }
+    .sw-vg::after { background: #43e5f7; color: #111; }
+    .sw-xd::after { background: #ff61f6; }
+    .sw-fl::after { background: #00c4cc; }
+    .sw-lm::after { background: #f5d000; }
+    .sw-dm::after { background: #e8006a; }
+
+    .sw-icon { font-size: 1.8rem; margin-bottom: 10px; position: relative; z-index: 1; }
+    .sw-name { font-family: 'Space Mono', monospace; font-weight: 700; font-size: .72rem; position: relative; z-index: 1; margin-bottom: 3px; }
+    .sw-cat  { font-size: .66rem; color: var(--muted); position: relative; z-index: 1; }
+    .sw-card:hover .sw-cat { color: rgba(255,255,255,.7); }
+
+    /* ══════════════════════════════════════
+       CAREER PATHS
+    ══════════════════════════════════════ */
+    .careers-section { margin-top: 64px; }
+    .careers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0; border: 2px solid var(--ink); margin-top: 32px; }
+    .career-card {
+      padding: 24px 20px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+      transition: all .25s var(--ease); position: relative; overflow: hidden;
+    }
+    .career-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 0; transition: height .35s var(--ease); }
+    .career-card:hover { color: var(--white); }
+    .career-card:hover::before { height: 100%; }
+    .cc-mag::before  { background: var(--mag); }
+    .cc-yel::before  { background: var(--yel-dk); }
+    .cc-cyan::before { background: var(--cyan); }
+    .cc-blue::before { background: var(--blue); }
+    .cc-org::before  { background: #ff7033; }
+    .cc-grn::before  { background: #00c853; }
+
+    .cc-icon { font-size: 1.8rem; margin-bottom: 10px; position: relative; z-index: 1; }
+    .cc-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: .95rem; margin-bottom: 6px; position: relative; z-index: 1; }
+    .cc-desc  { font-size: .77rem; color: var(--ink3); line-height: 1.6; position: relative; z-index: 1; }
+    .career-card:hover .cc-desc { color: rgba(255,255,255,.8); }
+    .cc-salary { font-family: 'Space Mono', monospace; font-size: .65rem; font-weight: 700; margin-top: 8px; position: relative; z-index: 1; }
+    .career-card:hover .cc-salary { color: rgba(255,255,255,.7); }
+    .cc-mag .cc-salary  { color: var(--mag); }
+    .cc-yel .cc-salary  { color: var(--yel-dk); }
+    .cc-cyan .cc-salary { color: var(--cyan); }
+    .cc-blue .cc-salary { color: var(--blue); }
+    .cc-org .cc-salary  { color: #ff7033; }
+    .cc-grn .cc-salary  { color: #00c853; }
+
+    /* ══════════════════════════════════════
+       COMPARISON TABLE
+    ══════════════════════════════════════ */
+    .table-section { margin-top: 64px; }
+    .table-wrap { overflow-x: auto; border: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; min-width: 680px; font-size: .83rem; }
+    thead { background: var(--ink); }
+    thead th { padding: 14px 18px; text-align: left; font-family: 'Space Mono', monospace; font-size: .65rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .1em; border-right: 1px solid rgba(255,255,255,.1); }
+    tbody tr { border-bottom: 2px solid var(--ink); transition: background .2s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--mag-pale); }
+    tbody td { padding: 13px 18px; color: var(--ink3); border-right: 1px solid var(--off2); vertical-align: middle; }
+    .td-name { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--ink); font-size: .9rem; }
+    .td-code { font-family: 'Space Mono', monospace; font-size: .63rem; color: var(--mag); font-weight: 700; letter-spacing: .08em; }
+    .td-fee { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--mag); font-size: .92rem; }
+    .td-badge { display: inline-block; padding: 3px 9px; font-family: 'Space Mono', monospace; font-size: .6rem; font-weight: 700; border: 2px solid var(--ink); }
+    .tb-hot { background: var(--yel); color: var(--ink); }
+
+    /* ══════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════ */
+    .cta-section {
+      margin-top: 64px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 3px solid var(--ink);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .cta-left {
+      background: var(--mag); padding: 56px 48px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-left::before {
+      content: '✦';
+      position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+      font-size: 12rem; color: rgba(255,255,255,.08); pointer-events: none; line-height: 1;
+    }
+    .cta-kicker { font-family: 'Space Mono', monospace; font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.6); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 12px; }
+    .cta-left h2 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.4rem; color: var(--white); line-height: 1.05; margin-bottom: 14px; }
+    .cta-left h2 em { font-style: italic; color: var(--yel); }
+    .cta-left p { font-size: .9rem; color: rgba(255,255,255,.75); line-height: 1.7; }
+
+    .cta-right {
+      background: var(--yel); padding: 56px 44px;
+      display: flex; flex-direction: column; justify-content: center; gap: 14px;
+      border-left: 3px solid var(--ink);
+    }
+    .cta-right-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; color: var(--ink); }
+    .cta-r-item { display: flex; align-items: center; gap: 10px; font-size: .85rem; color: var(--ink); font-weight: 600; }
+    .cta-r-item::before { content: '▶'; color: var(--ink); font-size: .6rem; }
+    .cta-divider { height: 2px; background: rgba(0,0,0,.15); margin: 8px 0; }
+    .cta-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .cta-wa { display: inline-flex; align-items: center; gap: 9px; background: #25d366; color: white; padding: 14px 28px; border: 2px solid var(--ink); box-shadow: var(--shadow-sm); font-weight: 700; font-size: .88rem; text-decoration: none; transition: all .2s; }
+    .cta-wa:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+    .cta-call { display: inline-flex; align-items: center; gap: 9px; background: var(--ink); color: var(--white); padding: 14px 28px; border: 2px solid var(--ink); box-shadow: var(--shadow-sm); font-weight: 700; font-size: .88rem; text-decoration: none; transition: all .2s; }
+    .cta-call:hover { background: var(--ink2); transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(0,0,0,.4); }
+
+    /* FOOTER */
+    footer { background: var(--ink); border-top: 3px solid var(--ink); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1; }
+    .f-brand { font-family: 'Playfair Display', serif; font-size: .95rem; color: rgba(255,255,255,.35); }
+    .f-brand strong { color: var(--white); }
+    .f-brand .m { color: var(--mag); }
+    .f-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .f-links a { font-family: 'Space Mono', monospace; font-size: .68rem; color: rgba(255,255,255,.3); text-decoration: none; font-weight: 700; transition: color .2s; }
+    .f-links a:hover { color: var(--yel); }
+
+    /* FLOAT WA */
+    .float-wa { position: fixed; bottom: 28px; right: 28px; z-index: 500; display: flex; align-items: center; gap: 9px; background: #25d366; color: white; padding: 13px 22px; text-decoration: none; font-weight: 700; font-size: .82rem; font-family: 'Plus Jakarta Sans', sans-serif; border: 2px solid var(--ink); box-shadow: var(--shadow); transition: all .25s var(--ease); }
+    .float-wa:hover { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--ink); }
+
+    /* RESPONSIVE */
+    @media (max-width:1000px) {
+      header { padding: 0 20px; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 48px 20px 40px; border-right: none; border-bottom: 3px solid var(--ink); }
+      .hero-right { display: none; }
+      .main { padding: 44px 20px 64px; }
+      .flagship { grid-template-columns: 1fr; }
+      .fl-img { min-height: 220px; }
+      .fl-body { border-left: none; border-top: 3px solid var(--ink); padding: 28px 24px; }
+      .fl-exp-inner { grid-template-columns: 1fr; }
+      .software-section { padding: 28px 20px; }
+      .cta-section { grid-template-columns: 1fr; }
+      .cta-right { border-left: none; border-top: 3px solid var(--ink); }
+      footer { padding: 24px 20px; }
+    }
+    @media (max-width:640px) {
+      .hero h1 { font-size: 3rem; }
+      .breadcrumb { display: none; }
+      .course-grid { grid-template-columns: 1fr; }
+      .sw-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .careers-grid { grid-template-columns: 1fr 1fr; }
+      .float-wa span { display: none; }
+      .float-wa { padding: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a href="../index.html" class="logo-wrap">
+    <div class="logo-text">ABCD <em>Creative</em></div>
+  </a>
+  <nav class="breadcrumb">
+    <a href="../index.html">Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="index.html">All Courses</a>
+    <i class="fas fa-chevron-right"></i>
+    <span class="active">Designing</span>
+  </nav>
+  <a href="https://wa.me/918944899747" target="_blank" class="nav-cta">
+    <i class="fab fa-whatsapp"></i> Enquire Now
+  </a>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag"><div class="hero-tag-dot"></div> Design Courses — ABCD Learning Hub, India</div>
+    <h1>
+      <span class="h1-normal">Learn to</span>
+      <span class="h1-italic">Design.</span>
+      <span class="h1-outline">Create. Lead.</span>
+    </h1>
+    <p class="hero-desc">9 professional designing courses — Photoshop, Illustrator, CorelDraw, Figma, PageMaker, Video Editing, and more. Build a creative career from day one.</p>
+    <div class="tool-chips">
+      <span class="tc tc-ps"><span class="tc-dot"></span>Photoshop</span>
+      <span class="tc tc-ai"><span class="tc-dot"></span>Illustrator</span>
+      <span class="tc tc-cd"><span class="tc-dot"></span>CorelDraw</span>
+      <span class="tc tc-id"><span class="tc-dot"></span>InDesign</span>
+      <span class="tc tc-pm"><span class="tc-dot"></span>PageMaker</span>
+      <span class="tc tc-fl"><span class="tc-dot"></span>Figma</span>
+      <span class="tc tc-ca"><span class="tc-dot"></span>Canva Pro</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20Designing%20courses%20at%20ABCD%20Learning%20Hub." target="_blank" class="btn-mag"><i class="fab fa-whatsapp"></i> Enquire Now</a>
+      <a href="#courses" class="btn-yel"><i class="fas fa-palette"></i> Browse Courses</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="color-tower">
+      <div class="ct-block ct-block-1">
+        <div class="wheel-wrap">
+          <div class="color-wheel"></div>
+          <div class="wheel-center"></div>
+        </div>
+        <span class="ct-num">C</span>
+        <span class="ct-label">COLOUR</span>
+      </div>
+      <div class="ct-block ct-block-2">
+        <span class="ct-num">F</span>
+        <span class="ct-label">FORM</span>
+      </div>
+      <div class="ct-block ct-block-3">
+        <span class="ct-num">T</span>
+        <span class="ct-label">TYPOGRAPHY</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    <span class="marquee-item">Photoshop <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Illustrator <span class="m-sep">✦</span></span>
+    <span class="marquee-item">CorelDraw <span class="m-sep">✦</span></span>
+    <span class="marquee-item">InDesign <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Figma <span class="m-sep">✦</span></span>
+    <span class="marquee-item">PageMaker <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Canva Pro <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Video Editing <span class="m-sep">✦</span></span>
+    <span class="marquee-item">UI/UX Design <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Typography <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Branding <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Print Design <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Photoshop <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Illustrator <span class="m-sep">✦</span></span>
+    <span class="marquee-item">CorelDraw <span class="m-sep">✦</span></span>
+    <span class="marquee-item">InDesign <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Figma <span class="m-sep">✦</span></span>
+    <span class="marquee-item">PageMaker <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Canva Pro <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Video Editing <span class="m-sep">✦</span></span>
+    <span class="marquee-item">UI/UX Design <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Typography <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Branding <span class="m-sep">✦</span></span>
+    <span class="marquee-item">Print Design <span class="m-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- ─── MAIN ─── -->
+<div class="main" id="courses">
+
+  <!-- FLAGSHIP -->
+  <div class="sec-head">
+    <div class="sec-head-left">
+      <div class="sec-eyebrow">⬛ Most Popular Programme</div>
+      <div class="sec-title">The Complete <em>Graphic Design</em> Diploma</div>
+      <div class="sec-sub">West Bengal's most comprehensive graphic design programme — Photoshop, Illustrator, CorelDraw, and more in one diploma.</div>
+    </div>
+  </div>
+
+  <div class="flagship">
+    <div class="fl-img">
+      <img src="https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg" alt="Graphic Design"/>
+      <div class="fl-img-ov"></div>
+      <div class="fl-badge">★ Most Sought-After</div>
+      <div class="fl-palette">
+        <div class="pal-swatch ps1"></div><div class="pal-swatch ps2"></div>
+        <div class="pal-swatch ps3"></div><div class="pal-swatch ps4"></div>
+        <div class="pal-swatch ps5"></div><div class="pal-swatch ps6"></div>
+        <div class="pal-swatch ps7"></div><div class="pal-swatch ps8"></div>
+      </div>
+    </div>
+    <div class="fl-body">
+      <div class="fl-code">AWDGS — Advanced Diploma</div>
+      <div class="fl-name">Advanced Web & Graphic Designing</div>
+      <div class="fl-desc">The flagship diploma that covers the complete graphic and web design toolkit. From Photoshop photo manipulation to Illustrator vector art, CorelDraw layouts, and web design — graduate as a professional, multi-tool designer.</div>
+      <div class="fl-hl">
+        <div class="fl-hl-item"><div class="fl-hl-dot"></div>Adobe Photoshop — photo editing, compositing, retouching</div>
+        <div class="fl-hl-item"><div class="fl-hl-dot"></div>Adobe Illustrator — vector graphics, logo design, illustration</div>
+        <div class="fl-hl-item"><div class="fl-hl-dot"></div>CorelDraw — print design, brochures, layouts</div>
+        <div class="fl-hl-item"><div class="fl-hl-dot"></div>Web design fundamentals — HTML/CSS basics, UI principles</div>
+      </div>
+      <div class="fl-meta">
+        <div class="fl-chip"><span class="fc-l">Duration</span><span class="fc-v">12 Months</span></div>
+        <div class="fl-chip"><span class="fc-l">Fee</span><span class="fc-v mag">Rs. 25,000/-</span></div>
+        <div class="fl-chip"><span class="fc-l">Level</span><span class="fc-v yel">All Levels</span></div>
+      </div>
+      <div class="fl-actions">
+        <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20the%20AWDGS%20Advanced%20Web%20%26%20Graphic%20Designing%20diploma%20at%20ABCD%20Learning%20Hub." target="_blank" class="btn-mag"><i class="fab fa-whatsapp"></i> Enrol via WhatsApp</a>
+        <button class="btn-yel" onclick="toggleFl()"><i class="fas fa-info" id="flIc"></i> <span id="flTx">Details</span></button>
+      </div>
+    </div>
+    <div class="fl-expand" id="flExp">
+      <div class="fl-exp-inner">
+        <div>
+          <div class="fei-title">What You'll Learn</div>
+          Adobe Photoshop (layers, masks, retouching, compositing, photo manipulation), Adobe Illustrator (vector illustration, logo design, typography, Bezier curves), CorelDraw (print layout, brochure design, business card, poster creation), web design basics (HTML/CSS fundamentals, UI design principles, responsive layouts), and professional presentation and delivery of design work.
+        </div>
+        <div>
+          <div class="fei-title">Who Should Enrol</div>
+          Complete beginners with a passion for visual design. Also ideal for photographers wanting to enhance images professionally, marketers needing design skills, entrepreneurs who want to create their own brand materials, and anyone who wants to transition into a creative career. No prior design experience required.
+        </div>
+        <div class="exp-actions">
+          <a href="https://wa.me/918944899747?text=I%27m%20interested%20in%20AWDGS%20diploma." target="_blank" class="exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: AWDGS Advanced Web & Graphic Designing" class="exp-mail"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL COURSES -->
+  <div class="sec-head" id="all-courses">
+    <div class="sec-head-left">
+      <div class="sec-eyebrow">⬛ Full Catalogue</div>
+      <div class="sec-title">All 9 Design <em>Programmes</em></div>
+      <div class="sec-sub">Specialist courses across print, digital, video, and UI/UX design.</div>
+    </div>
+    <div class="sec-count">9 Programmes</div>
+  </div>
+
+  <div class="course-grid" id="courseGrid"></div>
+
+  <!-- SOFTWARE SECTION -->
+  <div class="software-section">
+    <div class="sec-eyebrow">⬛ Tools You'll Master</div>
+    <div class="sec-title" style="font-size:1.8rem">Professional Design Software</div>
+    <div class="sw-grid">
+      <div class="sw-card sw-ps"><div class="sw-icon">🔵</div><div class="sw-name">Photoshop</div><div class="sw-cat">Photo Editing</div></div>
+      <div class="sw-card sw-ai"><div class="sw-icon">🟠</div><div class="sw-name">Illustrator</div><div class="sw-cat">Vector Art</div></div>
+      <div class="sw-card sw-id"><div class="sw-icon">🔴</div><div class="sw-name">InDesign</div><div class="sw-cat">Print Layout</div></div>
+      <div class="sw-card sw-cd"><div class="sw-icon">🩵</div><div class="sw-name">CorelDraw</div><div class="sw-cat">Print Design</div></div>
+      <div class="sw-card sw-fg"><div class="sw-icon">🟣</div><div class="sw-name">Figma</div><div class="sw-cat">UI/UX Design</div></div>
+      <div class="sw-card sw-cn"><div class="sw-icon">💜</div><div class="sw-name">Canva Pro</div><div class="sw-cat">Social Media</div></div>
+      <div class="sw-card sw-pm"><div class="sw-icon">🧡</div><div class="sw-name">PageMaker</div><div class="sw-cat">DTP / Publishing</div></div>
+      <div class="sw-card sw-vg"><div class="sw-icon">🩵</div><div class="sw-name">Vegas Pro</div><div class="sw-cat">Video Editing</div></div>
+      <div class="sw-card sw-xd"><div class="sw-icon">🩷</div><div class="sw-name">Adobe XD</div><div class="sw-cat">Prototyping</div></div>
+      <div class="sw-card sw-fl"><div class="sw-icon">🎨</div><div class="sw-name">Flash/Animate</div><div class="sw-cat">Animation</div></div>
+      <div class="sw-card sw-lm"><div class="sw-icon">⭐</div><div class="sw-name">Lightroom</div><div class="sw-cat">Photo Workflow</div></div>
+      <div class="sw-card sw-dm"><div class="sw-icon">🔷</div><div class="sw-name">Dreamweaver</div><div class="sw-cat">Web Design</div></div>
+    </div>
+  </div>
+
+  <!-- CAREERS -->
+  <div class="careers-section">
+    <div class="sec-head" style="margin-bottom:0">
+      <div class="sec-head-left">
+        <div class="sec-eyebrow">⬛ Where You'll Work</div>
+        <div class="sec-title">Design Careers <em>Our Students Land</em></div>
+      </div>
+    </div>
+    <div class="careers-grid">
+      <div class="career-card cc-mag">
+        <div class="cc-icon">🎨</div>
+        <div class="cc-title">Graphic Designer</div>
+        <div class="cc-desc">Logos, branding, print materials for agencies, studios, and in-house teams.</div>
+        <div class="cc-salary">$ ₹3–6 LPA entry level</div>
+      </div>
+      <div class="career-card cc-yel">
+        <div class="cc-icon">📱</div>
+        <div class="cc-title">UI/UX Designer</div>
+        <div class="cc-desc">App and website interfaces — one of India's fastest-growing design roles.</div>
+        <div class="cc-salary">$ ₹4–9 LPA entry level</div>
+      </div>
+      <div class="career-card cc-cyan">
+        <div class="cc-icon">📸</div>
+        <div class="cc-title">Photo Editor</div>
+        <div class="cc-desc">E-commerce, fashion, weddings — Photoshop specialists always in demand.</div>
+        <div class="cc-salary">$ ₹2.5–5 LPA entry</div>
+      </div>
+      <div class="career-card cc-blue">
+        <div class="cc-icon">🎬</div>
+        <div class="cc-title">Video Editor</div>
+        <div class="cc-desc">YouTube channels, reels, corporate videos, advertising — high demand role.</div>
+        <div class="cc-salary">$ ₹3–7 LPA entry level</div>
+      </div>
+      <div class="career-card cc-org">
+        <div class="cc-icon">📰</div>
+        <div class="cc-title">DTP Operator</div>
+        <div class="cc-desc">Print houses, publishing companies, newspapers — PageMaker & InDesign specialists.</div>
+        <div class="cc-salary">$ ₹2–4 LPA entry level</div>
+      </div>
+      <div class="career-card cc-grn">
+        <div class="cc-icon">🌐</div>
+        <div class="cc-title">Social Media Designer</div>
+        <div class="cc-desc">Posts, ads, and visuals for brands across Instagram, Facebook, and LinkedIn.</div>
+        <div class="cc-salary">$ Freelance: ₹30–80k/mo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-section">
+    <div class="sec-head">
+      <div class="sec-head-left">
+        <div class="sec-eyebrow">⬛ Quick Comparison</div>
+        <div class="sec-title" style="font-size:1.8rem">All Courses <em>at a Glance</em></div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Programme</th><th>Code</th><th>Duration</th><th>Fee</th><th>Key Tools</th><th>Badge</th></tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <div class="cta-kicker">✦ Start Creating Today</div>
+      <h2>Your Design Career Starts with One <em>Decision</em></h2>
+      <p>New batches begin every month. Our studio classrooms use professional software on dedicated workstations. You'll graduate with a real portfolio — not just a certificate.</p>
+    </div>
+    <div class="cta-right">
+      <div class="cta-right-title">What you get:</div>
+      <div class="cta-r-item">Professional software training on real tools</div>
+      <div class="cta-r-item">Portfolio projects you can show clients</div>
+      <div class="cta-r-item">Industry-recognised certificate</div>
+      <div class="cta-r-item">Placement assistance on completion</div>
+      <div class="cta-divider"></div>
+      <div class="cta-actions">
+        <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20Design%20courses%20at%20ABCD%20Learning%20Hub.%20Please%20share%20details." target="_blank" class="cta-wa"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+        <a href="tel:+918944899747" class="cta-call"><i class="fas fa-phone"></i> Call +91 89448 99747</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<footer>
+  <div class="f-brand">
+    <strong>ABCD Learning Hub</strong> <span class="m">✦</span> India's Premier Computer Education Institute<br/>
+    <span style="font-size:.74rem"> +91 89448 99747 · sb.abcd321@gmail.com</span>
+  </div>
+  <div class="f-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">All Courses</a>
+    <a href="diploma-course.html">Diploma</a>
+    <a href="ai-course.html">AI</a>
+    <a href="programming.html">Programming</a>
+    <a href="for-office-work.html">Office</a>
+    <a href="mailto:sb.abcd321@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/918944899747" target="_blank" class="float-wa">
+  <i class="fab fa-whatsapp"></i><span>Chat with Us</span>
+</a>
+
+<!-- ═══════ SCRIPT ═══════ -->
+<script>
+const COURSES = [
+  {
+    id:'cdg', code:'CDG', num:'02', color:'c-mag', accent:'ac-mag', sw:'AWGS-badge', swcol:'bg-mag',
+    swLabel:'PS + AI + CD', swBg:'#31a8ff', swTxt:'#fff',
+    name:'Certificate in Designing (Graphic)',
+    desc:'Master Photoshop, Illustrator, and CorelDraw — the holy trinity of graphic design — in one focused 6-month certificate.',
+    longDesc:'Comprehensive training in Adobe Photoshop (photo editing, compositing, digital art), Adobe Illustrator (vector logos, icons, illustrations), and CorelDraw (print layouts, DTP, business stationery). Graduate with a portfolio of 6+ real design projects.',
+    duration:'6 Months', fee:'Rs. 12,000/-',
+    image:'https://cdn.pixabay.com/photo/2015/07/31/14/59/creative-869200_1280.jpg',
+    highlights:['Adobe Photoshop — full training','Adobe Illustrator — vector mastery','CorelDraw — print design','6+ portfolio projects'],
+    palette:['#31a8ff','#ff9a00','#00c4cc','#f5d000','#e8006a'],
+    bestFor:'Aspiring graphic designers, marketing professionals, freelancers'
+  },
+  {
+    id:'cdw', code:'CDW', num:'03', color:'c-blue', accent:'ac-blue',
+    swLabel:'Figma + HTML', swBg:'#a259ff', swTxt:'#fff',
+    name:'Certificate in Designing (Web)',
+    desc:'Learn Figma for UI/UX, Adobe XD for prototyping, and web design fundamentals — build websites and digital interfaces.',
+    longDesc:'Learn Figma (wireframing, prototyping, UI design), Adobe XD, basic HTML/CSS, responsive design principles, and user experience fundamentals. Design complete apps and websites from concept to clickable prototype.',
+    duration:'6 Months', fee:'Rs. 12,000/-',
+    image:'https://cdn.pixabay.com/photo/2016/11/23/14/45/coding-1853305_1280.jpg',
+    highlights:['Figma — UI/UX design & prototyping','Adobe XD — app design','HTML/CSS web design basics','Complete app UI portfolio project'],
+    palette:['#a259ff','#00c4cc','#31a8ff','#ff61f6','#f5d000'],
+    bestFor:'Aspiring UI/UX designers, web developers wanting design skills'
+  },
+  {
+    id:'cph', code:'CPH', num:'04', color:'c-cyan', accent:'ac-cyan',
+    swLabel:'Photoshop', swBg:'#31a8ff', swTxt:'#fff',
+    name:'Certificate in Photoshop',
+    desc:'Dedicated deep-dive into Adobe Photoshop — from beginner to advanced photo editing, retouching, and digital compositing.',
+    longDesc:'The most thorough Photoshop course available. Covers all tools and panels, layers and masks, photo retouching and colour correction, digital compositing and double exposure effects, smart objects, and creating social media graphics and print-ready materials.',
+    duration:'3 Months', fee:'Rs. 5,000/-',
+    image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+    highlights:['Complete Photoshop tools & panels','Photo retouching & colour grading','Digital compositing & effects','Social media & print graphics'],
+    palette:['#31a8ff','#001e36','#00c1d4','#abcdef','#e8006a'],
+    bestFor:'Photographers, social media managers, content creators'
+  },
+  {
+    id:'ccd', code:'CCD', num:'05', color:'c-org', accent:'ac-org',
+    swLabel:'CorelDraw', swBg:'#00c4cc', swTxt:'#fff',
+    name:'Certificate in CorelDraw',
+    desc:'Master CorelDraw for print design — business cards, banners, brochures, and professional print layouts.',
+    longDesc:'Deep dive into CorelDraw for professional print design. Covers vector drawing tools, text formatting, colour management, logo design, business card and stationery design, banner and flex design, brochure layouts, and preparing files for professional print.',
+    duration:'3 Months', fee:'Rs. 5,000/-',
+    image:'https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg',
+    highlights:['CorelDraw tools — complete training','Logo & identity design','Business cards, banners, brochures','Print-ready file preparation'],
+    palette:['#00c4cc','#00b28a','#43e5f7','#f5d000','#111111'],
+    bestFor:'Print shop operators, marketing staff, DTP professionals'
+  },
+  {
+    id:'cdve', code:'CDVE', num:'06', color:'c-yel', accent:'ac-yel',
+    swLabel:'Video Editing', swBg:'#f5d000', swTxt:'#111',
+    name:'Certificate in Designing — Video Editing',
+    desc:'Learn professional video editing with Sony Vegas, Adobe Premiere basics, and motion graphics — create stunning videos.',
+    longDesc:'Learn to edit videos professionally: Sony Vegas Pro for cutting, timeline editing, transitions, colour grading; basic Adobe Premiere for cross-platform skills; adding text and motion graphics; audio mixing; exporting for YouTube, Instagram Reels, and broadcast. Create a reel of 3 edited video projects.',
+    duration:'6 Months', fee:'Rs. 8,000/-',
+    image:'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg',
+    highlights:['Sony Vegas Pro — complete training','Timeline editing & colour grading','Motion graphics & text effects','YouTube & social media export'],
+    palette:['#f5d000','#111111','#c9ab00','#ff9a00','#e8006a'],
+    bestFor:'YouTubers, content creators, videographers, marketing teams'
+  },
+  {
+    id:'cdp', code:'CDP', num:'07', color:'c-mag', accent:'ac-mag',
+    swLabel:'PageMaker + ID', swBg:'#ff3366', swTxt:'#fff',
+    name:'Certificate in Designing — PageMaker',
+    desc:'Adobe PageMaker and InDesign for DTP, newspaper layouts, book design, and professional publication design.',
+    longDesc:'Learn desktop publishing (DTP) with Adobe PageMaker and InDesign. Covers creating multi-page documents, master pages, text frames and threading, importing images, typography for print, designing magazines, newspapers, brochures, and book layouts. Prepare press-ready files for printing.',
+    duration:'3 Months', fee:'Rs. 5,000/-',
+    image:'https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg',
+    highlights:['Adobe PageMaker — complete training','InDesign fundamentals','Multi-page document design','Press-ready file preparation'],
+    palette:['#ff3366','#ff9a00','#31a8ff','#00c4cc','#111111'],
+    bestFor:'DTP operators, publishers, newspaper layout designers'
+  },
+  {
+    id:'cds', code:'CDS', num:'08', color:'c-blue', accent:'ac-blue',
+    swLabel:'Canva + Social AI', swBg:'#7c4dff', swTxt:'#fff',
+    name:'Certificate in Designing — Social Media',
+    desc:'Canva Pro, AI design tools, and social media graphic creation for Instagram, Facebook, YouTube, and more.',
+    longDesc:'Master Canva Pro for professional social media graphics, stories, reels thumbnails, and presentations. Learn AI design tools (Adobe Firefly, Canva AI), design principles for social media, brand consistency, and creating content calendars with ready-to-post visual templates.',
+    duration:'3 Months', fee:'Rs. 5,000/-',
+    image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+    highlights:['Canva Pro — complete mastery','AI design tools integration','Instagram, FB, YouTube graphics','Brand templates & content calendars'],
+    palette:['#7c4dff','#00c4cc','#f5d000','#ff3366','#e8006a'],
+    bestFor:'Social media managers, entrepreneurs, influencers, marketers'
+  },
+  {
+    id:'cduiux', code:'CDUIUX', num:'09', color:'c-cyan', accent:'ac-cyan',
+    swLabel:'Figma + UX', swBg:'#a259ff', swTxt:'#fff',
+    name:'Certificate in UI/UX Design',
+    desc:'User interface and user experience design — Figma, wireframing, prototyping, user research, and design systems.',
+    longDesc:'A dedicated UI/UX design programme covering: user research and personas, information architecture, wireframing and prototyping in Figma, design systems and component libraries, usability testing principles, mobile-first design, and presenting design work professionally to clients and development teams.',
+    duration:'6 Months', fee:'Rs. 12,000/-',
+    image:'https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg',
+    highlights:['Figma — UI design & prototyping','User research & personas','Design systems & components','Present to clients & dev teams'],
+    palette:['#a259ff','#31a8ff','#00c4cc','#ff61f6','#111111'],
+    bestFor:'Aspiring product designers, web developers, app builders'
+  },
+];
+
+const TABLE_DATA = [
+  {code:'AWDGS',  name:'Advanced Web & Graphic Designing',              duration:'12 Months', fee:'Rs. 25,000/-', tools:'PS, AI, CorelDraw, Web', tag:'hot'},
+  {code:'CDG',    name:'Certificate in Designing (Graphic)',             duration:'6 Months',  fee:'Rs. 12,000/-', tools:'PS, Illustrator, CorelDraw', tag:null},
+  {code:'CDW',    name:'Certificate in Designing (Web)',                 duration:'6 Months',  fee:'Rs. 12,000/-', tools:'Figma, Adobe XD, HTML/CSS', tag:null},
+  {code:'CPH',    name:'Certificate in Photoshop',                       duration:'3 Months',  fee:'Rs. 5,000/-',  tools:'Adobe Photoshop', tag:null},
+  {code:'CCD',    name:'Certificate in CorelDraw',                       duration:'3 Months',  fee:'Rs. 5,000/-',  tools:'CorelDraw', tag:null},
+  {code:'CDVE',   name:'Certificate in Designing — Video Editing',       duration:'6 Months',  fee:'Rs. 8,000/-',  tools:'Sony Vegas, Premiere', tag:null},
+  {code:'CDP',    name:'Certificate in Designing — PageMaker',           duration:'3 Months',  fee:'Rs. 5,000/-',  tools:'PageMaker, InDesign', tag:null},
+  {code:'CDS',    name:'Certificate in Designing — Social Media',        duration:'3 Months',  fee:'Rs. 5,000/-',  tools:'Canva Pro, AI Tools', tag:null},
+  {code:'CDUIUX', name:'Certificate in UI/UX Design',                   duration:'6 Months',  fee:'Rs. 12,000/-', tools:'Figma, UX Research', tag:null},
+];
+
+/* ── BUILD CARDS ── */
+const grid = document.getElementById('courseGrid');
+COURSES.forEach((c, i) => {
+  const palHtml = c.palette.map(p => `<div class="dp-sw" style="background:${p}"></div>`).join('');
+  const hlHtml  = c.highlights.map(h => `<div class="d-hl"><div class="d-hl-sq" style="background:var(--mag)"></div>${h}</div>`).join('');
+
+  const card = document.createElement('div');
+  card.className = `d-card ${c.color}`;
+  card.style.animationDelay = `${i * 0.08}s`;
+  card.innerHTML = `
+    <div class="d-card-accent ${c.accent}"></div>
+    <div class="d-card-img">
+      <img src="${c.image}" alt="${c.name}" loading="lazy"/>
+      <div class="d-card-num">${c.num}</div>
+      <span class="d-sw-badge" style="background:${c.palette[0]};color:${c.swTxt || '#fff'};border-color:${c.palette[0]}">${c.swLabel}</span>
+      <div class="d-card-dur">${c.duration}</div>
+    </div>
+    <div class="d-card-body">
+      <div class="d-card-code">${c.code}</div>
+      <div class="d-card-name">${c.name}</div>
+      <div class="d-card-desc">${c.desc}</div>
+      <div class="d-card-hl">${hlHtml}</div>
+      <div class="d-palette">${palHtml}</div>
+    </div>
+    <div class="d-card-footer">
+      <div class="d-card-fee">${c.fee}<small>Full programme fee</small></div>
+      <button class="btn-enroll" onclick="enrollWA('${encodeURIComponent(c.name)}')">Enquire →</button>
+    </div>
+    <div class="d-expand" id="exp-${c.id}">
+      <div class="d-exp-inner">
+        <div class="d-exp-title">Programme Overview</div>
+        ${c.longDesc}
+        <div class="d-exp-best"><strong>Best For:</strong> ${c.bestFor}</div>
+        <div class="d-exp-btns">
+          <a href="https://wa.me/918944899747?text=I%27m%20interested%20in%20${encodeURIComponent(c.name)}%20at%20ABCD%20Learning%20Hub." target="_blank" class="dwa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: ${encodeURIComponent(c.name)}" class="dml"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+    </div>
+    <button class="d-toggle" id="tog-${c.id}" onclick="toggleCard('${c.id}')">
+      <i class="fas fa-chevron-down"></i> View Details
+    </button>
+  `;
+  grid.appendChild(card);
+});
+
+/* ── RENDER TABLE ── */
+const tbody = document.getElementById('tableBody');
+TABLE_DATA.forEach(r => {
+  const badge = r.tag === 'hot'
+    ? `<span class="td-badge tb-hot">★ HOT</span>`
+    : `<span style="color:var(--muted);font-family:'Space Mono',monospace;font-size:.65rem">—</span>`;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><span class="td-name">${r.name}</span></td>
+    <td><span class="td-code">${r.code}</span></td>
+    <td>${r.duration}</td>
+    <td class="td-fee">${r.fee}</td>
+    <td style="font-size:.78rem;color:var(--ink3)">${r.tools}</td>
+    <td>${badge}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* ── TOGGLE CARD ── */
+function toggleCard(id) {
+  const exp = document.getElementById(`exp-${id}`);
+  const tog = document.getElementById(`tog-${id}`);
+  const open = exp.classList.contains('open');
+  document.querySelectorAll('.d-expand.open').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.d-toggle.open').forEach(t => {
+    t.classList.remove('open');
+    t.innerHTML = `<i class="fas fa-chevron-down"></i> View Details`;
+  });
+  if (!open) {
+    exp.classList.add('open');
+    tog.classList.add('open');
+    tog.innerHTML = `<i class="fas fa-chevron-up"></i> Hide Details`;
+  }
+}
+
+/* ── TOGGLE FLAGSHIP ── */
+function toggleFl() {
+  const open = document.getElementById('flExp').classList.toggle('open');
+  document.getElementById('flIc').className = open ? 'fas fa-times' : 'fas fa-info';
+  document.getElementById('flTx').textContent = open ? 'Close' : 'Details';
+}
+
+/* ── ENROL WA ── */
+function enrollWA(enc) {
+  const name = decodeURIComponent(enc);
+  window.open(`https://wa.me/918944899747?text=${encodeURIComponent(`Hello! I'm interested in the "${name}" at ABCD Learning Hub. Please share batch details and fees.`)}`, '_blank');
+}
+
+/* ── SCROLL REVEAL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('reveal'); io.unobserve(e.target); } });
+}, { threshold: 0.06 });
+document.querySelectorAll('.d-card').forEach(c => io.observe(c));
+
+/* ── PROGRESS BAR ── */
+const bar = document.getElementById('bar');
+window.addEventListener('scroll', () => {
+  bar.style.width = `${(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`;
+}, { passive: true });
+</script>
+</body>
+</html>

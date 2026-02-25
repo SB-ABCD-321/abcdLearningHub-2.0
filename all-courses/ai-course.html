@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Courses — ABCD Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ═══════════════════════════════════════════
+       DESIGN SYSTEM — Void Black × Neon Violet × Cyan
+    ═══════════════════════════════════════════ */
+    :root {
+      --void:        #030508;
+      --void2:       #080c14;
+      --void3:       #0d1220;
+      --panel:       #0a0f1e;
+      --panel2:      #0f1628;
+      --violet:      #7c3aed;
+      --violet-lt:   #a855f7;
+      --violet-pale: rgba(124,58,237,0.12);
+      --cyan:        #06b6d4;
+      --cyan-lt:     #22d3ee;
+      --cyan-pale:   rgba(6,182,212,0.1);
+      --green:       #10b981;
+      --green-pale:  rgba(16,185,129,0.1);
+      --amber:       #f59e0b;
+      --amber-pale:  rgba(245,158,11,0.1);
+      --red:         #ef4444;
+      --white:       #e2e8f0;
+      --white2:      #94a3b8;
+      --border:      rgba(124,58,237,0.2);
+      --border2:     rgba(255,255,255,0.05);
+      --glow-v:      0 0 20px rgba(124,58,237,0.4), 0 0 60px rgba(124,58,237,0.15);
+      --glow-c:      0 0 20px rgba(6,182,212,0.4), 0 0 60px rgba(6,182,212,0.15);
+      --shadow:      0 8px 40px rgba(0,0,0,0.6);
+      --r:           12px;
+      --ease:        cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--void);
+      color: var(--white);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* SCANLINE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    /* VIGNETTE */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
+    }
+
+    /* PROGRESS BAR */
+    #bar {
+      position: fixed; top: 0; left: 0; z-index: 700;
+      height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      box-shadow: 0 0 12px var(--violet-lt);
+      transition: width .1s linear;
+    }
+
+    /* ═══════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 400;
+      background: rgba(3,5,8,0.85);
+      backdrop-filter: blur(24px) saturate(1.8);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--violet), var(--cyan));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: .62rem; color: white; letter-spacing: .5px;
+      box-shadow: var(--glow-v);
+    }
+    .logo-name {
+      font-family: 'Orbitron', monospace; font-weight: 600;
+      font-size: .85rem; color: var(--white);
+      letter-spacing: .05em;
+    }
+    .logo-name span { color: var(--violet-lt); }
+
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'DM Mono', monospace; font-size: .72rem; color: var(--white2);
+    }
+    .breadcrumb a { color: var(--white2); text-decoration: none; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--cyan-lt); }
+    .breadcrumb i { font-size: .55rem; color: var(--violet); }
+    .breadcrumb .active { color: var(--violet-lt); }
+
+    .nav-cta {
+      display: flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--cyan-lt);
+      border: 1px solid var(--cyan);
+      padding: 9px 22px; border-radius: 6px;
+      font-family: 'Orbitron', monospace; font-weight: 600;
+      font-size: .72rem; letter-spacing: .08em;
+      text-decoration: none;
+      box-shadow: 0 0 12px rgba(6,182,212,0.2);
+      transition: all .25s var(--ease);
+    }
+    .nav-cta:hover {
+      background: rgba(6,182,212,0.1);
+      box-shadow: var(--glow-c);
+      transform: translateY(-1px);
+    }
+
+    /* ═══════════════════════════════════════════
+       TICKER STRIP
+    ═══════════════════════════════════════════ */
+    .ticker {
+      background: var(--void2);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      overflow: hidden; position: relative; z-index: 1;
+    }
+    .ticker-inner {
+      display: flex; gap: 0;
+      animation: tickerScroll 30s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 32px;
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: var(--white2); letter-spacing: .05em;
+    }
+    .ticker-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--violet-lt); display: inline-block; }
+    .ticker-item .hi { color: var(--cyan-lt); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 620px;
+      display: flex; align-items: flex-end;
+      padding: 0 48px 72px;
+      overflow: hidden;
+    }
+
+    /* Neural network canvas */
+    #neuralCanvas {
+      position: absolute; inset: 0; z-index: 0;
+      opacity: .55;
+    }
+
+    /* Hero gradient overlay */
+    .hero-gradient {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(124,58,237,0.1) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(6,182,212,0.08) 0%, transparent 65%),
+        linear-gradient(to top, var(--void) 0%, transparent 60%);
+    }
+
+    /* Grid lines in hero */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Glowing orbs */
+    .hero-orb {
+      position: absolute; border-radius: 50%; pointer-events: none; z-index: 1;
+      filter: blur(80px);
+    }
+    .orb-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: rgba(124,58,237,0.15); animation: orbPulse 6s ease-in-out infinite; }
+    .orb-2 { width: 350px; height: 350px; bottom: -50px; left: 10%; background: rgba(6,182,212,0.1); animation: orbPulse 8s ease-in-out infinite reverse; }
+
+    @keyframes orbPulse {
+      0%, 100% { transform: scale(1); opacity: .8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+
+    /* STATUS BAR */
+    .hero-status {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid var(--border);
+      background: rgba(124,58,237,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 6px; padding: 7px 18px;
+      margin-bottom: 28px;
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .status-text {
+      font-family: 'DM Mono', monospace; font-size: .7rem;
+      color: var(--white2); letter-spacing: .08em;
+    }
+    .status-text .hi { color: var(--green); }
+
+    .hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2.4rem, 5.5vw, 5rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -.01em;
+      margin-bottom: 20px;
+    }
+    .hero h1 .line1 { display: block; color: var(--white); }
+    .hero h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--violet-lt), var(--cyan-lt));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(168,85,247,0.5));
+    }
+    .hero h1 .line3 { display: block; color: var(--white); opacity: .7; font-size: .55em; font-weight: 400; letter-spacing: .02em; margin-top: 4px; }
+
+    .hero-sub {
+      font-size: 1rem; color: var(--white2);
+      max-width: 560px; line-height: 1.75;
+      font-weight: 400; margin-bottom: 40px;
+    }
+    .hero-sub strong { color: var(--cyan-lt); font-weight: 600; }
+
+    /* HERO METRICS */
+    .hero-metrics { display: flex; gap: 0; }
+    .metric {
+      padding: 18px 28px; border: 1px solid var(--border);
+      background: rgba(10,15,30,0.8); backdrop-filter: blur(10px);
+      display: flex; flex-direction: column; gap: 4px;
+      transition: border-color .3s, background .3s;
+    }
+    .metric:first-child { border-radius: 10px 0 0 10px; }
+    .metric:last-child { border-radius: 0 10px 10px 0; }
+    .metric + .metric { border-left: none; }
+    .metric:hover { border-color: var(--violet-lt); background: rgba(124,58,237,0.08); }
+    .metric-val {
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: 1.6rem; color: var(--violet-lt);
+      line-height: 1;
+    }
+    .metric-val.cyan { color: var(--cyan-lt); }
+    .metric-val.green { color: var(--green); }
+    .metric-label { font-size: .7rem; color: var(--white2); letter-spacing: .06em; text-transform: uppercase; font-family: 'DM Mono', monospace; }
+
+    /* ═══════════════════════════════════════════
+       SECTION SYSTEM
+    ═══════════════════════════════════════════ */
+    .main { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 72px 48px 90px; }
+
+    .sec-label {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .sec-label-line { width: 24px; height: 1px; background: var(--violet-lt); box-shadow: 0 0 8px var(--violet-lt); }
+    .sec-label-text {
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: var(--violet-lt); letter-spacing: .2em; text-transform: uppercase;
+    }
+    .sec-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--white); margin-bottom: 8px; line-height: 1.2;
+    }
+    .sec-sub { font-size: .88rem; color: var(--white2); line-height: 1.65; margin-bottom: 40px; max-width: 640px; }
+
+    /* ═══════════════════════════════════════════
+       FLAGSHIP CARD — DGAIA & PPE
+    ═══════════════════════════════════════════ */
+    .flagship {
+      border: 1px solid var(--violet);
+      border-radius: 16px; overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--glow-v), var(--shadow);
+      margin-bottom: 64px;
+      position: relative;
+      transition: box-shadow .4s var(--ease), transform .4s var(--ease);
+    }
+    .flagship:hover {
+      box-shadow: 0 0 40px rgba(124,58,237,0.5), 0 0 120px rgba(124,58,237,0.2), var(--shadow);
+      transform: translateY(-3px);
+    }
+
+    /* Top glow bar */
+    .flagship::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--violet-lt), var(--cyan-lt), transparent);
+      z-index: 2;
+    }
+
+    .flagship-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 440px; }
+
+    .fl-img { position: relative; overflow: hidden; }
+    .fl-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.35) saturate(.5);
+      transition: transform .7s var(--ease), filter .5s;
+    }
+    .flagship:hover .fl-img img { transform: scale(1.04); filter: brightness(.28) saturate(.4); }
+    .fl-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, transparent 50%, rgba(3,5,8,0.9) 100%);
+    }
+
+    /* POPULAR BADGE */
+    .fl-badge {
+      position: absolute; top: 20px; left: 20px; z-index: 2;
+      display: flex; align-items: center; gap: 7px;
+      border: 1px solid var(--violet-lt);
+      background: rgba(124,58,237,0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 6px; padding: 7px 14px;
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: var(--violet-lt); letter-spacing: .1em;
+    }
+    .fl-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet-lt); box-shadow: 0 0 8px var(--violet-lt); animation: blink 1.5s ease-in-out infinite; }
+
+    /* Circuit corner decoration */
+    .fl-img::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0; z-index: 1;
+      width: 100px; height: 100px;
+      background: conic-gradient(from 180deg at 100% 100%, transparent 70%, rgba(6,182,212,0.2) 100%);
+    }
+
+    .fl-body {
+      padding: 44px 40px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-left: 1px solid var(--border);
+      position: relative;
+    }
+
+    /* Decorative number */
+    .fl-body::after {
+      content: 'AI';
+      position: absolute; bottom: 20px; right: 24px;
+      font-family: 'Orbitron', monospace; font-weight: 900;
+      font-size: 5rem; color: rgba(124,58,237,0.05);
+      line-height: 1; pointer-events: none;
+    }
+
+    .fl-code {
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: var(--violet-lt); letter-spacing: .15em;
+      text-transform: uppercase; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .fl-code::before { content: '> '; color: var(--cyan); }
+
+    .fl-name {
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: 1.35rem; line-height: 1.25;
+      color: var(--white); margin-bottom: 14px;
+    }
+
+    .fl-desc { font-size: .88rem; color: var(--white2); line-height: 1.75; margin-bottom: 22px; }
+
+    .fl-hl { display: flex; flex-direction: column; gap: 7px; margin-bottom: 26px; }
+    .fl-hl-item {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'DM Mono', monospace; font-size: .75rem; color: var(--white2);
+    }
+    .fl-hl-item::before { content: '─'; color: var(--cyan); font-size: .8rem; }
+
+    .fl-meta { display: flex; gap: 12px; margin-bottom: 26px; flex-wrap: wrap; }
+    .fl-chip {
+      display: flex; flex-direction: column;
+      border: 1px solid var(--border2); border-radius: 8px;
+      padding: 10px 16px; background: rgba(255,255,255,0.03);
+    }
+    .fl-chip-label { font-size: .62rem; color: var(--white2); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; font-family: 'DM Mono', monospace; }
+    .fl-chip-val { font-family: 'Orbitron', monospace; font-weight: 600; font-size: .88rem; color: var(--white); }
+    .fl-chip-val.violet { color: var(--violet-lt); }
+    .fl-chip-val.cyan { color: var(--cyan-lt); }
+
+    .fl-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--violet), var(--violet-lt));
+      color: white; padding: 12px 24px; border-radius: 8px;
+      font-family: 'Exo 2', sans-serif; font-weight: 600;
+      font-size: .84rem; text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+      transition: all .25s var(--ease);
+    }
+    .btn-primary:hover { box-shadow: var(--glow-v); transform: translateY(-2px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--white2);
+      padding: 12px 24px; border-radius: 8px;
+      font-family: 'Exo 2', sans-serif; font-weight: 600;
+      font-size: .84rem; border: 1px solid var(--border2);
+      cursor: pointer; text-decoration: none;
+      transition: all .25s var(--ease);
+    }
+    .btn-ghost:hover { border-color: var(--violet); color: var(--violet-lt); background: var(--violet-pale); }
+
+    /* FLAGSHIP EXPAND */
+    .fl-expand {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s var(--ease);
+      border-top: 1px solid transparent;
+    }
+    .fl-expand.open { max-height: 260px; border-top-color: var(--border); }
+    .fl-exp-inner {
+      padding: 22px 40px; font-size: .85rem; color: var(--white2);
+      line-height: 1.8; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    .fl-exp-title { font-family: 'Orbitron', monospace; font-size: .78rem; font-weight: 600; color: var(--violet-lt); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+    .exp-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; grid-column: 1 / -1; }
+    .exp-wa { display: inline-flex; align-items: center; gap: 6px; background: #25d366; color: white; padding: 9px 18px; border-radius: 7px; font-size: .78rem; font-weight: 600; text-decoration: none; transition: background .2s; }
+    .exp-wa:hover { background: #1db954; }
+    .exp-mail { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--white2); border: 1px solid var(--border); padding: 9px 18px; border-radius: 7px; font-size: .78rem; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .exp-mail:hover { border-color: var(--white2); color: var(--white); }
+
+    /* ═══════════════════════════════════════════
+       COURSE GRID
+    ═══════════════════════════════════════════ */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    /* AI CARD */
+    .ai-card {
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      position: relative;
+      transition: border-color .3s var(--ease), box-shadow .3s var(--ease), transform .35s var(--ease);
+      opacity: 0; transform: translateY(22px);
+    }
+    .ai-card.reveal { animation: cardUp .55s var(--ease) forwards; }
+    @keyframes cardUp { to { opacity: 1; transform: translateY(0); } }
+
+    .ai-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--violet);
+      box-shadow: var(--glow-v), var(--shadow);
+    }
+
+    /* Card glow top line */
+    .ai-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--violet-lt), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .ai-card:hover::before { opacity: 1; }
+
+    /* card image */
+    .ai-card-img {
+      height: 185px; position: relative; overflow: hidden; background: var(--void2);
+    }
+    .ai-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.3) saturate(.4);
+      transition: transform .6s var(--ease), filter .4s;
+    }
+    .ai-card:hover .ai-card-img img { transform: scale(1.07); filter: brightness(.25) saturate(.3); }
+    .ai-card-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, var(--panel) 100%);
+    }
+
+    /* card number */
+    .card-num {
+      position: absolute; top: 12px; left: 14px; z-index: 2;
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: rgba(255,255,255,.25); letter-spacing: .05em;
+    }
+
+    /* duration chip */
+    .card-dur {
+      position: absolute; bottom: 12px; right: 12px; z-index: 2;
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(3,5,8,.85); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 5px;
+      padding: 4px 11px; font-family: 'DM Mono', monospace;
+      font-size: .67rem; color: var(--white2);
+    }
+    .card-dur i { color: var(--cyan); font-size: .6rem; }
+
+    /* tag */
+    .ai-tag {
+      position: absolute; top: 12px; right: 12px; z-index: 3;
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 4px;
+      border: 1px solid;
+    }
+    .tag-pop { color: var(--violet-lt); border-color: var(--violet); background: var(--violet-pale); }
+    .tag-adv { color: var(--cyan-lt); border-color: var(--cyan); background: var(--cyan-pale); }
+
+    /* card body */
+    .ai-card-body { padding: 18px 18px 0; flex: 1; display: flex; flex-direction: column; }
+    .ai-card-code {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: var(--violet-lt); letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: 7px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ai-card-code::before { content: '//'; color: var(--cyan); opacity: .7; }
+    .ai-card-name {
+      font-family: 'Orbitron', monospace; font-weight: 600;
+      font-size: .95rem; line-height: 1.3;
+      color: var(--white); margin-bottom: 10px;
+    }
+    .ai-card-desc {
+      font-size: .82rem; color: var(--white2);
+      line-height: 1.65; flex: 1; margin-bottom: 14px;
+    }
+
+    /* highlights */
+    .ai-card-hl { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .hl-item { display: flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: .72rem; color: var(--white2); }
+    .hl-item::before { content: '▸'; color: var(--cyan); font-size: .65rem; }
+
+    /* card footer */
+    .ai-card-footer {
+      padding: 14px 18px 16px;
+      border-top: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ai-card-fee {
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: 1.05rem; color: var(--violet-lt);
+    }
+    .ai-card-fee small { font-family: 'Exo 2', sans-serif; font-size: .65rem; color: var(--white2); font-weight: 400; display: block; }
+
+    .btn-enroll {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--violet-pale); color: var(--violet-lt);
+      border: 1px solid var(--violet); border-radius: 6px;
+      padding: 8px 16px; font-size: .76rem; font-weight: 600;
+      font-family: 'Exo 2', sans-serif;
+      cursor: pointer; text-decoration: none;
+      transition: all .25s var(--ease);
+    }
+    .btn-enroll:hover { background: var(--violet); color: white; box-shadow: 0 0 16px rgba(124,58,237,0.5); }
+
+    /* card expand */
+    .ai-card-expand {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s var(--ease);
+      background: var(--void2); border-top: 1px solid transparent;
+    }
+    .ai-card-expand.open { max-height: 280px; border-top-color: var(--border); }
+    .exp-inner { padding: 16px 18px; font-size: .81rem; color: var(--white2); line-height: 1.75; }
+    .exp-title { font-family: 'DM Mono', monospace; font-size: .72rem; font-weight: 500; color: var(--violet-lt); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 7px; }
+    .exp-best { font-size: .73rem; color: var(--white2); margin-top: 8px; }
+    .exp-best strong { color: var(--cyan-lt); }
+    .exp-btns { display: flex; gap: 8px; margin-top: 14px; }
+    .exp-wa2 { display: inline-flex; align-items: center; gap: 6px; background: #25d366; color: white; padding: 8px 16px; border-radius: 6px; font-size: .75rem; font-weight: 600; text-decoration: none; transition: background .2s; }
+    .exp-wa2:hover { background: #1db954; }
+    .exp-mail2 { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--white2); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; font-size: .75rem; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .exp-mail2:hover { border-color: var(--white2); color: white; }
+
+    /* toggle */
+    .ai-card-toggle {
+      width: 100%; padding: 9px; background: transparent;
+      border: none; border-top: 1px solid var(--border2);
+      font-family: 'DM Mono', monospace; font-size: .68rem;
+      color: var(--white2); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      letter-spacing: .08em; text-transform: uppercase;
+      transition: background .2s, color .2s;
+    }
+    .ai-card-toggle:hover { background: var(--violet-pale); color: var(--violet-lt); }
+    .ai-card-toggle i { transition: transform .3s; }
+    .ai-card-toggle.open i { transform: rotate(180deg); }
+
+    /* ═══════════════════════════════════════════
+       AI TOOLS STRIP
+    ═══════════════════════════════════════════ */
+    .tools-section {
+      margin-top: 72px;
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 48px;
+      background: var(--panel);
+      position: relative; overflow: hidden;
+    }
+    .tools-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 100% 0%, rgba(124,58,237,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 36px; }
+    .tool-card {
+      border: 1px solid var(--border2); border-radius: 10px;
+      padding: 18px 14px; text-align: center;
+      background: rgba(255,255,255,0.02);
+      transition: all .3s var(--ease); cursor: default;
+    }
+    .tool-card:hover { border-color: var(--violet); background: var(--violet-pale); transform: translateY(-4px); box-shadow: 0 0 20px rgba(124,58,237,0.2); }
+    .tool-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .tool-name { font-family: 'DM Mono', monospace; font-size: .75rem; color: var(--white); font-weight: 500; margin-bottom: 4px; }
+    .tool-cat { font-size: .68rem; color: var(--white2); }
+    .tool-badge { display: inline-block; margin-top: 7px; padding: 2px 9px; border-radius: 4px; font-size: .6rem; font-family: 'DM Mono', monospace; letter-spacing: .08em; }
+    .tb-violet { background: var(--violet-pale); color: var(--violet-lt); border: 1px solid var(--border); }
+    .tb-cyan { background: var(--cyan-pale); color: var(--cyan-lt); border: 1px solid rgba(6,182,212,0.2); }
+    .tb-green { background: var(--green-pale); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+    .tb-amber { background: var(--amber-pale); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+
+    /* ═══════════════════════════════════════════
+       COMPARISON TABLE
+    ═══════════════════════════════════════════ */
+    .table-section { margin-top: 72px; }
+    .table-wrap {
+      overflow-x: auto; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--panel);
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: .82rem; }
+    thead { background: var(--void2); }
+    thead th {
+      padding: 14px 20px; text-align: left;
+      font-family: 'DM Mono', monospace; font-size: .66rem;
+      color: var(--white2); text-transform: uppercase;
+      letter-spacing: .1em; border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border2); transition: background .2s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(124,58,237,0.04); }
+    tbody td { padding: 14px 20px; color: var(--white2); vertical-align: middle; }
+    .td-name { font-family: 'Orbitron', monospace; font-weight: 600; color: var(--white); font-size: .82rem; }
+    .td-code { font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--violet-lt); letter-spacing: .1em; }
+    .td-fee { color: var(--violet-lt); font-weight: 600; font-family: 'Orbitron', monospace; font-size: .82rem; }
+    .td-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .62rem; font-family: 'DM Mono', monospace; border: 1px solid; }
+    .td-pop { color: var(--violet-lt); border-color: var(--violet); background: var(--violet-pale); }
+    .td-adv { color: var(--cyan-lt); border-color: rgba(6,182,212,.3); background: var(--cyan-pale); }
+    .td-none { color: var(--void2); }
+
+    /* ═══════════════════════════════════════════
+       CTA SECTION
+    ═══════════════════════════════════════════ */
+    .cta-section {
+      margin-top: 72px;
+      border-radius: 16px;
+      border: 1px solid var(--violet);
+      background: var(--panel);
+      padding: 60px 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 40px; flex-wrap: wrap;
+      position: relative; overflow: hidden;
+      box-shadow: var(--glow-v), var(--shadow);
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(124,58,237,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 0%, rgba(6,182,212,0.07) 0%, transparent 55%);
+    }
+    .cta-section::after {
+      content: 'AI';
+      position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+      font-family: 'Orbitron', monospace; font-weight: 900; font-size: 10rem;
+      color: rgba(124,58,237,0.04); line-height: 1; pointer-events: none;
+    }
+    .cta-left {}
+    .cta-kicker { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--violet-lt); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+    .cta-left h2 { font-family: 'Orbitron', monospace; font-weight: 700; font-size: 1.9rem; color: var(--white); line-height: 1.15; margin-bottom: 12px; }
+    .cta-left p { font-size: .88rem; color: var(--white2); line-height: 1.65; max-width: 460px; }
+    .cta-right { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
+    .cta-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #25d366; color: white;
+      padding: 15px 32px; border-radius: 10px;
+      font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: .9rem;
+      text-decoration: none; box-shadow: 0 4px 24px rgba(37,211,102,0.35);
+      transition: all .25s var(--ease);
+    }
+    .cta-wa:hover { background: #1db954; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,0.45); }
+    .cta-vi {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--violet-pale); color: var(--violet-lt);
+      padding: 15px 32px; border-radius: 10px;
+      border: 1px solid var(--violet);
+      font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: .9rem;
+      text-decoration: none;
+      transition: all .25s var(--ease);
+    }
+    .cta-vi:hover { background: var(--violet); color: white; box-shadow: var(--glow-v); transform: translateY(-2px); }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      background: var(--void2); border-top: 1px solid var(--border);
+      padding: 36px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px; position: relative; z-index: 1;
+    }
+    .f-brand { font-family: 'Orbitron', monospace; font-size: .78rem; color: rgba(255,255,255,.3); letter-spacing: .04em; }
+    .f-brand strong { color: var(--white); }
+    .f-brand .vi { color: var(--violet-lt); }
+    .f-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .f-links a { font-family: 'DM Mono', monospace; font-size: .72rem; color: rgba(255,255,255,.3); text-decoration: none; transition: color .2s; letter-spacing: .05em; }
+    .f-links a:hover { color: var(--violet-lt); }
+
+    /* FLOAT WA */
+    .float-wa {
+      position: fixed; bottom: 28px; right: 28px; z-index: 500;
+      display: flex; align-items: center; gap: 9px;
+      background: #25d366; color: white;
+      padding: 13px 24px; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: .82rem;
+      font-family: 'Exo 2', sans-serif;
+      box-shadow: 0 6px 28px rgba(37,211,102,.5);
+      transition: transform .25s var(--ease), box-shadow .25s;
+    }
+    .float-wa:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(37,211,102,.6); }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      header { padding: 0 20px; }
+      .hero { padding: 0 20px 56px; min-height: 520px; }
+      .hero-metrics { flex-wrap: wrap; }
+      .metric { border-radius: 8px!important; flex: 1 1 auto; }
+      .metric + .metric { border-left: 1px solid var(--border); }
+      .main { padding: 48px 20px 72px; }
+      .flagship-inner { grid-template-columns: 1fr; }
+      .fl-img { height: 220px; }
+      .fl-img-overlay { background: linear-gradient(180deg, rgba(124,58,237,.1) 0%, var(--panel) 100%); }
+      .fl-body { border-left: none; border-top: 1px solid var(--border); padding: 28px 24px; }
+      .fl-exp-inner { grid-template-columns: 1fr; }
+      .tools-section { padding: 32px 20px; }
+      .cta-section { padding: 40px 28px; }
+      footer { padding: 28px 20px; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .breadcrumb { display: none; }
+      .course-grid { grid-template-columns: 1fr; }
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+      .float-wa span { display: none; }
+      .float-wa { padding: 14px; border-radius: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a href="../index.html" class="logo-wrap">
+    <div class="logo-name">ABCD <span>Learning Hub</span></div>
+  </a>
+  <nav class="breadcrumb">
+    <a href="../index.html">Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="index.html">All Courses</a>
+    <i class="fas fa-chevron-right"></i>
+    <span class="active">AI Courses</span>
+  </nav>
+  <a href="https://wa.me/918944899747" target="_blank" class="nav-cta">
+    <i class="fas fa-terminal"></i> Enrol Now
+  </a>
+</header>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">GPT-4o</span> · Prompt Engineering</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">LLM Architecture</span> · RAG Systems</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Midjourney</span> · DALL-E · Image Gen</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Claude API</span> · Gemini · Copilot</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">ElevenLabs</span> · Voice Synthesis</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Runway</span> · AI Video Generation</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Python for AI</span> · Fine-Tuning LLMs</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">AI Agents</span> · Workflow Automation</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">GPT-4o</span> · Prompt Engineering</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">LLM Architecture</span> · RAG Systems</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Midjourney</span> · DALL-E · Image Gen</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Claude API</span> · Gemini · Copilot</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">ElevenLabs</span> · Voice Synthesis</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Runway</span> · AI Video Generation</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">Python for AI</span> · Fine-Tuning LLMs</span>
+    <span class="ticker-item"><span class="dot"></span> <span class="hi">AI Agents</span> · Workflow Automation</span>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <canvas id="neuralCanvas"></canvas>
+  <div class="hero-gradient"></div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-status">
+      <div class="status-dot"></div>
+      <span class="status-text">ABCD Learning Hub · <span class="hi">AI Division · West Bengal</span></span>
+    </div>
+
+    <h1>
+      <span class="line1">Master the</span>
+      <span class="line2">Intelligence Era</span>
+      <span class="line3">8 AI programmes · from tools to architecture</span>
+    </h1>
+
+    <p class="hero-sub">
+      West Bengal's most advanced AI education programmes. Learn to build with <strong>LLMs</strong>, engineer <strong>prompts professionally</strong>, create <strong>multi-modal AI content</strong>, and deploy <strong>intelligent applications</strong> — before everyone else does.
+    </p>
+
+    <div class="hero-metrics">
+      <div class="metric">
+        <span class="metric-val">8</span>
+        <span class="metric-label">AI Programmes</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val cyan">20+</span>
+        <span class="metric-label">AI Tools Covered</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val green">500+</span>
+        <span class="metric-label">Students Placed</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val" style="color:var(--amber)">4.9★</span>
+        <span class="metric-label">Student Rating</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MAIN ─── -->
+<div class="main">
+
+  <!-- FLAGSHIP -->
+  <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Flagship Programme</span></div>
+  <div class="sec-title" style="margin-bottom:6px">Most Popular AI Course in West Bengal</div>
+  <div class="sec-sub">The programme that's changing careers — learn how AI actually works, then build with it.</div>
+
+  <div class="flagship" id="flagshipCard">
+    <div class="flagship-inner">
+      <div class="fl-img">
+        <img src="https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg" alt="Generative AI"/>
+        <div class="fl-img-overlay"></div>
+        <div class="fl-badge"><div class="fl-badge-dot"></div> MOST_POPULAR.EXE</div>
+      </div>
+      <div class="fl-body">
+        <div class="fl-code">DGAIA &amp; PPE · Diploma Programme</div>
+        <div class="fl-name">Diploma in Generative AI Architecture &amp; Professional Prompt Engineering</div>
+        <div class="fl-desc">The most sought-after AI programme in Bengal. Learn LLM architecture from the ground up, master prompt engineering frameworks, integrate the ChatGPT API, and build real AI-powered tools — graduating with a portfolio that instantly signals expertise.</div>
+        <div class="fl-hl">
+          <div class="fl-hl-item">LLM Architecture (GPT, Claude, Gemini internals)</div>
+          <div class="fl-hl-item">Professional Prompt Engineering frameworks</div>
+          <div class="fl-hl-item">ChatGPT API integration & automation</div>
+          <div class="fl-hl-item">RAG systems & AI workflow design</div>
+        </div>
+        <div class="fl-meta">
+          <div class="fl-chip">
+            <span class="fl-chip-label">Duration</span>
+            <span class="fl-chip-val">12 Months</span>
+          </div>
+          <div class="fl-chip">
+            <span class="fl-chip-label">Investment</span>
+            <span class="fl-chip-val violet">Rs. 40,000/-</span>
+          </div>
+          <div class="fl-chip">
+            <span class="fl-chip-label">Level</span>
+            <span class="fl-chip-val cyan">All Levels</span>
+          </div>
+        </div>
+        <div class="fl-actions">
+          <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20the%20DGAIA%20%26%20PPE%20Diploma%20at%20ABCD%20Learning%20Hub.%20Please%20share%20details." target="_blank" class="btn-primary"><i class="fab fa-whatsapp"></i> Enrol via WhatsApp</a>
+          <button class="btn-ghost" onclick="toggleFlagship()"><i class="fas fa-terminal" id="flIcon"></i> <span id="flTxt">Expand</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="fl-expand" id="flExpand">
+      <div class="fl-exp-inner">
+        <div>
+          <div class="fl-exp-title">// What You'll Learn</div>
+          Architecture of large language models (transformers, attention mechanisms, tokenisation), professional prompt engineering patterns (chain-of-thought, few-shot, role prompting, meta-prompting), ChatGPT API integration and function calling, building RAG (Retrieval-Augmented Generation) pipelines, AI workflow automation, and AI applications for business, education, and media. Graduate with 4+ real AI portfolio projects.
+        </div>
+        <div>
+          <div class="fl-exp-title">// Who Is This For</div>
+          Anyone curious about AI — from complete beginners to working professionals. No programming background required for the core diploma. If you want the advanced Python-based LLM track, see AD-PAL below. This programme is designed to make you job-ready in the single fastest-growing career category in the world.
+        </div>
+        <div class="exp-actions">
+          <a href="https://wa.me/918944899747?text=I%27m%20interested%20in%20the%20DGAIA%20%26%20PPE%20AI%20Diploma." target="_blank" class="exp-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: DGAIA %26 PPE AI Diploma" class="exp-mail"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTHER AI COURSES -->
+  <div class="sec-label" style="margin-top:64px"><div class="sec-label-line"></div><span class="sec-label-text">All AI Programmes</span></div>
+  <div class="sec-title" style="margin-bottom:6px">Complete AI Course Catalogue</div>
+  <div class="sec-sub">7 more AI programmes — from beginner tools training to advanced Python LLM engineering.</div>
+
+  <div class="course-grid" id="courseGrid"></div>
+
+  <!-- AI TOOLS COVERED -->
+  <div class="tools-section">
+    <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Tools & Platforms</span></div>
+    <div class="sec-title" style="font-size:1.5rem;margin-bottom:4px">AI Tools You'll Master</div>
+    <div class="sec-sub" style="margin-bottom:0">20+ industry-leading AI platforms covered across our programmes</div>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🤖</div><div class="tool-name">ChatGPT</div><div class="tool-cat">Text & API</div><span class="tool-badge tb-violet">Core</span></div>
+      <div class="tool-card"><div class="tool-icon">🧠</div><div class="tool-name">Claude</div><div class="tool-cat">Anthropic AI</div><span class="tool-badge tb-cyan">Advanced</span></div>
+      <div class="tool-card"><div class="tool-icon">✨</div><div class="tool-name">Gemini</div><div class="tool-cat">Google AI</div><span class="tool-badge tb-violet">Core</span></div>
+      <div class="tool-card"><div class="tool-icon">🎨</div><div class="tool-name">Midjourney</div><div class="tool-cat">Image Gen</div><span class="tool-badge tb-green">Creative</span></div>
+      <div class="tool-card"><div class="tool-icon">🖼️</div><div class="tool-name">DALL-E 3</div><div class="tool-cat">Image Gen</div><span class="tool-badge tb-green">Creative</span></div>
+      <div class="tool-card"><div class="tool-icon">🎙️</div><div class="tool-name">ElevenLabs</div><div class="tool-cat">Voice AI</div><span class="tool-badge tb-amber">Media</span></div>
+      <div class="tool-card"><div class="tool-icon">🎬</div><div class="tool-name">Runway</div><div class="tool-cat">Video AI</div><span class="tool-badge tb-amber">Media</span></div>
+      <div class="tool-card"><div class="tool-icon">💻</div><div class="tool-name">Copilot</div><div class="tool-cat">Microsoft AI</div><span class="tool-badge tb-cyan">Office</span></div>
+      <div class="tool-card"><div class="tool-icon">🐍</div><div class="tool-name">Python + LLM</div><div class="tool-cat">Engineering</div><span class="tool-badge tb-violet">Advanced</span></div>
+      <div class="tool-card"><div class="tool-icon">🔗</div><div class="tool-name">LangChain</div><div class="tool-cat">AI Framework</div><span class="tool-badge tb-cyan">Advanced</span></div>
+      <div class="tool-card"><div class="tool-icon">📊</div><div class="tool-name">Canva AI</div><div class="tool-cat">Design AI</div><span class="tool-badge tb-green">Creative</span></div>
+      <div class="tool-card"><div class="tool-icon">📝</div><div class="tool-name">Notion AI</div><div class="tool-cat">Productivity</div><span class="tool-badge tb-amber">Business</span></div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="table-section">
+    <div class="sec-label"><div class="sec-label-line"></div><span class="sec-label-text">Quick Compare</span></div>
+    <div class="sec-title" style="font-size:1.5rem;margin-bottom:6px">All AI Courses at a Glance</div>
+    <div class="sec-sub">Compare all 8 programmes before deciding your path.</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Programme</th>
+            <th>Code</th>
+            <th>Duration</th>
+            <th>Fee</th>
+            <th>Focus Area</th>
+            <th>Tag</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <div class="cta-kicker">// INITIALISE YOUR AI CAREER</div>
+      <h2>The AI Era Is Here.<br/>Are You Ready?</h2>
+      <p>Every month you wait, AI skills become more valuable — and more competitive. New batches begin monthly with limited seats. Talk to us today for a personalised programme recommendation.</p>
+    </div>
+    <div class="cta-right">
+      <a href="https://wa.me/918944899747?text=Hello!%20I%27m%20interested%20in%20AI%20courses%20at%20ABCD%20Learning%20Hub.%20Please%20recommend%20the%20right%20programme%20for%20me." target="_blank" class="cta-wa"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+      <a href="mailto:sb.abcd321@gmail.com?subject=AI Course Enquiry — ABCD Learning Hub" class="cta-vi"><i class="fas fa-envelope"></i> Email Enquiry</a>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<footer>
+  <div class="f-brand">
+    <strong>ABCD Learning Hub</strong> <span class="vi">·</span> India's Premier Computer Education Institute<br/>
+    <span style="font-size:.7rem"> +91 89448 99747 · sb.abcd321@gmail.com</span>
+  </div>
+  <div class="f-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">All Courses</a>
+    <a href="diploma-course.html">Diploma</a>
+    <a href="programming.html">Programming</a>
+    <a href="for-office-work.html">Office</a>
+    <a href="kids-computer.html">Kids</a>
+    <a href="mailto:sb.abcd321@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/918944899747" target="_blank" class="float-wa">
+  <i class="fab fa-whatsapp"></i><span>Chat with Us</span>
+</a>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script>
+/* ── NEURAL NETWORK CANVAS ── */
+(function() {
+  const canvas = document.getElementById('neuralCanvas');
+  const ctx = canvas.getContext('2d');
+  let nodes = [], W, H, raf;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function init() {
+    resize();
+    nodes = [];
+    const count = Math.floor((W * H) / 18000);
+    for (let i = 0; i < count; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - .5) * .35,
+        vy: (Math.random() - .5) * .35,
+        r: Math.random() * 2.5 + 1,
+        pulse: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw connections
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const maxDist = 140;
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * 0.3;
+          // Alternate violet/cyan based on position
+          const hue = (nodes[i].x / W) > 0.5 ? `rgba(6,182,212,${alpha})` : `rgba(124,58,237,${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = hue;
+          ctx.lineWidth = alpha * 1.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      n.pulse += 0.025;
+      const glow = Math.sin(n.pulse) * 0.5 + 0.5;
+      const isViolet = n.x / W > 0.5;
+
+      // Glow circle
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
+      grad.addColorStop(0, isViolet ? `rgba(168,85,247,${0.4 * glow})` : `rgba(6,182,212,${0.4 * glow})`);
+      grad.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = isViolet ? `rgba(168,85,247,${0.7 + 0.3 * glow})` : `rgba(34,211,238,${0.7 + 0.3 * glow})`;
+      ctx.fill();
+
+      // Move
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { init(); });
+  init(); draw();
+})();
+
+/* ── COURSE DATA ── */
+const COURSES = [
+  {
+    id:'adaobm', code:'ADAOBM', num:'02',
+    name:'Advanced Diploma in AI Operations for Business & Media',
+    desc:'Deploy AI tools across business operations, marketing, and media workflows. For professionals wanting to lead AI adoption in their organisation.',
+    longDesc:'Learn to use AI tools for marketing automation, business operations, content creation, social media scheduling, media production, and workflow optimisation. Covers ChatGPT for business, AI analytics tools, social media AI, and creating an AI-first workflow strategy for your organisation.',
+    duration:'12 Months', fee:'Rs. 25,000/-', tag:null,
+    image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+    highlights:['AI for marketing & business operations','Social media AI automation','Content creation workflows','AI strategy & team adoption'],
+    bestFor:'Business managers, marketers, media professionals'
+  },
+  {
+    id:'mmmgai', code:'MMMGAI', num:'03',
+    name:'Mastery in Multi-Modal Gen-AI: Text, Image, Voice & Video',
+    desc:'Generate professional text, images, voice, and video using the world\'s leading AI creation tools — the complete content creator\'s AI toolkit.',
+    longDesc:'A cutting-edge programme covering the full spectrum of AI content creation. Generate text (ChatGPT, Claude), images (Midjourney, DALL-E 3), voice (ElevenLabs, Murf), and video (Runway, Pika Labs) using professional AI workflows. Build an AI content production pipeline from scratch.',
+    duration:'12 Months', fee:'Rs. 35,000/-', tag:'adv',
+    image:'https://cdn.pixabay.com/photo/2023/01/14/17/54/computer-7718730_1280.jpg',
+    highlights:['Text AI (ChatGPT, Claude, Gemini)','Image AI (Midjourney, DALL-E 3)','Voice AI (ElevenLabs, Murf)','Video AI (Runway, Pika Labs)'],
+    bestFor:'Content creators, YouTubers, marketing agencies'
+  },
+  {
+    id:'cpai', code:'CPAI', num:'04',
+    name:'Certificate in Professional AI',
+    desc:'Core AI knowledge and practical tools for professionals — the fastest path to AI literacy without a technical background.',
+    longDesc:'A foundational AI certificate covering machine learning principles (no coding), AI tools for professionals, ChatGPT advanced usage, prompt basics, AI-assisted productivity, and ethics of AI. Designed specifically for non-technical professionals wanting to get AI-fluent fast.',
+    duration:'6 Months', fee:'Rs. 15,000/-', tag:null,
+    image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+    highlights:['AI fundamentals (non-technical)','ChatGPT advanced usage','AI productivity tools','AI ethics & responsible use'],
+    bestFor:'Professionals, managers, non-technical executives'
+  },
+  {
+    id:'aiwork', code:'AI-WORK', num:'05',
+    name:'AI for Official & Routine Knowledge Work',
+    desc:'Use ChatGPT, Copilot, and Gemini in daily office tasks — summarising documents, drafting emails, analysing data, and automating repetitive work.',
+    longDesc:'Practical AI training for office workers. Use ChatGPT, Microsoft Copilot, and Google Gemini for drafting professional documents, summarising long reports, data analysis in Excel with AI, automating repetitive office tasks, and creating presentations — saving hours every single day.',
+    duration:'6 Months', fee:'Rs. 15,000/-', tag:null,
+    image:'https://cdn.pixabay.com/photo/2019/04/25/14/43/workplace-4155023_1280.jpg',
+    highlights:['ChatGPT, Copilot & Gemini for office','AI document drafting & summarisation','Excel + AI data analysis','Meeting & presentation AI tools'],
+    bestFor:'Office workers, government staff, admin professionals'
+  },
+  {
+    id:'aiewsm', code:'AI-EWSM', num:'06',
+    name:'AI Essentials for Work & Social Media',
+    desc:'Leverage AI to create posts, captions, ad copy, reel scripts, and a full social media strategy — content at 10x speed.',
+    longDesc:'For content creators, marketers, and social media managers. Covers using AI to generate posts, captions, images, reel scripts, ad copy, hashtag strategies, content calendars, and social media automation. Learn to maintain brand voice while using AI tools — the skill every digital marketer needs now.',
+    duration:'6 Months', fee:'Rs. 15,000/-', tag:null,
+    image:'https://cdn.pixabay.com/photo/2022/01/18/21/22/laptop-6948268_1280.jpg',
+    highlights:['AI for Instagram, Facebook & YouTube','Caption, post & reel script generation','AI image creation for social media','Content calendar automation'],
+    bestFor:'Content creators, social media managers, influencers'
+  },
+  {
+    id:'adpal', code:'AD-PAL', num:'07',
+    name:'Advanced Diploma in Python for AI & LLM Engineering',
+    desc:'The most advanced programme — build AI models, fine-tune LLMs, create RAG systems, and deploy production AI applications using Python.',
+    longDesc:'Our most technical AI programme. Learn Python deeply, then apply it: fine-tuning open-source LLMs (Llama, Mistral), building RAG systems, integrating OpenAI and Anthropic APIs, creating AI agents with LangChain, building vector databases, and deploying AI-powered applications to production. Requires basic programming background.',
+    duration:'12 Months', fee:'Rs. 60,000/-', tag:'adv',
+    image:'https://cdn.pixabay.com/photo/2019/10/03/12/12/programmer-4523101_1280.jpg',
+    highlights:['Python for AI & ML engineering','Fine-tuning LLMs (Llama, Mistral)','RAG systems & vector databases','LangChain agents & API integration'],
+    bestFor:'Programmers, engineers, CS graduates wanting AI specialisation'
+  },
+  {
+    id:'daiac', code:'DAIAC', num:'08',
+    name:'Diploma in AI App Creation',
+    desc:'Design, build, and deploy AI-powered chatbots and intelligent applications — no deep programming required.',
+    longDesc:'Learn to design, build, and deploy AI-powered applications and chatbots without deep programming knowledge. Covers prompt engineering for apps, no-code AI tools (Bubble, Voiceflow), API integration, chatbot architecture and personality design, and publishing AI apps for real business use cases. Graduate with 2 deployed AI apps in your portfolio.',
+    duration:'12 Months', fee:'Rs. 35,000/-', tag:null,
+    image:'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_1280.jpg',
+    highlights:['No-code AI app building','Chatbot design & personality','API integration (OpenAI, etc.)','Deploy real AI apps to users'],
+    bestFor:'Entrepreneurs, product builders, non-programmers wanting AI apps'
+  },
+  {
+    id:'dgaia-ppe', code:'DGAIA & PPE', num:'09',
+    name:'Diploma in Generative AI Architecture & Professional Prompt Engineering',
+    desc:'Learn to build and deploy generative AI systems with advanced prompt engineering.',
+    longDesc:'Master the architecture of generative AI systems and learn professional prompt engineering techniques. Covers LLM architecture, prompt design for different use cases, system integration, and deployment best practices. Ideal for developers and AI practitioners wanting to build robust generative AI applications.',
+    duration:'12 Months', fee:'Rs. 40,000/-', tag:null,
+    image:'https://cdn.pixabay.com/photo/2022/04/04/16/41/technology-7111795_1280.jpg',
+    highlights:['Python & AI app building','Chatbot design & personality','API integration (OpenAI, etc.)','Deploy real AI apps to users'],
+    bestFor:'Entrepreneurs, product builders, non-programmers wanting AI apps'
+  },
+];
+
+const TABLE_DATA = [
+  {code:'DGAIA & PPE', name:'Diploma in Generative AI Architecture & Professional Prompt Engineering', duration:'12 Months', fee:'Rs. 24,000/-', focus:'LLM Architecture, Prompt Eng', tag:'pop'},
+  {code:'ADAOBM',     name:'Advanced Diploma in AI Operations for Business & Media',                  duration:'12 Months', fee:'Rs. 25,000/-', focus:'Business AI, Media AI',     tag:null},
+  {code:'MMMGAI',     name:'Mastery in Multi-Modal Gen-AI: Text, Image, Voice & Video',              duration:'12 Months', fee:'Rs. 35,000/-', focus:'Content Creation AI',       tag:'adv'},
+  {code:'CPAI',       name:'Certificate in Professional AI',                                         duration:'6 Months',  fee:'Rs. 15,000/-', focus:'AI Literacy, ChatGPT',      tag:null},
+  {code:'AI-WORK',    name:'AI for Official & Routine Knowledge Work',                               duration:'6 Months',  fee:'Rs. 15,000/-', focus:'Office AI, Copilot',        tag:null},
+  {code:'AI-EWSM',    name:'AI Essentials for Work & Social Media',                                  duration:'6 Months',  fee:'Rs. 15,000/-', focus:'Social Media AI',           tag:null},
+  {code:'AD-PAL',     name:'Advanced Diploma in Python for AI & LLM Engineering',                   duration:'12 Months', fee:'Rs. 60,000/-', focus:'Python, LLM Engineering',   tag:'adv'},
+  {code:'DAIAC',      name:'Diploma in AI App Creation',                                             duration:'12 Months', fee:'Rs. 35,000/-', focus:'AI App Building',           tag:null},
+];
+
+/* ── RENDER CARDS ── */
+const grid = document.getElementById('courseGrid');
+COURSES.forEach((c, i) => {
+  const tagHtml = c.tag === 'pop'
+    ? `<span class="ai-tag tag-pop">POPULAR</span>`
+    : c.tag === 'adv'
+    ? `<span class="ai-tag tag-adv">ADVANCED</span>`
+    : '';
+
+  const hlHtml = c.highlights.map(h => `<div class="hl-item">${h}</div>`).join('');
+
+  const card = document.createElement('div');
+  card.className = 'ai-card';
+  card.style.animationDelay = `${i * 0.09}s`;
+  card.innerHTML = `
+    ${tagHtml}
+    <div class="ai-card-img">
+      <img src="${c.image}" alt="${c.name}" loading="lazy"/>
+      <div class="card-num">${c.num}</div>
+      <div class="card-dur"><i class="fas fa-clock"></i>${c.duration}</div>
+    </div>
+    <div class="ai-card-body">
+      <div class="ai-card-code">${c.code}</div>
+      <div class="ai-card-name">${c.name}</div>
+      <div class="ai-card-desc">${c.desc}</div>
+      <div class="ai-card-hl">${hlHtml}</div>
+    </div>
+    <div class="ai-card-footer">
+      <div class="ai-card-fee">${c.fee}<small>Full programme fee</small></div>
+      <button class="btn-enroll" onclick="enrollWA('${encodeURIComponent(c.name)}')">Enquire <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div class="ai-card-expand" id="exp-${c.id}">
+      <div class="exp-inner">
+        <div class="exp-title">// Programme Overview</div>
+        ${c.longDesc}
+        <div class="exp-best">▸ <strong>Best For:</strong> ${c.bestFor}</div>
+        <div class="exp-btns">
+          <a href="https://wa.me/918944899747?text=I%27m%20interested%20in%20${encodeURIComponent(c.name)}%20at%20ABCD%20Learning%20Hub." target="_blank" class="exp-wa2"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:sb.abcd321@gmail.com?subject=Enquiry: ${encodeURIComponent(c.name)}" class="exp-mail2"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+    </div>
+    <button class="ai-card-toggle" id="tog-${c.id}" onclick="toggleCard('${c.id}')">
+      <i class="fas fa-chevron-down"></i> VIEW DETAILS
+    </button>
+  `;
+  grid.appendChild(card);
+});
+
+/* ── RENDER TABLE ── */
+const tbody = document.getElementById('tableBody');
+TABLE_DATA.forEach(r => {
+  const badge = r.tag === 'pop'
+    ? `<span class="td-tag td-pop">POPULAR</span>`
+    : r.tag === 'adv'
+    ? `<span class="td-tag td-adv">ADVANCED</span>`
+    : `<span class="td-none">—</span>`;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><span class="td-name">${r.name}</span></td>
+    <td><span class="td-code">${r.code}</span></td>
+    <td>${r.duration}</td>
+    <td class="td-fee">${r.fee}</td>
+    <td style="font-size:.75rem;color:var(--white2)">${r.focus}</td>
+    <td>${badge}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* ── TOGGLE CARD ── */
+function toggleCard(id) {
+  const exp = document.getElementById(`exp-${id}`);
+  const tog = document.getElementById(`tog-${id}`);
+  const open = exp.classList.contains('open');
+  document.querySelectorAll('.ai-card-expand.open').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.ai-card-toggle.open').forEach(t => {
+    t.classList.remove('open');
+    t.innerHTML = `<i class="fas fa-chevron-down"></i> VIEW DETAILS`;
+  });
+  if (!open) {
+    exp.classList.add('open');
+    tog.classList.add('open');
+    tog.innerHTML = `<i class="fas fa-chevron-up"></i> HIDE DETAILS`;
+  }
+}
+
+/* ── TOGGLE FLAGSHIP ── */
+function toggleFlagship() {
+  const ex = document.getElementById('flExpand');
+  const ic = document.getElementById('flIcon');
+  const tx = document.getElementById('flTxt');
+  const open = ex.classList.toggle('open');
+  ic.className = open ? 'fas fa-times' : 'fas fa-terminal';
+  tx.textContent = open ? 'Close' : 'Expand';
+}
+
+/* ── ENROL ── */
+function enrollWA(enc) {
+  const name = decodeURIComponent(enc);
+  window.open(`https://wa.me/918944899747?text=${encodeURIComponent(`Hello! I'm interested in the "${name}" at ABCD Learning Hub. Please share batch details and fees.`)}`, '_blank');
+}
+
+/* ── SCROLL REVEAL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('reveal'); io.unobserve(e.target); } });
+}, { threshold: 0.07 });
+document.querySelectorAll('.ai-card').forEach(c => io.observe(c));
+
+/* ── PROGRESS BAR ── */
+const bar = document.getElementById('bar');
+window.addEventListener('scroll', () => {
+  bar.style.width = `${(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100}%`;
+}, { passive: true });
+</script>
+</body>
+</html>

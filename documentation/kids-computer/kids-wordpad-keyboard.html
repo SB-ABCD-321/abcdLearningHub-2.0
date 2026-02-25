@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeKids - Learn WordPad & Keyboard!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --yellow: #FFD93D;
+    --blue: #4CC9F0;
+    --green: #6BCB77;
+    --purple: #C77DFF;
+    --orange: #FF9A3C;
+    --red: #FF6B6B;
+    --dark: #1A1A2E;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+    cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='24' font-size='24'>✏️</text></svg>") 0 24, auto;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 200px 200px, 300px 300px, 150px 150px;
+    background-position: 0 0, 50px 50px, 100px 100px;
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+
+  .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 30px 20px 10px;
+    position: relative;
+  }
+
+  .lang-toggle {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    border: none;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: var(--dark);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255,200,0,0.4);
+    transition: all 0.3s;
+    z-index: 100;
+  }
+  .lang-toggle:hover {
+    transform: scale(1.1) rotate(-3deg);
+    box-shadow: 0 6px 25px rgba(255,200,0,0.7);
+  }
+
+  .site-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    background: linear-gradient(90deg, var(--pink), var(--yellow), var(--blue), var(--green), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 3s linear infinite;
+    background-size: 300% 100%;
+    filter: drop-shadow(0 0 20px rgba(255,100,200,0.5));
+    line-height: 1.1;
+  }
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+
+  .site-subtitle {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: var(--yellow);
+    margin-top: 8px;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+
+  .emoji-row {
+    font-size: 2rem;
+    margin: 10px 0;
+    animation: bounce-row 1.5s ease-in-out infinite;
+  }
+  @keyframes bounce-row {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* NAV TABS */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 25px 0;
+  }
+  .tab-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+  }
+  .tab-btn:hover, .tab-btn.active {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-color: transparent;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(255,100,200,0.5);
+  }
+  .tab-btn.active { transform: translateY(-3px) scale(1.08); }
+
+  /* SECTIONS */
+  .section { display: none; animation: fadeIn 0.5s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARDS */
+  .card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 25px;
+    padding: 30px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .card:hover { transform: translateY(-5px); }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  /* WORDPAD INTERFACE */
+  .wordpad-demo {
+    background: #f0f0f0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    margin: 20px 0;
+  }
+  .wp-titlebar {
+    background: linear-gradient(90deg, #003399, #0055CC);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wp-title { color: white; font-size: 0.85rem; font-weight: 700; }
+  .wp-controls { margin-left: auto; display: flex; gap: 5px; }
+  .wp-btn {
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: bold; cursor: pointer;
+    border: none;
+  }
+  .wp-btn.min { background: #FFD93D; color: #333; }
+  .wp-btn.max { background: #6BCB77; color: #333; }
+  .wp-btn.close { background: #FF6B6B; color: white; }
+
+  .wp-ribbon {
+    background: #f5f5f5;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .wp-tool {
+    background: linear-gradient(to bottom, #fff, #e8e8e8);
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #333;
+    transition: all 0.2s;
+  }
+  .wp-tool:hover { background: linear-gradient(to bottom, #e8f0ff, #cce0ff); border-color: #66a; }
+  .wp-tool.active { background: linear-gradient(to bottom, #cce0ff, #99c4ff); border-color: #44f; }
+
+  .wp-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: white;
+    border: none;
+    padding: 15px;
+    font-family: 'Times New Roman', serif;
+    font-size: 1rem;
+    color: #222;
+    resize: none;
+    outline: none;
+  }
+
+  /* KEYBOARD */
+  .keyboard-container {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
+    margin: 20px auto;
+    max-width: 900px;
+  }
+
+  .kb-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 5px 0;
+    flex-wrap: nowrap;
+  }
+
+  .key {
+    background: linear-gradient(to bottom, #555, #333);
+    border: 1px solid #111;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.75rem;
+    padding: 8px 4px;
+    min-width: 38px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 4px 0 #111;
+    position: relative;
+    text-align: center;
+    line-height: 1;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .key:hover {
+    background: linear-gradient(to bottom, var(--blue), #2299CC);
+    transform: translateY(1px);
+    box-shadow: 0 3px 0 #111;
+    color: white;
+  }
+
+  .key.pressed, .key.highlight {
+    background: linear-gradient(to bottom, var(--yellow), var(--orange)) !important;
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #111 !important;
+    color: #222 !important;
+  }
+
+  .key.wide-2 { min-width: 60px; }
+  .key.wide-3 { min-width: 80px; }
+  .key.wide-4 { min-width: 100px; }
+  .key.space-key { min-width: 250px; background: linear-gradient(to bottom, #666, #444); }
+  .key.special { font-size: 0.6rem; min-width: 50px; }
+  .key.enter-key { min-width: 75px; }
+
+  /* FINGER COLORS */
+  .f-pinky { background: linear-gradient(to bottom, #FF6B9D55, #FF6B9D22); border-color: #FF6B9D44; }
+  .f-ring { background: linear-gradient(to bottom, #C77DFF55, #C77DFF22); border-color: #C77DFF44; }
+  .f-middle { background: linear-gradient(to bottom, #4CC9F055, #4CC9F022); border-color: #4CC9F044; }
+  .f-index { background: linear-gradient(to bottom, #6BCB7755, #6BCB7722); border-color: #6BCB7744; }
+  .f-thumb { background: linear-gradient(to bottom, #FFD93D55, #FFD93D22); border-color: #FFD93D44; }
+
+  /* TYPING GAME */
+  .game-area {
+    background: rgba(0,0,0,0.4);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+
+  .game-word {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--yellow);
+    letter-spacing: 8px;
+    margin: 20px 0;
+    text-shadow: 0 0 20px rgba(255,220,0,0.5);
+  }
+
+  .game-word span { transition: all 0.3s; }
+  .game-word span.correct { color: var(--green); text-shadow: 0 0 10px var(--green); }
+  .game-word span.wrong { color: var(--red); animation: shake 0.3s; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .game-input {
+    background: rgba(255,255,255,0.1);
+    border: 3px solid var(--blue);
+    border-radius: 50px;
+    padding: 12px 25px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: white;
+    text-align: center;
+    outline: none;
+    width: 100%;
+    max-width: 400px;
+    transition: border-color 0.3s;
+  }
+  .game-input:focus { border-color: var(--yellow); box-shadow: 0 0 20px rgba(255,220,0,0.3); }
+
+  .btn {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(200,0,200,0.4);
+    margin: 8px;
+  }
+  .btn:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 8px 25px rgba(200,0,200,0.6); }
+  .btn.green { background: linear-gradient(135deg, var(--green), #3da84f); }
+  .btn.yellow { background: linear-gradient(135deg, var(--yellow), var(--orange)); color: #222; }
+
+  /* SCORE */
+  .score-display {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+  }
+  .score-box {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 12px 20px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+  .score-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+  }
+  .score-label { font-size: 0.8rem; opacity: 0.7; }
+
+  /* FUN FACTS */
+  .fact-card {
+    background: linear-gradient(135deg, rgba(76,201,240,0.2), rgba(199,125,255,0.2));
+    border-radius: 20px;
+    padding: 20px;
+    margin: 15px 0;
+    border: 2px solid rgba(76,201,240,0.3);
+    position: relative;
+  }
+  .fact-emoji {
+    font-size: 2.5rem;
+    position: absolute;
+    top: -15px;
+    right: 15px;
+  }
+
+  /* SHORTCUT TABLE */
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
+  }
+  .shortcut-item {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s;
+  }
+  .shortcut-item:hover { background: rgba(255,255,255,0.15); transform: translateX(5px); }
+  .shortcut-keys {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    color: var(--yellow);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* BADGES */
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+    justify-content: center;
+  }
+  .badge {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+    opacity: 0.4;
+  }
+  .badge.earned {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,150,0,0.3));
+    border-color: var(--yellow);
+    animation: pulse-badge 1s ease-in-out;
+  }
+  @keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confetti-fall 1.5s ease-out forwards;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    height: 20px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    transition: width 0.5s ease;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* FLOATING EMOJIS */
+  .float-emoji {
+    position: fixed;
+    font-size: 2rem;
+    pointer-events: none;
+    z-index: 9998;
+    animation: float-up 1.5s ease-out forwards;
+  }
+  @keyframes float-up {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+  }
+
+  /* WORDPAD FEATURES */
+  .feature-icon { font-size: 2.5rem; }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+  }
+  .feature-item {
+    background: rgba(255,255,255,0.07);
+    border-radius: 18px;
+    padding: 20px 15px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .feature-item:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--yellow);
+    background: rgba(255,220,0,0.1);
+  }
+  .feature-item p { font-size: 0.9rem; margin-top: 8px; opacity: 0.85; }
+
+  .section-heading {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    text-align: center;
+    margin: 30px 0 15px;
+    position: relative;
+  }
+  .section-heading::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--pink), var(--yellow));
+    border-radius: 2px;
+    margin: 8px auto 0;
+  }
+
+  /* QUIZ */
+  .quiz-option {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: all 0.3s;
+    width: 100%;
+    text-align: left;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .quiz-option:hover { background: rgba(255,255,255,0.2); transform: translateX(5px); }
+  .quiz-option.correct { background: rgba(107,203,119,0.3); border-color: var(--green); }
+  .quiz-option.wrong { background: rgba(255,107,107,0.3); border-color: var(--red); }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    opacity: 0.6;
+    font-size: 0.85rem;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 600px) {
+    .key { min-width: 28px; font-size: 0.6rem; height: 35px; padding: 5px 2px; }
+    .key.space-key { min-width: 150px; }
+    .kb-row { gap: 3px; }
+    .keyboard-container { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <button class="lang-toggle" onclick="toggleLang()" id="langBtn">🇧🇩 বাংলা</button>
+    <div class="emoji-row">⌨️ 🖥️ ✏️ 🌟 📝 🎮</div>
+    <h1 class="site-title" data-en="TypeKids!" data-bn="টাইপকিডস!">TypeKids!</h1>
+    <p class="site-subtitle" data-en="🚀 Learn WordPad & Keyboard — The Fun Way!" data-bn="🚀 মজার উপায়ে শিখি ওয়ার্ডপ্যাড ও কীবোর্ড!">🚀 Learn WordPad & Keyboard — The Fun Way!</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showSection('home')" data-en="🏠 Home" data-bn="🏠 হোম">🏠 Home</button>
+    <button class="tab-btn" onclick="showSection('keyboard')" data-en="⌨️ Keyboard" data-bn="⌨️ কীবোর্ড">⌨️ Keyboard</button>
+    <button class="tab-btn" onclick="showSection('wordpad')" data-en="📝 WordPad" data-bn="📝 ওয়ার্ডপ্যাড">📝 WordPad</button>
+    <button class="tab-btn" onclick="showSection('typing')" data-en="🎮 Typing Game" data-bn="🎮 টাইপিং গেম">🎮 Typing Game</button>
+    <button class="tab-btn" onclick="showSection('quiz')" data-en="🧠 Quiz" data-bn="🧠 কুইজ">🧠 Quiz</button>
+  </div>
+
+  <!-- HOME SECTION -->
+  <div class="section active" id="home">
+    <div class="card" style="background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(199,125,255,0.2)); border-color: rgba(255,107,157,0.4);">
+      <div class="card-title" style="color: var(--pink);">
+        <span>🌈</span>
+        <span data-en="Welcome, Young Typer!" data-bn="স্বাগতম, ছোট্ট টাইপার!">Welcome, Young Typer!</span>
+      </div>
+      <p style="font-size: 1.1rem; line-height: 1.8;" data-en="Hey there, superstar! 🌟 In this website, you'll learn how to use a KEYBOARD and WORDPAD like a pro! We have fun games, cool lessons, and amazing activities. Are you ready? Let's go! 🚀" data-bn="হ্যালো সুপারস্টার! 🌟 এই ওয়েবসাইটে তুমি শিখবে কীভাবে কীবোর্ড ও ওয়ার্ডপ্যাড ব্যবহার করতে হয়। মজার গেম, সুন্দর পাঠ আর অসাধারণ কার্যক্রম আছে এখানে। প্রস্তুত তো? চলো শুরু করি! 🚀">Hey there, superstar! 🌟 In this website, you'll learn how to use a KEYBOARD and WORDPAD like a pro! We have fun games, cool lessons, and amazing activities. Are you ready? Let's go! 🚀</p>
+    </div>
+
+    <h2 class="section-heading" data-en="What Will You Learn? 📚" data-bn="তুমি কী শিখবে? 📚">What Will You Learn? 📚</h2>
+
+    <div class="feature-grid">
+      <div class="feature-item" onclick="showSection('keyboard')">
+        <div class="feature-icon">⌨️</div>
+        <h3 style="font-family: 'Fredoka One', cursive;" data-en="The Keyboard" data-bn="কীবোর্ড">The Keyboard</h3>
+        <p data-en="Learn every key and how to type fast!" data-bn="প্রতিটি কী চেনো এবং দ্রুত টাইপ শেখো!">Learn every key and how to type fast!</p>
+      </div>
+      <div class="feature-item" onclick="showSection('wordpad')">
+        <div class="feature-icon">📝</div>
+        <h3 style="font-family: 'Fredoka One', cursive;" data-en="WordPad" data-bn="ওয়ার্ডপ্যাড">WordPad</h3>
+        <p data-en="Create awesome documents and stories!" data-bn="দারুণ ডকুমেন্ট ও গল্প তৈরি করো!">Create awesome documents and stories!</p>
+      </div>
+      <div class="feature-item" onclick="showSection('typing')">
+        <div class="feature-icon">🎮</div>
+        <h3 style="font-family: 'Fredoka One', cursive;" data-en="Typing Game" data-bn="টাইপিং গেম">Typing Game</h3>
+        <p data-en="Play and practice typing at the same time!" data-bn="খেলতে খেলতে টাইপিং অনুশীলন করো!">Play and practice typing at the same time!</p>
+      </div>
+      <div class="feature-item" onclick="showSection('quiz')">
+        <div class="feature-icon">🧠</div>
+        <h3 style="font-family: 'Fredoka One', cursive;" data-en="Fun Quiz" data-bn="মজার কুইজ">Fun Quiz</h3>
+        <p data-en="Test what you know and win badges!" data-bn="জ্ঞান যাচাই করো এবং ব্যাজ জিতো!">Test what you know and win badges!</p>
+      </div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-emoji">💡</div>
+      <h3 style="font-family: 'Fredoka One', cursive; color: var(--yellow); margin-bottom: 8px;" data-en="Did You Know?" data-bn="তুমি কি জানো?">Did You Know?</h3>
+      <p data-en="The keyboard you use today is called QWERTY! It was invented over 150 years ago. The first row of letters spells Q-W-E-R-T-Y! Pretty cool, right? 😄" data-bn="তুমি যে কীবোর্ড ব্যবহার করো সেটাকে QWERTY বলে! এটি ১৫০ বছরেরও বেশি আগে আবিষ্কার হয়েছিল। প্রথম সারির অক্ষরগুলো হলো Q-W-E-R-T-Y! বেশ মজার, তাই না? 😄">The keyboard you use today is called QWERTY! It was invented over 150 years ago. The first row of letters spells Q-W-E-R-T-Y! Pretty cool, right? 😄</p>
+    </div>
+
+    <div style="text-align: center; margin: 20px 0;">
+      <button class="btn yellow" onclick="showSection('keyboard')" data-en="🚀 Start Learning!" data-bn="🚀 শেখা শুরু করো!">🚀 Start Learning!</button>
+    </div>
+  </div>
+
+  <!-- KEYBOARD SECTION -->
+  <div class="section" id="keyboard">
+    <h2 class="section-heading" data-en="The Amazing Keyboard! ⌨️" data-bn="আশ্চর্য কীবোর্ড! ⌨️">The Amazing Keyboard! ⌨️</h2>
+
+    <div class="card">
+      <p style="font-size: 1rem; line-height: 1.8; margin-bottom: 15px;" data-en="A keyboard has many keys! Each key has a special job. Click on any key below to learn what it does! 👇" data-bn="একটি কীবোর্ডে অনেক কী আছে! প্রতিটি কী-এর আলাদা কাজ আছে। নিচে যেকোনো কী-তে ক্লিক করে জানো এটি কী করে! 👇">A keyboard has many keys! Each key has a special job. Click on any key below to learn what it does! 👇</p>
+
+      <div id="keyInfo" style="background: rgba(255,220,0,0.15); border: 2px solid var(--yellow); border-radius: 15px; padding: 12px 18px; margin-bottom: 15px; min-height: 50px; font-weight: 700; font-size: 1rem;">
+        👆 <span data-en="Click a key to learn about it!" data-bn="কোনো কী-তে ক্লিক করো জানতে!">Click a key to learn about it!</span>
+      </div>
+
+      <div class="keyboard-container">
+        <div class="kb-row">
+          <div class="key special" onclick="keyInfo('Esc','Escape key! Press it to cancel or go back. Like a magic undo button! ✨','এসকেপ কী! এটি চাপলে কাজ বাতিল হয় বা পেছনে যাওয়া যায়। যেন জাদুর বোতাম! ✨')">Esc</div>
+          <div class="key special" onclick="keyInfo('F1','F1 is the Help key! Press it when you need help in a program. 🆘','F1 হলো হেল্প কী! কোনো প্রোগ্রামে সাহায্য দরকার হলে চাপো। 🆘')">F1</div>
+          <div class="key special" onclick="keyInfo('F2','F2 lets you rename files and folders! 📁','F2 দিয়ে ফাইল ও ফোল্ডারের নাম পরিবর্তন করা যায়! 📁')">F2</div>
+          <div class="key special" onclick="keyInfo('F3','F3 opens the Search! Find anything fast! 🔍','F3 সার্চ খোলে! যেকোনো কিছু দ্রুত খুঁজে পাও! 🔍')">F3</div>
+          <div class="key special" onclick="keyInfo('F4','F4 helps navigate address bars in browsers! 🌐','F4 ব্রাউজারের অ্যাড্রেস বারে সাহায্য করে! 🌐')">F4</div>
+          <div class="key special" onclick="keyInfo('F5','F5 refreshes your page or app! Like a reset button! 🔄','F5 পেজ বা অ্যাপ রিফ্রেশ করে! রিসেট বোতামের মতো! 🔄')">F5</div>
+          <div class="key special" onclick="keyInfo('F6','F6 moves cursor to address bar! 📍','F6 কার্সর অ্যাড্রেস বারে নিয়ে যায়! 📍')">F6</div>
+          <div class="key special" onclick="keyInfo('F7','F7 checks spelling in some programs! ✅','F7 কিছু প্রোগ্রামে বানান চেক করে! ✅')">F7</div>
+          <div class="key special" onclick="keyInfo('F8','F8 is used during Windows startup! 💻','F8 উইন্ডোজ চালু হওয়ার সময় ব্যবহার হয়! 💻')">F8</div>
+          <div class="key special" onclick="keyInfo('F9','F9 refreshes documents in some programs! 📄','F9 কিছু প্রোগ্রামে ডকুমেন্ট রিফ্রেশ করে! 📄')">F9</div>
+          <div class="key special" onclick="keyInfo('F10','F10 opens the menu bar! 📋','F10 মেনু বার খোলে! 📋')">F10</div>
+          <div class="key special" onclick="keyInfo('F11','F11 makes your browser full screen! 🖥️','F11 ব্রাউজার ফুল স্ক্রিন করে! 🖥️')">F11</div>
+          <div class="key special" onclick="keyInfo('F12','F12 opens developer tools in browsers! 🛠️','F12 ব্রাউজারে ডেভেলপার টুল খোলে! 🛠️')">F12</div>
+        </div>
+        <div class="kb-row">
+          <div class="key f-pinky" onclick="keyInfo('`','Grave/Backtick key! Used for special characters! 🔣','গ্রেভ/ব্যাকটিক কী! বিশেষ অক্ষরের জন্য! 🔣')">`</div>
+          <div class="key f-pinky" onclick="keyInfo('1','Number 1! Also makes ! when you press Shift+1! 1️⃣','সংখ্যা ১! Shift+1 চাপলে ! চিহ্ন হয়! 1️⃣')">1</div>
+          <div class="key f-pinky" onclick="keyInfo('2','Number 2! Shift+2 makes @ symbol! 2️⃣','সংখ্যা ২! Shift+2 চাপলে @ চিহ্ন হয়! 2️⃣')">2</div>
+          <div class="key f-ring" onclick="keyInfo('3','Number 3! Shift+3 makes # hashtag! 3️⃣','সংখ্যা ৩! Shift+3 চাপলে # হ্যাশট্যাগ হয়! 3️⃣')">3</div>
+          <div class="key f-ring" onclick="keyInfo('4','Number 4! Shift+4 makes $ dollar sign! 4️⃣','সংখ্যা ৪! Shift+4 চাপলে $ ডলার চিহ্ন হয়! 4️⃣')">4</div>
+          <div class="key f-middle" onclick="keyInfo('5','Number 5! Shift+5 makes % percent! 5️⃣','সংখ্যা ৫! Shift+5 চাপলে % পার্সেন্ট হয়! 5️⃣')">5</div>
+          <div class="key f-index" onclick="keyInfo('6','Number 6! Shift+6 makes ^ caret! 6️⃣','সংখ্যা ৬! Shift+6 চাপলে ^ ক্যারেট হয়! 6️⃣')">6</div>
+          <div class="key f-index" onclick="keyInfo('7','Number 7! Shift+7 makes & ampersand! 7️⃣','সংখ্যা ৭! Shift+7 চাপলে & অ্যাম্পারস্যান্ড হয়! 7️⃣')">7</div>
+          <div class="key f-middle" onclick="keyInfo('8','Number 8! Shift+8 makes * asterisk (star)! ⭐','সংখ্যা ৮! Shift+8 চাপলে * তারকা চিহ্ন হয়! ⭐')">8</div>
+          <div class="key f-ring" onclick="keyInfo('9','Number 9! Shift+9 makes ( open bracket! 9️⃣','সংখ্যা ৯! Shift+9 চাপলে ( বন্ধনী হয়! 9️⃣')">9</div>
+          <div class="key f-ring" onclick="keyInfo('0','Number 0! Shift+0 makes ) close bracket! 0️⃣','সংখ্যা ০! Shift+0 চাপলে ) বন্ধনী হয়! 0️⃣')">0</div>
+          <div class="key f-pinky" onclick="keyInfo('-','Minus / Hyphen key! Used to join words! ➖','মাইনাস/হাইফেন কী! শব্দ যোগ করতে ব্যবহার হয়! ➖')">-</div>
+          <div class="key f-pinky" onclick="keyInfo('=','Equals sign! Shift+= makes + plus sign! ➕','সমান চিহ্ন! Shift+= চাপলে + যোগ চিহ্ন হয়! ➕')">=</div>
+          <div class="key wide-3 special f-pinky" onclick="keyInfo('Backspace','Backspace deletes letters! Made a mistake? Press backspace! 🔙','ব্যাকস্পেস অক্ষর মুছে দেয়! ভুল হলে ব্যাকস্পেস চাপো! 🔙')">⌫ Back</div>
+        </div>
+        <div class="kb-row">
+          <div class="key wide-2 special f-pinky" onclick="keyInfo('Tab','Tab key creates a big space! Like jumping ahead! ⏭️','ট্যাব কী বড় জায়গা তৈরি করে! এগিয়ে যাওয়ার মতো! ⏭️')">Tab ⇥</div>
+          <div class="key f-pinky" onclick="keyInfo('Q','Q key! Press it to type the letter Q. Used in words like Quick, Queen! 👑','Q কী! এই কী চাপলে Q অক্ষর লেখা হয়। Quick, Queen-এর মতো শব্দে! 👑')">Q</div>
+          <div class="key f-pinky" onclick="keyInfo('W','W key! Type W for words like Wow, Water, World! 🌍','W কী! Wow, Water, World-এর মতো শব্দে ব্যবহার হয়! 🌍')">W</div>
+          <div class="key f-ring" onclick="keyInfo('E','E is the most used letter in English! Words like Easy, Elephant, Every! 🐘','E ইংরেজিতে সবচেয়ে বেশি ব্যবহৃত অক্ষর! Easy, Elephant! 🐘')">E</div>
+          <div class="key f-ring" onclick="keyInfo('R','R is for Rainbow, Robot, Run! 🌈','R মানে Rainbow, Robot, Run! 🌈')">R</div>
+          <div class="key f-middle" onclick="keyInfo('T','T is for Tiger, Tree, Turtle! 🐯','T মানে Tiger, Tree, Turtle! 🐯')">T</div>
+          <div class="key f-index" onclick="keyInfo('Y','Y is for Yellow, Yummy, Year! 💛','Y মানে Yellow, Yummy, Year! 💛')">Y</div>
+          <div class="key f-index" onclick="keyInfo('U','U is for Umbrella, Universe, Up! ☂️','U মানে Umbrella, Universe, Up! ☂️')">U</div>
+          <div class="key f-middle" onclick="keyInfo('I','I is for Ice cream, Island! 🍦','I মানে Ice cream, Island! 🍦')">I</div>
+          <div class="key f-ring" onclick="keyInfo('O','O is for Ocean, Orange, Owl! 🦉','O মানে Ocean, Orange, Owl! 🦉')">O</div>
+          <div class="key f-ring" onclick="keyInfo('P','P is for Pizza, Panda, Planet! 🍕','P মানে Pizza, Panda, Planet! 🍕')">P</div>
+          <div class="key f-pinky" onclick="keyInfo('[','Open bracket! Used to write [this]! 📎','খোলা বন্ধনী! [এইভাবে] লিখতে! 📎')">[</div>
+          <div class="key f-pinky" onclick="keyInfo(']','Close bracket! Used to write [this]! 📎','বন্ধ বন্ধনী! [এইভাবে] লিখতে! 📎')">]</div>
+          <div class="key enter-key f-pinky" onclick="keyInfo('Enter','ENTER is super important! Press Enter to start a new line or confirm an action! ✅','ENTER খুবই গুরুত্বপূর্ণ! নতুন লাইন শুরু করতে বা কাজ নিশ্চিত করতে Enter চাপো! ✅')">Enter ↵</div>
+        </div>
+        <div class="kb-row">
+          <div class="key wide-3 special f-pinky" onclick="keyInfo('Caps Lock','Caps Lock makes ALL letters UPPERCASE! Toggle it on/off! 🔠','ক্যাপস লক সব অক্ষর বড় করে! চালু/বন্ধ করা যায়! 🔠')">Caps ⇪</div>
+          <div class="key f-pinky" onclick="keyInfo('A','A is the first letter! Apple, Ant, Amazing! 🍎','A প্রথম অক্ষর! Apple, Ant, Amazing! 🍎')">A</div>
+          <div class="key f-ring" onclick="keyInfo('S','S is for Sun, Star, Snake! 🌟','S মানে Sun, Star, Snake! 🌟')">S</div>
+          <div class="key f-ring" onclick="keyInfo('D','D is for Dog, Dragon, Dance! 🐉','D মানে Dog, Dragon, Dance! 🐉')">D</div>
+          <div class="key f-middle" onclick="keyInfo('F','F is your LEFT INDEX FINGER home key! F is for Fun, Frog, Fire! 🐸 Your finger rests here!','F তোমার বাম তর্জনির হোম কী! F মানে Fun, Frog, Fire! 🐸')">F</div>
+          <div class="key f-index" onclick="keyInfo('G','G is for Galaxy, Game, Gift! 🎮','G মানে Galaxy, Game, Gift! 🎮')">G</div>
+          <div class="key f-index" onclick="keyInfo('H','H is for Happy, Hero, Honey! 🦸','H মানে Happy, Hero, Honey! 🦸')">H</div>
+          <div class="key f-middle" onclick="keyInfo('J','J is your RIGHT INDEX FINGER home key! J is for Jungle, Jump, Joy! 🦁 Your finger rests here!','J তোমার ডান তর্জনির হোম কী! J মানে Jungle, Jump, Joy! 🦁')">J</div>
+          <div class="key f-ring" onclick="keyInfo('K','K is for King, Kite, Kangaroo! 🦘','K মানে King, Kite, Kangaroo! 🦘')">K</div>
+          <div class="key f-ring" onclick="keyInfo('L','L is for Lion, Love, Lucky! 🦁','L মানে Lion, Love, Lucky! 🦁')">L</div>
+          <div class="key f-pinky" onclick="keyInfo(';','Semicolon! Used to separate parts of a sentence! ⌛','; সেমিকোলন! বাক্যের অংশ আলাদা করতে! ⌛')">;</div>
+          <div class="key f-pinky" onclick="keyInfo("'\",'Apostrophe! Used for don\\'t, can\\'t, I\\'m! 💬',\"' অ্যাপোস্ট্রফি! don't, can't, I'm-এ ব্যবহার! 💬\")">'</div>
+        </div>
+        <div class="kb-row">
+          <div class="key wide-4 special f-pinky" onclick="keyInfo('Shift','SHIFT makes CAPITAL letters! Hold Shift and press a letter to make it BIG! 🔡','SHIFT বড় হাতের অক্ষর তৈরি করে! Shift ধরে কোনো অক্ষর চাপো বড় হয়! 🔡')">⇧ Shift</div>
+          <div class="key f-pinky" onclick="keyInfo('Z','Z is for Zebra, Zero, Zigzag! 🦓','Z মানে Zebra, Zero, Zigzag! 🦓')">Z</div>
+          <div class="key f-ring" onclick="keyInfo('X','X marks the spot! Used in Xylophone, X-ray! ❌','X চিহ্নিত করে! Xylophone, X-ray-এ ব্যবহার! ❌')">X</div>
+          <div class="key f-middle" onclick="keyInfo('C','C is for Cat, Cloud, Cookie! 🍪','C মানে Cat, Cloud, Cookie! 🍪')">C</div>
+          <div class="key f-index" onclick="keyInfo('V','V is for Victory, Violin, Volcano! ✌️','V মানে Victory, Violin, Volcano! ✌️')">V</div>
+          <div class="key f-index" onclick="keyInfo('B','B is for Ball, Butterfly, Bear! 🐻','B মানে Ball, Butterfly, Bear! 🐻')">B</div>
+          <div class="key f-index" onclick="keyInfo('N','N is for Night, Nature, Ninja! 🥷','N মানে Night, Nature, Ninja! 🥷')">N</div>
+          <div class="key f-middle" onclick="keyInfo('M','M is for Moon, Magic, Monster! 🌙','M মানে Moon, Magic, Monster! 🌙')">M</div>
+          <div class="key f-ring" onclick="keyInfo(',','Comma! Takes a small pause in sentences. Like breathing! 😮‍💨',', কমা! বাক্যে একটু থামার জন্য! 😮‍💨')">,</div>
+          <div class="key f-ring" onclick="keyInfo('.','Period/Full Stop! Ends a sentence. Time to STOP! ⛔','. পিরিয়ড/ফুলস্টপ! বাক্য শেষ করে! ⛔')">.</div>
+          <div class="key f-pinky" onclick="keyInfo('/','Slash! Used in fractions and website addresses! ➗','/ স্ল্যাশ! ভগ্নাংশ ও ওয়েবসাইট ঠিকানায়! ➗')">/</div>
+          <div class="key wide-4 special f-pinky" onclick="keyInfo('Shift','SHIFT makes CAPITAL letters! Hold Shift and press a letter to make it BIG! 🔡','SHIFT বড় হাতের অক্ষর তৈরি করে! Shift ধরে কোনো অক্ষর চাপো বড় হয়! 🔡')">⇧ Shift</div>
+        </div>
+        <div class="kb-row">
+          <div class="key wide-2 special f-pinky" onclick="keyInfo('Ctrl','CONTROL key! Used with other keys for shortcuts! Like Ctrl+C to copy! 🎯','CTRL কী! অন্য কীর সাথে শর্টকাটে ব্যবহার! যেমন Ctrl+C কপি! 🎯')">Ctrl</div>
+          <div class="key wide-2 special" onclick="keyInfo('Win','Windows key! Opens the Start Menu! 🪟','উইন্ডোজ কী! স্টার্ট মেনু খোলে! 🪟')">⊞ Win</div>
+          <div class="key wide-2 special f-pinky" onclick="keyInfo('Alt','ALT key! Used for special shortcuts! Alt+F4 closes a window! 🔄','ALT কী! বিশেষ শর্টকাটে! Alt+F4 উইন্ডো বন্ধ করে! 🔄')">Alt</div>
+          <div class="key space-key f-thumb" onclick="keyInfo('Space','THE SPACE BAR! The biggest key! Press it to make spaces between words! You press it with your THUMB! 👍','স্পেস বার! সবচেয়ে বড় কী! শব্দের মাঝে জায়গা দিতে! বুড়ো আঙুল দিয়ে চাপো! 👍')">Space Bar</div>
+          <div class="key wide-2 special f-pinky" onclick="keyInfo('Alt','ALT key! Used for special shortcuts! Alt+Tab switches between windows! 🔄','ALT কী! Alt+Tab দিয়ে উইন্ডো পরিবর্তন করা যায়! 🔄')">Alt</div>
+          <div class="key wide-2 special f-pinky" onclick="keyInfo('Ctrl','CONTROL key! Ctrl+Z is UNDO - go back in time! ⏪','CTRL কী! Ctrl+Z মানে UNDO - আগের অবস্থায় ফিরে যাও! ⏪')">Ctrl</div>
+        </div>
+      </div>
+
+      <!-- Finger guide -->
+      <div style="margin-top: 20px;">
+        <h3 style="font-family: 'Fredoka One', cursive; margin-bottom: 12px;" data-en="🖐️ Which Finger for Which Key?" data-bn="🖐️ কোন আঙুল কোন কীর জন্য?">🖐️ Which Finger for Which Key?</h3>
+        <div class="shortcut-grid">
+          <div class="shortcut-item"><span class="shortcut-keys" style="background: rgba(255,107,157,0.3); color: var(--pink);" data-en="Pinky" data-bn="কনিষ্ঠা">Pinky</span><span data-en="Q, A, Z, Shift, Ctrl" data-bn="Q, A, Z, Shift, Ctrl">Q, A, Z, Shift, Ctrl</span></div>
+          <div class="shortcut-item"><span class="shortcut-keys" style="background: rgba(199,125,255,0.3); color: var(--purple);" data-en="Ring Finger" data-bn="অনামিকা">Ring Finger</span><span data-en="W, S, X keys" data-bn="W, S, X কী">W, S, X keys</span></div>
+          <div class="shortcut-item"><span class="shortcut-keys" style="background: rgba(76,201,240,0.3); color: var(--blue);" data-en="Middle Finger" data-bn="মধ্যমা">Middle Finger</span><span data-en="E, D, C keys" data-bn="E, D, C কী">E, D, C keys</span></div>
+          <div class="shortcut-item"><span class="shortcut-keys" style="background: rgba(107,203,119,0.3); color: var(--green);" data-en="Index Finger" data-bn="তর্জনী">Index Finger</span><span data-en="R,F,V,T,G,B,Y,H,N,U,J,M" data-bn="R,F,V,T,G,B,Y,H,N,U,J,M">R,F,V,T,G,B,Y,H,N,U,J,M</span></div>
+          <div class="shortcut-item"><span class="shortcut-keys" style="background: rgba(255,217,61,0.3); color: var(--yellow);" data-en="Thumb" data-bn="বুড়ো আঙুল">Thumb</span><span data-en="Space Bar only! 👍" data-bn="শুধু স্পেস বার! 👍">Space Bar only! 👍</span></div>
+          <div class="shortcut-item"><span class="shortcut-keys" style="background: rgba(255,154,60,0.3); color: var(--orange);" data-en="Home Keys" data-bn="হোম কী">Home Keys</span><span data-en="Left hand: ASDF | Right hand: JKL;" data-bn="বাম হাত: ASDF | ডান হাত: JKL;">Left hand: ASDF | Right hand: JKL;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shortcuts -->
+    <div class="card">
+      <div class="card-title" style="color: var(--yellow);">⚡ <span data-en="Super Shortcuts!" data-bn="সুপার শর্টকাট!">Super Shortcuts!</span></div>
+      <p style="margin-bottom: 15px;" data-en="These are magic key combinations that make you super fast! 🚀" data-bn="এগুলো হলো জাদুর কী সমন্বয় যা তোমাকে সুপার ফাস্ট বানায়! 🚀">These are magic key combinations that make you super fast! 🚀</p>
+      <div class="shortcut-grid">
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + C</span><span data-en="📋 Copy selected text" data-bn="📋 নির্বাচিত লেখা কপি">📋 Copy selected text</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + V</span><span data-en="📌 Paste text" data-bn="📌 লেখা পেস্ট">📌 Paste text</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + X</span><span data-en="✂️ Cut selected text" data-bn="✂️ নির্বাচিত লেখা কাট">✂️ Cut selected text</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + Z</span><span data-en="⏪ Undo (Go back!)" data-bn="⏪ আনডু (পেছনে যাও!)">⏪ Undo (Go back!)</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + A</span><span data-en="✨ Select ALL text" data-bn="✨ সব লেখা নির্বাচন">✨ Select ALL text</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + S</span><span data-en="💾 Save your work!" data-bn="💾 কাজ সেভ করো!">💾 Save your work!</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + B</span><span data-en="𝐁 Make text Bold" data-bn="𝐁 লেখা বোল্ড করো">𝐁 Make text Bold</span></div>
+        <div class="shortcut-item"><span class="shortcut-keys">Ctrl + P</span><span data-en="🖨️ Print document" data-bn="🖨️ ডকুমেন্ট প্রিন্ট">🖨️ Print document</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORDPAD SECTION -->
+  <div class="section" id="wordpad">
+    <h2 class="section-heading" data-en="WordPad — Your Writing Superpower! 📝" data-bn="ওয়ার্ডপ্যাড — তোমার লেখার সুপারপাওয়ার! 📝">WordPad — Your Writing Superpower! 📝</h2>
+
+    <div class="card">
+      <p style="font-size: 1rem; line-height: 1.9;" data-en="WordPad is a FREE program that comes with Windows! It's like a magical notebook on your computer where you can write stories, letters, and lists — and make them look BEAUTIFUL! ✨" data-bn="ওয়ার্ডপ্যাড একটি বিনামূল্যে প্রোগ্রাম যা উইন্ডোজের সাথেই আসে! এটি কম্পিউটারে একটি জাদুর নোটবুকের মতো — এখানে গল্প, চিঠি, তালিকা লিখতে পারো এবং সুন্দর করে সাজাতে পারো! ✨">WordPad is a FREE program that comes with Windows! It's like a magical notebook on your computer where you can write stories, letters, and lists — and make them look BEAUTIFUL! ✨</p>
+
+      <h3 style="font-family: 'Fredoka One', cursive; margin: 20px 0 10px; color: var(--blue);" data-en="How to Open WordPad 🖥️" data-bn="ওয়ার্ডপ্যাড কীভাবে খুলবে 🖥️">How to Open WordPad 🖥️</h3>
+      <div class="shortcut-grid">
+        <div class="fact-card" style="padding: 15px;">
+          <p style="font-size: 0.9rem;" data-en="1️⃣ Click the Start button (⊞) at the bottom left" data-bn="1️⃣ নিচে বাম দিকে Start বোতামে (⊞) ক্লিক করো">1️⃣ Click the Start button (⊞) at the bottom left</p>
+        </div>
+        <div class="fact-card" style="padding: 15px;">
+          <p style="font-size: 0.9rem;" data-en="2️⃣ Type 'WordPad' in the search box" data-bn="2️⃣ সার্চ বক্সে 'WordPad' টাইপ করো">2️⃣ Type 'WordPad' in the search box</p>
+        </div>
+        <div class="fact-card" style="padding: 15px;">
+          <p style="font-size: 0.9rem;" data-en="3️⃣ Click on WordPad to open it!" data-bn="3️⃣ WordPad-এ ক্লিক করো খুলতে!">3️⃣ Click on WordPad to open it!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- WordPad Demo -->
+    <div class="card">
+      <div class="card-title" style="color: var(--green);">🖥️ <span data-en="WordPad Looks Like This!" data-bn="ওয়ার্ডপ্যাড এরকম দেখায়!">WordPad Looks Like This!</span></div>
+      <div class="wordpad-demo">
+        <div class="wp-titlebar">
+          <span class="wp-title">Document - WordPad</span>
+          <div class="wp-controls">
+            <button class="wp-btn min">—</button>
+            <button class="wp-btn max">□</button>
+            <button class="wp-btn close">✕</button>
+          </div>
+        </div>
+        <div class="wp-ribbon">
+          <span style="font-size: 0.7rem; color: #666; font-weight: bold; margin-right: 5px;" data-en="HOME | VIEW" data-bn="হোম | ভিউ">HOME | VIEW</span>
+          <button class="wp-tool active" id="boldBtn" onclick="formatText('bold')" data-en="Bold (B)" data-bn="বোল্ড (B)"><b>B</b></button>
+          <button class="wp-tool" id="italicBtn" onclick="formatText('italic')" data-en="Italic (I)" data-bn="ইটালিক (I)"><i>I</i></button>
+          <button class="wp-tool" id="underBtn" onclick="formatText('underline')" data-en="Underline (U)" data-bn="আন্ডারলাইন (U)"><u>U</u></button>
+          <select id="fontFamily" onchange="changeFont()" style="font-size: 0.75rem; border-radius: 3px; border: 1px solid #aaa; padding: 2px 4px; color: #333;">
+            <option>Times New Roman</option>
+            <option>Arial</option>
+            <option>Courier New</option>
+            <option>Comic Sans MS</option>
+            <option>Georgia</option>
+          </select>
+          <select id="fontSize" onchange="changeFontSize()" style="font-size: 0.75rem; border-radius: 3px; border: 1px solid #aaa; padding: 2px 4px; color: #333;">
+            <option>12</option><option>14</option><option>16</option><option>18</option><option>20</option><option>24</option><option>28</option><option>32</option>
+          </select>
+          <input type="color" id="fontColor" onchange="changeColor()" value="#000000" style="width: 28px; height: 22px; border: 1px solid #aaa; border-radius: 3px; cursor: pointer;" title="Font Color">
+          <button class="wp-tool" onclick="alignText('left')" title="Align Left">⬛</button>
+          <button class="wp-tool" onclick="alignText('center')" title="Center">⬛</button>
+          <button class="wp-tool" onclick="alignText('right')" title="Align Right">⬛</button>
+        </div>
+        <div id="wpContent" contenteditable="true" class="wp-textarea" spellcheck="true" data-en-placeholder="Start typing your amazing story here! 📖 Try the formatting buttons above!" data-bn-placeholder="এখানে তোমার অসাধারণ গল্প লেখা শুরু করো! 📖 উপরের ফরম্যাটিং বোতামগুলো ব্যবহার করো!">Start typing your amazing story here! 📖 Try the formatting buttons above!</div>
+      </div>
+      <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 10px; text-align: center;" data-en="⬆️ This is a real mini WordPad! Type in it and use the formatting buttons!" data-bn="⬆️ এটি একটি আসল মিনি ওয়ার্ডপ্যাড! এতে টাইপ করো এবং ফরম্যাটিং বোতাম ব্যবহার করো!">⬆️ This is a real mini WordPad! Type in it and use the formatting buttons!</p>
+    </div>
+
+    <!-- WordPad Features -->
+    <div class="card">
+      <div class="card-title" style="color: var(--orange);">⭐ <span data-en="Cool Things in WordPad!" data-bn="ওয়ার্ডপ্যাডে দারুণ জিনিস!">Cool Things in WordPad!</span></div>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-icon">𝐁</div>
+          <h3 style="font-family: 'Fredoka One', cursive;" data-en="Bold Text" data-bn="বোল্ড টেক্সট">Bold Text</h3>
+          <p data-en="Make words thick and strong! Use Ctrl+B or click the B button!" data-bn="শব্দ মোটা ও শক্তিশালী করো! Ctrl+B চাপো বা B বোতাম ক্লিক করো!">Make words thick and strong! Use Ctrl+B or click the B button!</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">𝑰</div>
+          <h3 style="font-family: 'Fredoka One', cursive;" data-en="Italic Text" data-bn="ইটালিক টেক্সট">Italic Text</h3>
+          <p data-en="Make words lean to the side! Like they're running fast! Use Ctrl+I!" data-bn="শব্দ একপাশে হেলিয়ে দাও! যেন দ্রুত দৌড়াচ্ছে! Ctrl+I চাপো!">Make words lean to the side! Like they're running fast! Use Ctrl+I!</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><u>U</u></div>
+          <h3 style="font-family: 'Fredoka One', cursive;" data-en="Underline" data-bn="আন্ডারলাইন">Underline</h3>
+          <p data-en="Draw a line under important words! Use Ctrl+U!" data-bn="গুরুত্বপূর্ণ শব্দের নিচে লাইন আঁকো! Ctrl+U চাপো!">Draw a line under important words! Use Ctrl+U!</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🎨</div>
+          <h3 style="font-family: 'Fredoka One', cursive;" data-en="Font Color" data-bn="ফন্ট রঙ">Font Color</h3>
+          <p data-en="Change text colors! Make rainbow colored writing!" data-bn="লেখার রঙ পরিবর্তন করো! রংধনু রঙের লেখা তৈরি করো!">Change text colors! Make rainbow colored writing!</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📏</div>
+          <h3 style="font-family: 'Fredoka One', cursive;" data-en="Font Size" data-bn="ফন্ট সাইজ">Font Size</h3>
+          <p data-en="Make letters BIG or small! Titles should be bigger!" data-bn="অক্ষর বড় বা ছোট করো! শিরোনাম বড় হওয়া উচিত!">Make letters BIG or small! Titles should be bigger!</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💾</div>
+          <h3 style="font-family: 'Fredoka One', cursive;" data-en="Save File" data-bn="ফাইল সেভ">Save File</h3>
+          <p data-en="Save your work so you don't lose it! Press Ctrl+S always!" data-bn="কাজ হারিয়ে না যাক বলে সেভ করো! সবসময় Ctrl+S চাপো!">Save your work so you don't lose it! Press Ctrl+S always!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color: var(--pink);">📖 <span data-en="Parts of WordPad Window" data-bn="ওয়ার্ডপ্যাড উইন্ডোর অংশ">Parts of WordPad Window</span></div>
+      <div class="shortcut-grid">
+        <div class="fact-card">
+          <h4 style="font-family: 'Fredoka One', cursive; color: var(--yellow);" data-en="📍 Title Bar" data-bn="📍 টাইটেল বার">📍 Title Bar</h4>
+          <p style="font-size: 0.9rem;" data-en="Shows the name of your document at the top!" data-bn="উপরে ডকুমেন্টের নাম দেখায়!">Shows the name of your document at the top!</p>
+        </div>
+        <div class="fact-card">
+          <h4 style="font-family: 'Fredoka One', cursive; color: var(--blue);" data-en="📍 Ribbon/Toolbar" data-bn="📍 রিবন/টুলবার">📍 Ribbon/Toolbar</h4>
+          <p style="font-size: 0.9rem;" data-en="Where all the formatting buttons are! Bold, Italic, etc." data-bn="সব ফরম্যাটিং বোতাম এখানে! বোল্ড, ইটালিক ইত্যাদি।">Where all the formatting buttons are! Bold, Italic, etc.</p>
+        </div>
+        <div class="fact-card">
+          <h4 style="font-family: 'Fredoka One', cursive; color: var(--green);" data-en="📍 Writing Area" data-bn="📍 লেখার এলাকা">📍 Writing Area</h4>
+          <p style="font-size: 0.9rem;" data-en="The big white space where you type your text!" data-bn="বড় সাদা জায়গা যেখানে লেখা টাইপ করো!">The big white space where you type your text!</p>
+        </div>
+        <div class="fact-card">
+          <h4 style="font-family: 'Fredoka One', cursive; color: var(--purple);" data-en="📍 Status Bar" data-bn="📍 স্ট্যাটাস বার">📍 Status Bar</h4>
+          <p style="font-size: 0.9rem;" data-en="Shows information about your document at the bottom!" data-bn="নিচে ডকুমেন্ট সম্পর্কে তথ্য দেখায়!">Shows information about your document at the bottom!</p>
+        </div>
+        <div class="fact-card">
+          <h4 style="font-family: 'Fredoka One', cursive; color: var(--orange);" data-en="📍 Scroll Bar" data-bn="📍 স্ক্রল বার">📍 Scroll Bar</h4>
+          <p style="font-size: 0.9rem;" data-en="On the right side — scroll up and down your document!" data-bn="ডানদিকে — ডকুমেন্ট উপরে-নিচে স্ক্রল করো!">On the right side — scroll up and down your document!</p>
+        </div>
+        <div class="fact-card">
+          <h4 style="font-family: 'Fredoka One', cursive; color: var(--pink);" data-en="📍 Cursor" data-bn="📍 কার্সর">📍 Cursor</h4>
+          <p style="font-size: 0.9rem;" data-en="The blinking line that shows where you will type next!" data-bn="জ্বলজ্বলে রেখা যা দেখায় পরবর্তী লেখা কোথায় যাবে!">The blinking line that shows where you will type next!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPING GAME SECTION -->
+  <div class="section" id="typing">
+    <h2 class="section-heading" data-en="🎮 Typing Adventure Game!" data-bn="🎮 টাইপিং অ্যাডভেঞ্চার গেম!">🎮 Typing Adventure Game!</h2>
+
+    <div class="card">
+      <p style="text-align: center; font-size: 1.1rem; margin-bottom: 20px;" data-en="Type the word shown below as fast as you can! 🚀 Be careful with spelling!" data-bn="নিচে দেখানো শব্দটি যত তাড়াতাড়ি পারো টাইপ করো! 🚀 বানানে সাবধান থাকো!">Type the word shown below as fast as you can! 🚀 Be careful with spelling!</p>
+
+      <div class="score-display">
+        <div class="score-box">
+          <div class="score-num" style="color: var(--green);" id="scoreDisplay">0</div>
+          <div class="score-label" data-en="⭐ Score" data-bn="⭐ স্কোর">⭐ Score</div>
+        </div>
+        <div class="score-box">
+          <div class="score-num" style="color: var(--yellow);" id="levelDisplay">1</div>
+          <div class="score-label" data-en="🎯 Level" data-bn="🎯 লেভেল">🎯 Level</div>
+        </div>
+        <div class="score-box">
+          <div class="score-num" style="color: var(--pink);" id="streakDisplay">0</div>
+          <div class="score-label" data-en="🔥 Streak" data-bn="🔥 স্ট্রিক">🔥 Streak</div>
+        </div>
+        <div class="score-box">
+          <div class="score-num" style="color: var(--blue);" id="timerDisplay">30</div>
+          <div class="score-label" data-en="⏱️ Time" data-bn="⏱️ সময়">⏱️ Time</div>
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="timerBar" style="width: 100%;"></div>
+      </div>
+
+      <div class="game-area">
+        <div id="wordEmoji" style="font-size: 3rem; margin-bottom: 5px;">🎯</div>
+        <div class="game-word" id="gameWord">
+          <span>C</span><span>A</span><span>T</span>
+        </div>
+        <p id="wordHint" style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 15px;">🐱 A small furry animal</p>
+        <input type="text" class="game-input" id="gameInput" placeholder="Type here..." autocomplete="off" spellcheck="false">
+        <div style="margin-top: 20px;">
+          <button class="btn yellow" onclick="startGame()" id="startBtn" data-en="🚀 Start Game!" data-bn="🚀 গেম শুরু করো!">🚀 Start Game!</button>
+          <button class="btn" onclick="nextWord()" id="skipBtn" style="display:none;" data-en="⏭️ Skip Word" data-bn="⏭️ শব্দ এড়াও">⏭️ Skip Word</button>
+        </div>
+        <div id="feedback" style="font-family: 'Fredoka One', cursive; font-size: 1.5rem; margin-top: 15px; min-height: 40px;"></div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <h3 style="font-family: 'Fredoka One', cursive; margin-bottom: 10px;" data-en="🏆 Your Badges" data-bn="🏆 তোমার ব্যাজ">🏆 Your Badges</h3>
+        <div class="badges">
+          <div class="badge" id="badge1">🌟 <span data-en="First Word!" data-bn="প্রথম শব্দ!">First Word!</span></div>
+          <div class="badge" id="badge2">🔥 <span data-en="On Fire! (5 streak)" data-bn="জ্বলছো! (৫ স্ট্রিক)">On Fire! (5 streak)</span></div>
+          <div class="badge" id="badge3">⚡ <span data-en="Speed Typer! (10 words)" data-bn="স্পিড টাইপার! (১০ শব্দ)">Speed Typer! (10 words)</span></div>
+          <div class="badge" id="badge4">👑 <span data-en="Keyboard King! (50 pts)" data-bn="কীবোর্ড রাজা! (৫০ পয়েন্ট)">Keyboard King! (50 pts)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Virtual keyboard highlight -->
+    <div class="card">
+      <div class="card-title" style="color: var(--blue);">⌨️ <span data-en="Live Key Highlighter" data-bn="লাইভ কী হাইলাইটার">Live Key Highlighter</span></div>
+      <p style="margin-bottom: 15px;" data-en="Type in the box below and watch the keys light up! 🌟" data-bn="নিচের বক্সে টাইপ করো এবং কীগুলো জ্বলে উঠতে দেখো! 🌟">Type in the box below and watch the keys light up! 🌟</p>
+      <input type="text" id="highlightInput" oninput="highlightKeys(event)" placeholder="Type anything here..." style="background: rgba(255,255,255,0.1); border: 2px solid var(--blue); border-radius: 15px; padding: 12px 20px; width: 100%; font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: white; outline: none; margin-bottom: 15px;">
+      <div class="keyboard-container" id="miniKeyboard">
+        <div class="kb-row">
+          <div class="key" data-key="q">Q</div><div class="key" data-key="w">W</div><div class="key" data-key="e">E</div>
+          <div class="key" data-key="r">R</div><div class="key" data-key="t">T</div><div class="key" data-key="y">Y</div>
+          <div class="key" data-key="u">U</div><div class="key" data-key="i">I</div><div class="key" data-key="o">O</div>
+          <div class="key" data-key="p">P</div>
+        </div>
+        <div class="kb-row">
+          <div class="key" data-key="a">A</div><div class="key" data-key="s">S</div><div class="key" data-key="d">D</div>
+          <div class="key" data-key="f">F</div><div class="key" data-key="g">G</div><div class="key" data-key="h">H</div>
+          <div class="key" data-key="j">J</div><div class="key" data-key="k">K</div><div class="key" data-key="l">L</div>
+        </div>
+        <div class="kb-row">
+          <div class="key" data-key="z">Z</div><div class="key" data-key="x">X</div><div class="key" data-key="c">C</div>
+          <div class="key" data-key="v">V</div><div class="key" data-key="b">B</div><div class="key" data-key="n">N</div>
+          <div class="key" data-key="m">M</div>
+        </div>
+        <div class="kb-row">
+          <div class="key space-key" data-key=" ">Space</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ SECTION -->
+  <div class="section" id="quiz">
+    <h2 class="section-heading" data-en="🧠 Fun Quiz Time!" data-bn="🧠 মজার কুইজ সময়!">🧠 Fun Quiz Time!</h2>
+    <div class="card">
+      <div id="quizContainer">
+        <div id="quizProgress" style="text-align: right; font-size: 0.85rem; margin-bottom: 10px; color: rgba(255,255,255,0.6);">
+          <span data-en="Question" data-bn="প্রশ্ন">Question</span> <span id="qNum">1</span> / <span id="qTotal">10</span>
+        </div>
+        <div class="progress-bar" style="margin-bottom: 20px;">
+          <div class="progress-fill" id="quizBar" style="width: 0%;"></div>
+        </div>
+        <div id="questionText" style="font-family: 'Fredoka One', cursive; font-size: 1.5rem; margin-bottom: 20px; color: var(--yellow);"></div>
+        <div id="optionsContainer"></div>
+        <div id="quizFeedback" style="font-family: 'Fredoka One', cursive; font-size: 1.2rem; min-height: 40px; margin-top: 15px; text-align: center;"></div>
+        <div style="text-align: center; margin-top: 15px;">
+          <button class="btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;" data-en="Next Question ➡️" data-bn="পরের প্রশ্ন ➡️">Next Question ➡️</button>
+          <button class="btn yellow" id="startQuizBtn" onclick="startQuiz()" data-en="🚀 Start Quiz!" data-bn="🚀 কুইজ শুরু করো!">🚀 Start Quiz!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p data-en="🎓 TypeKids — Learning is Fun! 🌈 Made with ❤️ for young learners" data-bn="🎓 টাইপকিডস — শেখা মজার! 🌈 ছোট্ট শিক্ষার্থীদের জন্য ❤️ দিয়ে তৈরি">🎓 TypeKids — Learning is Fun! 🌈 Made with ❤️ for young learners</p>
+</footer>
+
+<script>
+// =========================================
+// LANGUAGE SYSTEM
+// =========================================
+let lang = 'en';
+
+function toggleLang() {
+  lang = lang === 'en' ? 'bn' : 'en';
+  document.getElementById('langBtn').textContent = lang === 'en' ? '🇧🇩 বাংলা' : '🇬🇧 English';
+  applyLanguage();
+  // Update quiz if running
+  if (quizStarted) {
+    loadQuestion();
+  }
+}
+
+function applyLanguage() {
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  // Update placeholder for wordpad
+  const wpContent = document.getElementById('wpContent');
+  if(wpContent && wpContent.getAttribute('data-' + lang + '-placeholder')) {
+    // only update if user hasn't typed
+  }
+}
+
+// =========================================
+// NAVIGATION
+// =========================================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // activate correct tab
+  const tabs = document.querySelectorAll('.tab-btn');
+  const secIndex = ['home','keyboard','wordpad','typing','quiz'];
+  tabs[secIndex.indexOf(id)].classList.add('active');
+}
+
+// =========================================
+// KEY INFO
+// =========================================
+function keyInfo(key, enDesc, bnDesc) {
+  const el = document.getElementById('keyInfo');
+  el.textContent = '🔑 ' + key.toUpperCase() + ': ' + (lang === 'en' ? enDesc : bnDesc);
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'fadeIn 0.3s ease';
+  spawnFloatEmoji('✨');
+}
+
+// =========================================
+// WORDPAD DEMO
+// =========================================
+function formatText(cmd) {
+  const btn = document.getElementById(cmd === 'bold' ? 'boldBtn' : cmd === 'italic' ? 'italicBtn' : 'underBtn');
+  document.execCommand(cmd, false, null);
+  btn.classList.toggle('active');
+  document.getElementById('wpContent').focus();
+}
+function changeFont() {
+  document.execCommand('fontName', false, document.getElementById('fontFamily').value);
+  document.getElementById('wpContent').focus();
+}
+function changeFontSize() {
+  document.execCommand('fontSize', false, Math.ceil(document.getElementById('fontSize').value / 5));
+  document.getElementById('wpContent').focus();
+}
+function changeColor() {
+  document.execCommand('foreColor', false, document.getElementById('fontColor').value);
+  document.getElementById('wpContent').focus();
+}
+function alignText(dir) {
+  document.execCommand('justify' + dir.charAt(0).toUpperCase() + dir.slice(1), false, null);
+  document.getElementById('wpContent').focus();
+}
+
+// =========================================
+// TYPING GAME
+// =========================================
+const gameWords = [
+  { en: 'CAT', bn: 'বিড়াল', emoji: '🐱', hint: { en: 'A small furry animal', bn: 'একটি ছোট পশম আছে এমন প্রাণী' } },
+  { en: 'DOG', bn: 'কুকুর', emoji: '🐶', hint: { en: 'Man\'s best friend!', bn: 'মানুষের সেরা বন্ধু!' } },
+  { en: 'SUN', bn: 'সূর্য', emoji: '☀️', hint: { en: 'It gives us light and warmth', bn: 'এটি আলো ও উষ্ণতা দেয়' } },
+  { en: 'TREE', bn: 'গাছ', emoji: '🌳', hint: { en: 'It grows in the ground and has leaves', bn: 'মাটিতে জন্মে এবং পাতা আছে' } },
+  { en: 'BOOK', bn: 'বই', emoji: '📚', hint: { en: 'You read this to learn!', bn: 'শেখার জন্য পড়ো!' } },
+  { en: 'FISH', bn: 'মাছ', emoji: '🐠', hint: { en: 'Lives in water and has fins', bn: 'পানিতে থাকে এবং পাখনা আছে' } },
+  { en: 'STAR', bn: 'তারা', emoji: '⭐', hint: { en: 'Shines in the night sky', bn: 'রাতের আকাশে জ্বলে' } },
+  { en: 'MOON', bn: 'চাঁদ', emoji: '🌙', hint: { en: 'Appears at night in the sky', bn: 'রাতে আকাশে দেখা যায়' } },
+  { en: 'FROG', bn: 'ব্যাঙ', emoji: '🐸', hint: { en: 'Jumps and says ribbit!', bn: 'লাফায় এবং ব্যাঙ ডাক দেয়!' } },
+  { en: 'CAKE', bn: 'কেক', emoji: '🎂', hint: { en: 'Sweet treat for birthdays!', bn: 'জন্মদিনের মিষ্টি খাবার!' } },
+  { en: 'RAIN', bn: 'বৃষ্টি', emoji: '🌧️', hint: { en: 'Water falling from clouds', bn: 'মেঘ থেকে পানি পড়ে' } },
+  { en: 'BALL', bn: 'বল', emoji: '⚽', hint: { en: 'Round and you can play with it', bn: 'গোলাকার এবং খেলা যায়' } },
+  { en: 'BIRD', bn: 'পাখি', emoji: '🐦', hint: { en: 'It can fly and has feathers', bn: 'উড়তে পারে এবং পালক আছে' } },
+  { en: 'SHIP', bn: 'জাহাজ', emoji: '🚢', hint: { en: 'Travels on water', bn: 'পানিতে চলে' } },
+  { en: 'KITE', bn: 'ঘুড়ি', emoji: '🪁', hint: { en: 'You fly it in the sky with string', bn: 'সুতো দিয়ে আকাশে ওড়াও' } },
+  { en: 'LION', bn: 'সিংহ', emoji: '🦁', hint: { en: 'The king of the jungle!', bn: 'জঙ্গলের রাজা!' } },
+  { en: 'ROSE', bn: 'গোলাপ', emoji: '🌹', hint: { en: 'A beautiful flower', bn: 'একটি সুন্দর ফুল' } },
+  { en: 'DUCK', bn: 'হাঁস', emoji: '🦆', hint: { en: 'Says quack and likes water', bn: 'প্যাঁক প্যাঁক বলে এবং পানি পছন্দ করে' } },
+];
+
+let score = 0, level = 1, streak = 0, wordsTyped = 0;
+let gameActive = false, gameInterval = null, timeLeft = 30;
+let currentWordIdx = 0;
+
+function startGame() {
+  score = 0; level = 1; streak = 0; wordsTyped = 0; timeLeft = 30;
+  updateScores();
+  gameActive = true;
+  document.getElementById('startBtn').style.display = 'none';
+  document.getElementById('skipBtn').style.display = 'inline-block';
+  document.getElementById('gameInput').focus();
+  shuffleWords();
+  loadGameWord();
+  gameInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timerDisplay').textContent = timeLeft;
+    document.getElementById('timerBar').style.width = (timeLeft / 30 * 100) + '%';
+    if(timeLeft <= 0) endGame();
+  }, 1000);
+  document.getElementById('gameInput').addEventListener('input', checkTyping);
+}
+
+function shuffleWords() {
+  gameWords.sort(() => Math.random() - 0.5);
+  currentWordIdx = 0;
+}
+
+function loadGameWord() {
+  const w = gameWords[currentWordIdx % gameWords.length];
+  document.getElementById('wordEmoji').textContent = w.emoji;
+  document.getElementById('wordHint').textContent = lang === 'en' ? '💡 ' + w.hint.en : '💡 ' + w.hint.bn;
+  const wordDiv = document.getElementById('gameWord');
+  wordDiv.innerHTML = w.en.split('').map(c => '<span>' + c + '</span>').join('');
+  document.getElementById('gameInput').value = '';
+  document.getElementById('feedback').textContent = '';
+}
+
+function checkTyping() {
+  if (!gameActive) return;
+  const input = document.getElementById('gameInput').value.toUpperCase();
+  const word = gameWords[currentWordIdx % gameWords.length].en;
+  const spans = document.getElementById('gameWord').querySelectorAll('span');
+  spans.forEach((s, i) => {
+    s.className = input[i] ? (input[i] === word[i] ? 'correct' : 'wrong') : '';
+  });
+  if (input === word) {
+    score += 10 + streak * 2;
+    streak++;
+    wordsTyped++;
+    spawnConfetti();
+    spawnFloatEmoji('⭐');
+    document.getElementById('feedback').textContent = streak > 3 ? '🔥 On Fire! +' + (10 + streak*2) : '✅ Great! +' + (10 + streak*2);
+    checkBadges();
+    timeLeft = Math.min(timeLeft + 3, 30);
+    currentWordIdx++;
+    setTimeout(loadGameWord, 600);
+  }
+}
+
+function nextWord() {
+  if (!gameActive) return;
+  streak = 0;
+  currentWordIdx++;
+  loadGameWord();
+}
+
+function endGame() {
+  gameActive = false;
+  clearInterval(gameInterval);
+  document.getElementById('startBtn').style.display = 'inline-block';
+  document.getElementById('skipBtn').style.display = 'none';
+  document.getElementById('feedback').textContent = lang === 'en'
+    ? '🎉 Game Over! Score: ' + score
+    : '🎉 গেম শেষ! স্কোর: ' + score;
+  document.getElementById('gameInput').removeEventListener('input', checkTyping);
+  if (score > 0) spawnConfetti();
+}
+
+function updateScores() {
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('levelDisplay').textContent = Math.floor(score / 50) + 1;
+  document.getElementById('streakDisplay').textContent = streak;
+  document.getElementById('timerDisplay').textContent = timeLeft;
+}
+
+setInterval(() => { if(gameActive) updateScores(); }, 200);
+
+function checkBadges() {
+  if (wordsTyped >= 1) document.getElementById('badge1').classList.add('earned');
+  if (streak >= 5) document.getElementById('badge2').classList.add('earned');
+  if (wordsTyped >= 10) document.getElementById('badge3').classList.add('earned');
+  if (score >= 50) document.getElementById('badge4').classList.add('earned');
+}
+
+// =========================================
+// KEY HIGHLIGHTER
+// =========================================
+function highlightKeys(e) {
+  document.querySelectorAll('#miniKeyboard .key').forEach(k => k.classList.remove('highlight'));
+  const val = document.getElementById('highlightInput').value;
+  if (val.length > 0) {
+    const lastChar = val[val.length - 1].toLowerCase();
+    const key = document.querySelector('#miniKeyboard [data-key="' + lastChar + '"]');
+    if (key) {
+      key.classList.add('highlight');
+      setTimeout(() => key.classList.remove('highlight'), 300);
+    }
+  }
+}
+
+// =========================================
+// QUIZ
+// =========================================
+const quizData = [
+  {
+    en: 'What does the SPACEBAR do?',
+    bn: 'স্পেসবার কী করে?',
+    opts_en: ['Creates space between words', 'Deletes text', 'Saves the file', 'Opens a menu'],
+    opts_bn: ['শব্দের মাঝে জায়গা তৈরি করে', 'লেখা মুছে', 'ফাইল সেভ করে', 'মেনু খোলে'],
+    ans: 0,
+    emoji: '📏'
+  },
+  {
+    en: 'Which shortcut SAVES a file?',
+    bn: 'কোন শর্টকাট ফাইল সেভ করে?',
+    opts_en: ['Ctrl + S', 'Ctrl + C', 'Ctrl + V', 'Ctrl + Z'],
+    opts_bn: ['Ctrl + S', 'Ctrl + C', 'Ctrl + V', 'Ctrl + Z'],
+    ans: 0,
+    emoji: '💾'
+  },
+  {
+    en: 'What does the BACKSPACE key do?',
+    bn: 'ব্যাকস্পেস কী কী করে?',
+    opts_en: ['Adds a letter', 'Deletes the letter before cursor', 'Moves to next line', 'Opens a menu'],
+    opts_bn: ['একটি অক্ষর যোগ করে', 'কার্সরের আগের অক্ষর মুছে', 'পরের লাইনে যায়', 'মেনু খোলে'],
+    ans: 1,
+    emoji: '⌫'
+  },
+  {
+    en: 'What is WordPad?',
+    bn: 'ওয়ার্ডপ্যাড কী?',
+    opts_en: ['A drawing program', 'A text writing program', 'A music player', 'An internet browser'],
+    opts_bn: ['একটি ড্রয়িং প্রোগ্রাম', 'একটি লেখার প্রোগ্রাম', 'একটি মিউজিক প্লেয়ার', 'একটি ইন্টারনেট ব্রাউজার'],
+    ans: 1,
+    emoji: '📝'
+  },
+  {
+    en: 'Which key starts a NEW LINE?',
+    bn: 'কোন কী নতুন লাইন শুরু করে?',
+    opts_en: ['Shift', 'Caps Lock', 'Enter', 'Tab'],
+    opts_bn: ['Shift', 'Caps Lock', 'Enter', 'Tab'],
+    ans: 2,
+    emoji: '↵'
+  },
+  {
+    en: 'Ctrl + C means?',
+    bn: 'Ctrl + C মানে কী?',
+    opts_en: ['Cut', 'Copy', 'Close', 'Create'],
+    opts_bn: ['কাট', 'কপি', 'বন্ধ', 'তৈরি'],
+    ans: 1,
+    emoji: '📋'
+  },
+  {
+    en: 'What makes text BOLD in WordPad?',
+    bn: 'ওয়ার্ডপ্যাডে লেখা বোল্ড করতে কী ব্যবহার করো?',
+    opts_en: ['Ctrl + B', 'Ctrl + I', 'Ctrl + U', 'Ctrl + A'],
+    opts_bn: ['Ctrl + B', 'Ctrl + I', 'Ctrl + U', 'Ctrl + A'],
+    ans: 0,
+    emoji: '𝐁'
+  },
+  {
+    en: 'Which finger presses the SPACE BAR?',
+    bn: 'স্পেস বার কোন আঙুল দিয়ে চাপতে হয়?',
+    opts_en: ['Index finger', 'Pinky finger', 'Thumb', 'Ring finger'],
+    opts_bn: ['তর্জনী', 'কনিষ্ঠা', 'বুড়ো আঙুল', 'অনামিকা'],
+    ans: 2,
+    emoji: '👍'
+  },
+  {
+    en: 'Ctrl + Z does what?',
+    bn: 'Ctrl + Z কী করে?',
+    opts_en: ['Redo', 'Undo (go back!)', 'Zoom in', 'Close'],
+    opts_bn: ['রিডু', 'আনডু (পেছনে যাও!)', 'জুম ইন', 'বন্ধ'],
+    ans: 1,
+    emoji: '⏪'
+  },
+  {
+    en: 'What does CAPS LOCK do?',
+    bn: 'ক্যাপস লক কী করে?',
+    opts_en: ['Makes text smaller', 'Makes ALL letters UPPERCASE', 'Saves the file', 'Copies text'],
+    opts_bn: ['লেখা ছোট করে', 'সব অক্ষর বড় হাতের করে', 'ফাইল সেভ করে', 'লেখা কপি করে'],
+    ans: 1,
+    emoji: '🔠'
+  },
+];
+
+let qIdx = 0, quizScore = 0, quizStarted = false;
+
+function startQuiz() {
+  quizStarted = true;
+  qIdx = 0; quizScore = 0;
+  document.getElementById('startQuizBtn').style.display = 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const q = quizData[qIdx];
+  document.getElementById('qNum').textContent = qIdx + 1;
+  document.getElementById('qTotal').textContent = quizData.length;
+  document.getElementById('quizBar').style.width = ((qIdx / quizData.length) * 100) + '%';
+  document.getElementById('questionText').textContent = q.emoji + ' ' + (lang === 'en' ? q.en : q.bn);
+  const opts = lang === 'en' ? q.opts_en : q.opts_bn;
+  document.getElementById('optionsContainer').innerHTML = opts.map((o, i) =>
+    `<button class="quiz-option" onclick="checkAnswer(${i}, ${q.ans})">
+      <span style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0">${['A','B','C','D'][i]}</span>
+      ${o}
+    </button>`
+  ).join('');
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('nextQBtn').style.display = 'none';
+}
+
+function checkAnswer(selected, correct) {
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach((o, i) => {
+    o.style.pointerEvents = 'none';
+    if (i === correct) o.classList.add('correct');
+    else if (i === selected && selected !== correct) o.classList.add('wrong');
+  });
+  if (selected === correct) {
+    quizScore++;
+    document.getElementById('quizFeedback').textContent = ['🎉 Correct! Awesome!', '✅ That\'s right!', '🌟 You got it!'][Math.floor(Math.random()*3)];
+    document.getElementById('quizFeedback').style.color = '#6BCB77';
+    spawnConfetti();
+  } else {
+    document.getElementById('quizFeedback').textContent = lang === 'en' ? '❌ Not quite! The correct answer is highlighted!' : '❌ একটু ভুল! সঠিক উত্তর হাইলাইট হয়েছে!';
+    document.getElementById('quizFeedback').style.color = '#FF6B6B';
+  }
+  if (qIdx + 1 < quizData.length) {
+    document.getElementById('nextQBtn').style.display = 'inline-block';
+    document.getElementById('nextQBtn').setAttribute('data-en', 'Next Question ➡️');
+    document.getElementById('nextQBtn').setAttribute('data-bn', 'পরের প্রশ্ন ➡️');
+    document.getElementById('nextQBtn').textContent = lang === 'en' ? 'Next Question ➡️' : 'পরের প্রশ্ন ➡️';
+  } else {
+    setTimeout(() => showQuizResult(), 1000);
+  }
+}
+
+function nextQuestion() {
+  qIdx++;
+  loadQuestion();
+}
+
+function showQuizResult() {
+  const pct = Math.round(quizScore / quizData.length * 100);
+  const msgs_en = ['Keep practicing! You can do it! 💪', 'Good effort! Try again! 🌟', 'Great job! You\'re learning fast! 🚀', 'AMAZING! You\'re a keyboard genius! 👑'];
+  const msgs_bn = ['অনুশীলন চালিয়ে যাও! তুমি পারবে! 💪', 'ভালো চেষ্টা! আবার চেষ্টা করো! 🌟', 'দারুণ! তুমি দ্রুত শিখছো! 🚀', 'অবিশ্বাস্য! তুমি কীবোর্ড জিনিয়াস! 👑'];
+  const msgIdx = pct < 40 ? 0 : pct < 60 ? 1 : pct < 80 ? 2 : 3;
+  document.getElementById('quizContainer').innerHTML = `
+    <div style="text-align: center; padding: 20px;">
+      <div style="font-size: 4rem; margin-bottom: 10px;">${pct >= 80 ? '🏆' : pct >= 60 ? '🌟' : pct >= 40 ? '😊' : '💪'}</div>
+      <div style="font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--yellow); margin-bottom: 10px;">${pct}%</div>
+      <div style="font-size: 1.1rem; margin-bottom: 5px;" data-en="You got ${quizScore} out of ${quizData.length} correct!" data-bn="তুমি ${quizData.length}-এর মধ্যে ${quizScore}টি সঠিক করেছ!">${lang === 'en' ? `You got ${quizScore} out of ${quizData.length} correct!` : `তুমি ${quizData.length}-এর মধ্যে ${quizScore}টি সঠিক করেছ!`}</div>
+      <div style="font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--pink); margin: 15px 0;">${lang === 'en' ? msgs_en[msgIdx] : msgs_bn[msgIdx]}</div>
+      <button class="btn yellow" onclick="restartQuiz()" data-en="🔄 Play Again!" data-bn="🔄 আবার খেলো!">${lang === 'en' ? '🔄 Play Again!' : '🔄 আবার খেলো!'}</button>
+    </div>
+  `;
+  if (pct >= 80) spawnConfetti();
+}
+
+function restartQuiz() {
+  quizStarted = false;
+  document.getElementById('quizContainer').innerHTML = `
+    <div id="quizProgress" style="text-align: right; font-size: 0.85rem; margin-bottom: 10px; color: rgba(255,255,255,0.6);">
+      <span data-en="Question" data-bn="প্রশ্ন">${lang === 'en' ? 'Question' : 'প্রশ্ন'}</span> <span id="qNum">1</span> / <span id="qTotal">10</span>
+    </div>
+    <div class="progress-bar" style="margin-bottom: 20px;"><div class="progress-fill" id="quizBar" style="width: 0%;"></div></div>
+    <div id="questionText" style="font-family: 'Fredoka One', cursive; font-size: 1.5rem; margin-bottom: 20px; color: var(--yellow);"></div>
+    <div id="optionsContainer"></div>
+    <div id="quizFeedback" style="font-family: 'Fredoka One', cursive; font-size: 1.2rem; min-height: 40px; margin-top: 15px; text-align: center;"></div>
+    <div style="text-align: center; margin-top: 15px;">
+      <button class="btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">${lang === 'en' ? 'Next Question ➡️' : 'পরের প্রশ্ন ➡️'}</button>
+      <button class="btn yellow" id="startQuizBtn" onclick="startQuiz()">${lang === 'en' ? '🚀 Start Quiz!' : '🚀 কুইজ শুরু করো!'}</button>
+    </div>
+  `;
+}
+
+// =========================================
+// EFFECTS
+// =========================================
+function spawnConfetti() {
+  const colors = ['#FF6B9D','#FFD93D','#4CC9F0','#6BCB77','#C77DFF','#FF9A3C'];
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `left:${Math.random()*100}vw; top:0; background:${colors[Math.floor(Math.random()*colors.length)]}; border-radius:${Math.random() > 0.5 ? '50%' : '2px'}; animation-delay:${Math.random()*0.5}s;`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2000);
+    }, i * 50);
+  }
+}
+
+function spawnFloatEmoji(emoji) {
+  const el = document.createElement('div');
+  el.className = 'float-emoji';
+  el.textContent = emoji;
+  el.style.cssText = `left:${20 + Math.random()*60}vw; bottom: 20vh;`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+// Init
+applyLanguage();
+</script>
+</body>
+</html>

@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenAI Mastery — 6-Month Learning Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: #ffffff0d;
+    --border2: #ffffff18;
+    --text: #f0f0f5;
+    --text-muted: #7a7a90;
+    --text-dim: #4a4a60;
+    --accent: #6c6cff;
+    --accent2: #ff6c9d;
+    --accent3: #6cffcb;
+    --accent4: #ffb86c;
+    --glow: #6c6cff30;
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+    --serif: 'Fraunces', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border2);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .logo-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .logo-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .sidebar-section {
+    padding: 24px 16px 8px;
+  }
+
+  .sidebar-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 8px;
+    margin-bottom: 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover {
+    background: var(--border);
+    color: var(--text);
+  }
+
+  .nav-item.active {
+    background: linear-gradient(90deg, var(--accent)18, transparent);
+    color: var(--accent);
+    border-left: 2px solid var(--accent);
+    padding-left: 8px;
+  }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .phase-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    margin-left: 280px;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 80px 80px 60px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 60% 50%, black 40%, transparent 100%);
+  }
+
+  .hero-orbs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+  }
+
+  .orb-1 { width: 500px; height: 500px; background: var(--accent); right: -100px; top: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: var(--accent2); right: 200px; bottom: -50px; opacity: 0.1; }
+  .orb-3 { width: 200px; height: 200px; background: var(--accent3); left: 300px; top: 50px; opacity: 0.08; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 640px;
+    position: relative;
+  }
+
+  .hero-title .highlight {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    margin-top: 24px;
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 540px;
+    line-height: 1.7;
+    font-weight: 400;
+    position: relative;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 48px;
+    position: relative;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border2);
+    color: var(--text-muted);
+    background: var(--surface);
+  }
+
+  /* CONTENT AREA */
+  .content {
+    padding: 60px 80px;
+  }
+
+  /* PHASE HEADER */
+  .phase-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .phase-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .phase-number::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent)40, transparent);
+    max-width: 200px;
+  }
+
+  .phase-title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .phase-subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 8px;
+  }
+
+  .phase-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .meta-chip span {
+    color: var(--accent3);
+  }
+
+  /* WEEK CARDS */
+  .weeks-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .week-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .week-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .week-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .week-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent);
+    padding: 4px 10px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .week-title {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .week-hours {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .week-toggle {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .week-card.open .week-toggle { transform: rotate(180deg); }
+
+  .week-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .week-card.open .week-body { display: block; }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .day-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .day-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent3);
+    margin-bottom: 8px;
+  }
+
+  .day-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .day-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .topics-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .topic-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+
+  .topic-item::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 10px;
+  }
+
+  /* PROJECT CARD */
+  .project-card {
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: 'PROJECT';
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+    border: 1px solid var(--accent2)40;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .project-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .project-desc {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 640px;
+    margin-bottom: 16px;
+  }
+
+  .project-stack {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .stack-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    background: var(--accent)18;
+    border: 1px solid var(--accent)30;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  /* DIVIDER */
+  .phase-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent)40, var(--accent2)20, transparent);
+    margin: 60px 0;
+  }
+
+  /* OVERVIEW TABLE */
+  .overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 13px;
+  }
+
+  .overview-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .overview-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+
+  .overview-table tr:hover td { background: var(--surface2); }
+
+  .overview-table td:first-child {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .overview-table td:nth-child(2) {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* PROGRESS BAR */
+  .progress-container {
+    margin-bottom: 48px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .progress-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .progress-phases {
+    display: flex;
+    gap: 4px;
+  }
+
+  .progress-phase {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .progress-phase-label {
+    position: absolute;
+    top: 14px;
+    left: 0;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* CALLOUT */
+  .callout {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border: 1px solid;
+  }
+
+  .callout.info {
+    background: var(--accent)0a;
+    border-color: var(--accent)30;
+  }
+
+  .callout.tip {
+    background: var(--accent3)0a;
+    border-color: var(--accent3)30;
+  }
+
+  .callout.warning {
+    background: var(--accent4)0a;
+    border-color: var(--accent4)30;
+  }
+
+  .callout-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .callout-content {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .callout-content strong {
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+
+  /* SKILL PILLS */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .skill-pill {
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border2);
+    color: var(--text-muted);
+    background: var(--surface2);
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    margin: 80px 80px 0;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  /* SCROLL TO TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 200;
+    border: none;
+  }
+
+  .scroll-top.visible { opacity: 1; }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeInUp 0.6s ease both; }
+  .hero-title { animation: fadeInUp 0.6s ease 0.1s both; }
+  .hero-desc { animation: fadeInUp 0.6s ease 0.2s both; }
+  .hero-stats { animation: fadeInUp 0.6s ease 0.3s both; }
+  .hero-tags { animation: fadeInUp 0.6s ease 0.4s both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero, .content { padding: 40px 32px; }
+    .doc-footer { margin: 60px 32px 0; }
+    .days-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-badge">⚡ GenAI Mastery</div>
+    <div class="logo-title">Generative AI<br>Course Documentation</div>
+    <div class="logo-sub">v2025 · 6 Months · 144 Hours</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Getting Started</div>
+    <a href="#overview" class="nav-item active"><div class="nav-dot"></div> Course Overview</a>
+    <a href="#prerequisites" class="nav-item"><div class="nav-dot"></div> Prerequisites</a>
+    <a href="#schedule" class="nav-item"><div class="nav-dot"></div> Weekly Schedule</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Phase 1 · Foundation</div>
+    <a href="#phase1" class="nav-item"><div class="nav-dot"></div> Month 1: AI Fundamentals <span class="phase-tag" style="background:#6c6cff18;color:var(--accent)">W1-4</span></a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Phase 2 · Core GenAI</div>
+    <a href="#phase2" class="nav-item"><div class="nav-dot"></div> Month 2: LLMs & Prompting <span class="phase-tag" style="background:#ff6c9d18;color:var(--accent2)">W5-8</span></a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Phase 3 · Applied AI</div>
+    <a href="#phase3" class="nav-item"><div class="nav-dot"></div> Month 3: RAG & Agents <span class="phase-tag" style="background:#6cffcb18;color:var(--accent3)">W9-12</span></a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Phase 4 · Advanced</div>
+    <a href="#phase4" class="nav-item"><div class="nav-dot"></div> Month 4: Fine-tuning & MLOps <span class="phase-tag" style="background:#ffb86c18;color:var(--accent4)">W13-16</span></a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Phase 5 · Multimodal</div>
+    <a href="#phase5" class="nav-item"><div class="nav-dot"></div> Month 5: Vision & Audio <span class="phase-tag" style="background:#6c6cff18;color:var(--accent)">W17-20</span></a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Phase 6 · Capstone</div>
+    <a href="#phase6" class="nav-item"><div class="nav-dot"></div> Month 6: Capstone Project <span class="phase-tag" style="background:#ff6c9d18;color:var(--accent2)">W21-24</span></a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Resources</div>
+    <a href="#tools" class="nav-item"><div class="nav-dot"></div> Tools & Stack</a>
+    <a href="#projects" class="nav-item"><div class="nav-dot"></div> Project Gallery</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="hero-eyebrow">GENERATIVE AI MASTERY PROGRAM · 2025</div>
+    <h1 class="hero-title">From Zero to <span class="highlight">AI Engineer</span><br>in 6 Months</h1>
+    <p class="hero-desc">A structured, project-driven curriculum designed to take you from absolute beginner to professional-grade Generative AI developer — building real-world applications every step of the way.</p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Months Total</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">144</div>
+        <div class="stat-label">Hours of Learning</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">24</div>
+        <div class="stat-label">Weeks · 3 Days/Week</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">12+</div>
+        <div class="stat-label">Real Projects</div>
+      </div>
+    </div>
+
+    <div class="hero-tags">
+      <span class="tag">Python</span>
+      <span class="tag">LangChain</span>
+      <span class="tag">OpenAI API</span>
+      <span class="tag">Hugging Face</span>
+      <span class="tag">RAG</span>
+      <span class="tag">LLM Fine-tuning</span>
+      <span class="tag">Stable Diffusion</span>
+      <span class="tag">Vector DBs</span>
+      <span class="tag">MLOps</span>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <section id="overview">
+      <div class="progress-container">
+        <div class="progress-title">6-Month Learning Journey</div>
+        <div class="progress-phases">
+          <div class="progress-phase" style="background:var(--accent);">
+            <div class="progress-phase-label">Phase 1<br>Foundation</div>
+          </div>
+          <div class="progress-phase" style="background:var(--accent2);">
+            <div class="progress-phase-label">Phase 2<br>Core GenAI</div>
+          </div>
+          <div class="progress-phase" style="background:var(--accent3);">
+            <div class="progress-phase-label">Phase 3<br>Applied AI</div>
+          </div>
+          <div class="progress-phase" style="background:var(--accent4);">
+            <div class="progress-phase-label">Phase 4<br>Advanced</div>
+          </div>
+          <div class="progress-phase" style="background:#c06cff;">
+            <div class="progress-phase-label">Phase 5<br>Multimodal</div>
+          </div>
+          <div class="progress-phase" style="background:#ff6c6c;">
+            <div class="progress-phase-label">Phase 6<br>Capstone</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" id="schedule">Course Structure</div>
+      <div class="section-sub">Complete learning roadmap — 3 days per week, 2 hours per session</div>
+
+      <table class="overview-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Month</th>
+            <th>Focus Area</th>
+            <th>Level</th>
+            <th>Deliverable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Phase 1</td><td>Month 1</td><td>Python, ML Fundamentals & AI Basics</td><td>🟢 Beginner</td><td>AI Chatbot (Rule-based)</td></tr>
+          <tr><td>Phase 2</td><td>Month 2</td><td>LLMs, Prompting & API Integration</td><td>🟡 Beginner–Mid</td><td>GPT-powered Q&A App</td></tr>
+          <tr><td>Phase 3</td><td>Month 3</td><td>RAG Systems & AI Agents</td><td>🟠 Intermediate</td><td>Document Intelligence System</td></tr>
+          <tr><td>Phase 4</td><td>Month 4</td><td>Fine-tuning, Evaluation & MLOps</td><td>🔴 Advanced</td><td>Custom Fine-tuned LLM</td></tr>
+          <tr><td>Phase 5</td><td>Month 5</td><td>Multimodal AI (Vision + Audio + Text)</td><td>🔴 Advanced</td><td>Multimodal AI App</td></tr>
+          <tr><td>Phase 6</td><td>Month 6</td><td>Capstone: End-to-End Production App</td><td>⚫ Pro</td><td>Production AI SaaS</td></tr>
+        </tbody>
+      </table>
+
+      <div id="prerequisites" style="margin-top:48px;">
+        <div class="section-title">Prerequisites</div>
+        <div class="section-sub">What you need before you begin</div>
+
+        <div class="callout info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong>No AI Experience Required</strong>
+            This course is designed for beginners. Basic computer skills and a willingness to learn are all you need to get started.
+          </div>
+        </div>
+
+        <div class="skills-grid">
+          <span class="skill-pill">Basic Computer Literacy</span>
+          <span class="skill-pill">High School Mathematics</span>
+          <span class="skill-pill">Any Programming Curiosity (Helpful)</span>
+          <span class="skill-pill">A Computer with Internet</span>
+          <span class="skill-pill">Google Colab Account (Free)</span>
+          <span class="skill-pill">GitHub Account (Free)</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 1 -->
+    <section id="phase1">
+      <div class="phase-header">
+        <div class="phase-number" style="color:var(--accent)">PHASE 01 · MONTH 1 · WEEKS 1–4</div>
+        <h2 class="phase-title">Foundation & AI Fundamentals</h2>
+        <div class="phase-subtitle">Building the bedrock: Python, Math, and ML basics</div>
+        <div class="phase-meta">
+          <div class="meta-chip">🗓️ <span>4 Weeks</span></div>
+          <div class="meta-chip">⏱️ <span>24 Hours</span></div>
+          <div class="meta-chip">📦 <span>12 Sessions</span></div>
+          <div class="meta-chip">🎯 <span>Beginner Level</span></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">🌱</div>
+        <div class="callout-content">
+          <strong>Phase Goal</strong>
+          Master Python programming, understand machine learning concepts, and learn how AI systems work fundamentally — no fluff, just essentials.
+        </div>
+      </div>
+
+      <div class="weeks-grid">
+
+        <!-- WEEK 1 -->
+        <div class="week-card open">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num">WEEK 01</span>
+            <span class="week-title">Python Crash Course & Environment Setup</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1 · MON</div>
+                <div class="day-title">Setup & Python Basics</div>
+                <div class="day-desc">Get your dev environment ready and learn Python syntax</div>
+                <div class="topics-list">
+                  <div class="topic-item">Install Python, VS Code, Jupyter</div>
+                  <div class="topic-item">Variables, data types, operators</div>
+                  <div class="topic-item">Control flow (if/else, loops)</div>
+                  <div class="topic-item">Functions and scope</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2 · WED</div>
+                <div class="day-title">Data Structures & Libraries</div>
+                <div class="day-desc">Lists, dicts, NumPy, Pandas essentials</div>
+                <div class="topics-list">
+                  <div class="topic-item">Lists, tuples, sets, dicts</div>
+                  <div class="topic-item">NumPy arrays & operations</div>
+                  <div class="topic-item">Pandas DataFrames intro</div>
+                  <div class="topic-item">Reading CSV/JSON files</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3 · FRI</div>
+                <div class="day-title">Data Viz & First EDA</div>
+                <div class="day-desc">Matplotlib, Seaborn, and exploratory data analysis</div>
+                <div class="topics-list">
+                  <div class="topic-item">Matplotlib & Seaborn basics</div>
+                  <div class="topic-item">Plotting distributions, scatter</div>
+                  <div class="topic-item">Mini EDA on real dataset</div>
+                  <div class="topic-item">Jupyter notebook workflow</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 2 -->
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num">WEEK 02</span>
+            <span class="week-title">Machine Learning Fundamentals</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1 · MON</div>
+                <div class="day-title">ML Core Concepts</div>
+                <div class="day-desc">Supervised, unsupervised, training vs inference</div>
+                <div class="topics-list">
+                  <div class="topic-item">What is machine learning?</div>
+                  <div class="topic-item">Supervised vs unsupervised</div>
+                  <div class="topic-item">Training, validation, test sets</div>
+                  <div class="topic-item">Loss functions & optimization</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2 · WED</div>
+                <div class="day-title">Scikit-Learn in Practice</div>
+                <div class="day-desc">Train your first models with real data</div>
+                <div class="topics-list">
+                  <div class="topic-item">Linear & logistic regression</div>
+                  <div class="topic-item">Decision trees, random forests</div>
+                  <div class="topic-item">Model evaluation metrics</div>
+                  <div class="topic-item">Cross-validation</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3 · FRI</div>
+                <div class="day-title">Neural Network Intuition</div>
+                <div class="day-desc">How deep learning works — visually and intuitively</div>
+                <div class="topics-list">
+                  <div class="topic-item">Neurons, layers, activation fns</div>
+                  <div class="topic-item">Forward & backpropagation</div>
+                  <div class="topic-item">Intro to TensorFlow/PyTorch</div>
+                  <div class="topic-item">Build a simple neural net</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 3 -->
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num">WEEK 03</span>
+            <span class="week-title">Natural Language Processing Basics</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1 · MON</div>
+                <div class="day-title">Text Processing</div>
+                <div class="day-desc">Tokenization, stemming, embeddings intro</div>
+                <div class="topics-list">
+                  <div class="topic-item">Tokenization & n-grams</div>
+                  <div class="topic-item">TF-IDF vectorization</div>
+                  <div class="topic-item">Word2Vec concept</div>
+                  <div class="topic-item">Text cleaning pipeline</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2 · WED</div>
+                <div class="day-title">Sentiment & Classification</div>
+                <div class="day-desc">Build a text classifier with traditional ML</div>
+                <div class="topics-list">
+                  <div class="topic-item">Sentiment analysis with VADER</div>
+                  <div class="topic-item">Naive Bayes for text</div>
+                  <div class="topic-item">NLTK & spaCy intro</div>
+                  <div class="topic-item">Named entity recognition</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3 · FRI</div>
+                <div class="day-title">Transformer Architecture</div>
+                <div class="day-desc">Understanding attention & the architecture behind GPT</div>
+                <div class="topics-list">
+                  <div class="topic-item">RNN limitations</div>
+                  <div class="topic-item">Attention mechanism</div>
+                  <div class="topic-item">Transformer architecture</div>
+                  <div class="topic-item">BERT vs GPT overview</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 4 -->
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num">WEEK 04</span>
+            <span class="week-title">Intro to Generative AI + Mini Project</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1 · MON</div>
+                <div class="day-title">What is Generative AI?</div>
+                <div class="day-desc">History, types, applications, ethics landscape</div>
+                <div class="topics-list">
+                  <div class="topic-item">GANs, VAEs, Diffusion models</div>
+                  <div class="topic-item">LLMs at a high level</div>
+                  <div class="topic-item">AI safety & responsible AI</div>
+                  <div class="topic-item">Industry use cases survey</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2 · WED</div>
+                <div class="day-title">Hugging Face Ecosystem</div>
+                <div class="day-desc">Use pre-trained models for NLP tasks instantly</div>
+                <div class="topics-list">
+                  <div class="topic-item">Hugging Face Hub tour</div>
+                  <div class="topic-item">Pipeline API for inference</div>
+                  <div class="topic-item">Text generation with GPT-2</div>
+                  <div class="topic-item">Model cards & best practices</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3 · FRI</div>
+                <div class="day-title">🚀 Project Day</div>
+                <div class="day-desc">Build & deploy your first AI application</div>
+                <div class="topics-list">
+                  <div class="topic-item">Assemble the chatbot</div>
+                  <div class="topic-item">Add Gradio UI</div>
+                  <div class="topic-item">Deploy on Hugging Face Spaces</div>
+                  <div class="topic-item">Write a project README</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <div class="project-title">🤖 Project 1: Smart FAQ Chatbot</div>
+              <div class="project-desc">Build a rule-based + ML-powered FAQ chatbot using spaCy for intent detection, a pre-trained GPT-2 for fallback responses, and deploy it with Gradio on Hugging Face Spaces. This is your first real AI product.</div>
+              <div class="project-stack">
+                <span class="stack-tag">Python</span>
+                <span class="stack-tag">spaCy</span>
+                <span class="stack-tag">Hugging Face</span>
+                <span class="stack-tag">Gradio</span>
+                <span class="stack-tag">GitHub</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 2 -->
+    <section id="phase2">
+      <div class="phase-header">
+        <div class="phase-number" style="color:var(--accent2)">PHASE 02 · MONTH 2 · WEEKS 5–8</div>
+        <h2 class="phase-title">Large Language Models & Prompt Engineering</h2>
+        <div class="phase-subtitle">Master the art of talking to AI and integrating LLMs into apps</div>
+        <div class="phase-meta">
+          <div class="meta-chip">🗓️ <span>4 Weeks</span></div>
+          <div class="meta-chip">⏱️ <span>24 Hours</span></div>
+          <div class="meta-chip">💬 <span>API-First Approach</span></div>
+          <div class="meta-chip">🎯 <span>Beginner–Intermediate</span></div>
+        </div>
+      </div>
+
+      <div class="weeks-grid">
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent2)">WEEK 05</span>
+            <span class="week-title">OpenAI API & LLM Deep Dive</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">OpenAI API Setup</div>
+                <div class="topics-list">
+                  <div class="topic-item">API keys, rate limits, pricing</div>
+                  <div class="topic-item">Chat Completions API</div>
+                  <div class="topic-item">System/User/Assistant roles</div>
+                  <div class="topic-item">Temperature, top-p, max tokens</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">How LLMs Work Internally</div>
+                <div class="topics-list">
+                  <div class="topic-item">Pre-training & RLHF</div>
+                  <div class="topic-item">Tokenization in depth</div>
+                  <div class="topic-item">Context window limitations</div>
+                  <div class="topic-item">GPT-4 vs Claude vs Gemini</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Building with the API</div>
+                <div class="topics-list">
+                  <div class="topic-item">Multi-turn conversation memory</div>
+                  <div class="topic-item">Streaming responses</div>
+                  <div class="topic-item">Error handling & retries</div>
+                  <div class="topic-item">Cost optimization strategies</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent2)">WEEK 06</span>
+            <span class="week-title">Advanced Prompt Engineering</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Prompting Techniques</div>
+                <div class="topics-list">
+                  <div class="topic-item">Zero-shot, few-shot prompting</div>
+                  <div class="topic-item">Chain-of-thought (CoT)</div>
+                  <div class="topic-item">Tree-of-thought reasoning</div>
+                  <div class="topic-item">Prompt chaining patterns</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Structured Outputs</div>
+                <div class="topics-list">
+                  <div class="topic-item">JSON mode & function calling</div>
+                  <div class="topic-item">Pydantic for output validation</div>
+                  <div class="topic-item">Instructor library</div>
+                  <div class="topic-item">Building reliable pipelines</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">System Prompt Design</div>
+                <div class="topics-list">
+                  <div class="topic-item">Persona & role engineering</div>
+                  <div class="topic-item">Guardrails & safety prompts</div>
+                  <div class="topic-item">Multi-step reasoning prompts</div>
+                  <div class="topic-item">Prompt injection defense</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent2)">WEEK 07</span>
+            <span class="week-title">LangChain Framework</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">LangChain Core Concepts</div>
+                <div class="topics-list">
+                  <div class="topic-item">Chains, prompts, parsers</div>
+                  <div class="topic-item">LLMChain & SequentialChain</div>
+                  <div class="topic-item">Memory types</div>
+                  <div class="topic-item">Callbacks & tracing</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">LCEL & Runnable Pattern</div>
+                <div class="topics-list">
+                  <div class="topic-item">LangChain Expression Language</div>
+                  <div class="topic-item">Composing runnables</div>
+                  <div class="topic-item">Parallel & branching chains</div>
+                  <div class="topic-item">LangSmith debugging</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Building a Real App</div>
+                <div class="topics-list">
+                  <div class="topic-item">Conversation with memory</div>
+                  <div class="topic-item">Adding web search tool</div>
+                  <div class="topic-item">Streaming to UI</div>
+                  <div class="topic-item">FastAPI backend integration</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent2)">WEEK 08</span>
+            <span class="week-title">Project 2: AI Writing Assistant</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Architecture & Backend</div>
+                <div class="topics-list">
+                  <div class="topic-item">FastAPI REST endpoints</div>
+                  <div class="topic-item">LangChain pipeline setup</div>
+                  <div class="topic-item">Multi-model routing</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Frontend with Streamlit</div>
+                <div class="topics-list">
+                  <div class="topic-item">Streamlit chat interface</div>
+                  <div class="topic-item">Real-time streaming UI</div>
+                  <div class="topic-item">Session state management</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Deploy & Polish</div>
+                <div class="topics-list">
+                  <div class="topic-item">Docker containerization</div>
+                  <div class="topic-item">Deploy to Railway/Render</div>
+                  <div class="topic-item">Usage analytics</div>
+                </div>
+              </div>
+            </div>
+            <div class="project-card">
+              <div class="project-title">✍️ Project 2: AI-Powered Writing Assistant</div>
+              <div class="project-desc">Build a full-stack writing assistant that helps with emails, blog posts, code docs, and creative writing. Features tone adjustment, style modes, streaming output, conversation memory, and a polished Streamlit UI. Deployed as a live web app.</div>
+              <div class="project-stack">
+                <span class="stack-tag">OpenAI API</span>
+                <span class="stack-tag">LangChain</span>
+                <span class="stack-tag">FastAPI</span>
+                <span class="stack-tag">Streamlit</span>
+                <span class="stack-tag">Docker</span>
+                <span class="stack-tag">Railway</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 3 -->
+    <section id="phase3">
+      <div class="phase-header">
+        <div class="phase-number" style="color:var(--accent3)">PHASE 03 · MONTH 3 · WEEKS 9–12</div>
+        <h2 class="phase-title">RAG Systems & AI Agents</h2>
+        <div class="phase-subtitle">Ground AI in your data and build autonomous reasoning systems</div>
+        <div class="phase-meta">
+          <div class="meta-chip">🗓️ <span>4 Weeks</span></div>
+          <div class="meta-chip">⏱️ <span>24 Hours</span></div>
+          <div class="meta-chip">🧠 <span>Intermediate</span></div>
+        </div>
+      </div>
+
+      <div class="weeks-grid">
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent3);color:#000">WEEK 09</span>
+            <span class="week-title">Vector Databases & Embeddings</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Semantic Search</div>
+                <div class="topics-list">
+                  <div class="topic-item">Embedding models (OpenAI, BGE)</div>
+                  <div class="topic-item">Cosine similarity & ANN</div>
+                  <div class="topic-item">Pinecone / Chroma setup</div>
+                  <div class="topic-item">Indexing strategies</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">RAG Architecture</div>
+                <div class="topics-list">
+                  <div class="topic-item">Naive RAG pipeline</div>
+                  <div class="topic-item">Document chunking strategies</div>
+                  <div class="topic-item">Retrieval & reranking</div>
+                  <div class="topic-item">Context window stuffing</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Advanced RAG</div>
+                <div class="topics-list">
+                  <div class="topic-item">HyDE (Hypothetical embeddings)</div>
+                  <div class="topic-item">Multi-query retrieval</div>
+                  <div class="topic-item">Parent-child chunking</div>
+                  <div class="topic-item">RAG evaluation with RAGAS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent3);color:#000">WEEK 10</span>
+            <span class="week-title">Document Processing & Ingestion Pipelines</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Multi-format Ingestion</div>
+                <div class="topics-list">
+                  <div class="topic-item">PDF, Word, Excel parsing</div>
+                  <div class="topic-item">Web scraping with BeautifulSoup</div>
+                  <div class="topic-item">Unstructured.io library</div>
+                  <div class="topic-item">Table extraction from docs</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Data Pipeline Design</div>
+                <div class="topics-list">
+                  <div class="topic-item">ETL for AI applications</div>
+                  <div class="topic-item">Async ingestion with queues</div>
+                  <div class="topic-item">Incremental updates</div>
+                  <div class="topic-item">Metadata enrichment</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">LlamaIndex Deep Dive</div>
+                <div class="topics-list">
+                  <div class="topic-item">Nodes, indices, query engines</div>
+                  <div class="topic-item">Knowledge graph index</div>
+                  <div class="topic-item">Multi-document summarization</div>
+                  <div class="topic-item">Router query engine</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent3);color:#000">WEEK 11</span>
+            <span class="week-title">AI Agents & Tool Use</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Agent Architecture</div>
+                <div class="topics-list">
+                  <div class="topic-item">ReAct & Plan-Act patterns</div>
+                  <div class="topic-item">Tool definition with schemas</div>
+                  <div class="topic-item">LangChain Agents</div>
+                  <div class="topic-item">Agent memory patterns</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Building Custom Tools</div>
+                <div class="topics-list">
+                  <div class="topic-item">Web search integration</div>
+                  <div class="topic-item">Code execution tool</div>
+                  <div class="topic-item">Database query tool</div>
+                  <div class="topic-item">API calling agent</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Multi-Agent Systems</div>
+                <div class="topics-list">
+                  <div class="topic-item">CrewAI framework</div>
+                  <div class="topic-item">Supervisor-worker pattern</div>
+                  <div class="topic-item">Agent communication</div>
+                  <div class="topic-item">LangGraph state machines</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent3);color:#000">WEEK 12</span>
+            <span class="week-title">Project 3: Document Intelligence System</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="project-card">
+              <div class="project-title">📄 Project 3: Enterprise Document Intelligence</div>
+              <div class="project-desc">Build a production-ready system that ingests PDFs, Word docs, and websites, then enables semantic Q&A over them. Features multi-document comparison, citation tracking, confidence scores, an agent that can answer follow-up questions, and a full React frontend with file upload.</div>
+              <div class="project-stack">
+                <span class="stack-tag">LangChain</span>
+                <span class="stack-tag">ChromaDB</span>
+                <span class="stack-tag">LlamaIndex</span>
+                <span class="stack-tag">React</span>
+                <span class="stack-tag">FastAPI</span>
+                <span class="stack-tag">PostgreSQL</span>
+                <span class="stack-tag">Redis</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 4 -->
+    <section id="phase4">
+      <div class="phase-header">
+        <div class="phase-number" style="color:var(--accent4)">PHASE 04 · MONTH 4 · WEEKS 13–16</div>
+        <h2 class="phase-title">Fine-tuning, Evaluation & MLOps</h2>
+        <div class="phase-subtitle">Customize models for specific tasks and deploy them reliably at scale</div>
+        <div class="phase-meta">
+          <div class="meta-chip">🗓️ <span>4 Weeks</span></div>
+          <div class="meta-chip">⏱️ <span>24 Hours</span></div>
+          <div class="meta-chip">🔴 <span>Advanced Level</span></div>
+        </div>
+      </div>
+
+      <div class="weeks-grid">
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent4);color:#000">WEEK 13</span>
+            <span class="week-title">Fine-tuning Fundamentals</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">When to Fine-tune vs RAG</div>
+                <div class="topics-list">
+                  <div class="topic-item">Fine-tuning decision matrix</div>
+                  <div class="topic-item">Dataset preparation standards</div>
+                  <div class="topic-item">JSONL format for fine-tuning</div>
+                  <div class="topic-item">Data quality & curation</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">LoRA & QLoRA</div>
+                <div class="topics-list">
+                  <div class="topic-item">Parameter efficient fine-tuning</div>
+                  <div class="topic-item">LoRA rank & alpha tuning</div>
+                  <div class="topic-item">4-bit quantization (QLoRA)</div>
+                  <div class="topic-item">Unsloth for fast training</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Training on Llama-3 / Mistral</div>
+                <div class="topics-list">
+                  <div class="topic-item">Google Colab A100 setup</div>
+                  <div class="topic-item">TRL/SFTTrainer workflow</div>
+                  <div class="topic-item">Training monitoring with W&B</div>
+                  <div class="topic-item">Saving & merging adapters</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent4);color:#000">WEEK 14</span>
+            <span class="week-title">LLM Evaluation & Safety</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Evaluation Frameworks</div>
+                <div class="topics-list">
+                  <div class="topic-item">BLEU, ROUGE, BERTScore</div>
+                  <div class="topic-item">LLM-as-a-judge</div>
+                  <div class="topic-item">Ragas evaluation suite</div>
+                  <div class="topic-item">Custom eval benchmarks</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">RLHF & Alignment</div>
+                <div class="topics-list">
+                  <div class="topic-item">Reward model training</div>
+                  <div class="topic-item">DPO (Direct Preference Opt)</div>
+                  <div class="topic-item">Constitutional AI</div>
+                  <div class="topic-item">Hallucination mitigation</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">AI Safety in Production</div>
+                <div class="topics-list">
+                  <div class="topic-item">Output filtering & guardrails</div>
+                  <div class="topic-item">Toxicity detection</div>
+                  <div class="topic-item">Prompt injection defense</div>
+                  <div class="topic-item">Bias auditing</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent4);color:#000">WEEK 15</span>
+            <span class="week-title">Deployment & MLOps for LLMs</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Model Serving</div>
+                <div class="topics-list">
+                  <div class="topic-item">vLLM for high-throughput</div>
+                  <div class="topic-item">Ollama for local serving</div>
+                  <div class="topic-item">Quantization (GGUF, GPTQ)</div>
+                  <div class="topic-item">Batching strategies</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Cloud Deployment</div>
+                <div class="topics-list">
+                  <div class="topic-item">AWS SageMaker endpoints</div>
+                  <div class="topic-item">Together AI / Replicate</div>
+                  <div class="topic-item">Autoscaling policies</div>
+                  <div class="topic-item">Cost optimization</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Monitoring & Observability</div>
+                <div class="topics-list">
+                  <div class="topic-item">LangSmith tracing</div>
+                  <div class="topic-item">Latency & cost dashboards</div>
+                  <div class="topic-item">Drift detection</div>
+                  <div class="topic-item">A/B testing LLM outputs</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:var(--accent4);color:#000">WEEK 16</span>
+            <span class="week-title">Project 4: Domain-Expert LLM</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="project-card">
+              <div class="project-title">🧬 Project 4: Custom Fine-tuned Domain Expert</div>
+              <div class="project-desc">Fine-tune Llama-3-8B using QLoRA on a specialized domain dataset (medical, legal, or finance). Evaluate against baseline GPT-4 on domain benchmarks, implement guardrails, and deploy via vLLM behind an OpenAI-compatible API endpoint on a cloud GPU instance.</div>
+              <div class="project-stack">
+                <span class="stack-tag">Llama-3</span>
+                <span class="stack-tag">QLoRA / Unsloth</span>
+                <span class="stack-tag">TRL</span>
+                <span class="stack-tag">vLLM</span>
+                <span class="stack-tag">W&B</span>
+                <span class="stack-tag">AWS</span>
+                <span class="stack-tag">RAGAS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 5 -->
+    <section id="phase5">
+      <div class="phase-header">
+        <div class="phase-number" style="color:#c06cff">PHASE 05 · MONTH 5 · WEEKS 17–20</div>
+        <h2 class="phase-title">Multimodal AI — Vision, Audio & Beyond</h2>
+        <div class="phase-subtitle">Extend AI beyond text to images, audio, and real-world signals</div>
+        <div class="phase-meta">
+          <div class="meta-chip">🗓️ <span>4 Weeks</span></div>
+          <div class="meta-chip">⏱️ <span>24 Hours</span></div>
+          <div class="meta-chip">🎨 <span>Advanced</span></div>
+        </div>
+      </div>
+
+      <div class="weeks-grid">
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:#c06cff">WEEK 17</span>
+            <span class="week-title">Vision Models & Image Generation</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Vision Language Models</div>
+                <div class="topics-list">
+                  <div class="topic-item">GPT-4 Vision API</div>
+                  <div class="topic-item">LLaVA & Phi-3-Vision</div>
+                  <div class="topic-item">Image-to-text pipelines</div>
+                  <div class="topic-item">Document & chart analysis</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Stable Diffusion</div>
+                <div class="topics-list">
+                  <div class="topic-item">Diffusion model theory</div>
+                  <div class="topic-item">ComfyUI & Diffusers lib</div>
+                  <div class="topic-item">ControlNet, LoRA adapters</div>
+                  <div class="topic-item">img2img & inpainting</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">DALL-E 3 & FLUX</div>
+                <div class="topics-list">
+                  <div class="topic-item">DALL-E 3 API integration</div>
+                  <div class="topic-item">FLUX.1 model family</div>
+                  <div class="topic-item">Prompt-to-image pipeline</div>
+                  <div class="topic-item">Brand consistency generation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:#c06cff">WEEK 18</span>
+            <span class="week-title">Audio AI & Speech Processing</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Speech-to-Text</div>
+                <div class="topics-list">
+                  <div class="topic-item">OpenAI Whisper deep dive</div>
+                  <div class="topic-item">Real-time transcription</div>
+                  <div class="topic-item">Speaker diarization</div>
+                  <div class="topic-item">Multi-language support</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Text-to-Speech</div>
+                <div class="topics-list">
+                  <div class="topic-item">ElevenLabs API</div>
+                  <div class="topic-item">Voice cloning pipeline</div>
+                  <div class="topic-item">OpenAI TTS models</div>
+                  <div class="topic-item">XTTS-2 local TTS</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Voice AI Pipelines</div>
+                <div class="topics-list">
+                  <div class="topic-item">STT → LLM → TTS pipeline</div>
+                  <div class="topic-item">Latency optimization</div>
+                  <div class="topic-item">Interruption handling</div>
+                  <div class="topic-item">Real-time voice assistant</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:#c06cff">WEEK 19</span>
+            <span class="week-title">Video & Code Generation AI</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Video AI</div>
+                <div class="topics-list">
+                  <div class="topic-item">Video understanding with GPT-4V</div>
+                  <div class="topic-item">Frame extraction & analysis</div>
+                  <div class="topic-item">Video captioning pipeline</div>
+                  <div class="topic-item">Gen-2 / Sora API overview</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Code Generation & Agents</div>
+                <div class="topics-list">
+                  <div class="topic-item">GitHub Copilot architecture</div>
+                  <div class="topic-item">Code interpreter sandbox</div>
+                  <div class="topic-item">Automated testing with AI</div>
+                  <div class="topic-item">Self-healing code agents</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Multimodal Orchestration</div>
+                <div class="topics-list">
+                  <div class="topic-item">Combining vision + audio + text</div>
+                  <div class="topic-item">GPT-4o unified model</div>
+                  <div class="topic-item">Context routing between modalities</div>
+                  <div class="topic-item">Real-world use case design</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:#c06cff">WEEK 20</span>
+            <span class="week-title">Project 5: Multimodal AI App</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="project-card">
+              <div class="project-title">🎬 Project 5: AI Content Studio</div>
+              <div class="project-desc">Build an AI-powered content creation platform that accepts images, audio recordings, and text — analyzes them together, generates social media posts with DALL-E 3 visuals, narrates them with ElevenLabs voice, and produces a short video clip. Full multimodal pipeline deployed with a Next.js frontend.</div>
+              <div class="project-stack">
+                <span class="stack-tag">GPT-4 Vision</span>
+                <span class="stack-tag">DALL-E 3</span>
+                <span class="stack-tag">Whisper</span>
+                <span class="stack-tag">ElevenLabs</span>
+                <span class="stack-tag">Next.js</span>
+                <span class="stack-tag">FFmpeg</span>
+                <span class="stack-tag">Vercel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- PHASE 6 -->
+    <section id="phase6">
+      <div class="phase-header">
+        <div class="phase-number" style="color:var(--accent2)">PHASE 06 · MONTH 6 · WEEKS 21–24</div>
+        <h2 class="phase-title">Capstone: Production AI SaaS</h2>
+        <div class="phase-subtitle">Build, launch, and monetize a professional AI product from scratch</div>
+        <div class="phase-meta">
+          <div class="meta-chip">🗓️ <span>4 Weeks</span></div>
+          <div class="meta-chip">⏱️ <span>24 Hours</span></div>
+          <div class="meta-chip">⚫ <span>Pro Level</span></div>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-icon">🚀</div>
+        <div class="callout-content">
+          <strong>Capstone Goal</strong>
+          Choose one of three capstone tracks and build a production-ready, monetizable AI application end-to-end. This becomes the centerpiece of your portfolio and can be launched as a real product.
+        </div>
+      </div>
+
+      <div class="weeks-grid">
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">WEEK 21</span>
+            <span class="week-title">Product Architecture & Tech Decisions</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Product Definition</div>
+                <div class="topics-list">
+                  <div class="topic-item">Choose your capstone track</div>
+                  <div class="topic-item">Target user & pain point</div>
+                  <div class="topic-item">MVP scope definition</div>
+                  <div class="topic-item">Competitive analysis</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Architecture Design</div>
+                <div class="topics-list">
+                  <div class="topic-item">System design diagram</div>
+                  <div class="topic-item">Database schema & API design</div>
+                  <div class="topic-item">Model selection & cost calc</div>
+                  <div class="topic-item">Infrastructure planning</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Multi-tenant & Auth</div>
+                <div class="topics-list">
+                  <div class="topic-item">User auth with Clerk/Auth0</div>
+                  <div class="topic-item">Multi-tenant data isolation</div>
+                  <div class="topic-item">Stripe billing integration</div>
+                  <div class="topic-item">Usage metering per user</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">WEEK 22</span>
+            <span class="week-title">Core Feature Development</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">AI Core Pipeline</div>
+                <div class="topics-list">
+                  <div class="topic-item">Implement main AI feature</div>
+                  <div class="topic-item">Caching strategy (Redis)</div>
+                  <div class="topic-item">Rate limiting & quotas</div>
+                  <div class="topic-item">Async job queues (Celery)</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Backend APIs</div>
+                <div class="topics-list">
+                  <div class="topic-item">REST + WebSocket endpoints</div>
+                  <div class="topic-item">API documentation (OpenAPI)</div>
+                  <div class="topic-item">Webhook delivery system</div>
+                  <div class="topic-item">Integration tests</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Frontend MVP</div>
+                <div class="topics-list">
+                  <div class="topic-item">Next.js app with shadcn/ui</div>
+                  <div class="topic-item">Real-time UX with streaming</div>
+                  <div class="topic-item">Dashboard & settings</div>
+                  <div class="topic-item">Mobile responsive design</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">WEEK 23</span>
+            <span class="week-title">Production Hardening</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">DevOps & CI/CD</div>
+                <div class="topics-list">
+                  <div class="topic-item">GitHub Actions pipeline</div>
+                  <div class="topic-item">Docker Compose production</div>
+                  <div class="topic-item">Environment management</div>
+                  <div class="topic-item">Zero-downtime deployments</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Monitoring & Reliability</div>
+                <div class="topics-list">
+                  <div class="topic-item">Sentry error tracking</div>
+                  <div class="topic-item">Datadog / Grafana metrics</div>
+                  <div class="topic-item">Uptime monitoring</div>
+                  <div class="topic-item">Incident response runbooks</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Security & Compliance</div>
+                <div class="topics-list">
+                  <div class="topic-item">OWASP AI security checklist</div>
+                  <div class="topic-item">Data privacy (GDPR basics)</div>
+                  <div class="topic-item">API security hardening</div>
+                  <div class="topic-item">Penetration testing basics</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-card">
+          <div class="week-header" onclick="toggleWeek(this)">
+            <span class="week-num" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">WEEK 24</span>
+            <span class="week-title">Launch, Portfolio & Career</span>
+            <span class="week-hours">6 hrs</span>
+            <div class="week-toggle">▼</div>
+          </div>
+          <div class="week-body">
+            <div class="days-grid">
+              <div class="day-card">
+                <div class="day-label">DAY 1</div>
+                <div class="day-title">Product Launch</div>
+                <div class="topics-list">
+                  <div class="topic-item">Product Hunt launch prep</div>
+                  <div class="topic-item">Landing page with analytics</div>
+                  <div class="topic-item">Beta user onboarding</div>
+                  <div class="topic-item">Feedback collection loop</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 2</div>
+                <div class="day-title">Portfolio Showcase</div>
+                <div class="topics-list">
+                  <div class="topic-item">GitHub portfolio cleanup</div>
+                  <div class="topic-item">Technical blog writeup</div>
+                  <div class="topic-item">Demo video creation</div>
+                  <div class="topic-item">LinkedIn profile update</div>
+                </div>
+              </div>
+              <div class="day-card">
+                <div class="day-label">DAY 3</div>
+                <div class="day-title">Career Paths</div>
+                <div class="topics-list">
+                  <div class="topic-item">ML Engineer vs AI Engineer</div>
+                  <div class="topic-item">Freelancing on Upwork/Toptal</div>
+                  <div class="topic-item">Technical interview prep</div>
+                  <div class="topic-item">Staying current in AI</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card" style="border-color:var(--accent)50;background:linear-gradient(135deg,var(--accent)08,var(--accent2)05)">
+              <div class="project-title">⭐ CAPSTONE: Production AI SaaS Platform</div>
+              <div class="project-desc">Choose your track and ship a production-grade AI product. All three tracks include authentication, billing, monitoring, CI/CD, and real users.</div>
+              <div style="margin:20px 0 12px;font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:0.1em">CHOOSE ONE TRACK:</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div style="padding:14px;background:var(--surface);border:1px solid var(--border2);border-radius:10px">
+                  <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:6px">🏥 TRACK A</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">MedAI Assistant</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Clinical note summarizer with RAG over medical literature & compliance features</div>
+                </div>
+                <div style="padding:14px;background:var(--surface);border:1px solid var(--border2);border-radius:10px">
+                  <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:6px">⚖️ TRACK B</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">Legal AI Platform</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Contract analyzer, risk scorer, and clause generator with citation tracking</div>
+                </div>
+                <div style="padding:14px;background:var(--surface);border:1px solid var(--border2);border-radius:10px">
+                  <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:6px">📊 TRACK C</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px">DataAnalyst AI</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Natural language SQL, automatic chart generation, and insight extraction</div>
+                </div>
+              </div>
+              <div class="project-stack" style="margin-top:16px">
+                <span class="stack-tag">Next.js 14</span>
+                <span class="stack-tag">FastAPI</span>
+                <span class="stack-tag">PostgreSQL</span>
+                <span class="stack-tag">Redis</span>
+                <span class="stack-tag">Stripe</span>
+                <span class="stack-tag">Docker</span>
+                <span class="stack-tag">GitHub Actions</span>
+                <span class="stack-tag">AWS / GCP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="phase-divider"></div>
+
+    <!-- TOOLS -->
+    <section id="tools">
+      <div class="section-title">Tools & Technology Stack</div>
+      <div class="section-sub">Everything you'll master across 6 months</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:20px">
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent3);letter-spacing:0.1em;margin-bottom:10px">LANGUAGES & CORE</div>
+          <div class="skills-grid">
+            <span class="skill-pill">Python 3.11+</span>
+            <span class="skill-pill">JavaScript</span>
+            <span class="skill-pill">SQL</span>
+            <span class="skill-pill">Bash</span>
+          </div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.1em;margin-bottom:10px">AI / ML FRAMEWORKS</div>
+          <div class="skills-grid">
+            <span class="skill-pill">PyTorch</span>
+            <span class="skill-pill">Hugging Face</span>
+            <span class="skill-pill">LangChain</span>
+            <span class="skill-pill">LlamaIndex</span>
+            <span class="skill-pill">Scikit-learn</span>
+          </div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent2);letter-spacing:0.1em;margin-bottom:10px">APIS & MODELS</div>
+          <div class="skills-grid">
+            <span class="skill-pill">OpenAI GPT-4o</span>
+            <span class="skill-pill">Claude API</span>
+            <span class="skill-pill">Gemini</span>
+            <span class="skill-pill">ElevenLabs</span>
+            <span class="skill-pill">Stability AI</span>
+          </div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent4);letter-spacing:0.1em;margin-bottom:10px">DATABASES & INFRA</div>
+          <div class="skills-grid">
+            <span class="skill-pill">ChromaDB</span>
+            <span class="skill-pill">Pinecone</span>
+            <span class="skill-pill">PostgreSQL</span>
+            <span class="skill-pill">Redis</span>
+            <span class="skill-pill">MongoDB</span>
+          </div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:#c06cff;letter-spacing:0.1em;margin-bottom:10px">FRONTEND & UI</div>
+          <div class="skills-grid">
+            <span class="skill-pill">Next.js 14</span>
+            <span class="skill-pill">Streamlit</span>
+            <span class="skill-pill">Gradio</span>
+            <span class="skill-pill">Tailwind CSS</span>
+            <span class="skill-pill">shadcn/ui</span>
+          </div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <div style="font-family:var(--mono);font-size:10px;color:#ff6c6c;letter-spacing:0.1em;margin-bottom:10px">DEVOPS & CLOUD</div>
+          <div class="skills-grid">
+            <span class="skill-pill">Docker</span>
+            <span class="skill-pill">GitHub Actions</span>
+            <span class="skill-pill">AWS / GCP</span>
+            <span class="skill-pill">Vercel</span>
+            <span class="skill-pill">Railway</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS GALLERY -->
+    <div id="projects" style="margin-top:60px">
+      <div class="section-title">Project Gallery</div>
+      <div class="section-sub">12 real-world projects built across the curriculum</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:20px">
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top:2px solid var(--accent)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:8px">MONTH 1</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">🤖 Smart FAQ Chatbot</div>
+          <div style="font-size:12px;color:var(--text-muted)">NLP-powered chatbot with GPT-2 fallback and Gradio UI</div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top:2px solid var(--accent2)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent2);margin-bottom:8px">MONTH 2</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">✍️ AI Writing Assistant</div>
+          <div style="font-size:12px;color:var(--text-muted)">Full-stack writing tool with streaming & multiple AI modes</div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top:2px solid var(--accent3)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent3);margin-bottom:8px">MONTH 3</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">📄 Document Intelligence</div>
+          <div style="font-size:12px;color:var(--text-muted)">Enterprise RAG system with semantic search & citations</div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top:2px solid var(--accent4)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent4);margin-bottom:8px">MONTH 4</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">🧬 Domain Expert LLM</div>
+          <div style="font-size:12px;color:var(--text-muted)">QLoRA fine-tuned Llama-3 deployed via vLLM</div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top:2px solid #c06cff">
+          <div style="font-family:var(--mono);font-size:10px;color:#c06cff;margin-bottom:8px">MONTH 5</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">🎬 AI Content Studio</div>
+          <div style="font-size:12px;color:var(--text-muted)">Multimodal pipeline: image + voice + video generation</div>
+        </div>
+        <div style="padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top:2px solid var(--accent2)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--accent2);margin-bottom:8px">MONTH 6</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">⭐ Production AI SaaS</div>
+          <div style="font-size:12px;color:var(--text-muted)">Launch-ready AI product with auth, billing & monitoring</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="doc-footer">
+    <span>GenAI Mastery Program · 2025 Edition</span>
+    <span>144 hrs · 24 weeks · 6 phases · 5+ projects</span>
+    <span>Built for ambitious learners</span>
+  </footer>
+</main>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Toggle week cards
+  function toggleWeek(header) {
+    const card = header.parentElement;
+    card.classList.toggle('open');
+  }
+
+  // Scroll top visibility
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTop');
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('href') === '#' + entry.target.id) {
+            item.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
