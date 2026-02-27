@@ -71,23 +71,23 @@ const DOC_CONFIG = {
       ],
     },
 
-    // {
-    //   id:          "designing",
-    //   title:       "Designing",
-    //   icon:        "🎨",
-    //   color:       "#ec4899",
-    //   gradient:    ["#ec4899", "#f43f5e"],
-    //   description: "Graphic design principles, Canva, Photoshop, Illustrator and UI/UX.",
-    //   folder:      "designing/",
-    //   docs: [
+    {
+      id:          "designing",
+      title:       "Designing",
+      icon:        "🎨",
+      color:       "#ec4899",
+      gradient:    ["#ec4899", "#f43f5e"],
+      description: "Graphic design principles, Canva, Photoshop, Illustrator and UI/UX.",
+      folder:      "designing/",
+      docs: [
     //     { title: "Design Principles & Colour Theory", file: "design-basics.html", badge: ""    },
-    //     { title: "Canva — Complete Guide",             file: "canva.html",         badge: ""    },
+        { title: "Canva — Complete Guide",             file: "canva-docs.html",         badge: "New"    },
     //     { title: "Adobe Photoshop Basics",             file: "photoshop.html",     badge: ""    },
     //     { title: "Adobe Illustrator Basics",           file: "illustrator.html",   badge: ""    },
     //     { title: "UI/UX Design Fundamentals",          file: "uiux.html",          badge: "New" },
     //     { title: "Logo & Poster Design",               file: "logo-poster.html",   badge: ""    },
-    //   ],
-    // },
+      ],
+    },
 
     {
       id:          "programming",
