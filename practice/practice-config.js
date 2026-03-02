@@ -297,7 +297,7 @@ const PRACTICE_CONFIG = {
       folder:      "kids-practice/",
       tasks: [
         { title: "Play Interesting Games",        file: "index.html", level: "Beginner",     badge: "",        est: "10 min" },
-        // { title: "Numbers & Symbols Row",         file: "task-02.html", level: "Beginner",     badge: "",        est: "10 min" },
+        { title: "Bitcraft Game for Kids",         file: "bitcraft.html", level: "Beginner",     badge: "New",        est: "10 min" },
         // { title: "Speed Test — 30 WPM Target",    file: "task-03.html", level: "Intermediate", badge: "",        est: "15 min" },
         // { title: "Speed Test — 50 WPM Target",    file: "task-04.html", level: "Advanced",     badge: "Hot",     est: "15 min" },
         // { title: "Keyboard Shortcuts Master",     file: "task-05.html", level: "Advanced",     badge: "New",     est: "20 min" },

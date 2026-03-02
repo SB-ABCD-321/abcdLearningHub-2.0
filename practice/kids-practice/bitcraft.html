@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BitCraft — Learn CS by Playing!</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#00FF88;--b:#00BFFF;--o:#FF6B35;--p:#A855F7;--y:#FFE566;--r:#FF4466;--pk:#FF69B4;--cy:#00FFEE;--bg:#05080f}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'Share Tech Mono',monospace;color:#fff;cursor:none}
+
+/* ── CURSOR ── */
+#cur{position:fixed;width:28px;height:28px;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
+#cur::before{content:'⛏️';font-size:20px;position:absolute;transform:rotate(-30deg);filter:drop-shadow(0 0 5px #FFE566);transition:transform .1s}
+#cur.ck::before{transform:rotate(12deg) scale(1.4)}
+
+/* ── LANG BUTTON ── */
+#lang-btn{
+  position:fixed;top:12px;right:16px;z-index:9999;
+  display:flex;border:none;cursor:pointer;overflow:hidden;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+  box-shadow:0 0 18px rgba(255,229,102,.3);
+}
+.lb-half{
+  padding:9px 13px;font-family:'Press Start 2P',monospace;font-size:9px;
+  transition:all .2s;display:flex;align-items:center;gap:5px;
+}
+.lb-en{background:rgba(30,80,180,.9);color:#87CEEB}
+.lb-bn{background:rgba(180,30,30,.9);color:#FF9999}
+.lb-active-en .lb-en{background:#1a5cb0;color:#fff;box-shadow:inset 0 0 10px rgba(0,191,255,.3)}
+.lb-active-bn .lb-bn{background:#b52020;color:#fff;box-shadow:inset 0 0 10px rgba(255,100,100,.3)}
+#lang-btn:hover .lb-en,.lang-btn:hover .lb-bn{filter:brightness(1.2)}
+.lb-dot{width:8px;height:8px;border-radius:50%;transition:all .2s}
+.lb-active-en .lb-en .lb-dot{background:#00BFFF;box-shadow:0 0 8px #00BFFF}
+.lb-active-en .lb-bn .lb-dot{background:#333}
+.lb-active-bn .lb-bn .lb-dot{background:#FF6B35;box-shadow:0 0 8px #FF6B35}
+.lb-active-bn .lb-en .lb-dot{background:#333}
+
+/* ── SCREENS ── */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.screen.active{display:flex}
+
+/* ══ TITLE ══ */
+#title-screen{background:var(--bg)}
+#bgc{position:absolute;inset:0}
+.tui{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px;width:100%;max-width:500px}
+.tbadge{font-family:'Orbitron',sans-serif;font-weight:900;font-size:9px;letter-spacing:5px;color:rgba(255,229,102,.5);animation:bfade 3s ease-in-out infinite}
+@keyframes bfade{0%,100%{opacity:.5}50%{opacity:1}}
+.tchar{font-size:clamp(40px,7vw,70px);animation:cbounce 1.5s ease-in-out infinite;filter:drop-shadow(0 0 15px #FFE56699)}
+@keyframes cbounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.tlogo{font-family:'Press Start 2P',monospace;font-size:clamp(28px,6vw,64px);line-height:1.2;text-align:center;
+  background:linear-gradient(180deg,#FFF5A0,#FFD700 30%,#FF8C00 65%,#FF4500);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 40px rgba(255,165,0,.6));animation:lglow 2s ease-in-out infinite}
+@keyframes lglow{0%,100%{filter:drop-shadow(0 0 40px rgba(255,165,0,.6))}50%{filter:drop-shadow(0 0 80px rgba(255,220,50,.9))}}
+.ttag{font-size:clamp(10px,1.8vw,14px);color:var(--g);text-shadow:0 0 18px rgba(0,255,136,.5);text-align:center;letter-spacing:2px;animation:tshift 4s ease-in-out infinite}
+.ttag-bn{font-family:'Hind Siliguri',sans-serif;font-size:clamp(12px,2vw,16px);font-weight:600}
+@keyframes tshift{0%,100%{letter-spacing:2px}50%{letter-spacing:4px}}
+.tbtns{display:flex;flex-direction:column;gap:9px;width:100%}
+.tbtn{font-family:'Press Start 2P',monospace;font-size:10px;padding:14px 24px;border:none;cursor:pointer;
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:transform .12s,filter .15s;
+  position:relative;overflow:hidden;text-align:center}
+.tbtn::before{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .4s}
+.tbtn:hover{transform:scale(1.04) translateY(-2px);filter:brightness(1.2)}
+.tbtn:hover::before{left:100%}
+.tbtn:active{transform:scale(.97)}
+.tbtn-bn{font-family:'Hind Siliguri',sans-serif!important;font-size:14px!important;font-weight:700!important}
+.btn-play{background:linear-gradient(135deg,#0d5e0d,#1f9e1f);color:#fff;box-shadow:0 0 25px rgba(31,158,31,.4),0 5px 0 #063a06}
+.btn-wld{background:linear-gradient(135deg,#0a3060,#1a5cb0);color:#fff;box-shadow:0 0 18px rgba(26,92,176,.35),0 5px 0 #041840}
+.btn-how{background:linear-gradient(135deg,#4a2000,#8B4500);color:#FFD700;box-shadow:0 5px 0 #2a1000}
+.tstrip{display:flex;gap:16px;align-items:center;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.05);padding:10px 18px}
+.tss{text-align:center}.tsv{font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;color:var(--y)}
+.tsl{font-size:8px;color:#444;margin-top:2px}
+.tsl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px}
+.pgnd{position:absolute;bottom:0;left:0;right:0;z-index:5}
+.gr{height:20px;display:flex}
+.gc{flex:1;transition:background .5s}
+
+/* ══ WORLD SELECT ══ */
+#ws{background:radial-gradient(ellipse at 30% 20%,rgba(0,100,255,.07),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(0,255,136,.04),transparent 50%),var(--bg);padding:20px;gap:18px;overflow-y:auto}
+.wsh{display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;width:100%;max-width:960px}
+.wst{font-family:'Press Start 2P',monospace;font-size:clamp(12px,2.2vw,20px);color:var(--y);text-shadow:0 0 30px rgba(255,229,102,.4)}
+.wst-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:clamp(16px,2.8vw,26px)}
+.wsub{font-size:11px;color:#444}
+.wsub-bn{font-family:'Hind Siliguri',sans-serif;font-size:13px}
+.wsbk{position:absolute;left:0;top:0;font-family:'Press Start 2P',monospace;font-size:8px;background:rgba(255,255,255,.04);color:#666;border:1px solid #2a2a2a;padding:7px 12px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .2s}
+.wsbk:hover{color:#ccc;border-color:#666}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;width:100%;max-width:960px}
+.wcard{background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid;padding:20px 16px;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;overflow:hidden;
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
+.wcard::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none}
+.wcard:hover{transform:translateY(-5px) scale(1.02)}
+.wcard:hover::before{opacity:1}
+.wcicon{width:58px;height:58px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid;clip-path:polygon(4px 0,calc(100% - 4px) 0,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0 calc(100% - 4px),0 4px);background:rgba(0,0,0,.4);animation:ifl 3s ease-in-out infinite}
+@keyframes ifl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.wcnm{font-family:'Press Start 2P',monospace;font-size:7px;text-align:center;margin-bottom:5px;line-height:1.6}
+.wcnm-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:12px;text-align:center;margin-bottom:5px}
+.wcsb{font-size:11px;color:#999;text-align:center;line-height:1.5}
+.wcsb-bn{font-family:'Hind Siliguri',sans-serif;font-size:12px}
+.wctg{font-family:'Orbitron',sans-serif;font-weight:700;font-size:7px;text-align:center;margin-top:8px;letter-spacing:2px}
+.wctg-bn{font-family:'Hind Siliguri',sans-serif;font-size:10px;letter-spacing:0;font-weight:700}
+.wcst{text-align:center;font-size:16px;margin-top:6px;letter-spacing:3px}
+.wcpb{margin-top:8px;height:3px;background:rgba(255,255,255,.04);overflow:hidden}
+.wcpbf{height:100%;width:0;transition:width 1s}
+.wclvl{font-size:9px;color:#333;text-align:center;margin-top:5px;font-family:'Press Start 2P',monospace}
+.wclvl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px}
+/* world colours */
+.wc-bi{border-color:rgba(0,255,136,.25);--wc:#00FF88}.wc-bi::before{background:radial-gradient(circle at 50% 0%,rgba(0,255,136,.1),transparent)}.wc-bi:hover{border-color:rgba(0,255,136,.6);box-shadow:0 0 35px rgba(0,255,136,.15)}.wc-bi .wcicon{border-color:rgba(0,255,136,.35)}.wc-bi .wcnm,.wc-bi .wcnm-bn,.wc-bi .wctg,.wc-bi .wctg-bn{color:#00FF88}.wc-bi .wcpbf{background:#00FF88;box-shadow:0 0 6px #00FF88}
+.wc-hw{border-color:rgba(255,107,53,.25);--wc:#FF6B35}.wc-hw::before{background:radial-gradient(circle at 50% 0%,rgba(255,107,53,.1),transparent)}.wc-hw:hover{border-color:rgba(255,107,53,.6);box-shadow:0 0 35px rgba(255,107,53,.15)}.wc-hw .wcicon{border-color:rgba(255,107,53,.35)}.wc-hw .wcnm,.wc-hw .wcnm-bn,.wc-hw .wctg,.wc-hw .wctg-bn{color:#FF6B35}.wc-hw .wcpbf{background:#FF6B35;box-shadow:0 0 6px #FF6B35}
+.wc-cd{border-color:rgba(168,85,247,.25);--wc:#A855F7}.wc-cd::before{background:radial-gradient(circle at 50% 0%,rgba(168,85,247,.1),transparent)}.wc-cd:hover{border-color:rgba(168,85,247,.6);box-shadow:0 0 35px rgba(168,85,247,.15)}.wc-cd .wcicon{border-color:rgba(168,85,247,.35)}.wc-cd .wcnm,.wc-cd .wcnm-bn,.wc-cd .wctg,.wc-cd .wctg-bn{color:#A855F7}.wc-cd .wcpbf{background:#A855F7;box-shadow:0 0 6px #A855F7}
+.wc-nt{border-color:rgba(0,191,255,.25);--wc:#00BFFF}.wc-nt::before{background:radial-gradient(circle at 50% 0%,rgba(0,191,255,.1),transparent)}.wc-nt:hover{border-color:rgba(0,191,255,.6);box-shadow:0 0 35px rgba(0,191,255,.15)}.wc-nt .wcicon{border-color:rgba(0,191,255,.35)}.wc-nt .wcnm,.wc-nt .wcnm-bn,.wc-nt .wctg,.wc-nt .wctg-bn{color:#00BFFF}.wc-nt .wcpbf{background:#00BFFF;box-shadow:0 0 6px #00BFFF}
+.wc-px{border-color:rgba(255,105,180,.25);--wc:#FF69B4}.wc-px::before{background:radial-gradient(circle at 50% 0%,rgba(255,105,180,.1),transparent)}.wc-px:hover{border-color:rgba(255,105,180,.6);box-shadow:0 0 35px rgba(255,105,180,.15)}.wc-px .wcicon{border-color:rgba(255,105,180,.35)}.wc-px .wcnm,.wc-px .wcnm-bn,.wc-px .wctg,.wc-px .wctg-bn{color:#FF69B4}.wc-px .wcpbf{background:#FF69B4;box-shadow:0 0 6px #FF69B4}
+.wc-sc{border-color:rgba(0,255,238,.25);--wc:#00FFEE}.wc-sc::before{background:radial-gradient(circle at 50% 0%,rgba(0,255,238,.1),transparent)}.wc-sc:hover{border-color:rgba(0,255,238,.6);box-shadow:0 0 35px rgba(0,255,238,.15)}.wc-sc .wcicon{border-color:rgba(0,255,238,.35)}.wc-sc .wcnm,.wc-sc .wcnm-bn,.wc-sc .wctg,.wc-sc .wctg-bn{color:#00FFEE}.wc-sc .wcpbf{background:#00FFEE;box-shadow:0 0 6px #00FFEE}
+
+/* ══ HUD ══ */
+#gs{background:var(--bg);padding:0}
+#bgs{position:absolute;inset:0;z-index:0}
+.hud{position:relative;z-index:20;width:100%;background:rgba(5,8,15,.95);border-bottom:1px solid rgba(255,255,255,.06);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(18px);flex-shrink:0}
+.hudl{display:flex;align-items:center;gap:10px}
+.hudbk{font-family:'Press Start 2P',monospace;font-size:7px;background:transparent;color:#444;border:1px solid #222;padding:6px 11px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:all .2s}
+.hudbk:hover{color:#ccc;border-color:#555}
+.hudwn{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--y);text-shadow:0 0 12px rgba(255,229,102,.35)}
+.hudwn-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:13px;color:var(--y)}
+.hudc{display:flex;align-items:center;gap:6px}
+.pd{width:11px;height:11px;background:#111;border:1px solid #2a2a2a;transition:all .35s;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.pd.done{background:#FFE566;border-color:#FFE566;box-shadow:0 0 7px #FFE566}
+.pd.act{background:#FF8C00;border-color:#FF8C00;animation:dpa 1s ease-in-out infinite}
+@keyframes dpa{0%,100%{box-shadow:0 0 5px #FF8C00}50%{box-shadow:0 0 18px #FF8C00}}
+.hudr{display:flex;align-items:center;gap:14px}
+.hudlv{display:flex;gap:3px}
+.hrt{font-size:19px;transition:all .3s}.hrt.lost{filter:grayscale(1);transform:scale(.65);opacity:.4}
+.hrt.shk{animation:hshk .4s}
+@keyframes hshk{0%,100%{transform:scale(1)}25%{transform:scale(1.5) rotate(-12deg)}75%{transform:scale(.8) rotate(10deg)}}
+.hudsc{font-family:'Orbitron',sans-serif;font-weight:900;font-size:17px;color:var(--y);text-shadow:0 0 12px rgba(255,229,102,.4);transition:transform .2s}
+.hudsc.pop{animation:sp .3s}
+@keyframes sp{0%{transform:scale(1)}50%{transform:scale(1.45)}100%{transform:scale(1)}}
+.hudsl{font-size:7px;color:#333;font-family:'Press Start 2P',monospace}
+.hudsl-bn{font-family:'Hind Siliguri',sans-serif;font-size:10px}
+.gc-area{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:10;padding:14px}
+/* CARD */
+.cc{background:rgba(5,9,18,.97);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(25px);max-width:880px;width:100%;max-height:calc(100vh - 86px);overflow-y:auto;position:relative;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));animation:capp .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes capp{from{transform:scale(.78) translateY(55px);opacity:0}to{transform:scale(1);opacity:1}}
+.cst{height:3px;position:sticky;top:0;z-index:5}
+.cs-bi{background:linear-gradient(90deg,transparent,#00FF88,#00BBFF,#00FF88,transparent)}
+.cs-hw{background:linear-gradient(90deg,transparent,#FF6B35,#FFD700,#FF6B35,transparent)}
+.cs-cd{background:linear-gradient(90deg,transparent,#A855F7,#EC4899,#A855F7,transparent)}
+.cs-nt{background:linear-gradient(90deg,transparent,#00BFFF,#0080FF,#00BFFF,transparent)}
+.cs-px{background:linear-gradient(90deg,transparent,#FF69B4,#FFB6C1,#FF69B4,transparent)}
+.cs-sc{background:linear-gradient(90deg,transparent,#00FFEE,#00BFFF,#00FFEE,transparent)}
+
+/* ── SHARED GAME STYLES ── */
+.gp{padding:22px}
+.gt{font-family:'Press Start 2P',monospace;font-size:clamp(8px,1.4vw,12px);margin-bottom:5px}
+.gt-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:clamp(13px,2vw,19px);margin-bottom:5px}
+.gs2{font-size:13px;color:#aaa;margin-bottom:14px;line-height:1.7}
+.gs2-bn{font-family:'Hind Siliguri',sans-serif;font-size:15px;line-height:1.8}
+.tbx{padding:12px 15px;margin-bottom:16px;border-left:4px solid;background:rgba(255,255,255,.025);font-size:13px;color:#ccc;line-height:1.7}
+.tbx-bn{font-family:'Hind Siliguri',sans-serif;font-size:15px}
+/* Buttons */
+.gb{font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 18px;border:none;cursor:pointer;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%);transition:filter .2s,transform .1s;position:relative;overflow:hidden}
+.gb::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.13),transparent 50%);pointer-events:none}
+.gb:hover{filter:brightness(1.3);transform:translateY(-2px)}.gb:active{transform:scale(.97)}
+.gb-bn{font-family:'Hind Siliguri',sans-serif!important;font-size:12px!important;font-weight:700!important}
+.gb-g{background:linear-gradient(135deg,#0d5e0d,#1f9e1f);color:#fff;box-shadow:0 4px 0 #063a06,0 0 18px rgba(31,158,31,.25)}
+.gb-r{background:linear-gradient(135deg,#6e0d0d,#b52020);color:#fff;box-shadow:0 4px 0 #3a0606}
+.gb-b{background:linear-gradient(135deg,#0a3060,#1a5cb0);color:#fff;box-shadow:0 4px 0 #041840}
+.gb-gd{background:linear-gradient(135deg,#5a3d00,#a87200);color:#FFE566;box-shadow:0 4px 0 #2a1d00}
+.gb-pu{background:linear-gradient(135deg,#3a1060,#7c3aed);color:#fff;box-shadow:0 4px 0 #1a0830}
+.gb-cy{background:linear-gradient(135deg,#003a3a,#00a0a0);color:#00FFEE;box-shadow:0 4px 0 #001818}
+
+/* ══ BINARY GAME ══ */
+.bitrow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0}
+.bcol{display:flex;flex-direction:column;align-items:center;gap:7px}
+.bpow{font-family:'Orbitron',sans-serif;font-weight:700;font-size:10px;color:#444;transition:color .2s}
+.bpow.on{color:var(--g)}
+.bbtn{width:62px;height:62px;border:2px solid #222;font-family:'Press Start 2P',monospace;font-size:21px;background:#080808;color:#222;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px);position:relative;overflow:hidden}
+.bbtn::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,255,136,.25),transparent);opacity:0;transition:opacity .2s}
+.bbtn:hover{border-color:#333;background:#0e0e0e}
+.bbtn.on{background:rgba(0,255,136,.08);border-color:var(--g);color:var(--g);box-shadow:0 0 22px rgba(0,255,136,.35),inset 0 0 10px rgba(0,255,136,.08)}
+.bbtn.on::after{opacity:1}
+.bval{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#2a2a2a;transition:all .2s}
+.bval.on{color:var(--g);text-shadow:0 0 8px rgba(0,255,136,.45)}
+.bscore{display:flex;align-items:center;justify-content:space-around;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.05);padding:14px;margin-bottom:14px}
+.bsc-col{text-align:center}.bsc-lbl{font-size:8px;color:#333;margin-bottom:5px;font-family:'Press Start 2P',monospace}
+.bsc-lbl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px}
+.bsc-val{font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;transition:all .3s}
+.bsc-val.match{color:var(--g);text-shadow:0 0 18px rgba(0,255,136,.7);animation:mp .4s}
+.bsc-val.nom{color:var(--r)}
+.bsc-eq{font-family:'Orbitron',sans-serif;font-size:26px;color:#222;transition:color .3s}
+.bsc-eq.match{color:var(--g)}
+@keyframes mp{0%{transform:scale(1.5)}100%{transform:scale(1)}}
+
+/* ══ GATE GAME ══ */
+.garena{background:rgba(0,0,0,.45);border:1px solid rgba(255,107,53,.12);padding:22px;margin:14px 0;display:flex;flex-direction:column;align-items:center;gap:18px}
+.gvis{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.ginput-stack{display:flex;flex-direction:column;gap:12px}
+.git{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.gitbtn{width:68px;height:68px;border:2px solid #222;font-family:'Press Start 2P',monospace;font-size:23px;background:#070707;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px)}
+.gitbtn.on{background:rgba(0,255,136,.07);border-color:var(--g);color:var(--g);box-shadow:0 0 22px rgba(0,255,136,.25)}
+.gitbtn.off{color:var(--r);border-color:rgba(255,68,102,.35);background:rgba(255,68,102,.04)}
+.gitlbl{font-size:8px;color:#444;font-family:'Press Start 2P',monospace}
+.gitlbl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px}
+.gshape{width:96px;height:56px;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:13px;letter-spacing:2px;transition:box-shadow .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
+.g-AND{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.45);color:var(--g)}
+.g-OR{background:rgba(255,140,0,.06);border-color:rgba(255,140,0,.45);color:#FF8C00}
+.g-NOT{background:rgba(255,0,255,.06);border-color:rgba(255,0,255,.45);color:#FF00FF}
+.g-NAND{background:rgba(255,229,102,.06);border-color:rgba(255,229,102,.45);color:var(--y)}
+.g-NOR{background:rgba(0,191,255,.06);border-color:rgba(0,191,255,.45);color:var(--b)}
+.g-XOR{background:rgba(255,105,180,.06);border-color:rgba(255,105,180,.45);color:var(--pk)}
+.gag{box-shadow:0 0 28px currentColor}
+.gout{display:flex;flex-direction:column;align-items:center;gap:7px}
+.gbulb{width:76px;height:76px;border:3px solid #111;display:flex;align-items:center;justify-content:center;font-size:34px;transition:all .3s;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:#060606}
+.gbulb.on{background:rgba(255,229,102,.12);border-color:var(--y);box-shadow:0 0 35px rgba(255,229,102,.5)}
+.gbulb.off{filter:grayscale(1);opacity:.35}
+.goutv{font-family:'Orbitron',sans-serif;font-weight:900;font-size:30px;transition:all .3s}
+.goutv.on{color:var(--y);text-shadow:0 0 18px rgba(255,229,102,.7)}
+.goutv.off{color:#222}
+.goutl{font-size:8px;color:#333;font-family:'Press Start 2P',monospace}
+.goutl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px}
+.gq{background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.18);padding:13px;font-size:13px;color:#ccc;line-height:1.7}
+.gq-bn{font-family:'Hind Siliguri',sans-serif;font-size:15px}
+.gbtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+
+/* ══ CODE GAME ══ */
+.codearena{display:flex;gap:13px;flex-wrap:wrap;margin:12px 0}
+.pool,.progz{flex:1;min-width:200px;min-height:170px;background:rgba(0,0,0,.4);border:1px dashed rgba(255,255,255,.07);padding:11px;position:relative}
+.progz{border-style:solid;border-color:rgba(168,85,247,.18);background:rgba(168,85,247,.025)}
+.zonelbl{font-size:7px;color:#333;font-family:'Press Start 2P',monospace;margin-bottom:9px}
+.zonelbl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px;color:#555;margin-bottom:9px}
+.zph{font-size:12px;color:#1e1e1e;padding:18px;text-align:center;line-height:1.6}
+.zph-bn{font-family:'Hind Siliguri',sans-serif;font-size:14px}
+.cblk{padding:9px 13px;margin:4px 0;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:9px;border-left:4px solid;transition:all .14s;user-select:none;position:relative;font-family:'Share Tech Mono',monospace}
+.cblk:hover{filter:brightness(1.5);transform:translateX(5px)}
+.cblk-bn{font-family:'Hind Siliguri',sans-serif;font-size:13px}
+.cb-mv{background:rgba(0,191,255,.07);border-color:var(--b);color:#87DEFF}
+.cb-if{background:rgba(255,140,0,.07);border-color:#FF8C00;color:#FFB347}
+.cb-lp{background:rgba(168,85,247,.07);border-color:var(--p);color:#C084FC}
+.cb-ac{background:rgba(0,255,136,.07);border-color:var(--g);color:#6EFF9E}
+.cb-fn{background:rgba(255,229,102,.07);border-color:var(--y);color:#FFE566}
+.cbdel{margin-left:auto;background:none;border:none;color:var(--r);cursor:pointer;font-size:17px;padding:0 3px;opacity:0;transition:opacity .2s}
+.cblk:hover .cbdel{opacity:1}
+.hstage{background:#040410;border:1px solid rgba(168,85,247,.12);padding:10px;margin-top:10px}
+#hcanv{display:block;image-rendering:pixelated;width:100%;max-width:520px;height:86px}
+.rstrip{display:flex;gap:9px;margin-top:9px;align-items:center;flex-wrap:wrap}
+.cout{flex:1;min-height:42px;background:rgba(0,0,0,.4);border-left:3px solid #222;padding:9px;font-size:12px;color:var(--g);line-height:1.7;font-family:'Share Tech Mono',monospace;transition:border-color .3s}
+.cout-bn{font-family:'Hind Siliguri',sans-serif;font-size:13px}
+.cout.err{border-color:var(--r);color:#FF9999}
+.cout.ok{border-color:var(--g)}
+
+/* ══ MEMORY MATCH ══ */
+.memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-width:500px;margin:12px auto}
+.mcard{aspect-ratio:1;border:1px solid #111;background:#0a0a0a;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .2s,border-color .2s;position:relative;overflow:hidden;clip-path:polygon(4px 0,calc(100% - 4px) 0,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0 calc(100% - 4px),0 4px)}
+.mcard:hover:not(.flipped):not(.matched){transform:scale(1.07);border-color:#444}
+.mback,.mfront{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:5px;transition:opacity .22s}
+.mback{background:linear-gradient(135deg,rgba(0,191,255,.1),rgba(0,40,80,.8));font-size:24px}
+.mfront{opacity:0;text-align:center}
+.mcard.flipped .mback,.mcard.matched .mback{opacity:0;pointer-events:none}
+.mcard.flipped .mfront,.mcard.matched .mfront{opacity:1}
+.mcard.matched{border-color:var(--g);background:rgba(0,255,136,.05);pointer-events:none}
+.mcard.wf{animation:wfl .45s}
+@keyframes wfl{0%,100%{border-color:#111}50%{border-color:var(--r);background:rgba(255,68,102,.12)}}
+.mterm{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--y);line-height:1.5}
+.mterm-bn{font-family:'Hind Siliguri',sans-serif;font-size:10px;color:var(--y);font-weight:700;line-height:1.4}
+.mdef{font-size:9px;color:#aaa;line-height:1.4}
+.mdef-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px;color:#aaa;line-height:1.4}
+.mstats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.mst{background:rgba(0,191,255,.05);border:1px solid rgba(0,191,255,.13);padding:7px 14px;font-size:11px;color:var(--b);font-family:'Orbitron',sans-serif;font-weight:700}
+.mst-bn{font-family:'Hind Siliguri',sans-serif;font-size:12px}
+.mst span{color:#fff;font-size:17px}
+
+/* ══ PIXEL ART GAME ══ */
+.pxgame{padding:22px}
+.pxarea{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.pxgrid{display:inline-grid;gap:2px;background:#111;border:2px solid #1a1a1a;padding:7px;cursor:crosshair}
+.pxcell{width:26px;height:26px;background:#1a1a1a;border:1px solid #111;transition:background .07s;cursor:pointer}
+.pxcell:hover{filter:brightness(1.6) saturate(1.3)}
+.palette{display:flex;flex-direction:column;gap:5px;padding:7px;background:#080808;border:1px solid #1a1a1a}
+.pcol{width:34px;height:34px;border:3px solid #222;cursor:pointer;transition:all .18s;position:relative}
+.pcol:hover{transform:scale(1.12)}
+.pcol.sel{border-color:#fff;box-shadow:0 0 12px currentColor}
+.pcol.sel::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:bold;text-shadow:0 0 3px #000}
+.pxtarget{display:flex;flex-direction:column;gap:6px}
+.pxtg{display:inline-grid;gap:1px;background:#0a0a0a;border:2px dashed #222;padding:5px;pointer-events:none;opacity:.6}
+.pxtc{border:1px solid #0a0a0a}
+.pxlbl{font-size:9px;color:#444;text-align:center;margin-top:4px}
+
+/* ══ SORTING GAME (Bubble Sort visualizer) ══ */
+.sortgame{padding:22px}
+.sortbars{display:flex;align-items:flex-end;justify-content:center;gap:6px;height:140px;padding:10px;background:#0a0a0a;border:1px solid #1a1a1a;margin:14px 0}
+.sbar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:40px;min-width:40px;transition:all .4s;cursor:pointer;position:relative}
+.sbarbody{width:100%;border-top:2px solid;transition:all .4s;display:flex;align-items:center;justify-content:center;padding:4px 0}
+.sbarval{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;margin-top:4px}
+.sbar.comparing .sbarbody{animation:scomp .3s ease-in-out infinite alternate}
+@keyframes scomp{from{filter:brightness(1)}to{filter:brightness(2)}}
+.sbar.sorted .sbarbody{border-color:var(--g)!important;background:rgba(0,255,136,.15)!important}
+.spass{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.spasslbl{font-size:10px;color:#555}
+.spasslbl-bn{font-family:'Hind Siliguri',sans-serif;font-size:13px}
+.scmp{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--y)}
+
+/* ══ COMPLETE SCREEN ══ */
+#cmpsc{background:radial-gradient(ellipse at 50% 30%,rgba(0,100,0,.18),transparent 60%),radial-gradient(ellipse at 50% 80%,rgba(0,80,150,.08),transparent 50%),var(--bg);gap:16px;padding:22px;text-align:center;overflow-y:auto}
+.csp{font-size:62px;animation:cspark 1.5s ease-in-out infinite}
+@keyframes cspark{0%,100%{transform:rotate(-5deg) scale(1);filter:drop-shadow(0 0 8px #FFD700)}50%{transform:rotate(5deg) scale(1.12);filter:drop-shadow(0 0 28px #FFD700)}}
+.cst{font-family:'Press Start 2P',monospace;font-size:clamp(13px,2.8vw,24px);color:var(--y);text-shadow:0 0 40px rgba(255,229,102,.5)}
+.cst-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:clamp(18px,3.5vw,30px)}
+.csstars{display:flex;justify-content:center;gap:7px}
+.cstar{font-size:44px;transform:scale(0);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.cstar.show{transform:scale(1);filter:drop-shadow(0 0 13px #FFD700)}
+.csstats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cssb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:14px 22px;text-align:center;min-width:100px}
+.cssv{font-family:'Orbitron',sans-serif;font-weight:900;font-size:24px;color:var(--g)}
+.cssl{font-size:7px;color:#444;margin-top:3px;font-family:'Press Start 2P',monospace}
+.cssl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px}
+.csfb{background:rgba(255,215,0,.03);border:1px solid rgba(255,215,0,.18);padding:14px;max-width:620px;text-align:left}
+.csfl{font-family:'Press Start 2P',monospace;font-size:7px;color:#FFD700;margin-bottom:7px}
+.csfl-bn{font-family:'Hind Siliguri',sans-serif;font-size:11px;font-weight:700}
+.csft{font-size:13px;color:#bbb;line-height:1.8}
+.csft-bn{font-family:'Hind Siliguri',sans-serif;font-size:15px;line-height:1.8}
+.csbtns{display:flex;gap:11px;flex-wrap:wrap;justify-content:center}
+
+/* ══ HOW TO PLAY ══ */
+#hwsc{background:var(--bg);align-items:flex-start;overflow-y:auto}
+.hwi{max-width:680px;width:100%;margin:0 auto;padding:28px 18px}
+.hwt{font-family:'Press Start 2P',monospace;font-size:clamp(12px,2.2vw,18px);color:var(--y);margin-bottom:22px;text-align:center}
+.hwt-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:clamp(16px,2.8vw,26px)}
+.hwc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);padding:14px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.hwe{font-size:34px;flex-shrink:0}
+.hwch3{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--y);margin-bottom:5px}
+.hwch3-bn{font-family:'Hind Siliguri',sans-serif;font-size:13px;font-weight:700}
+.hwcp{font-size:12px;color:#888;line-height:1.7}
+.hwcp-bn{font-family:'Hind Siliguri',sans-serif;font-size:14px;line-height:1.7}
+
+/* ══ OVERLAYS ══ */
+.flo{position:fixed;inset:0;pointer-events:none;z-index:800;opacity:0}
+.fw{animation:fw .7s forwards}
+.fl{animation:fl .5s forwards}
+@keyframes fw{0%{opacity:0;background:rgba(0,255,136,.22)}60%{opacity:1}100%{opacity:0}}
+@keyframes fl{0%{opacity:0;background:rgba(255,68,102,.28)}40%{opacity:1}100%{opacity:0}}
+.ftst{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(28px);background:rgba(5,8,15,.97);border:1px solid rgba(255,215,0,.35);padding:13px 18px;max-width:560px;width:90%;z-index:900;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);clip-path:polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,11px 100%,0 calc(100% - 11px));pointer-events:none}
+.ftst.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.ftt{font-family:'Press Start 2P',monospace;font-size:7px;color:#FFD700;margin-bottom:5px}
+.ftt-bn{font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:11px}
+.ftb{font-size:12px;color:#ccc;line-height:1.7}
+.ftb-bn{font-family:'Hind Siliguri',sans-serif;font-size:13px;line-height:1.7}
+.ptcl{position:fixed;pointer-events:none;z-index:1000;animation:pa 1.8s ease-out forwards}
+@keyframes pa{0%{transform:translate(0,0) scale(1) rotate(0deg);opacity:1}100%{transform:translate(var(--px),var(--py)) scale(0) rotate(var(--pr));opacity:0}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#060606}::-webkit-scrollbar-thumb{background:#1e1e1e}
+@media(max-width:600px){.wgrid{grid-template-columns:1fr 1fr}.memgrid{grid-template-columns:repeat(4,1fr)}.codearena{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+
+<!-- LANG BUTTON: ENG | BNG -->
+<div id="lang-btn" class="lb-active-en" onclick="toggleLang()">
+  <div class="lb-half lb-en"><div class="lb-dot"></div>ENG</div>
+  <div class="lb-half lb-bn"><div class="lb-dot"></div>BNG</div>
+</div>
+
+<div class="flo" id="flo"></div>
+<div class="ftst" id="ftst">
+  <div class="ftt" id="ftt">⚡ COOL FACT!</div>
+  <div class="ftb" id="ftb"></div>
+</div>
+
+<!-- ══ TITLE ══ -->
+<div class="screen active" id="title-screen">
+  <canvas id="bgc"></canvas>
+  <div class="tui">
+    <div class="tbadge" id="tbadge" data-en="🎮 CS LEARNING ADVENTURE 🎮" data-bn="🎮 কম্পিউটার বিজ্ঞান শেখার অভিযান 🎮">🎮 CS LEARNING ADVENTURE 🎮</div>
+    <div class="tchar">🧑‍💻</div>
+    <div class="tlogo">⛏BIT<br>CRAFT</div>
+    <div class="ttag" id="ttag" data-en="LEARN CS BY PLAYING!" data-bn="খেলতে খেলতে CS শিখো!">LEARN CS BY PLAYING!</div>
+    <div class="tbtns">
+      <button class="tbtn btn-play" data-en="▶ START ADVENTURE" data-bn="▶ অভিযান শুরু করো" onclick="showScreen('ws')">▶ START ADVENTURE</button>
+      <button class="tbtn btn-wld" data-en="🌍 ALL WORLDS" data-bn="🌍 সব জগৎ" onclick="showScreen('ws')">🌍 ALL WORLDS</button>
+      <button class="tbtn btn-how" data-en="📖 HOW TO PLAY" data-bn="📖 কিভাবে খেলবে" onclick="showScreen('hwsc')">📖 HOW TO PLAY</button>
+    </div>
+    <div class="tstrip">
+      <div class="tss"><div class="tsv" id="tsw">0</div><div class="tsl" data-en="WORLDS" data-bn="জগৎ">WORLDS</div></div>
+      <div style="width:1px;height:28px;background:#111"></div>
+      <div class="tss"><div class="tsv" id="tss">0</div><div class="tsl" data-en="SCORE" data-bn="স্কোর">SCORE</div></div>
+      <div style="width:1px;height:28px;background:#111"></div>
+      <div class="tss"><div class="tsv" id="tsr">0⭐</div><div class="tsl" data-en="STARS" data-bn="তারা">STARS</div></div>
+    </div>
+  </div>
+  <div class="pgnd" id="pgnd"></div>
+</div>
+
+<!-- ══ WORLD SELECT ══ -->
+<div class="screen" id="ws">
+  <div class="wsh">
+    <button class="wsbk" data-en="◀ BACK" data-bn="◀ ফিরে যাও" onclick="showScreen('title-screen')">◀ BACK</button>
+    <div class="wst" id="wst" data-en="⚔ CHOOSE YOUR WORLD" data-bn="⚔ তোমার জগৎ বেছে নাও">⚔ CHOOSE YOUR WORLD</div>
+    <div class="wsub" data-en="6 worlds · 35+ levels · All CS topics!" data-bn="৬টি জগৎ · ৩৫+ লেভেল · সব CS বিষয়!">6 worlds · 35+ levels · All CS topics!</div>
+  </div>
+  <div class="wgrid" id="wgrid"></div>
+</div>
+
+<!-- ══ GAME ══ -->
+<div class="screen" id="gs">
+  <canvas id="bgs"></canvas>
+  <div class="hud">
+    <div class="hudl">
+      <button class="hudbk" data-en="◀ WORLDS" data-bn="◀ জগৎ" onclick="showScreen('ws')">◀ WORLDS</button>
+      <div id="hudwn" class="hudwn">⛏ BITCRAFT</div>
+    </div>
+    <div class="hudc" id="pdots"></div>
+    <div class="hudr">
+      <div class="hudlv" id="hudlv"></div>
+      <div>
+        <div class="hudsc" id="hudsc">0</div>
+        <div class="hudsl" data-en="SCORE" data-bn="স্কোর">SCORE</div>
+      </div>
+    </div>
+  </div>
+  <div class="gc-area">
+    <div class="cc" id="cc">
+      <div class="cst" id="cst"></div>
+      <div id="cbody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COMPLETE ══ -->
+<div class="screen" id="cmpsc">
+  <div class="csp">🏆</div>
+  <div class="cst" id="cstt" data-en="🎉 WORLD COMPLETE!" data-bn="🎉 জগৎ জয় করলে!">🎉 WORLD COMPLETE!</div>
+  <div class="csstars" id="csstars"></div>
+  <div class="csstats">
+    <div class="cssb"><div class="cssv" id="cscsc">0</div><div class="cssl" data-en="SCORE" data-bn="স্কোর">SCORE</div></div>
+    <div class="cssb"><div class="cssv" id="cscpf">0/0</div><div class="cssl" data-en="PERFECT" data-bn="নিখুঁত">PERFECT</div></div>
+    <div class="cssb"><div class="cssv" id="csctm">0s</div><div class="cssl" data-en="TIME" data-bn="সময়">TIME</div></div>
+  </div>
+  <div class="csfb">
+    <div class="csfl" data-en="💡 DID YOU KNOW?" data-bn="💡 তুমি কি জানো?">💡 DID YOU KNOW?</div>
+    <div class="csft" id="csfact"></div>
+  </div>
+  <div class="csbtns">
+    <button class="gb gb-g" data-en="🔄 REPLAY" data-bn="🔄 আবার খেলো" onclick="replayWorld()">🔄 REPLAY</button>
+    <button class="gb gb-b" data-en="▶ NEXT WORLD" data-bn="▶ পরের জগৎ" onclick="nextWorld()">▶ NEXT WORLD</button>
+    <button class="gb gb-gd" data-en="🌍 ALL WORLDS" data-bn="🌍 সব জগৎ" onclick="showScreen('ws')">🌍 ALL WORLDS</button>
+  </div>
+</div>
+
+<!-- ══ HOW TO PLAY ══ -->
+<div class="screen" id="hwsc" style="align-items:flex-start">
+  <div class="hwi">
+    <div class="hwt" id="hwtt" data-en="📖 HOW TO PLAY" data-bn="📖 কিভাবে খেলবে">📖 HOW TO PLAY</div>
+    <div id="hwcards"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="gb gb-g" data-en="▶ LET'S PLAY!" data-bn="▶ চলো খেলি!" onclick="showScreen('title-screen')">▶ LET'S PLAY!</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════
+let L = localStorage.getItem('bc_lang')||'en';
+
+const T={
+  back:{en:'◀ BACK',bn:'◀ ফিরে যাও'},score:{en:'SCORE',bn:'স্কোর'},
+  worlds:{en:'◀ WORLDS',bn:'◀ জগৎ'},reset:{en:'🔄 RESET',bn:'🔄 রিসেট'},
+  run:{en:'▶ RUN PROGRAM',bn:'▶ চালাও'},clear:{en:'🗑 CLEAR',bn:'🗑 মুছো'},
+  check:{en:'⚡ CHECK',bn:'⚡ চেক'},out0:{en:'OUTPUT = 0 💤',bn:'আউটপুট = 0 💤'},
+  out1:{en:'OUTPUT = 1 ⚡',bn:'আউটপুট = 1 ⚡'},tryagain:{en:'Try again!',bn:'আবার চেষ্টা!'},
+  yourval:{en:'YOUR VALUE',bn:'তোমার মান'},target:{en:'TARGET',bn:'লক্ষ্য'},
+  output:{en:'OUTPUT',bn:'আউটপুট'},gate:{en:'GATE',bn:'গেট'},
+  toolbox:{en:'📦 BLOCKS — click to add:',bn:'📦 ব্লক — ক্লিক করে যোগ করো:'},
+  progzone:{en:'▶ YOUR PROGRAM',bn:'▶ তোমার প্রোগ্রাম'},
+  progph:{en:'Click blocks to build your program...',bn:'ব্লক ক্লিক করে প্রোগ্রাম বানাও...'},
+  running:{en:'> Running...\n',bn:'> চলছে...\n'},
+  reached:{en:'✅ Hero reached the goal! 🎉',bn:'✅ হিরো লক্ষ্যে পৌঁছেছে! 🎉'},
+  lost:{en:'❌ Wrong sequence! Try again.',bn:'❌ ভুল ক্রম! আবার চেষ্টা করো।'},
+  matched:{en:'Matched:',bn:'মিলেছে:'},pairs:{en:'pairs',bn:'জোড়া'},
+  mission:{en:'🎯 MISSION:',bn:'🎯 মিশন:'},
+  swapbtn:{en:'🔄 SWAP THEM!',bn:'🔄 বদলাও!'},
+  sorted:{en:'Already sorted!',bn:'ইতিমধ্যে ক্রমানুসারে আছে!'},
+  swapped:{en:'Swapped! Keep going.',bn:'বদলানো হয়েছে! এগিয়ে যাও।'},
+  allsorted:{en:'🎉 Array fully sorted!',bn:'🎉 অ্যারে সম্পূর্ণ সাজানো হয়েছে!'},
+  draws:{en:'Draw the shape! Color each pixel:',bn:'আকৃতি আঁকো! প্রতিটি পিক্সেল রং করো:'},
+  pxcheck:{en:'⚡ CHECK MY ART',bn:'⚡ আমার আর্ট চেক করো'},
+  pxclear:{en:'🗑 CLEAR CANVAS',bn:'🗑 ক্যানভাস মুছো'},
+  inputA:{en:'INPUT A',bn:'ইনপুট A'},inputB:{en:'INPUT B',bn:'ইনপুট B'},
+};
+const t=k=>T[k]?T[k][L]:k;
+
+function toggleLang(){
+  L=L==='en'?'bn':'en';
+  localStorage.setItem('bc_lang',L);
+  applyLang();
+  if(document.getElementById('gs').classList.contains('active')) loadLevel();
+  buildWS(); buildHowTo(); updateStats();
+}
+
+function applyLang(){
+  const ibn=L==='bn';
+  const btn=document.getElementById('lang-btn');
+  btn.className=ibn?'lb-active-bn':'lb-active-en';
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    el.textContent=el.dataset[L]||el.dataset.en;
+  });
+  // tagline font
+  const tt=document.getElementById('ttag');
+  if(tt){tt.className=ibn?'ttag ttag-bn':'ttag';tt.textContent=tt.dataset[L];}
+  // title buttons
+  document.querySelectorAll('.tbtn').forEach(b=>{
+    b.className=b.className.replace(' tbtn-bn','');
+    if(ibn) b.className+=' tbtn-bn';
+    if(b.dataset[L]) b.textContent=b.dataset[L];
+  });
+  document.querySelectorAll('.gb').forEach(b=>{
+    b.className=b.className.replace(' gb-bn','');
+    if(ibn) b.className+=' gb-bn';
+    if(b.dataset[L]) b.textContent=b.dataset[L];
+  });
+  if(GS.world){
+    const wn=document.getElementById('hudwn');
+    wn.textContent=WD[GS.world].name[L];
+    wn.className=ibn?'hudwn-bn':'hudwn';
+  }
+}
+
+// ═══════════════════════════════════════
+// BACKGROUND CANVASES
+// ═══════════════════════════════════════
+(function bgTitle(){
+  const c=document.getElementById('bgc'),ctx=c.getContext('2d');
+  const P=['0','1','#','if','for','AND','OR','CPU','RAM','IP','Hz','bit','byte','def','int','++'];
+  const CLRS=['#00FF8828','#FF6B3528','#A855F728','#00BFFF28','#FFE56628','#FF446628'];
+  let W,H; const items=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize();
+  for(let i=0;i<65;i++) items.push({x:Math.random()*1400,y:Math.random()*900,
+    vy:.3+Math.random()*.7,t:P[~~(Math.random()*P.length)],c:CLRS[~~(Math.random()*CLRS.length)],
+    s:10+Math.random()*9,a:.1+Math.random()*.2});
+  (function draw(){
+    ctx.fillStyle='rgba(5,8,15,.16)';ctx.fillRect(0,0,W,H);
+    items.forEach(it=>{
+      ctx.save();ctx.globalAlpha=it.a;ctx.font=`bold ${it.s}px 'Share Tech Mono',monospace`;
+      ctx.fillStyle=it.c;ctx.fillText(it.t,it.x,it.y);ctx.restore();
+      it.y+=it.vy;if(it.y>H+20){it.y=-20;it.x=Math.random()*W;it.t=P[~~(Math.random()*P.length)];}
+    });
+    requestAnimationFrame(draw);
+  })();
+  window.addEventListener('resize',resize);
+})();
+
+// pixel ground
+(function mkGround(){
+  const g=document.getElementById('pgnd');
+  const GRS=['#2d5e18','#3a7a22','#4a9a2c'],DRT=['#5a3010','#6b3a1a','#7a4a24'];
+  const n=Math.ceil(window.innerWidth/20)+2;
+  ['r1','r2','r3'].forEach((id,ri)=>{
+    const r=document.createElement('div');r.className='gr';
+    for(let i=0;i<n;i++){
+      const d=document.createElement('div');d.className='gc';
+      d.style.background=ri===0?GRS[i%GRS.length]:DRT[i%DRT.length];r.appendChild(d);
+    }
+    g.appendChild(r);
+  });
+})();
+
+let scRaf=null;
+function startScene(wid){
+  if(scRaf) cancelAnimationFrame(scRaf);
+  const c=document.getElementById('bgs');c.width=window.innerWidth;c.height=window.innerHeight;
+  const ctx=c.getContext('2d'),W=c.width,H=c.height;
+  const TH={bi:{sky:'#040f06',acc:'#00FF88'},hw:{sky:'#0f0600',acc:'#FF6B35'},
+    cd:{sky:'#060410',acc:'#A855F7'},nt:{sky:'#00040f',acc:'#00BFFF'},
+    px:{sky:'#0f0408',acc:'#FF69B4'},sc:{sky:'#000f0e',acc:'#00FFEE'}}[wid]||{sky:'#040f06',acc:'#00FF88'};
+  const pts=[];
+  for(let i=0;i<28;i++) pts.push({x:Math.random()*W,y:Math.random()*H*.7,
+    vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,s:1+Math.random()*3,a:.05+Math.random()*.18});
+  (function draw(){
+    ctx.fillStyle=TH.sky+'bb';ctx.fillRect(0,0,W,H);
+    for(let x=0;x<W;x+=42){ctx.fillStyle=TH.acc+'18';ctx.fillRect(x,H-65,40,65);ctx.fillStyle=TH.acc+'08';ctx.fillRect(x,H-65,40,4);}
+    pts.forEach(p=>{
+      ctx.save();ctx.globalAlpha=p.a;ctx.fillStyle=TH.acc;ctx.fillRect(p.x,p.y,p.s,p.s);ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H*.7;if(p.y>H*.7)p.y=0;
+    });
+    scRaf=requestAnimationFrame(draw);
+  })();
+}
+
+// cursor
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+document.addEventListener('mousedown',()=>cur.classList.add('ck'));
+document.addEventListener('mouseup',()=>setTimeout(()=>cur.classList.remove('ck'),140));
+
+// ═══════════════════════════════════════
+// GAME STATE
+// ═══════════════════════════════════════
+const SV=JSON.parse(localStorage.getItem('bc4_sv')||'{}');
+let GS={world:null,level:0,lives:3,score:0,perfect:0,startTime:0,
+  cw:SV.cw||{},bs:SV.bs||{},ts:SV.ts||0};
+function saveG(){localStorage.setItem('bc4_sv',JSON.stringify({cw:GS.cw,bs:GS.bs,ts:GS.ts}));}
+
+// ═══════════════════════════════════════
+// WORLD DEFINITIONS
+// ═══════════════════════════════════════
+const WD={
+  bi:{id:'bi',name:{en:'🌿 BINARY FOREST',bn:'🌿 বাইনারি বন'},
+    sub:{en:'Flip bit-switches to encode numbers!',bn:'বিট সুইচ উল্টিয়ে সংখ্যা এনকোড করো!'},
+    icon:'🌿',cc:'wc-bi',color:'#00FF88',
+    tag:{en:'BINARY & DATA',bn:'বাইনারি ও তথ্য'},type:'binary',
+    fact:{en:"Binary means Base-2 — only 0 and 1! Computers use it because transistors are either OFF(0) or ON(1). Your name stored in a computer is millions of 1s and 0s! A single letter 'A' = 01000001 in binary (8 bits = 1 byte).",
+      bn:"বাইনারি মানে বেস-২ — শুধু ০ এবং ১! কম্পিউটার এটি ব্যবহার করে কারণ ট্রানজিস্টর হয় OFF(0) নয়তো ON(1)। কম্পিউটারে তোমার নাম লক্ষ লক্ষ ১ ও ০ দিয়ে সঞ্চিত! একটিমাত্র অক্ষর 'A' = ০১০০০০০১ বাইনারিতে (৮ বিট = ১ বাইট)।"},
+    levels:[
+      {target:3,story:{en:"The 3 forest spirits are sleeping! Wake them by encoding 3 in binary.",bn:"৩টি বনের আত্মা ঘুমাচ্ছে! বাইনারিতে ৩ এনকোড করে তাদের জাগাও।"},task:{en:"3 = 2+1 → flip positions 2 and 1 ON!",bn:"৩ = ২+১ → ২ এবং ১ অবস্থান চালু করো!"}},
+      {target:5,story:{en:"Power 5 torches to light the path through the dark forest!",bn:"অন্ধকার বনের পথে আলো দিতে ৫টি মশালে শক্তি দাও!"},task:{en:"5 = 4+1 → positions 4 and 1 ON",bn:"৫ = ৪+১ → ৪ এবং ১ অবস্থান চালু"}},
+      {target:9,story:{en:"9 wolves guard the treasure! Encode 9 to open the secret gate.",bn:"৯টি নেকড়ে ধন রক্ষা করছে! গোপন দরজা খুলতে ৯ এনকোড করো।"},task:{en:"9 = 8+1 → the largest and smallest bit!",bn:"৯ = ৮+১ → সবচেয়ে বড় ও ছোট বিট!"}},
+      {target:12,story:{en:"12 ancient trees must be awakened — encode their number!",bn:"১২টি প্রাচীন গাছ জাগাতে হবে — তাদের সংখ্যা এনকোড করো!"},task:{en:"12 = 8+4 → two of the bigger bits!",bn:"১২ = ৮+৪ → দুটি বড় বিট!"}},
+      {target:7,story:{en:"7 magic crystals to charge — encode 7!",bn:"৭টি জাদু ক্রিস্টাল চার্জ করতে হবে — ৭ এনকোড করো!"},task:{en:"7 = 4+2+1 → three lower bits all ON!",bn:"৭ = ৪+২+১ → তিনটি নিচের বিট চালু!"}},
+      {target:11,story:{en:"Binary BOSS! 11 stars to realign in the night sky. Encode 11!",bn:"বাইনারি বস! রাতের আকাশে ১১টি তারা পুনর্বিন্যাস করতে হবে। ১১ এনকোড করো!"},task:{en:"11 = 8+2+1 → three bits needed!",bn:"১১ = ৮+২+১ → তিনটি বিট দরকার!"}},
+      {target:14,story:{en:"14 dragons to tame — encode the dragon code!",bn:"১৪টি ড্রাগন বশ করতে হবে — ড্রাগন কোড এনকোড করো!"},task:{en:"14 = 8+4+2 → upper three bits!",bn:"১৪ = ৮+৪+২ → উপরের তিনটি বিট!"}},
+      {target:15,story:{en:"🔥 FINAL BOSS! 15 = maximum 4-bit number. ALL lights ON! Encode it!",bn:"🔥 চূড়ান্ত বস! ১৫ = সর্বোচ্চ ৪-বিট সংখ্যা। সব আলো চালু! এনকোড করো!"},task:{en:"15 = 8+4+2+1 → ALL FOUR switches ON!",bn:"১৫ = ৮+৪+২+১ → সবগুলো চারটি সুইচ চালু!"}},
+    ]},
+
+  hw:{id:'hw',name:{en:'🏰 CPU CASTLE',bn:'🏰 CPU দুর্গ'},
+    sub:{en:'Toggle logic gates — watch outputs come alive!',bn:'লজিক গেট টগল করো — আউটপুট জীবন্ত হতে দেখো!'},
+    icon:'🏰',cc:'wc-hw',color:'#FF6B35',
+    tag:{en:'LOGIC GATES',bn:'লজিক গেট'},type:'hardware',
+    fact:{en:"ALL computer chips — CPUs, GPUs, memory — are made entirely of AND, OR, NOT gates! Intel's i9 chip has 10 BILLION transistors in an area the size of your thumbnail. A transistor switches in just 0.0000000003 seconds!",
+      bn:"সব কম্পিউটার চিপ — CPU, GPU, মেমরি — সম্পূর্ণরূপে AND, OR, NOT গেট দিয়ে তৈরি! Intel-এর i9 চিপে তোমার বুড়ো আঙুলের নখের আকারে ১০ বিলিয়ন ট্রানজিস্টর আছে। একটি ট্রানজিস্টর মাত্র ০.০০০০০০০০০৩ সেকেন্ডে সুইচ করে!"},
+    levels:[
+      {gate:'AND',inputs:[0,0],story:{en:"AND Gate Tutorial: Castle door opens ONLY when BOTH guards say YES (1)!",bn:"AND গেট টিউটোরিয়াল: দুর্গের দরজা খুলবে শুধু তখনই যখন উভয় প্রহরী হ্যাঁ (১) বলে!"},task:{en:"AND = 1 only when BOTH inputs are 1. What is the output here?",bn:"AND = ১ শুধু যখন উভয় ইনপুট ১। এখানে আউটপুট কী?"}},
+      {gate:'AND',inputs:[1,0],story:{en:"Guard A is ready (1), Guard B is sleeping (0). AND gate output?",bn:"প্রহরী A প্রস্তুত (১), প্রহরী B ঘুমাচ্ছে (০)। AND গেট আউটপুট?"},task:{en:"Remember: AND needs BOTH to be 1!",bn:"মনে রাখো: AND-এর জন্য উভয়ই ১ হতে হবে!"}},
+      {gate:'AND',inputs:[1,1],story:{en:"BOTH guards are alert! AND gate — will the castle open?",bn:"উভয় প্রহরী সজাগ! AND গেট — দুর্গ কি খুলবে?"},task:{en:"Both inputs = 1. What does AND output?",bn:"উভয় ইনপুট = ১। AND কী আউটপুট দেয়?"}},
+      {gate:'OR',inputs:[0,1],story:{en:"NEW: OR Gate! Either path can power the castle. One gate open (1). Output?",bn:"নতুন: OR গেট! যেকোনো পথ দুর্গে শক্তি দিতে পারে। একটি পথ খোলা (১)। আউটপুট?"},task:{en:"OR = 1 when AT LEAST ONE input is 1!",bn:"OR = ১ যখন অন্তত একটি ইনপুট ১!"}},
+      {gate:'OR',inputs:[1,1],story:{en:"Both power sources active! OR gate — maximum power?",bn:"উভয় শক্তির উৎস সক্রিয়! OR গেট — সর্বোচ্চ শক্তি?"},task:{en:"OR with both inputs = 1. Output?",bn:"উভয় ইনপুট ১ নিয়ে OR। আউটপুট?"}},
+      {gate:'NOT',inputs:[1],story:{en:"NOT Gate! The magic inverter. A cursed castle — everything flips! Input = 1?",bn:"NOT গেট! জাদু বিপরীতকারী। অভিশপ্ত দুর্গ — সবকিছু উল্টে যায়! ইনপুট = ১?"},task:{en:"NOT flips: 1 becomes 0, 0 becomes 1!",bn:"NOT উল্টায়: ১ হয় ০, ০ হয় ১!"}},
+      {gate:'NOT',inputs:[0],story:{en:"The castle is powered off (0). NOT gate — what happens?",bn:"দুর্গ বন্ধ (০)। NOT গেট — কী ঘটে?"},task:{en:"NOT 0 = ? The opposite of nothing!",bn:"NOT ০ = ? শূন্যের বিপরীত!"}},
+      {gate:'NAND',inputs:[1,1],story:{en:"NAND = NOT AND! It's the opposite of AND. Inputs: 1,1. What comes out?",bn:"NAND = NOT AND! এটি AND-এর বিপরীত। ইনপুট: ১,১। কী বের হয়?"},task:{en:"NAND(1,1) = NOT(AND(1,1)) = NOT(1) = ?",bn:"NAND(১,১) = NOT(AND(১,১)) = NOT(১) = ?"}},
+      {gate:'NOR',inputs:[0,0],story:{en:"NOR = NOT OR! Rare gate — outputs 1 ONLY when both inputs are 0!",bn:"NOR = NOT OR! বিরল গেট — শুধু তখন ১ দেয় যখন উভয় ইনপুট ০!"},task:{en:"NOR(0,0) = NOT(OR(0,0)) = NOT(0) = ?",bn:"NOR(০,০) = NOT(OR(০,০)) = NOT(০) = ?"}},
+      {gate:'AND',inputs:null,interactive:true,target:1,story:{en:"🔥 BOSS: Set inputs to make AND output = 1! You control BOTH inputs!",bn:"🔥 বস: AND আউটপুট = ১ করতে ইনপুট সেট করো! তুমি উভয় ইনপুট নিয়ন্ত্রণ করো!"},task:{en:"For AND to output 1 — BOTH inputs must be 1. Toggle them!",bn:"AND আউটপুট ১ করতে — উভয় ইনপুট ১ হতে হবে। টগল করো!"}},
+    ]},
+
+  cd:{id:'cd',name:{en:'⚔️ CODE DUNGEON',bn:'⚔️ কোড ডানজন'},
+    sub:{en:'Build programs by stacking code blocks!',bn:'কোড ব্লক সাজিয়ে প্রোগ্রাম তৈরি করো!'},
+    icon:'⚔️',cc:'wc-cd',color:'#A855F7',
+    tag:{en:'ALGORITHMS',bn:'অ্যালগরিদম'},type:'code',
+    fact:{en:"Programming is writing instructions for computers. The first bug was an ACTUAL bug — in 1947 a moth got stuck in Harvard's Mark II computer! Grace Hopper found it and taped it in her notebook: 'First actual case of bug being found.'",
+      bn:"প্রোগ্রামিং হলো কম্পিউটারের জন্য নির্দেশ লেখা। প্রথম বাগ ছিল আসল পোকা — ১৯৪৭ সালে একটি পতঙ্গ Harvard-এর Mark II কম্পিউটারে আটকে যায়! Grace Hopper এটি খুঁজে পেয়ে নোটবুকে লাগিয়ে লিখেছিলেন: 'প্রথম আসল বাগ পাওয়ার ঘটনা।'"},
+    getLevels:()=>{
+      const BL={
+        'MOVE_RIGHT':{label:{en:'➡ MOVE RIGHT',bn:'➡ ডানে'},cls:'cb-mv'},
+        'MOVE_LEFT':{label:{en:'⬅ MOVE LEFT',bn:'⬅ বামে'},cls:'cb-mv'},
+        'JUMP':{label:{en:'⬆ JUMP',bn:'⬆ লাফ'},cls:'cb-ac'},
+        'WAIT':{label:{en:'⏸ WAIT',bn:'⏸ থামো'},cls:'cb-ac'},
+        'LOOP_2':{label:{en:'🔁 LOOP×2',bn:'🔁 লুপ×২'},cls:'cb-lp'},
+        'LOOP_3':{label:{en:'🔁 LOOP×3',bn:'🔁 লুপ×৩'},cls:'cb-lp'},
+        'LOOP_4':{label:{en:'🔁 LOOP×4',bn:'🔁 লুপ×৪'},cls:'cb-lp'},
+        'IF_ENEMY':{label:{en:'❓ IF ENEMY',bn:'❓ শত্রু থাকলে'},cls:'cb-if'},
+        'ATTACK':{label:{en:'⚔ ATTACK',bn:'⚔ আক্রমণ'},cls:'cb-ac'},
+        'COLLECT':{label:{en:'💎 COLLECT',bn:'💎 সংগ্রহ'},cls:'cb-fn'},
+        'FUNC_A':{label:{en:'📦 FUNC A',bn:'📦 ফাংশন A'},cls:'cb-fn'},
+      };
+      return [
+        {goal:'MOVE_RIGHT,MOVE_RIGHT',blocks:['MOVE_RIGHT','MOVE_LEFT','JUMP','WAIT'],
+          hero:{x:0},chest:{x:2},grid:4,wall:null,enemy:null,
+          story:{en:"Welcome to Code Dungeon! The hero needs to reach the gem. Program them!",bn:"কোড ডানজনে স্বাগতম! হিরোকে রত্নে পৌঁছাতে হবে। প্রোগ্রাম করো!"},
+          task:{en:"MISSION: Move RIGHT twice to reach the chest!",bn:"মিশন: বাক্সে পৌঁছাতে দুবার ডানে সরো!"},blockDefs:BL},
+        {goal:'MOVE_RIGHT,JUMP,MOVE_RIGHT',blocks:['MOVE_RIGHT','JUMP','MOVE_LEFT','WAIT'],
+          hero:{x:0},chest:{x:3},grid:5,wall:{x:1},enemy:null,
+          story:{en:"A wall appeared! You need to jump over it to continue the quest.",bn:"একটি দেওয়াল এসেছে! অভিযান চালিয়ে যেতে এটি লাফিয়ে পার করতে হবে।"},
+          task:{en:"MISSION: RIGHT → JUMP the wall → RIGHT to the gem!",bn:"মিশন: ডানে → দেওয়াল লাফাও → রত্নের দিকে ডানে!"},blockDefs:BL},
+        {goal:'LOOP_3,MOVE_RIGHT',blocks:['LOOP_3','LOOP_2','LOOP_4','MOVE_RIGHT','MOVE_LEFT'],
+          hero:{x:0},chest:{x:3},grid:5,wall:null,enemy:null,
+          story:{en:"LOOPS discovered! Loops repeat code. LOOP×3 + MOVE_RIGHT = move right 3 times!",bn:"লুপ আবিষ্কার! লুপ কোড পুনরাবৃত্তি করে। LOOP×৩ + MOVE_RIGHT = ৩ বার ডানে যাও!"},
+          task:{en:"MISSION: Use LOOP×3 then MOVE_RIGHT to move 3 steps!",bn:"মিশন: LOOP×৩ তারপর MOVE_RIGHT দিয়ে ৩ ধাপ যাও!"},blockDefs:BL},
+        {goal:'IF_ENEMY,JUMP',blocks:['IF_ENEMY','JUMP','MOVE_RIGHT','WAIT','ATTACK'],
+          hero:{x:0},chest:{x:2},grid:4,wall:null,enemy:{x:1},
+          story:{en:"An enemy guards the path! IF ENEMY → JUMP over them. Conditionals make code smart!",bn:"শত্রু পথ রক্ষা করছে! IF ENEMY → লাফিয়ে পার হও। শর্ত কোডকে বুদ্ধিমান করে!"},
+          task:{en:"MISSION: IF_ENEMY → then JUMP to dodge and reach the gem!",bn:"মিশন: IF_ENEMY → তারপর JUMP দিয়ে এড়িয়ে রত্নে পৌঁছাও!"},blockDefs:BL},
+        {goal:'MOVE_RIGHT,MOVE_RIGHT,JUMP,MOVE_RIGHT',blocks:['MOVE_RIGHT','JUMP','MOVE_LEFT','WAIT'],
+          hero:{x:0},chest:{x:4},grid:6,wall:{x:3},enemy:null,
+          story:{en:"Longer path! Walk right twice, then jump the wall, then one more step right.",bn:"দীর্ঘ পথ! দুবার ডানে হাঁটো, তারপর দেওয়াল লাফাও, তারপর আরও এক পদক্ষেপ ডানে।"},
+          task:{en:"MISSION: RIGHT → RIGHT → JUMP → RIGHT → TREASURE!",bn:"মিশন: ডানে → ডানে → লাফ → ডানে → ধন!"},blockDefs:BL},
+        {goal:'LOOP_4,MOVE_RIGHT',blocks:['LOOP_4','LOOP_2','LOOP_3','MOVE_RIGHT','JUMP'],
+          hero:{x:0},chest:{x:4},grid:6,wall:null,enemy:null,
+          story:{en:"EFFICIENCY challenge! The chest is 4 steps away. Use LOOP×4 to move efficiently!",bn:"দক্ষতার চ্যালেঞ্জ! বাক্স ৪ ধাপ দূরে। দক্ষতার সাথে যেতে LOOP×৪ ব্যবহার করো!"},
+          task:{en:"MISSION: LOOP×4 + MOVE_RIGHT = move right 4 times efficiently!",bn:"মিশন: LOOP×৪ + MOVE_RIGHT = দক্ষতার সাথে ৪ বার ডানে যাও!"},blockDefs:BL},
+        {goal:'IF_ENEMY,ATTACK,MOVE_RIGHT',blocks:['IF_ENEMY','ATTACK','MOVE_RIGHT','JUMP','WAIT'],
+          hero:{x:0},chest:{x:2},grid:4,wall:null,enemy:{x:1},
+          story:{en:"The enemy is too strong to jump! IF ENEMY → ATTACK them → then proceed right!",bn:"শত্রু খুব শক্তিশালী, লাফানো যাবে না! IF ENEMY → আক্রমণ করো → তারপর ডানে যাও!"},
+          task:{en:"MISSION: IF_ENEMY → ATTACK → MOVE_RIGHT to victory!",bn:"মিশন: IF_ENEMY → ATTACK → MOVE_RIGHT দিয়ে জয়!"},blockDefs:BL},
+        {goal:'MOVE_RIGHT,JUMP,MOVE_RIGHT,MOVE_RIGHT',blocks:['MOVE_RIGHT','JUMP','MOVE_LEFT','WAIT','ATTACK'],
+          hero:{x:0},chest:{x:4},grid:6,wall:{x:2},enemy:null,
+          story:{en:"🔥 FINAL BOSS DUNGEON! Navigate the full path: RIGHT, JUMP the wall, then RIGHT RIGHT!",bn:"🔥 চূড়ান্ত বস ডানজন! সম্পূর্ণ পথ নেভিগেট করো: ডানে, দেওয়াল লাফাও, তারপর ডানে ডানে!"},
+          task:{en:"MISSION: RIGHT → JUMP(wall) → RIGHT → RIGHT → FINAL TREASURE!",bn:"মিশন: ডানে → লাফ(দেওয়াল) → ডানে → ডানে → চূড়ান্ত ধন!"},blockDefs:BL},
+      ];
+    }},
+
+  nt:{id:'nt',name:{en:'🌊 INTERNET OCEAN',bn:'🌊 ইন্টারনেট সমুদ্র'},
+    sub:{en:'Match CS terms to sail the digital ocean!',bn:'CS পদ মিলিয়ে ডিজিটাল সমুদ্র পাড়ি দাও!'},
+    icon:'🌊',cc:'wc-nt',color:'#00BFFF',
+    tag:{en:'NETWORKS & CS',bn:'নেটওয়ার্ক ও CS'},type:'memory',
+    fact:{en:"The Internet handles over 5 million GB of data every MINUTE! If you printed all the internet, it would make a stack of paper reaching to the moon and back 80,000 times! WiFi stands for 'Wireless Fidelity' and was invented by a team in Australia.",
+      bn:"ইন্টারনেট প্রতি মিনিটে ৫০ লাখ GB-রও বেশি তথ্য পরিচালনা করে! পুরো ইন্টারনেট প্রিন্ট করলে কাগজের স্তূপ চাঁদ পর্যন্ত ৮০,০০০ বার যাওয়া-আসা করবে! WiFi মানে 'Wireless Fidelity' এবং এটি অস্ট্রেলিয়ার একটি দল আবিষ্কার করেছিল।"},
+    getLevels:()=>[
+      {story:{en:"LEVEL 1: Match hardware terms to their meanings!",bn:"লেভেল ১: হার্ডওয়্যার পদ তাদের অর্থের সাথে মেলাও!"},
+        pairs:[{term:{en:'CPU',bn:'CPU'},def:{en:'Brain of computer',bn:'কম্পিউটারের মস্তিষ্ক'},emoji:'🧠'},
+          {term:{en:'RAM',bn:'RAM'},def:{en:'Temporary fast memory',bn:'অস্থায়ী দ্রুত মেমরি'},emoji:'⚡'},
+          {term:{en:'HDD',bn:'HDD'},def:{en:'Permanent storage disk',bn:'স্থায়ী সঞ্চয়স্থান ডিস্ক'},emoji:'💾'},
+          {term:{en:'GPU',bn:'GPU'},def:{en:'Processes graphics fast',bn:'দ্রুত গ্রাফিক্স প্রক্রিয়া করে'},emoji:'🎮'}]},
+      {story:{en:"LEVEL 2: Match binary and data terms!",bn:"লেভেল ২: বাইনারি ও তথ্য পদ মেলাও!"},
+        pairs:[{term:{en:'Bit',bn:'বিট'},def:{en:'Smallest unit: 0 or 1',bn:'ক্ষুদ্রতম একক: ০ বা ১'},emoji:'🔵'},
+          {term:{en:'Byte',bn:'বাইট'},def:{en:'8 bits together',bn:'৮টি বিট একসাথে'},emoji:'📦'},
+          {term:{en:'Pixel',bn:'পিক্সেল'},def:{en:'Smallest dot in image',bn:'ছবির ক্ষুদ্রতম বিন্দু'},emoji:'🔲'},
+          {term:{en:'ASCII',bn:'ASCII'},def:{en:'Number code for letters',bn:'অক্ষরের সংখ্যা কোড'},emoji:'🔤'}]},
+      {story:{en:"LEVEL 3: Match programming terms!",bn:"লেভেল ৩: প্রোগ্রামিং পদ মেলাও!"},
+        pairs:[{term:{en:'Algorithm',bn:'অ্যালগরিদম'},def:{en:'Step-by-step solution',bn:'ধাপে ধাপে সমাধান'},emoji:'📋'},
+          {term:{en:'Loop',bn:'লুপ'},def:{en:'Repeating code block',bn:'পুনরাবৃত্তি কোড ব্লক'},emoji:'🔁'},
+          {term:{en:'Function',bn:'ফাংশন'},def:{en:'Reusable code block',bn:'পুনর্ব্যবহারযোগ্য কোড ব্লক'},emoji:'📦'},
+          {term:{en:'Variable',bn:'ভেরিয়েবল'},def:{en:'Named storage box',bn:'নামযুক্ত সঞ্চয় বাক্স'},emoji:'📁'}]},
+      {story:{en:"LEVEL 4: Match network and internet terms!",bn:"লেভেল ৪: নেটওয়ার্ক ও ইন্টারনেট পদ মেলাও!"},
+        pairs:[{term:{en:'HTTP',bn:'HTTP'},def:{en:'Web page transfer rules',bn:'ওয়েব পেজ স্থানান্তর নিয়ম'},emoji:'🌐'},
+          {term:{en:'IP Address',bn:'IP ঠিকানা'},def:{en:"Device's network identity",bn:'ডিভাইসের নেটওয়ার্ক পরিচয়'},emoji:'📍'},
+          {term:{en:'Router',bn:'রাউটার'},def:{en:'Directs internet traffic',bn:'ইন্টারনেট ট্রাফিক পরিচালনা'},emoji:'📡'},
+          {term:{en:'Encryption',bn:'এনক্রিপশন'},def:{en:'Data scrambling for safety',bn:'নিরাপত্তার জন্য তথ্য পেঁচানো'},emoji:'🔐'}]},
+      {story:{en:"🔥 BOSS LEVEL: Mixed CS mega-match — 4 pairs across all topics!",bn:"🔥 বস লেভেল: মিশ্র CS মেগা-ম্যাচ — সব বিষয় থেকে ৪টি জোড়া!"},
+        pairs:[{term:{en:'Bug',bn:'বাগ'},def:{en:'Error in a program',bn:'প্রোগ্রামে ত্রুটি'},emoji:'🐛'},
+          {term:{en:'Binary',bn:'বাইনারি'},def:{en:'Base-2 number system',bn:'বেস-২ সংখ্যা পদ্ধতি'},emoji:'01'},
+          {term:{en:'Compiler',bn:'কম্পাইলার'},def:{en:'Translates code to machine',bn:'কোড মেশিনে রূপান্তর করে'},emoji:'⚙️'},
+          {term:{en:'Debug',bn:'ডিবাগ'},def:{en:'Finding and fixing bugs',bn:'ত্রুটি খোঁজা ও ঠিক করা'},emoji:'🔍'}]},
+    ]},
+
+  px:{id:'px',name:{en:'🎨 PIXEL STUDIO',bn:'🎨 পিক্সেল স্টুডিও'},
+    sub:{en:'Paint pixel art to understand how images work!',bn:'পিক্সেল আর্ট এঁকে ছবি কিভাবে কাজ করে বোঝো!'},
+    icon:'🎨',cc:'wc-px',color:'#FF69B4',
+    tag:{en:'PIXELS & IMAGES',bn:'পিক্সেল ও ছবি'},type:'pixel',
+    fact:{en:"Every image on a screen is made of pixels (tiny colored squares)! A 4K screen has 8,294,400 pixels. Each pixel stores 3 numbers (Red, Green, Blue from 0-255). That's 24 bits = 3 bytes per pixel! So a 4K photo = ~25 million bytes!",
+      bn:"স্ক্রিনের প্রতিটি ছবি পিক্সেল (ছোট রঙিন বর্গ) দিয়ে তৈরি! একটি 4K স্ক্রিনে ৮,২৯৪,৪০০ পিক্সেল আছে। প্রতিটি পিক্সেল ৩টি সংখ্যা (লাল, সবুজ, নীল ০-২৫৫) সংরক্ষণ করে। এটি ২৪ বিট = ৩ বাইট প্রতি পিক্সেল! তাই 4K ছবি = প্রায় ২.৫ কোটি বাইট!"},
+    levels:[
+      {name:{en:'Draw a SMILE 😊',bn:'একটি হাসি আঁকো 😊'},
+        story:{en:"Pixels make every image! Paint the smiley face using the color palette — match the target pattern!",bn:"পিক্সেল দিয়ে প্রতিটি ছবি তৈরি! রং প্যালেট দিয়ে হাসির মুখ আঁকো — লক্ষ্য প্যাটার্ন মেলাও!"},
+        grid:6,palette:['#FFD700','#FF8C00','#000000','#FFFFFF','#FF4466'],
+        target:[[0,0,1,1,0,0],[0,1,0,0,1,0],[1,0,0,0,0,1],[1,0,2,0,2,1],[1,0,0,0,0,1],[0,1,2,2,2,1],[0,0,1,1,0,0]].slice(0,6)},
+      {name:{en:'Draw a HOUSE 🏠',bn:'একটি বাড়ি আঁকো 🏠'},
+        story:{en:"A house made of pixels! Color each cell to match the blueprint below.",bn:"পিক্সেলের বাড়ি! নিচের ব্লুপ্রিন্ট মেলাতে প্রতিটি ঘর রং করো।"},
+        grid:6,palette:['#FF6B35','#8B4513','#87CEEB','#FFD700','#228B22','#FFFFFF'],
+        target:[[4,4,0,0,4,4],[4,0,0,0,0,4],[0,0,0,0,0,0],[1,1,2,2,1,1],[1,1,2,2,1,1],[1,1,1,1,1,1]]},
+      {name:{en:'Draw a STAR ⭐',bn:'একটি তারা আঁকো ⭐'},
+        story:{en:"Stars in games are made of pixels! Recreate this glowing star shape.",bn:"গেমের তারা পিক্সেলে তৈরি! এই জ্বলন্ত তারার আকৃতি তৈরি করো।"},
+        grid:7,palette:['#FFD700','#FF8C00','#FFFFFF','#000000','#FFA500'],
+        target:[[3,3,3,0,3,3,3],[3,3,0,0,0,3,3],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[3,0,0,0,0,0,3],[3,3,0,0,0,3,3],[3,3,3,0,3,3,3]]},
+    ]},
+
+  sc:{id:'sc',name:{en:'🔢 SORT VALLEY',bn:'🔢 সর্ট ভ্যালি'},
+    sub:{en:'Sort arrays using Bubble Sort — step by step!',bn:'বাবল সর্ট দিয়ে অ্যারে সাজাও — ধাপে ধাপে!'},
+    icon:'🔢',cc:'wc-sc',color:'#00FFEE',
+    tag:{en:'SORTING ALGORITHMS',bn:'সর্টিং অ্যালগরিদম'},type:'sort',
+    fact:{en:"Bubble Sort is one of the first algorithms students learn! It compares pairs of numbers and swaps them if they're in the wrong order. Real computers use faster sorts like QuickSort (invented 1959) and MergeSort. Google processes 8.5 billion searches daily — each needs sorting!",
+      bn:"বাবল সর্ট হলো প্রথম অ্যালগরিদমগুলির একটি যা শিক্ষার্থীরা শেখে! এটি সংখ্যার জোড়া তুলনা করে এবং ভুল ক্রমে থাকলে বদলায়। আসল কম্পিউটার দ্রুত সর্ট ব্যবহার করে যেমন QuickSort (১৯৫৯ সালে আবিষ্কৃত) এবং MergeSort। Google প্রতিদিন ৮৫০ কোটি অনুসন্ধান প্রক্রিয়া করে — প্রতিটিতে সর্টিং দরকার!"},
+    levels:[
+      {arr:[3,1,2],story:{en:"3 numbers out of order! Compare neighbors and swap if wrong. Sort them smallest to largest!",bn:"৩টি সংখ্যা এলোমেলো! প্রতিবেশী তুলনা করো এবং ভুল হলে বদলাও। ছোট থেকে বড় সাজাও!"},task:{en:"Click SWAP to swap highlighted pairs, or SKIP if already in order.",bn:"হাইলাইট করা জোড়া বদলাতে SWAP ক্লিক করো, বা ইতিমধ্যে ক্রমানুসারে থাকলে SKIP।"}},
+      {arr:[4,2,5,1],story:{en:"4 numbers! Bubble Sort compares adjacent pairs. Larger numbers bubble to the right.",bn:"৪টি সংখ্যা! বাবল সর্ট পার্শ্ববর্তী জোড়া তুলনা করে। বড় সংখ্যা ডানে ভেসে যায়।"},task:{en:"Go through each pair — swap if left > right. Keep going until sorted!",bn:"প্রতিটি জোড়া দেখো — বাঁ দিক > ডানে হলে বদলাও। সম্পূর্ণ সাজানো না হওয়া পর্যন্ত চালিয়ে যাও!"}},
+      {arr:[5,3,8,1,4],story:{en:"5 numbers! A proper bubble sort challenge. Watch the big numbers bubble to the end!",bn:"৫টি সংখ্যা! সঠিক বাবল সর্ট চ্যালেঞ্জ। বড় সংখ্যাগুলো শেষে ভেসে যাওয়া দেখো!"},task:{en:"Multiple passes needed! Each pass brings one more number to its correct place.",bn:"একাধিক পাস দরকার! প্রতিটি পাস আরও একটি সংখ্যাকে সঠিক জায়গায় আনে।"}},
+      {arr:[6,2,9,3,7,1],story:{en:"6 numbers — Bubble Sort gets harder! This is why computers need efficient algorithms.",bn:"৬টি সংখ্যা — বাবল সর্ট কঠিন হয়! এই কারণেই কম্পিউটারের দক্ষ অ্যালগরিদম দরকার।"},task:{en:"Sort all 6 numbers! Count how many swaps it takes.",bn:"সব ৬টি সংখ্যা সাজাও! কতটি সোয়াপ লাগে গণনা করো।"}},
+      {arr:[8,5,2,9,1,6,3],story:{en:"🔥 BOSS SORT! 7 numbers. This is a real programming challenge. Sort them all!",bn:"🔥 বস সর্ট! ৭টি সংখ্যা। এটি একটি আসল প্রোগ্রামিং চ্যালেঞ্জ। সব সাজাও!"},task:{en:"BOSS: Sort all 7 numbers using Bubble Sort! Maximum swaps may be needed.",bn:"বস: বাবল সর্ট দিয়ে সব ৭টি সংখ্যা সাজাও! সর্বোচ্চ সোয়াপের প্রয়োজন হতে পারে।"}},
+    ]},
+};
+
+// ═══════════════════════════════════════
+// SCREEN MANAGEMENT
+// ═══════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='title-screen') updateStats();
+}
+function updateStats(){
+  document.getElementById('tsw').textContent=Object.keys(GS.cw).length;
+  document.getElementById('tss').textContent=Object.values(GS.bs).reduce((a,b)=>a+b,0);
+  document.getElementById('tsr').textContent=GS.ts+'⭐';
+}
+
+// ═══════════════════════════════════════
+// WORLD SELECT
+// ═══════════════════════════════════════
+function buildWS(){
+  const g=document.getElementById('wgrid');g.innerHTML='';
+  Object.values(WD).forEach(w=>{
+    const done=GS.cw[w.id];
+    const lvls=w.type==='code'?w.getLevels().length:(w.levels?.length||w.getLevels?.()?.length||3);
+    const stars=done?(done>=400?'⭐⭐⭐':done>=200?'⭐⭐':'⭐'):'';
+    const pct=done?100:0;
+    const card=document.createElement('div');
+    card.className=`wcard ${w.cc}`;
+    card.innerHTML=`
+      <div class="wcicon" style="border-color:${w.color}38;box-shadow:0 0 18px ${w.color}18"><span>${w.icon}</span></div>
+      <div class="${L==='bn'?'wcnm-bn':'wcnm'}">${w.name[L]}</div>
+      <div class="${L==='bn'?'wcsb-bn':'wcsb'}">${w.sub[L]}</div>
+      <div class="${L==='bn'?'wctg-bn':'wctg'}">${w.tag[L]}</div>
+      <div class="wcst">${stars||'○○○'}</div>
+      <div class="${L==='bn'?'wclvl-bn':'wclvl'}">${done?'✅':''} ${lvls} ${L==='en'?'levels':'লেভেল'}</div>
+      <div class="wcpb"><div class="wcpbf" style="width:${pct}%"></div></div>`;
+    card.onclick=()=>startWorld(w.id);
+    g.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════
+// HOW TO PLAY
+// ═══════════════════════════════════════
+function buildHowTo(){
+  const CARDS=[
+    {e:'🌿',t:{en:'BINARY FOREST',bn:'বাইনারি বন'},b:{en:'Flip ON/OFF bit switches to match a target decimal number. 8 levels from easy to boss!',bn:'টার্গেট দশমিক সংখ্যা মেলাতে বিট সুইচ ON/OFF করো। সহজ থেকে বস পর্যন্ত ৮টি লেভেল!'}},
+    {e:'🏰',t:{en:'CPU CASTLE',bn:'CPU দুর্গ'},b:{en:'Toggle inputs on AND, OR, NOT, NAND, NOR gates and observe the outputs. 10 levels!',bn:'AND, OR, NOT, NAND, NOR গেটে ইনপুট টগল করো এবং আউটপুট দেখো। ১০টি লেভেল!'}},
+    {e:'⚔️',t:{en:'CODE DUNGEON',bn:'কোড ডানজন'},b:{en:'Click code blocks to build programs and move your hero. Learn loops, if/else, sequences!',bn:'কোড ব্লক ক্লিক করে প্রোগ্রাম বানাও এবং হিরোকে সরাও। লুপ, if/else, ক্রম শিখো!'}},
+    {e:'🌊',t:{en:'INTERNET OCEAN',bn:'ইন্টারনেট সমুদ্র'},b:{en:'Memory match game — flip cards to find matching CS term and definition pairs. 5 rounds!',bn:'মেমরি ম্যাচ গেম — CS পদ ও সংজ্ঞার মিলের জোড়া খুঁজতে কার্ড উল্টাও। ৫ রাউন্ড!'}},
+    {e:'🎨',t:{en:'PIXEL STUDIO',bn:'পিক্সেল স্টুডিও'},b:{en:'NEW! Paint pixel art to match target images. Learn how computers store and display images!',bn:'নতুন! লক্ষ্য ছবি মেলাতে পিক্সেল আর্ট আঁকো। কম্পিউটার কীভাবে ছবি সংরক্ষণ ও দেখায় শিখো!'}},
+    {e:'🔢',t:{en:'SORT VALLEY',bn:'সর্ট ভ্যালি'},b:{en:'NEW! Sort arrays using Bubble Sort by swapping pairs. Learn how sorting algorithms work!',bn:'নতুন! জোড়া বদলিয়ে বাবল সর্ট দিয়ে অ্যারে সাজাও। সর্টিং অ্যালগরিদম কিভাবে কাজ করে শিখো!'}},
+    {e:'❤️',t:{en:'LIVES & SCORING',bn:'জীবন ও স্কোর'},b:{en:'3 ❤️ hearts per world. Wrong answers cost a heart. Keep all 3 to earn ⭐⭐⭐!',bn:'প্রতি জগতে ৩টি ❤️ হার্ট। ভুল উত্তরে একটি হার্ট যায়। ⭐⭐⭐ পেতে সব ৩টি রাখো!'}},
+  ];
+  const c=document.getElementById('hwcards');c.innerHTML=CARDS.map(card=>`
+    <div class="hwc"><div class="hwe">${card.e}</div><div class="hwt-text">
+      <div class="${L==='bn'?'hwch3-bn':'hwch3'}">${card.t[L]}</div>
+      <div class="${L==='bn'?'hwcp-bn':'hwcp'}">${card.b[L]}</div>
+    </div></div>`).join('');
+  document.getElementById('hwtt').textContent=L==='en'?'📖 HOW TO PLAY':'📖 কিভাবে খেলবে';
+  document.getElementById('hwtt').className=L==='bn'?'hwt hwt-bn':'hwt';
+}
+
+// ═══════════════════════════════════════
+// START WORLD
+// ═══════════════════════════════════════
+function startWorld(wid){
+  GS.world=wid;GS.level=0;GS.lives=3;GS.score=0;GS.perfect=0;GS.startTime=Date.now();
+  const w=WD[wid];
+  const wn=document.getElementById('hudwn');
+  wn.textContent=w.name[L];wn.className=L==='bn'?'hudwn-bn':'hudwn';
+  startScene(wid);showScreen('gs');
+  renderHUD();loadLevel();
+}
+
+function renderHUD(){
+  const hd=document.getElementById('hudlv');hd.innerHTML='';
+  for(let i=0;i<3;i++){const h=document.createElement('span');h.className='hrt'+(i>=GS.lives?' lost':'');h.textContent='❤️';hd.appendChild(h);}
+  const sc=document.getElementById('hudsc');sc.textContent=GS.score;sc.classList.add('pop');setTimeout(()=>sc.classList.remove('pop'),300);
+  const w=WD[GS.world];
+  const lvls=w.type==='code'?w.getLevels():(w.levels||w.getLevels?.());
+  const nl=Array.isArray(lvls)?lvls.length:(typeof lvls==='number'?lvls:5);
+  const pd=document.getElementById('pdots');pd.innerHTML='';
+  for(let i=0;i<nl;i++){const d=document.createElement('div');d.className='pd'+(i<GS.level?' done':i===GS.level?' act':'');pd.appendChild(d);}
+}
+
+// ═══════════════════════════════════════
+// LOAD LEVEL
+// ═══════════════════════════════════════
+function loadLevel(){
+  const c=document.getElementById('cc');c.style.animation='none';void c.offsetWidth;c.style.animation='';
+  document.getElementById('cst').className='cst cs-'+GS.world;
+  renderHUD();
+  const w=WD[GS.world];
+  if(w.type==='binary') buildBinary();
+  else if(w.type==='hardware') buildHardware();
+  else if(w.type==='code') buildCode();
+  else if(w.type==='memory') buildMemory();
+  else if(w.type==='pixel') buildPixel();
+  else if(w.type==='sort') buildSort();
+}
+
+// ═══════════════════════════════════════
+// ── BINARY GAME ──
+// ═══════════════════════════════════════
+let BB=[0,0,0,0];
+function buildBinary(){
+  BB=[0,0,0,0];
+  const lvl=WD.bi.levels[GS.level];
+  const b=document.getElementById('cbody');
+  b.innerHTML=`<div class="gp">
+    <div class="${L==='bn'?'gt-bn':'gt'}" style="color:var(--g)">🌿 ${WD.bi.name[L]}</div>
+    <div class="${L==='bn'?'gs2-bn':'gs2'}">${lvl.story[L]}</div>
+    <div class="tbx ${L==='bn'?'tbx-bn':''}" style="border-color:var(--g)">
+      <strong style="color:var(--g)">${t('mission')}</strong> ${lvl.task[L]}</div>
+    <div class="bitrow" id="bitrow"></div>
+    <div class="bscore">
+      <div class="bsc-col"><div class="${L==='bn'?'bsc-lbl-bn':'bsc-lbl'}">${t('yourval')}</div><div class="bsc-val nom" id="bcur">0</div></div>
+      <div class="bsc-eq" id="beq">≠</div>
+      <div class="bsc-col"><div class="${L==='bn'?'bsc-lbl-bn':'bsc-lbl'}">${t('target')}</div><div class="bsc-val" style="color:var(--y)">${lvl.target}</div></div>
+    </div>
+    <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+      <button class="gb gb-r ${L==='bn'?'gb-bn':''}" onclick="resetBits()">${t('reset')}</button>
+      <div style="font-size:${L==='bn'?'13px':'10px'};color:#2a2a2a;font-family:${L==='bn'?'Hind Siliguri':'Share Tech Mono'},sans-serif;padding:8px">
+        ${L==='en'?'💡 Click the squares to flip bits!':'💡 বর্গ ক্লিক করে বিট বদলাও!'}</div>
+    </div></div>`;
+  renderBits();
+}
+function renderBits(){
+  const row=document.getElementById('bitrow');if(!row)return;row.innerHTML='';
+  [8,4,2,1].forEach((p,i)=>{
+    const on=BB[i]===1;
+    const col=document.createElement('div');col.className='bcol';
+    col.innerHTML=`<div class="bpow ${on?'on':''}">×${p}</div>
+      <button class="bbtn ${on?'on':''}" onclick="flipBit(${i})">${on?'1':'0'}</button>
+      <div class="bval ${on?'on':''}">${on?p:0}</div>`;
+    row.appendChild(col);
+  });
+  updateBinResult();
+}
+function flipBit(i){BB[i]=BB[i]===0?1:0;renderBits();particles(['⚡','✨'],2);}
+function resetBits(){BB=[0,0,0,0];renderBits();}
+function updateBinResult(){
+  const val=BB[0]*8+BB[1]*4+BB[2]*2+BB[3];
+  const lvl=WD.bi.levels[GS.level];
+  const cur=document.getElementById('bcur'),eq=document.getElementById('beq');if(!cur)return;
+  cur.textContent=val;
+  if(val===lvl.target){cur.className='bsc-val match';eq.textContent='=';eq.style.color='var(--g)';setTimeout(()=>levelWin(),500);}
+  else{cur.className='bsc-val nom';eq.textContent='≠';eq.style.color='var(--r)';}
+}
+
+// ═══════════════════════════════════════
+// ── HARDWARE / LOGIC GATES ──
+// ═══════════════════════════════════════
+let HI=[0,0];
+const gateCompute=(g,inp)=>g==='AND'?+(inp[0]&&inp[1]):g==='OR'?+(inp[0]||inp[1]):g==='NOT'?+(inp[0]?0:1):g==='NAND'?+(!(inp[0]&&inp[1])):g==='NOR'?+(!(inp[0]||inp[1])):g==='XOR'?+(inp[0]^inp[1]):0;
+function buildHardware(){
+  const lvl=WD.hw.levels[GS.level];
+  HI=lvl.interactive?[0,0]:[...(lvl.inputs||[0,0])];
+  const gcol={AND:'var(--g)',OR:'#FF8C00',NOT:'#FF00FF',NAND:'var(--y)',NOR:'var(--b)',XOR:'var(--pk)'}[lvl.gate]||'var(--g)';
+  const gdesc={AND:{en:'Outputs 1 only when ALL inputs are 1',bn:'সব ইনপুট ১ হলেই আউটপুট ১'},OR:{en:'Outputs 1 when at least ONE input is 1',bn:'অন্তত একটি ইনপুট ১ হলে আউটপুট ১'},NOT:{en:'FLIPS the input: 1→0, 0→1',bn:'ইনপুট উল্টায়: ১→০, ০→১'},NAND:{en:'Opposite of AND: NOT(AND)',bn:'AND-এর বিপরীত: NOT(AND)'},NOR:{en:'Opposite of OR: NOT(OR)',bn:'OR-এর বিপরীত: NOT(OR)'},XOR:{en:'1 when inputs are DIFFERENT',bn:'ইনপুট আলাদা হলে ১'}};
+  const b=document.getElementById('cbody');
+  b.innerHTML=`<div class="gp">
+    <div class="${L==='bn'?'gt-bn':'gt'}" style="color:var(--o)">⚙ ${WD.hw.name[L]}</div>
+    <div class="${L==='bn'?'gs2-bn':'gs2'}">${lvl.story[L]}</div>
+    <div class="tbx ${L==='bn'?'tbx-bn':''}" style="border-color:var(--o)"><strong style="color:${gcol}">${lvl.gate} GATE:</strong> ${gdesc[lvl.gate]?.[L]||''}</div>
+    <div class="garena">
+      <div class="${L==='bn'?'gs2-bn':'gs2'}" style="color:#aaa;font-size:${L==='bn'?'14px':'12px'}">${lvl.task[L]}</div>
+      <div class="gvis" id="gvis"></div>
+      ${!lvl.interactive?`<div class="gbtns">
+        <div style="font-size:${L==='bn'?'14px':'11px'};color:#555;font-family:${L==='bn'?'Hind Siliguri':'Share Tech Mono'},sans-serif;margin-right:6px">${L==='en'?'What is the OUTPUT?':'আউটপুট কী?'}</div>
+        <button class="gb gb-g ${L==='bn'?'gb-bn':''}" onclick="answerGate(1)">${t('out1')}</button>
+        <button class="gb gb-r ${L==='bn'?'gb-bn':''}" onclick="answerGate(0)">${t('out0')}</button>
+      </div>`:`<div style="background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.18);padding:13px;font-family:${L==='bn'?'Hind Siliguri':'Share Tech Mono'},sans-serif;font-size:${L==='bn'?'14px':'12px'};color:#bbb">
+        ${L==='en'?`Make output = <strong style="color:var(--o);font-size:18px">1</strong> then click CHECK`:`আউটপুট = <strong style="color:var(--o);font-size:18px">১</strong> করো তারপর CHECK ক্লিক করো`}
+      </div>
+      <button class="gb gb-pu ${L==='bn'?'gb-bn':''}" style="margin-top:10px" onclick="checkGateI()">${t('check')}</button>`}
+    </div></div>`;
+  renderGate(lvl);
+}
+function renderGate(lvl){
+  const gv=document.getElementById('gvis');if(!gv)return;
+  const out=gateCompute(lvl.gate,HI);
+  const isNot=lvl.gate==='NOT';
+  gv.innerHTML=`
+    <div class="ginput-stack">
+      ${HI.map((v,i)=>`<div class="git" onclick="toggleHI(${i})">
+        <div class="gitbtn ${v?'on':'off'}">${v}</div>
+        <div class="${L==='bn'?'gitlbl-bn':'gitlbl'}">${L==='en'?`INPUT ${String.fromCharCode(65+i)}`:`ইনপুট ${String.fromCharCode(65+i)}`}</div>
+      </div>`).join('')}
+    </div>
+    <div style="font-size:26px;color:#222;display:flex;flex-direction:column;justify-content:center;gap:8px">${isNot?'→':'→\n→'}</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:7px">
+      <div class="gshape g-${lvl.gate} ${out?'gag':''}">${lvl.gate}</div>
+      <div style="font-size:9px;color:#333;font-family:'Press Start 2P',monospace">${t('gate')}</div>
+    </div>
+    <div style="font-size:26px;color:#222">→</div>
+    <div class="gout">
+      <div class="gbulb ${out?'on':'off'}">${out?'💡':'⚫'}</div>
+      <div class="goutv ${out?'on':'off'}">${out}</div>
+      <div class="${L==='bn'?'goutl-bn':'goutl'}">${t('output')}</div>
+    </div>`;
+}
+function toggleHI(i){HI[i]=HI[i]===0?1:0;renderGate(WD.hw.levels[GS.level]);particles(['⚡'],1);}
+function answerGate(guess){
+  const lvl=WD.hw.levels[GS.level];const actual=gateCompute(lvl.gate,HI);
+  if(guess===actual) levelWin();
+  else levelFail(L==='en'?`Wrong! Output was ${actual}. Look at the glowing bulb!`:`ভুল! আউটপুট ছিল ${actual}। জ্বলন্ত বাল্বটি দেখো!`);
+}
+function checkGateI(){const lvl=WD.hw.levels[GS.level];const out=gateCompute(lvl.gate,HI);if(out===(lvl.target||1)) levelWin();else levelFail(L==='en'?`Output is ${out}, need ${lvl.target||1}. Keep trying!`:`আউটপুট ${out}, দরকার ${lvl.target||1}। চেষ্টা করো!`);}
+
+// ═══════════════════════════════════════
+// ── CODE DUNGEON ──
+// ═══════════════════════════════════════
+let CP=[];
+function buildCode(){
+  CP=[];
+  const lvl=WD.cd.getLevels()[GS.level];const BL=lvl.blockDefs;
+  const b=document.getElementById('cbody');
+  b.innerHTML=`<div class="gp">
+    <div class="${L==='bn'?'gt-bn':'gt'}" style="color:var(--p)">💻 ${WD.cd.name[L]}</div>
+    <div class="${L==='bn'?'gs2-bn':'gs2'}">${lvl.story[L]}</div>
+    <div class="tbx ${L==='bn'?'tbx-bn':''}" style="border-color:var(--p)"><strong style="color:var(--p)">${t('mission')}</strong> ${lvl.task[L]}</div>
+    <div class="codearena">
+      <div class="pool">
+        <div class="${L==='bn'?'zonelbl-bn':'zonelbl'}">${t('toolbox')}</div>
+        ${[...new Set(lvl.blocks)].map(bk=>`<div class="cblk ${BL[bk]?.cls||'cb-mv'} ${L==='bn'?'cblk-bn':''}" onclick="addBlock('${bk}')">${BL[bk]?.label?.[L]||bk}</div>`).join('')}
+      </div>
+      <div class="progz">
+        <div class="${L==='bn'?'zonelbl-bn':'zonelbl'}">${t('progzone')}</div>
+        <div id="pzone"><div class="${L==='bn'?'zph-bn':'zph'}">${t('progph')}</div></div>
+      </div>
+    </div>
+    <div class="hstage"><canvas id="hcanv" height="86"></canvas></div>
+    <div class="rstrip">
+      <button class="gb gb-pu ${L==='bn'?'gb-bn':''}" onclick="runProg()">${t('run')}</button>
+      <button class="gb gb-r ${L==='bn'?'gb-bn':''}" onclick="clearProg()">${t('clear')}</button>
+      <div class="cout ${L==='bn'?'cout-bn':''}" id="cout">${L==='en'?'// Output here...':'// আউটপুট এখানে...'}</div>
+    </div></div>`;
+  const cv=document.getElementById('hcanv');if(cv){cv.width=cv.parentElement.offsetWidth-20||480;}
+  drawHeroMap(lvl);
+}
+function addBlock(type){
+  CP.push(type);
+  const pz=document.getElementById('pzone');if(!pz)return;
+  if(pz.querySelector('.zph,.zph-bn')) pz.innerHTML='';
+  const lvl=WD.cd.getLevels()[GS.level];const BL=lvl.blockDefs;
+  const idx=CP.length-1;
+  const d=document.createElement('div');d.className=`cblk ${BL[type]?.cls||'cb-mv'} ${L==='bn'?'cblk-bn':''}`;
+  d.innerHTML=`${BL[type]?.label?.[L]||type}<button class="cbdel" onclick="rmBlock(${idx},this.parentElement)">✕</button>`;
+  pz.appendChild(d);particles(['✨'],1);
+}
+function rmBlock(idx,el){CP.splice(idx,1);el.remove();const pz=document.getElementById('pzone');if(pz&&!pz.children.length) pz.innerHTML=`<div class="${L==='bn'?'zph-bn':'zph'}">${t('progph')}</div>`;}
+function clearProg(){CP=[];const pz=document.getElementById('pzone');if(pz) pz.innerHTML=`<div class="${L==='bn'?'zph-bn':'zph'}">${t('progph')}</div>`;const co=document.getElementById('cout');if(co){co.textContent=L==='en'?'// Cleared.':'// মুছে গেছে।';co.className='cout'+(L==='bn'?' cout-bn':'');co.style.borderColor='#222';}}
+function runProg(){
+  const lvl=WD.cd.getLevels()[GS.level];const goal=lvl.goal.split(',');const BL=lvl.blockDefs;const co=document.getElementById('cout');
+  if(!CP.length){if(co){co.textContent=L==='en'?'> Add blocks first!':'> আগে ব্লক যোগ করো!';co.className='cout err'+(L==='bn'?' cout-bn':'');}return;}
+  let log=t('running');CP.forEach((c,i)=>log+=`  ${i+1}. ${BL[c]?.label?.[L]||c}\n`);
+  if(JSON.stringify(CP)===JSON.stringify(goal)){
+    log+='\n'+t('reached');if(co){co.textContent=log;co.className='cout ok'+(L==='bn'?' cout-bn':'');}
+    heroFlash(()=>levelWin());
+  }else{
+    log+='\n'+t('lost');if(co){co.textContent=log;co.className='cout err'+(L==='bn'?' cout-bn':'');}
+    levelFail(L==='en'?'Wrong sequence! Check the mission and try again.':'ভুল ক্রম! মিশন দেখো এবং আবার চেষ্টা করো।');
+  }
+}
+function drawHeroMap(lvl){
+  const c=document.getElementById('hcanv');if(!c)return;
+  const ctx=c.getContext('2d'),W=c.width,H=86,gs=lvl.grid||5,bw=Math.floor(W/gs);
+  ctx.fillStyle='#040410';ctx.fillRect(0,0,W,H);
+  for(let x=0;x<gs;x++){ctx.fillStyle=x%2===0?'#0d1520':'#0a1018';ctx.fillRect(x*bw,H-22,bw-1,22);ctx.fillStyle='rgba(168,85,247,.25)';ctx.fillRect(x*bw,H-22,bw-1,3);}
+  if(lvl.wall){ctx.fillStyle='#333';ctx.fillRect(lvl.wall.x*bw+2,H-42,bw-4,20);ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(lvl.wall.x*bw+2,H-42,bw-4,3);}
+  if(lvl.enemy){ctx.font=`${Math.min(bw-4,20)}px serif`;ctx.fillText('👾',lvl.enemy.x*bw+3,H-23);}
+  ctx.font=`${Math.min(bw-4,20)}px serif`;
+  ctx.fillText('💎',lvl.chest.x*bw+3,H-23);
+  ctx.fillText('🧑‍💻',lvl.hero.x*bw,H-23);
+}
+function heroFlash(cb){const c=document.getElementById('hcanv');if(!c){cb&&cb();return;}let n=0;const id=setInterval(()=>{const ctx=c.getContext('2d');ctx.fillStyle=n%2===0?'rgba(0,255,136,.22)':'transparent';ctx.fillRect(0,0,c.width,86);n++;if(n>7){clearInterval(id);cb&&cb();}},90);}
+
+// ═══════════════════════════════════════
+// ── MEMORY MATCH ──
+// ═══════════════════════════════════════
+let MF=[],MM=new Set(),MCanFlip=true;
+function buildMemory(){
+  MF=[];MM=new Set();MCanFlip=true;
+  const lvl=WD.nt.getLevels()[GS.level];
+  const cards=[];
+  lvl.pairs.forEach((p,i)=>{cards.push({id:i*2,pair:i,type:'term',c:p.term,e:p.emoji});cards.push({id:i*2+1,pair:i,type:'def',c:p.def,e:p.emoji});});
+  for(let i=cards.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+  const BACKS=['🌊','📡','💾','🖥️','🔌','⚙️','🌐','🔐'];
+  document.getElementById('cbody').innerHTML=`<div class="gp">
+    <div class="${L==='bn'?'gt-bn':'gt'}" style="color:var(--b)">🌊 ${WD.nt.name[L]}</div>
+    <div class="${L==='bn'?'gs2-bn':'gs2'}">${lvl.story[L]}</div>
+    <div class="memgrid">
+      ${cards.map(c=>`<div class="mcard" id="mc${c.id}" data-pair="${c.pair}" data-type="${c.type}" onclick="flipCard(${c.id},this)">
+        <div class="mback"><span style="font-size:26px">${BACKS[c.pair%BACKS.length]}</span></div>
+        <div class="mfront">
+          <div style="font-size:18px">${c.e}</div>
+          <div class="${c.type==='term'?(L==='bn'?'mterm-bn':'mterm'):(L==='bn'?'mdef-bn':'mdef')}">${c.c[L]}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div class="mstats"><div class="mst ${L==='bn'?'mst-bn':''}">${t('matched')} <span id="mcnt">0</span> / ${lvl.pairs.length} ${t('pairs')}</div></div>
+  </div>`;
+}
+function flipCard(id,el){
+  if(!MCanFlip||MF.includes(id)||MM.has(+el.dataset.pair))return;
+  el.classList.add('flipped');MF.push(id);particles(['✨'],1);
+  if(MF.length===2){
+    MCanFlip=false;const[i1,i2]=MF;
+    const e1=document.getElementById('mc'+i1),e2=document.getElementById('mc'+i2);
+    const p1=+e1.dataset.pair,p2=+e2.dataset.pair,t1=e1.dataset.type,t2=e2.dataset.type;
+    if(p1===p2&&t1!==t2){
+      setTimeout(()=>{e1.classList.add('matched');e2.classList.add('matched');MM.add(p1);MF=[];MCanFlip=true;GS.score+=30;renderHUD();document.getElementById('mcnt').textContent=MM.size;particles(['⭐','🎉','✨'],5);const lvl=WD.nt.getLevels()[GS.level];if(MM.size===lvl.pairs.length) setTimeout(()=>levelWin(),550);},350);
+    }else{
+      setTimeout(()=>{e1.classList.add('wf');e2.classList.add('wf');setTimeout(()=>{e1.classList.remove('flipped','wf');e2.classList.remove('flipped','wf');},420);MF=[];MCanFlip=true;GS.lives=Math.max(0,GS.lives-1);renderHUD();flashSc(false);if(GS.lives<=0) setTimeout(()=>levelFail(t('tryagain')),450);},700);
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+// ── PIXEL ART GAME ──
+// ═══════════════════════════════════════
+let PXgrid=[], PXselColor=0;
+function buildPixel(){
+  const lvl=WD.px.levels[GS.level];
+  const gs=lvl.grid||6;const pal=lvl.palette;
+  PXgrid=Array.from({length:gs},()=>Array(gs).fill(-1));
+  PXselColor=0;
+  const b=document.getElementById('cbody');
+  b.innerHTML=`<div class="gp pxgame">
+    <div class="${L==='bn'?'gt-bn':'gt'}" style="color:var(--pk)">🎨 ${WD.px.name[L]} — ${lvl.name[L]}</div>
+    <div class="${L==='bn'?'gs2-bn':'gs2'}">${lvl.story[L]}</div>
+    <div class="tbx ${L==='bn'?'tbx-bn':''}" style="border-color:var(--pk)">
+      <strong style="color:var(--pk)">💡</strong> ${L==='en'?'Select a color from the palette, then click cells to paint! Match the target pattern.':'প্যালেট থেকে রং বেছে নাও, তারপর রং করতে ঘরে ক্লিক করো! লক্ষ্য প্যাটার্ন মেলাও।'}
+    </div>
+    <div class="pxarea">
+      <div>
+        <div style="font-size:9px;color:#444;font-family:'Press Start 2P',monospace;margin-bottom:6px">${L==='en'?'YOUR CANVAS:':'তোমার ক্যানভাস:'}</div>
+        <div class="pxgrid" id="pxcanv" style="grid-template-columns:repeat(${gs},1fr)">
+          ${Array.from({length:gs},(_,r)=>Array.from({length:gs},(_,cl)=>`<div class="pxcell" id="pc-${r}-${cl}" style="background:#1a1a1a" onclick="paintCell(${r},${cl})"></div>`).join('')).join('')}
+        </div>
+      </div>
+      <div class="palette" id="palette">
+        <div style="font-size:8px;color:#444;font-family:'Press Start 2P',monospace;margin-bottom:5px">COLORS:</div>
+        ${pal.map((c,i)=>`<div class="pcol ${i===0?'sel':''}" style="background:${c}" onclick="selectColor(${i})" id="pc${i}"></div>`).join('')}
+      </div>
+      <div class="pxtarget">
+        <div style="font-size:9px;color:#444;font-family:'Press Start 2P',monospace;margin-bottom:6px">${L==='en'?'TARGET:':'লক্ষ্য:'}</div>
+        <div class="pxtg" style="grid-template-columns:repeat(${gs},1fr)">
+          ${lvl.target.flatMap(row=>row.map(ci=>`<div class="pxtc" style="width:18px;height:18px;background:${ci>=0?pal[ci]:'#1a1a1a'}"></div>`)).join('')}
+        </div>
+        <div class="pxlbl">${L==='en'?'Match this pattern!':'এই প্যাটার্ন মেলাও!'}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
+      <button class="gb gb-cy ${L==='bn'?'gb-bn':''}" onclick="checkPixel()">${t('pxcheck')}</button>
+      <button class="gb gb-r ${L==='bn'?'gb-bn':''}" onclick="clearCanvas()">${t('pxclear')}</button>
+    </div>
+  </div>`;
+}
+function selectColor(i){PXselColor=i;document.querySelectorAll('.pcol').forEach((el,idx)=>el.className='pcol'+(idx===i?' sel':''));}
+function paintCell(r,c){
+  const lvl=WD.px.levels[GS.level];PXgrid[r][c]=PXselColor;
+  const el=document.getElementById(`pc-${r}-${c}`);
+  if(el){el.style.background=lvl.palette[PXselColor];el.style.boxShadow=`0 0 5px ${lvl.palette[PXselColor]}`;}
+  particles(['✨'],1);
+}
+function clearCanvas(){
+  const lvl=WD.px.levels[GS.level];const gs=lvl.grid||6;
+  PXgrid=Array.from({length:gs},()=>Array(gs).fill(-1));
+  document.querySelectorAll('.pxcell').forEach(el=>{el.style.background='#1a1a1a';el.style.boxShadow='';});
+}
+function checkPixel(){
+  const lvl=WD.px.levels[GS.level];let match=true;
+  for(let r=0;r<lvl.target.length;r++) for(let c=0;c<lvl.target[r].length;c++) if(PXgrid[r][c]!==lvl.target[r][c]){match=false;break;}
+  if(match) levelWin();
+  else{levelFail(L==='en'?'Not quite! Some pixels are wrong. Check the target pattern.':'একদম না! কিছু পিক্সেল ভুল। লক্ষ্য প্যাটার্ন দেখো।');}
+}
+
+// ═══════════════════════════════════════
+// ── SORT GAME ──
+// ═══════════════════════════════════════
+let SAR=[],SPTR=0,SSWAPS=0,SSORTED=[];
+const SBARCOLS=['#00BFFF','#FF6B35','#A855F7','#00FF88','#FFE566','#FF69B4','#00FFEE'];
+function buildSort(){
+  const lvl=WD.sc.levels[GS.level];
+  SAR=[...lvl.arr];SPTR=0;SSWAPS=0;SSORTED=Array(SAR.length).fill(false);
+  const b=document.getElementById('cbody');
+  b.innerHTML=`<div class="gp sortgame">
+    <div class="${L==='bn'?'gt-bn':'gt'}" style="color:var(--cy)">🔢 ${WD.sc.name[L]}</div>
+    <div class="${L==='bn'?'gs2-bn':'gs2'}">${lvl.story[L]}</div>
+    <div class="tbx ${L==='bn'?'tbx-bn':''}" style="border-color:var(--cy)">${lvl.task[L]}</div>
+    <div class="spass">
+      <div class="${L==='bn'?'spasslbl-bn':'spasslbl'}">${L==='en'?'Comparing positions:':'তুলনা করা হচ্ছে অবস্থান:'}</div>
+      <div class="scmp" id="scmp">${SPTR+1} & ${SPTR+2}</div>
+      <div class="${L==='bn'?'spasslbl-bn':'spasslbl'}" style="margin-left:14px">${L==='en'?'Swaps:':'সোয়াপ:'}</div>
+      <div class="scmp" id="sswap" style="color:var(--g)">0</div>
+    </div>
+    <div class="sortbars" id="sbars"></div>
+    <div style="display:flex;gap:9px;margin-top:8px;flex-wrap:wrap">
+      <button class="gb gb-cy ${L==='bn'?'gb-bn':''}" onclick="sortSwap()">${t('swapbtn')}</button>
+      <button class="gb gb-gd ${L==='bn'?'gb-bn':''}" onclick="sortSkip()">${L==='en'?'✓ CORRECT ORDER (SKIP)':'✓ ক্রম সঠিক (SKIP)'}</button>
+      <button class="gb gb-r ${L==='bn'?'gb-bn':''}" onclick="sortReset()">${t('reset')}</button>
+    </div>
+    <div class="cout ${L==='bn'?'cout-bn':''}" id="sout" style="margin-top:10px;border-color:#222">${L==='en'?'// Compare the highlighted pair — swap if left > right!':'// হাইলাইট জোড়া তুলনা করো — বাম > ডান হলে সোয়াপ করো!'}</div>
+  </div>`;
+  renderBars();
+}
+function renderBars(){
+  const sb=document.getElementById('sbars');if(!sb)return;
+  const maxV=Math.max(...SAR);
+  sb.innerHTML=SAR.map((v,i)=>{
+    const ht=Math.round((v/maxV)*110)+20;
+    const col=SSORTED[i]?'var(--g)':i===SPTR||i===SPTR+1?SBARCOLS[i%SBARCOLS.length]:SBARCOLS[i%SBARCOLS.length]+'88';
+    const isComp=!SSORTED[i]&&(i===SPTR||i===SPTR+1);
+    return `<div class="sbar ${isComp?'comparing':''} ${SSORTED[i]?'sorted':''}">
+      <div class="sbarbody" style="height:${ht}px;background:${col}22;border-color:${col}">${isComp?`<span style="font-size:10px;color:${col}">${i===SPTR?'A':'B'}</span>`:''}</div>
+      <div class="sbarval" style="color:${col}">${v}</div>
+    </div>`;
+  }).join('');
+  const sc=document.getElementById('scmp');if(sc) sc.textContent=SPTR>=SAR.length-1?'—':`${SPTR+1} & ${SPTR+2}`;
+}
+function sortSwap(){
+  if(SPTR>=SAR.length-1) return;
+  if(SAR[SPTR]>SAR[SPTR+1]){
+    [SAR[SPTR],SAR[SPTR+1]]=[SAR[SPTR+1],SAR[SPTR]];SSWAPS++;
+    document.getElementById('sswap').textContent=SSWAPS;
+    const so=document.getElementById('sout');
+    if(so){so.textContent=t('swapped');so.className='cout ok'+(L==='bn'?' cout-bn':'');}
+    particles(['🔄','✨'],3);flashSc(true);
+  }else{
+    const so=document.getElementById('sout');
+    if(so){so.textContent=t('sorted');so.style.borderColor='var(--y)';}
+  }
+  advanceSortPtr();
+}
+function sortSkip(){
+  if(SPTR>=SAR.length-1) return;
+  if(SAR[SPTR]>SAR[SPTR+1]){
+    levelFail(L==='en'?`Wrong! ${SAR[SPTR]} > ${SAR[SPTR+1]} — they need to be SWAPPED!`:`ভুল! ${SAR[SPTR]} > ${SAR[SPTR+1]} — এগুলো SWAP করতে হবে!`);
+    return;
+  }
+  advanceSortPtr();
+}
+function advanceSortPtr(){
+  SPTR++;
+  if(SPTR>=SAR.length-1){
+    // end of pass — check sorted
+    const sorted=[...SAR];sorted.sort((a,b)=>a-b);
+    if(JSON.stringify(SAR)===JSON.stringify(sorted)){
+      const so=document.getElementById('sout');if(so) so.textContent=t('allsorted');
+      SAR.forEach((_,i)=>SSORTED[i]=true);renderBars();
+      setTimeout(()=>levelWin(),700);
+    }else{
+      SPTR=0;// next pass
+      const so=document.getElementById('sout');if(so){so.textContent=L==='en'?'Pass complete! Starting next pass...':'পাস শেষ! পরের পাস শুরু হচ্ছে...';so.style.borderColor='var(--y)';}
+      renderBars();
+    }
+  }else renderBars();
+}
+function sortReset(){const lvl=WD.sc.levels[GS.level];SAR=[...lvl.arr];SPTR=0;SSWAPS=0;SSORTED=Array(SAR.length).fill(false);document.getElementById('sswap').textContent=0;const so=document.getElementById('sout');if(so){so.textContent=L==='en'?'// Reset! Try again.':'// রিসেট! আবার চেষ্টা করো।';so.className='cout'+(L==='bn'?' cout-bn':'');so.style.borderColor='#222';}renderBars();}
+
+// ═══════════════════════════════════════
+// WIN / FAIL
+// ═══════════════════════════════════════
+function levelWin(){
+  GS.score+=100;GS.perfect+=(GS.lives===3?1:0);renderHUD();
+  flashSc(true);particles(['🎉','⭐','✨','💫','🌟'],18);
+  const w=WD[GS.world];
+  const lvls=w.type==='code'?w.getLevels():(w.type==='memory'?w.getLevels():(w.type==='pixel'?w.levels:w.type==='sort'?w.levels:(w.levels)));
+  const nl=Array.isArray(lvls)?lvls.length:(typeof lvls==='number'?lvls:5);
+  if(GS.level<nl-1){
+    GS.level++;
+    if(GS.level===Math.floor(nl/2)) showFact(w.fact[L]);
+    setTimeout(loadLevel,650);
+  }else{
+    GS.cw[GS.world]=GS.score;if(!GS.bs[GS.world]||GS.score>GS.bs[GS.world]) GS.bs[GS.world]=GS.score;
+    const ns=GS.perfect>=nl?3:GS.perfect>=Math.ceil(nl/2)?2:1;GS.ts+=ns;saveG();
+    showFact(w.fact[L]);setTimeout(()=>showComplete(nl),3200);
+  }
+}
+function levelFail(msg){
+  GS.lives=Math.max(0,GS.lives-1);renderHUD();flashSc(false);
+  const co=document.getElementById('cout');if(co){co.textContent='❌ '+msg;co.className='cout err'+(L==='bn'?' cout-bn':'');}
+  if(GS.lives<=0){
+    setTimeout(()=>{
+      if(confirm(`${L==='en'?'💀 OUT OF LIVES!\n':'💀 জীবন শেষ!\n'}${msg}\n\n${L==='en'?'Try again?':'আবার চেষ্টা করবে?'}`)){GS.lives=3;renderHUD();loadLevel();}
+      else showScreen('ws');
+    },400);
+  }
+}
+function flashSc(good){const f=document.getElementById('flo');f.className='flo';void f.offsetWidth;f.className='flo '+(good?'fw':'fl');}
+
+// FACT TOAST
+let ftmr=null;
+function showFact(text){
+  const ft=document.getElementById('ftst'),ftt=document.getElementById('ftt'),ftb=document.getElementById('ftb');
+  ftt.textContent=L==='en'?'⚡ COOL FACT UNLOCKED!':'⚡ দারুণ তথ্য আনলক হলো!';
+  ftt.className=L==='bn'?'ftt ftt-bn':'ftt';ftb.textContent=text;ftb.className=L==='bn'?'ftb ftb-bn':'ftb';
+  ft.classList.add('show');clearTimeout(ftmr);ftmr=setTimeout(()=>ft.classList.remove('show'),9000);
+}
+
+// COMPLETE
+function showComplete(nl){
+  const el=Math.round((Date.now()-GS.startTime)/1000);
+  const ns=GS.perfect>=nl?3:GS.perfect>=Math.ceil(nl/2)?2:1;
+  const cst=document.getElementById('csstars');cst.innerHTML='';
+  for(let i=0;i<3;i++){const s=document.createElement('span');s.className='cstar';s.textContent='⭐';cst.appendChild(s);if(i<ns) setTimeout(()=>{s.classList.add('show');particles(['⭐','✨'],3);},500+i*420);}
+  document.getElementById('cscsc').textContent=GS.score;document.getElementById('cscpf').textContent=`${GS.perfect}/${nl}`;document.getElementById('csctm').textContent=`${el}s`;
+  document.getElementById('csfact').textContent=WD[GS.world].fact[L];document.getElementById('csfact').className=L==='bn'?'csft csft-bn':'csft';
+  document.getElementById('cstt').textContent=L==='en'?'🎉 WORLD COMPLETE!':'🎉 জগৎ জয় করলে!';
+  document.querySelector('.csfl').textContent=L==='en'?'💡 DID YOU KNOW?':'💡 তুমি কি জানো?';
+  document.querySelectorAll('.csbtns .gb').forEach(b=>{if(b.dataset[L]) b.textContent=b.dataset[L];b.className=b.className.replace(' gb-bn','');if(L==='bn') b.className+=' gb-bn';});
+  document.querySelectorAll('.cssl').forEach(el=>{if(el.dataset[L]) el.textContent=el.dataset[L];el.className=L==='bn'?'cssl cssl-bn':'cssl';});
+  showScreen('cmpsc');
+}
+function replayWorld(){startWorld(GS.world);}
+function nextWorld(){const ids=Object.keys(WD);startWorld(ids[(ids.indexOf(GS.world)+1)%ids.length]);}
+
+// PARTICLES
+function particles(em,n,cx,cy){
+  cx=cx||window.innerWidth/2;cy=cy||window.innerHeight/2;
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');p.className='ptcl';p.textContent=em[~~(Math.random()*em.length)];
+    const px=(Math.random()-.5)*window.innerWidth*.7,py=-(Math.random()*320+80),pr=(Math.random()-.5)*700;
+    p.style.cssText=`left:${cx}px;top:${cy}px;--px:${px}px;--py:${py}px;--pr:${pr}deg;animation-delay:${Math.random()*.14}s;font-size:${15+~~(Math.random()*14)}px`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),2100);
+  }
+}
+
+// INIT
+buildWS();buildHowTo();applyLang();updateStats();
+document.addEventListener('keydown',e=>{if(e.key==='Escape') showScreen('ws');if(e.key==='l'||e.key==='L') toggleLang();});
+window.addEventListener('resize',()=>{const c=document.getElementById('bgc');if(c){c.width=window.innerWidth;c.height=window.innerHeight;}if(GS.world&&document.getElementById('gs').classList.contains('active')) startScene(GS.world);});
+</script>
+</body>
+</html>
